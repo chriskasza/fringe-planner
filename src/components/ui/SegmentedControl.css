@@ -1,0 +1,34 @@
+.segmented {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.segmented__label {
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+
+.segmented__options {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.segmented__option {
+  padding: 5px 9px;
+  border-radius: var(--r-cell);
+  border: none;
+  background: var(--ink-raised);
+  color: var(--text-mute);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.segmented__option--selected {
+  background: var(--gold);
+  color: var(--ink);
+}

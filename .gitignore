@@ -2,3 +2,12 @@
 *.tmp
 .DS_Store
 .claude/settings.local.json
+
+# Front-end build
+node_modules
+dist
+dist-ssr
+*.local
+.vscode/*
+!.vscode/extensions.json
+.idea

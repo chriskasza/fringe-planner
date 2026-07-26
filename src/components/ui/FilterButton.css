@@ -1,0 +1,47 @@
+.filter-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 9px 13px;
+  border-radius: var(--r-button);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: filter 0.1s ease;
+}
+
+.filter-button:hover {
+  filter: brightness(1.08);
+}
+
+.filter-button--idle {
+  background: var(--ink-sunken);
+  border: 1px solid var(--line-strong);
+  color: var(--text-2);
+}
+
+.filter-button--active {
+  background: var(--gold-fill-active);
+  border: 1px solid var(--gold);
+  color: var(--cream);
+}
+
+.filter-button__value {
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.filter-button--idle .filter-button__value {
+  color: var(--text-faint);
+}
+
+.filter-button--active .filter-button__value {
+  color: var(--gold);
+}
+
+.filter-button__caret {
+  font-size: 9px;
+  margin-left: 2px;
+  opacity: 0.8;
+}
