@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useApp } from '../../state/AppContext';
 import { TIME_BUCKETS } from '../../lib/dates';
 import { matchesQuery } from '../../lib/derived';
@@ -20,7 +20,6 @@ type FilterBarProps = {
 export function FilterBar({ view, visibleCount, countLabel, rightExtra }: FilterBarProps) {
   const { state, dispatch, shows, days } = useApp();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [showsQuery, setShowsQuery] = useState('');
 
   const openMenu = state.openMenu[view];
 
@@ -57,8 +56,8 @@ export function FilterBar({ view, visibleCount, countLabel, rightExtra }: Filter
 
   const showsSorted = useMemo(() => [...shows].sort((a, b) => a.title.localeCompare(b.title)), [shows]);
   const showsMatching = useMemo(
-    () => showsSorted.filter((s) => matchesQuery(s, showsQuery)),
-    [showsSorted, showsQuery],
+    () => showsSorted.filter((s) => matchesQuery(s, state.query)),
+    [showsSorted, state.query],
   );
   const includedCount = shows.filter((s) => !state.excluded[s.id]).length;
 
@@ -68,7 +67,6 @@ export function FilterBar({ view, visibleCount, countLabel, rightExtra }: Filter
 
   function resetAll() {
     dispatch({ type: 'RESET_ALL_FILTERS', days: dayKeys, venues: venueKeys, ratings: ratingKeys });
-    setShowsQuery('');
   }
 
   return (
@@ -215,16 +213,16 @@ export function FilterBar({ view, visibleCount, countLabel, rightExtra }: Filter
         <Dropdown open={openMenu === 'shows'} title="Shows" width={322} onClose={() => dispatch({ type: 'CLOSE_MENUS' })}>
           <input
             className="filter-bar__typeahead"
-            placeholder="Type to filter shows, genres, venues…"
-            value={showsQuery}
-            onChange={(e) => setShowsQuery(e.target.value)}
+            placeholder="Type to filter shows or venues…"
+            value={state.query}
+            onChange={(e) => dispatch({ type: 'SET_QUERY', query: e.target.value })}
           />
           <div className="filter-bar__shows-header">
             {includedCount}/{shows.length} ON
           </div>
           <div className="dropdown__list" style={{ maxHeight: 230, overflowY: 'auto' }}>
             {showsMatching.length === 0 && (
-              <div className="dropdown__empty">NO SHOWS MATCH &quot;{showsQuery}&quot;</div>
+              <div className="dropdown__empty">NO SHOWS MATCH &quot;{state.query}&quot;</div>
             )}
             {showsMatching.map((s) => (
               <label
