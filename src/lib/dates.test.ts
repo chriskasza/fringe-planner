@@ -113,3 +113,46 @@ describe('past-day deselection', () => {
     expect(s.daysOn['2026-09-06']).toBe(true); // future
   });
 });
+
+describe('initial grid day', () => {
+  const day = (key: string, count: number) => ({
+    key,
+    dow: 'THU',
+    dateNum: Number(key.slice(-2)),
+    label: key,
+    count,
+  });
+
+  it('opens on the first day with shows before the festival starts', () => {
+    const days = [day('2026-09-03', 0), day('2026-09-04', 12), day('2026-09-05', 9)];
+    const s = createInitialState(days, allShows, { date: '2026-07-26', minutes: 720 });
+    expect(s.gridDay).toBe('2026-09-04');
+  });
+
+  // The landing day has to agree with daysOn, which deselects past days: an
+  // initial gridDay of Sep 3 on Sep 10 renders a week-old day that the app's
+  // own day filter has switched off, so the grid shows an arbitrary subset
+  // (only shows that also run later) with the Sep 3 tab both selected and
+  // dimmed - or the empty-state message.
+  it('skips past days once the festival is underway', () => {
+    const days = [day('2026-09-03', 12), day('2026-09-04', 12), day('2026-09-05', 9)];
+    const s = createInitialState(days, allShows, { date: '2026-09-04', minutes: 720 });
+    expect(s.gridDay).toBe('2026-09-04');
+    expect(s.daysOn[s.gridDay]).toBe(true);
+  });
+
+  it('skips today when today has no shows', () => {
+    const days = [day('2026-09-03', 12), day('2026-09-04', 0), day('2026-09-05', 9)];
+    const s = createInitialState(days, allShows, { date: '2026-09-04', minutes: 720 });
+    expect(s.gridDay).toBe('2026-09-05');
+  });
+
+  it('falls back to the last day with shows once the festival is over', () => {
+    const days = [day('2026-09-03', 12), day('2026-09-04', 12), day('2026-09-05', 0)];
+    const s = createInitialState(days, allShows, { date: '2026-12-01', minutes: 720 });
+    expect(s.gridDay).toBe('2026-09-04');
+    // Past days are all deselected, so the landing day has to switch its own
+    // day back on or the grid renders empty.
+    expect(s.daysOn[s.gridDay]).toBe(true);
+  });
+});

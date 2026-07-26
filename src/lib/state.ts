@@ -46,7 +46,17 @@ export function createInitialState(
   const ratingsOn: Record<string, boolean> = {};
   for (const r of new Set(shows.map((s) => s.rating))) ratingsOn[r] = true;
 
-  const firstWithShows = days.find((d) => d.count > 0) ?? days[0];
+  // The landing day has to agree with `daysOn` above: opening on the first
+  // day of the festival while that day is filtered out puts the user on a
+  // grid whose own day is switched off. Prefer the first day from today
+  // forward that has shows; once the festival is over there's no such day, so
+  // fall back to the last day that had any (and switch it back on, since
+  // every day is in the past by then).
+  const gridDay =
+    days.find((d) => d.count > 0 && d.key >= now.date) ??
+    [...days].reverse().find((d) => d.count > 0) ??
+    days[0];
+  daysOn[gridDay.key] = true;
 
   return {
     picked: new Set(),
@@ -61,7 +71,7 @@ export function createInitialState(
     // screen) once Card Browser is fully built - 'grid' for now since it's
     // the only complete view.
     viewMode: 'grid',
-    gridDay: firstWithShows.key,
+    gridDay: gridDay.key,
     openMenu: { grid: null, cards: null },
     expanded: {},
     detail: null,
