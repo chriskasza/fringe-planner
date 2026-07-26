@@ -21,7 +21,7 @@ export function TopBar({ compact = false, rightExtra }: TopBarProps) {
         {!compact && <span className="topbar__tagline">SHOW SELECTOR · 2026</span>}
       </div>
       <div className="topbar__right">
-        {!compact && (
+        {!compact && onNow > 0 && (
           <span className="topbar__onnow">
             <span className="topbar__onnow-dot" />
             ON NOW: {onNow} SHOW{onNow === 1 ? '' : 'S'}
