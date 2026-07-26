@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { render, fireEvent, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import App from './App';
+import { shows } from './lib/loadData';
 import { LABEL_WIDTH } from './components/GridPlanner/gridLayout';
 
 // The mobile Grid Planner reuses the same components as desktop (shared
@@ -402,5 +403,69 @@ describe('App (Card Browser)', () => {
 
     fireEvent.click(railScope.getAllByRole('button', { name: /Remove Peak Twins/ })[0]);
     expect(railScope.getByText('5 PICKED')).toBeInTheDocument();
+  });
+});
+
+describe('Day / Time filters gate which shows are browsable', () => {
+  function openDayMenu() {
+    const browser = within(document.querySelector('.card-browser') as HTMLElement);
+    fireEvent.click(browser.getByRole('button', { name: /^Day/ }));
+    return within(document.querySelector('.dropdown') as HTMLElement);
+  }
+
+  const cardCount = () => document.querySelectorAll('.show-card').length;
+
+  it('shows no cards at all when every day is deselected', () => {
+    // Reported bug: clearing the day filter left every card on screen,
+    // because visible() only consulted excluded/venue/rating/clash and never
+    // the day or time filter - so Day and Time had no effect on the grid.
+    render(<App />);
+    switchToCards();
+    expect(cardCount()).toBe(56);
+
+    fireEvent.click(openDayMenu().getByRole('button', { name: /Clear/ }));
+
+    expect(cardCount()).toBe(0);
+    expect(
+      within(document.querySelector('.card-browser') as HTMLElement).getByText(
+        /No shows match the current filters/,
+      ),
+    ).toBeInTheDocument();
+  });
+
+  it('narrows cards to only shows playing on the selected day', () => {
+    render(<App />);
+    switchToCards();
+
+    // Clear, then re-enable a single day.
+    fireEvent.click(openDayMenu().getByRole('button', { name: /Clear/ }));
+    fireEvent.click(within(document.querySelector('.dropdown') as HTMLElement).getByText('Thu 3 Sep'));
+
+    const expected = shows.filter((s) =>
+      s.perfs.some((p) => p.status === 'active' && p.day === '2026-09-03'),
+    ).length;
+
+    expect(expected).toBeGreaterThan(0);
+    expect(expected).toBeLessThan(shows.length); // otherwise the test proves nothing
+    expect(cardCount()).toBe(expected);
+  });
+
+  it('keeps picks that fall outside the day filter, dimmed rather than dropped', () => {
+    // Filters change what you're browsing, never what you've committed to.
+    render(<App />);
+    switchToCards();
+
+    const browser = within(document.querySelector('.card-browser') as HTMLElement);
+    const card = browser.getByText('Peak Twins').closest('.show-card') as HTMLElement;
+    fireEvent.click(within(card).getByRole('button', { name: /Add all of Peak Twins/ }));
+    expect(browser.getByText('6 PICKED')).toBeInTheDocument();
+
+    fireEvent.click(openDayMenu().getByRole('button', { name: /Clear/ }));
+
+    // No cards browsable, but the schedule is untouched.
+    expect(cardCount()).toBe(0);
+    const rail = within(document.querySelector('.my-fringe-rail') as HTMLElement);
+    expect(rail.getByText('6 PICKED')).toBeInTheDocument();
+    expect(document.querySelectorAll('.my-fringe-rail__row--outside').length).toBe(6);
   });
 });

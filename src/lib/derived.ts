@@ -108,19 +108,33 @@ export function perfInFilter(
 
 type VisibilityState = {
   excluded: Record<string, boolean>;
+  daysOn: Record<DayKey, boolean>;
+  timeBucketsOn: Record<TimeBucket, boolean>;
   venuesOn: Record<string, boolean>;
   ratingsOn: Record<string, boolean>;
   clash: ClashMode;
   picked: Set<PerfKey>;
 };
 
-// A show is visible when it isn't excluded, its venue/rating are switched on,
+// A show is visible when it isn't excluded, it still has at least one
+// performance inside the day/time filter, its venue/rating are switched on,
 // and clash mode allows it. Clash mode tests whether *any* of the show's
 // performances is in a clash state.
 export function visible(show: Show, state: VisibilityState, shows: Show[]): boolean {
   if (state.excluded[show.id]) return false;
   if (state.venuesOn[show.venue] === false) return false;
   if (state.ratingsOn[show.rating] === false) return false;
+
+  // Day/Time gate what you're *browsing*: a show with nothing playing in the
+  // selected days and times has nothing to offer, so it drops out entirely
+  // (and deselecting every day shows nothing, rather than everything). This
+  // never touches `picked` - picks outside the filter stay in the schedule,
+  // dimmed in the My Fringe rail.
+  const hasPerfInFilter = show.perfs.some(
+    (p) => p.status === 'active' && perfInFilter(p, state.daysOn, state.timeBucketsOn),
+  );
+  if (!hasPerfInFilter) return false;
+
   if (state.clash === 'all') return true;
 
   const hasClash = show.perfs.some((p) => {
