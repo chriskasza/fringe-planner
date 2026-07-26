@@ -37,6 +37,9 @@ export type ShowMetaEntry = {
   credits: string[];
   rating: string;
   warnings: string[];
+  // Only present for shows the API gives no venue for - recovered from the
+  // show page's own JSON-LD by scrape_meta.mjs.
+  venue?: string;
 };
 
 export type ShowsMetaFile = Record<string, ShowMetaEntry>;

@@ -172,8 +172,15 @@ export function appReducer(state: AppState, action: AppAction): AppState {
     case 'SET_VIEW':
       return { ...state, viewMode: action.view };
 
+    // Additive, not exclusive: switching the grid to a day makes sure that
+    // day is switched on (so the grid can never render blank because its own
+    // day is filtered out), but leaves the other days alone. Narrowing
+    // daysOn to just this day - as the handoff's "date filter narrows to it"
+    // literally reads - silently destroys a multi-day filter the moment you
+    // click through days in the grid, and that only became visible once the
+    // date filter actually gated which shows are browsable.
     case 'SET_GRID_DAY':
-      return { ...state, gridDay: action.day, daysOn: singleDayOn(state.daysOn, action.day) };
+      return { ...state, gridDay: action.day, daysOn: { ...state.daysOn, [action.day]: true } };
 
     case 'SET_OPEN_MENU':
       return { ...state, openMenu: { ...state.openMenu, [action.view]: action.menu } };
@@ -221,10 +228,4 @@ export function appReducer(state: AppState, action: AppAction): AppState {
     default:
       return state;
   }
-}
-
-function singleDayOn(daysOn: Record<DayKey, boolean>, day: DayKey): Record<DayKey, boolean> {
-  const next: Record<DayKey, boolean> = {};
-  for (const key of Object.keys(daysOn)) next[key] = key === day;
-  return next;
 }

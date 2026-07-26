@@ -36,6 +36,7 @@ const SHORT_NAMES = {
   'Universalist Unitarian Church of Halifax': 'UNITARIAN CHURCH',
   'Wonderneath Art Society': 'WONDERNEATH',
   'inesS Circus': 'INESS CIRCUS',
+  'Outdoors - Different Locations': 'OUTDOORS',
 };
 
 const ENTITIES = {
@@ -182,11 +183,17 @@ for (const [i, show] of shows.entries()) {
 
   try {
     const { meta: showMeta, address } = await fetchMeta(show.showId, show.ticketUrl, show.title);
+
+    // A couple of shows have no venue in the API (the free roving outdoor
+    // ones), but their own page's JSON-LD still names the place. Record it
+    // so the front-end has something to show instead of a blank venue.
+    if (!show.venue && address?.name) showMeta.venue = address.name;
     meta[String(show.showId)] = showMeta;
 
-    if (address && show.venue) {
-      const short = SHORT_NAMES[show.venue] ?? show.venue.toUpperCase();
-      venues[show.venue] = {
+    const venueName = show.venue || (address?.name ?? '');
+    if (address && venueName) {
+      const short = SHORT_NAMES[venueName] ?? venueName.toUpperCase();
+      venues[venueName] = {
         short,
         shortAddress: address.shortAddress,
         fullAddress: address.fullAddress,

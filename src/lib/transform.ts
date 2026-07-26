@@ -41,15 +41,21 @@ function transformShow(
 
   const firstActive = perfs.find((p) => p.status === 'active') ?? perfs[0];
 
+  // The API leaves `venue` empty for the roving outdoor shows; scrape_meta
+  // recovers the name from the show page's JSON-LD. Falling back here keeps
+  // a blank row out of the Venue filter and a blank line off the card.
+  const venue = raw.venue || showMeta?.venue || 'Venue TBA';
+  const resolvedVenueMeta = venues[venue] ?? venueMeta;
+
   return {
     id,
     title: raw.title,
     blurb: raw.blurb,
     poster: raw.poster,
     ticketUrl: raw.ticketUrl,
-    venue: raw.venue,
-    venueShort: venueMeta?.short ?? raw.venue.toUpperCase(),
-    venueAddress: venueMeta?.shortAddress ?? null,
+    venue,
+    venueShort: resolvedVenueMeta?.short ?? venue.toUpperCase(),
+    venueAddress: resolvedVenueMeta?.shortAddress ?? null,
     credits: showMeta?.credits ?? [],
     rating: showMeta?.rating ?? 'NOT RATED',
     warnings: showMeta?.warnings ?? [],
