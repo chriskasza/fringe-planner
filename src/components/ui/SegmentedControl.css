@@ -32,3 +32,10 @@
   background: var(--gold);
   color: var(--ink);
 }
+
+@media (max-width: 520px) {
+  .segmented__option {
+    padding: 12px 11px;
+    font-size: 11px;
+  }
+}

@@ -50,6 +50,24 @@ input {
   color: inherit;
 }
 
+/* Visible focus ring on interactive elements for keyboard navigation.
+   Gold matches the primary accent, weight matches the line-strong border. */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Override the browser default on elements that carry their own focus style. */
+.segmented__option:focus-visible,
+.topbar__myfringe:focus-visible,
+.filter-bar__reset:focus-visible,
+.dropdown__footer-btn:focus-visible,
+.mobile-filters-sheet__close:focus-visible,
+.mobile-filters-sheet__reset:focus-visible,
+.sync-sheet__close:focus-visible {
+  outline-offset: 0;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

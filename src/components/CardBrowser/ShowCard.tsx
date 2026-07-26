@@ -54,11 +54,13 @@ export function ShowCard({ show }: { show: Show }) {
           type="button"
           className="show-card__toggle-times"
           onClick={() => dispatch({ type: 'TOGGLE_EXPANDED', showId: show.id })}
+          aria-expanded={expanded}
+          aria-controls={expanded ? `times-${show.id}` : undefined}
         >
           {expanded ? 'HIDE TIMES ▲' : 'SHOW TIMES ▼'}
         </button>
 
-        {expanded && <TimePills show={show} />}
+        {expanded && <div id={`times-${show.id}`}><TimePills show={show} /></div>}
       </div>
     </div>
   );

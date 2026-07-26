@@ -24,11 +24,23 @@ export function GridBlock({ show, perf, gridStartMin }: GridBlockProps) {
     bottom: BLOCK_INSET_Y_PX,
   };
 
+  const stateLabel =
+    pState === 'picked' || pState === 'picked-clash' ? 'Picked' : pState === 'clash' ? 'Overlaps' : 'Available';
+
   return (
     <div
       className={`grid-block grid-block--${pState}`}
       style={style}
       onClick={() => dispatch({ type: 'TOGGLE_PICK', key })}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          dispatch({ type: 'TOGGLE_PICK', key });
+        }
+      }}
+      aria-label={`${show.title}, ${formatTime(perf.start)}, ${perf.mins} min, ${stateLabel}`}
     >
       <div className="grid-block__top">
         <span className="grid-block__title" title={show.title}>

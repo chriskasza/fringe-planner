@@ -45,3 +45,10 @@
   margin-left: 2px;
   opacity: 0.8;
 }
+
+/* Touch: ensure filter buttons meet the 44px minimum hit target. */
+@media (max-width: 520px) {
+  .filter-button {
+    padding: 15px 13px;
+  }
+}
