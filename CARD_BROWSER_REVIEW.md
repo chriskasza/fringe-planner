@@ -58,9 +58,52 @@ itself to `overflow: hidden`, giving the intended fixed-header / scrolling-body
 - 1000px correctly collapses to 2 columns.
 - No console/page errors in any state.
 
+## Since fixed (filter inconsistency pass)
+
+### Day/Time filters had no effect on which shows were browsable (critical)
+
+`visible()` checked excluded/venue/rating/clash but never `daysOn` or
+`timeBucketsOn`. The Day and Time filter buttons only drove secondary things
+(rail dimming, which time pills a card lists). Clearing every day still
+showed all 56 cards. Fixed: a show is now visible only if it still has at
+least one active performance inside the day/time filter.
+
+### SET_GRID_DAY rewrote the shared date filter
+
+Clicking a day tab in the grid narrowed `daysOn` to only that day. Harmless
+while the date filter didn't gate anything, but after fixing the above it
+silently destroyed a multi-day filter when you switched back to Cards.
+Changed to additive — the clicked day is switched on, others left alone.
+
+### Blank venue row in the Venue filter
+
+The Venue dropdown had a blank row with count 1 — *Game of drones… Drummers
+Are Coming* has no `venue` in the API. `scrape_meta.mjs` now recovers the
+name from the show page's own JSON-LD (\"Outdoors – Different Locations\")
+and `transform.ts` falls back to it. Verified in-browser: zero blank rows.
+
+### Three summary grammars on filter buttons
+
+Day/Time used one pattern (named singles), Venue/Age another (bare count),
+Shows a third (ratio). Unified on ALL n / NONE / n OF m via
+`summarizeSelected`, with Day/Time keeping the named-single edge case.
+
+### Time filter buckets were invented, not derived
+
+Four guessed buckets mislabelled the festival — "MORNING" held 5 of 282
+performances, and "LATE NIGHT" started at 8pm (the busiest slot). Refitted
+to the real clusters: MATINEE 71 / EVENING 100 / NIGHT 111 at 5pm/8pm
+boundaries, with per-bucket counts.
+
+### Search counted as an active filter
+
+`activeFilterCount` counted `query` as an active filter, including the
+search box inside the Shows panel. That doesn't filter the grid, so the
+mobile badge claimed a filter was active while nothing on screen changed.
+
 ## Outstanding — not yet fixed
 
-### 3. Card Browser has no mobile treatment (high)
+### Card Browser has no mobile treatment (high)
 
 At 390px the layout is unusable:
 
@@ -79,14 +122,7 @@ Per the design handoff the rail should become a bottom sheet under ~1000px.
 The mobile pieces (`compact` TopBar, mobile filters panel) already exist and
 just need wiring up, mirroring `GridPlannerMobile`.
 
-### 4. Blank venue row in the Venue filter (low)
-
-The Venue dropdown's first row has an empty label with count 1 — that's
-*Game of drones… Drummers Are Coming*, whose `venue` is an empty string
-upstream (its page says "Outdoors – Different Locations"). It should render a
-placeholder label rather than a blank checkbox row.
-
-### 5. Card Browser is not vertically contained like Grid Planner (low)
+### Card Browser is not vertically contained like Grid Planner (low)
 
 `.card-browser` follows the same height chain, but unlike the Grid Planner
 its `TopBar`/`FilterBar` aren't verified against the fixed-viewport shell at
