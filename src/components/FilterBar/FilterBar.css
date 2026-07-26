@@ -48,12 +48,6 @@
   white-space: nowrap;
 }
 
-.filter-bar__shared {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--gold);
-}
-
 .filter-bar__summary {
   font-family: var(--font-mono);
   font-size: 11px;

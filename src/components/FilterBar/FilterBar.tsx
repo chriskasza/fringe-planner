@@ -13,10 +13,9 @@ type FilterBarProps = {
   view: 'grid' | 'cards';
   visibleCount: number;
   countLabel: string; // "ON THE GRID" | "SHOWN"
-  rightExtra?: React.ReactNode;
 };
 
-export function FilterBar({ view, visibleCount, countLabel, rightExtra }: FilterBarProps) {
+export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
   const {
     state,
     dispatch,
@@ -251,11 +250,9 @@ export function FilterBar({ view, visibleCount, countLabel, rightExtra }: Filter
       </button>
 
       <div className="filter-bar__right">
-        <span className="filter-bar__shared">⇄ SHARED WITH {view === 'grid' ? 'CARD BROWSER' : 'GRID PLANNER'}</span>
         <span className="filter-bar__summary">
           {visibleCount} {countLabel}
         </span>
-        {rightExtra}
       </div>
     </div>
   );

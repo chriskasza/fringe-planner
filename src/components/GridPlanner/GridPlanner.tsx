@@ -26,12 +26,7 @@ export function GridPlanner() {
         <div className="grid-planner">
           <TopBar />
           <DayStrip />
-          <FilterBar
-            view="grid"
-            visibleCount={visibleCount}
-            countLabel="ON THE GRID"
-            rightExtra={<span className="filter-bar__summary">SORT: VENUE ▾</span>}
-          />
+          <FilterBar view="grid" visibleCount={visibleCount} countLabel="ON THE GRID" />
           <div className="grid-planner__content">
             <GridBody />
             <DetailPanel />
