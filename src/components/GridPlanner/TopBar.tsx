@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { useApp } from '../../state/AppContext';
 import { onNowCount } from '../../lib/derived';
+import { SegmentedControl } from '../ui/SegmentedControl';
 import './TopBar.css';
 
 type TopBarProps = {
@@ -26,6 +27,14 @@ export function TopBar({ compact = false, rightExtra }: TopBarProps) {
             ON NOW: {onNow} SHOW{onNow === 1 ? '' : 'S'}
           </span>
         )}
+        <SegmentedControl
+          value={state.viewMode}
+          onChange={(view) => dispatch({ type: 'SET_VIEW', view })}
+          options={[
+            { value: 'cards', label: 'Cards' },
+            { value: 'grid', label: 'Grid' },
+          ]}
+        />
         {rightExtra}
         <button
           type="button"

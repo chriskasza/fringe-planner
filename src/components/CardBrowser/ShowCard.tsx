@@ -1,0 +1,65 @@
+import { useApp } from '../../state/AppContext';
+import { perfInFilter, perfKey } from '../../lib/derived';
+import { IconButton } from '../ui/IconButton';
+import { DayRail } from './DayRail';
+import { TimePills } from './TimePills';
+import type { Show } from '../../lib/types';
+import './ShowCard.css';
+
+export function ShowCard({ show }: { show: Show }) {
+  const { state, dispatch } = useApp();
+
+  const activePerfs = show.perfs.filter((p) => p.status === 'active');
+  const pickedPerfs = activePerfs.filter((p) => state.picked.has(perfKey(show.id, p.day, p.start)));
+  const outsideFilterCount = activePerfs.filter((p) => !perfInFilter(p, state.daysOn, state.timeBucketsOn)).length;
+  const anyPicked = pickedPerfs.length > 0;
+  const expanded = Boolean(state.expanded[show.id]);
+
+  function toggleStar() {
+    dispatch({ type: 'TOGGLE_SHOW_STAR', show });
+  }
+
+  return (
+    <div className={`show-card ${anyPicked ? 'show-card--picked' : ''}`}>
+      <div className="show-card__image">
+        <span className="show-card__image-label">[ SHOW IMAGE ]</span>
+        <IconButton
+          glyph={anyPicked ? '★' : '☆'}
+          ariaLabel={anyPicked ? `Remove ${show.title} from My Fringe` : `Add all of ${show.title} to My Fringe`}
+          variant={anyPicked ? 'star-picked' : 'star-unpicked'}
+          size={28}
+          onClick={toggleStar}
+        />
+      </div>
+
+      <div className="show-card__body">
+        <h3 className="show-card__title">{show.title}</h3>
+        <div className="show-card__credits">
+          {show.credits[0] ?? 'Independent artist'} · {show.mins} MIN
+        </div>
+        <div className="show-card__venue">{show.venueShort}</div>
+        <div className="show-card__rating">{show.rating}</div>
+      </div>
+
+      <div className="show-card__footer">
+        <div className="show-card__summary">
+          {activePerfs.length} PERFORMANCE{activePerfs.length === 1 ? '' : 'S'}
+          {pickedPerfs.length > 0 && ` · ${pickedPerfs.length} PICKED`}
+          {outsideFilterCount > 0 && ` · ${outsideFilterCount} OUTSIDE FILTER`}
+        </div>
+
+        <DayRail show={show} onExpand={() => dispatch({ type: 'TOGGLE_EXPANDED', showId: show.id })} />
+
+        <button
+          type="button"
+          className="show-card__toggle-times"
+          onClick={() => dispatch({ type: 'TOGGLE_EXPANDED', showId: show.id })}
+        >
+          {expanded ? 'HIDE TIMES ▲' : 'SHOW TIMES ▼'}
+        </button>
+
+        {expanded && <TimePills show={show} />}
+      </div>
+    </div>
+  );
+}

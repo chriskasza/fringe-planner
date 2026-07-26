@@ -1,0 +1,68 @@
+.day-rail {
+  display: grid;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+  gap: 3px;
+}
+
+.day-rail__cell {
+  height: 30px;
+  border-radius: var(--r-cell);
+  box-sizing: border-box;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font-mono);
+}
+
+.day-rail__num {
+  font-size: 10px;
+  line-height: 1.05;
+}
+
+.day-rail__mult {
+  font-size: 7.5px;
+  opacity: 0.8;
+}
+
+.day-rail__cell--none {
+  background: transparent;
+  border: 1px dashed var(--line-soft);
+  color: var(--text-ghost);
+  cursor: default;
+}
+
+.day-rail__cell--available {
+  background: var(--ink-sunken);
+  border: 1px solid var(--line-strong);
+  color: var(--text-2);
+}
+
+.day-rail__cell--outside-filter {
+  background: var(--ink-sunken);
+  border: 1px dashed var(--line-faint);
+  color: var(--text-faint);
+  opacity: 0.75;
+}
+
+.day-rail__cell--clash {
+  background: var(--coral-fill);
+  border: 1px solid var(--coral-border);
+  color: var(--coral-text);
+}
+
+.day-rail__cell--picked {
+  background: var(--gold);
+  border: 1px solid var(--gold);
+  color: var(--ink);
+}
+
+.day-rail__cell--picked-clash {
+  background: var(--gold);
+  border: 1px solid var(--coral);
+  border-left-width: 4px;
+  color: var(--ink);
+}

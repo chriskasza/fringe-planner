@@ -1,0 +1,9 @@
+.time-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  background: var(--ink-sunken);
+  border: 1px solid var(--line);
+  border-radius: var(--r-button);
+  padding: 9px;
+}

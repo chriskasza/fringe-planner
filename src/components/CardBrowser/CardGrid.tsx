@@ -1,0 +1,22 @@
+import { useApp } from '../../state/AppContext';
+import { visible } from '../../lib/derived';
+import { ShowCard } from './ShowCard';
+import './CardGrid.css';
+
+export function CardGrid() {
+  const { state, shows } = useApp();
+  const visibleShows = shows
+    .filter((s) => visible(s, state, shows))
+    .sort((a, b) => a.title.localeCompare(b.title));
+
+  return (
+    <div className="card-grid">
+      {visibleShows.length === 0 && (
+        <div className="card-grid__empty">No shows match the current filters.</div>
+      )}
+      {visibleShows.map((show) => (
+        <ShowCard key={show.id} show={show} />
+      ))}
+    </div>
+  );
+}

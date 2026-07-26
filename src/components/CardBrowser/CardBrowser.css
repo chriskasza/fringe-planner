@@ -1,0 +1,23 @@
+/* Mirrors the desktop .grid-planner height chain (see GridPlanner.css) -
+   flex:1/min-height:0 so this can sit directly under #root's fixed-viewport
+   shell, with only .card-grid and .my-fringe-rail scrolling internally. */
+.card-browser {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--ink);
+  border-radius: var(--r-frame);
+  overflow: hidden;
+  box-shadow: var(--shadow-frame);
+  max-width: 1240px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.card-browser__content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+}

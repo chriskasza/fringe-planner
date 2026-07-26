@@ -1,0 +1,95 @@
+.show-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--ink-raised);
+  border-radius: var(--r-card);
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.show-card--picked {
+  border-color: var(--gold);
+}
+
+.show-card__image {
+  position: relative;
+  height: 104px;
+  background: var(--img-placeholder);
+  border-bottom: 1px solid var(--line);
+  padding: 10px;
+}
+
+.show-card__image-label {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-faint);
+}
+
+.show-card__image .icon-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 14px;
+}
+
+.show-card__body {
+  padding: 13px 14px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.show-card__title {
+  font-family: var(--font-display);
+  font-size: 15.5px;
+  color: var(--cream);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.show-card__credits {
+  font-size: 12px;
+  color: var(--text-mute);
+}
+
+.show-card__venue {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-2);
+}
+
+.show-card__rating {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-faint);
+}
+
+.show-card__footer {
+  margin-top: auto;
+  padding: 10px 14px 15px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.show-card__summary {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--text-faint);
+}
+
+.show-card__toggle-times {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(198, 169, 59, 0.5);
+  color: var(--gold);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  padding: 0;
+  cursor: pointer;
+}

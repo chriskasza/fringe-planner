@@ -1,0 +1,185 @@
+.my-fringe-rail {
+  width: 300px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  background: var(--ink-sunken);
+  border-left: 1px solid var(--line);
+  padding: 22px 20px;
+  gap: 18px;
+  overflow-y: auto;
+}
+
+.my-fringe-rail__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex: none;
+}
+
+.my-fringe-rail__title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  letter-spacing: 0.03em;
+  color: var(--cream);
+}
+
+.my-fringe-rail__count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--gold);
+}
+
+.my-fringe-rail__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.my-fringe-rail__empty {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-faint);
+}
+
+.my-fringe-rail__group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.my-fringe-rail__group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.my-fringe-rail__day-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.my-fringe-rail__badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.my-fringe-rail__badge--overlap {
+  color: var(--coral);
+}
+
+.my-fringe-rail__badge--clear {
+  color: var(--cyan);
+}
+
+.my-fringe-rail__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--gold);
+  color: var(--ink);
+  border-radius: var(--r-button);
+  padding: 10px 12px;
+}
+
+.my-fringe-rail__row--overlap {
+  border: 1px solid var(--coral);
+  border-left-width: 6px;
+}
+
+.my-fringe-rail__row--outside {
+  opacity: 0.62;
+}
+
+.my-fringe-rail__time {
+  width: 60px;
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.my-fringe-rail__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.my-fringe-rail__row-title {
+  font-size: 13px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.my-fringe-rail__row-venue {
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.my-fringe-rail__outside-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  border: 1px dashed var(--ink);
+  border-radius: var(--r-pill);
+  padding: 1px 6px;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+
+.my-fringe-rail__remove {
+  flex: none;
+  background: none;
+  border: none;
+  color: var(--ink);
+  opacity: 0.6;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.my-fringe-rail__footer {
+  flex: none;
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.my-fringe-rail__tickets {
+  padding: 12px;
+  border-radius: var(--r-button);
+  border: none;
+  background: var(--gold);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.my-fringe-rail__sync {
+  padding: 10px;
+  border-radius: var(--r-button);
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.my-fringe-rail__overlap-summary {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-faint);
+}

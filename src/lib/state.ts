@@ -47,7 +47,10 @@ export function createInitialState(days: Day[], shows: Show[]): AppState {
     excluded: {},
     clash: 'all',
     query: '',
-    viewMode: 'cards',
+    // TODO: default to 'cards' (matching the design's intended first
+    // screen) once Card Browser is fully built - 'grid' for now since it's
+    // the only complete view.
+    viewMode: 'grid',
     gridDay: firstWithShows.key,
     openMenu: { grid: null, cards: null },
     expanded: {},
