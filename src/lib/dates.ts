@@ -33,14 +33,35 @@ function dayLabel(dateKey: DayKey): string {
   return `${dow} ${d} ${month}`;
 }
 
-export function festivalDayKeys(): DayKey[] {
+function toDayKey(date: Date): DayKey {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+// Every date from `first` to `last`, inclusive. Stepping a Date built from
+// plain y/m/d integers (never from an API instant - see splitNaiveTimestamp)
+// is what makes month, year, and leap-day boundaries take care of themselves;
+// iterating the day-of-month number instead only works while the whole range
+// sits inside one month, which the festival's dates won't always do.
+export function dayKeysBetween(first: DayKey, last: DayKey): DayKey[] {
+  if (last < first) throw new Error(`festival last day ${last} is before first day ${first}`);
+
+  const [y, m, d] = first.split('-').map(Number);
+  const cursor = new Date(y, m - 1, d);
   const keys: DayKey[] = [];
-  const [y, m, d0] = FESTIVAL_FIRST_DAY.split('-').map(Number);
-  const [, , dEnd] = FESTIVAL_LAST_DAY.split('-').map(Number);
-  for (let d = d0; d <= dEnd; d++) {
-    keys.push(`${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`);
+
+  for (let key = toDayKey(cursor); key <= last; key = toDayKey(cursor)) {
+    keys.push(key);
+    cursor.setDate(cursor.getDate() + 1);
   }
+
   return keys;
+}
+
+export function festivalDayKeys(): DayKey[] {
+  return dayKeysBetween(FESTIVAL_FIRST_DAY, FESTIVAL_LAST_DAY);
 }
 
 export function buildFestivalDays(counts: Record<DayKey, number>): Day[] {

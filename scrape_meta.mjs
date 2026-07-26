@@ -92,13 +92,16 @@ function parseCredits(html) {
   return raw.split('\n').map((s) => s.trim()).filter(Boolean);
 }
 
+// Upstream capitalisation is inconsistent - the same warning arrives as
+// "Flashing Lights", "Flashing lights" or "flashing lights" depending on who
+// filled in the listing. Lower-case it so the warning chips read uniformly.
 function parseWarnings(html) {
   const raw = extractLabelled(html, 'Content Warnings');
   if (!raw) return [];
   if (/^n\/a$/i.test(raw.trim())) return [];
   return raw
     .split(/[\n,]/)
-    .map((s) => s.trim())
+    .map((s) => s.trim().toLowerCase())
     .filter((s) => s && !/^n\/a$/i.test(s));
 }
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { TIME_BUCKETS, timeBucket } from './dates';
+import { dayKeysBetween, FESTIVAL_FIRST_DAY, FESTIVAL_LAST_DAY, festivalDayKeys, TIME_BUCKETS, timeBucket } from './dates';
 import { shows, shows as allShows } from './loadData';
 import { createInitialState } from './state';
 
@@ -44,6 +44,47 @@ describe('time-of-day buckets', () => {
       'EVENING · 5–8PM',
       'NIGHT · 8PM ON',
     ]);
+  });
+});
+
+describe('festival day keys', () => {
+  it('covers the 2026 festival inclusively', () => {
+    const keys = festivalDayKeys();
+    expect(keys.length).toBe(11);
+    expect(keys[0]).toBe(FESTIVAL_FIRST_DAY);
+    expect(keys[keys.length - 1]).toBe(FESTIVAL_LAST_DAY);
+  });
+
+  // The festival's dates move every year and won't always sit inside one
+  // calendar month. Iterating the day-of-month number (as this used to do)
+  // produces an empty list for a month-crossing range, which leaves the app
+  // with no days at all and crashes it before first paint.
+  it('crosses a month boundary', () => {
+    expect(dayKeysBetween('2026-08-28', '2026-09-02')).toEqual([
+      '2026-08-28',
+      '2026-08-29',
+      '2026-08-30',
+      '2026-08-31',
+      '2026-09-01',
+      '2026-09-02',
+    ]);
+  });
+
+  it('crosses a year boundary and handles a leap day', () => {
+    expect(dayKeysBetween('2027-12-30', '2028-01-02')).toEqual([
+      '2027-12-30',
+      '2027-12-31',
+      '2028-01-01',
+      '2028-01-02',
+    ]);
+    expect(dayKeysBetween('2028-02-28', '2028-03-01')).toEqual(['2028-02-28', '2028-02-29', '2028-03-01']);
+  });
+
+  it('returns a single day when first and last are the same, and never an empty list', () => {
+    expect(dayKeysBetween('2026-09-03', '2026-09-03')).toEqual(['2026-09-03']);
+    // An inverted range is a config error; fail loudly rather than returning
+    // [] and letting the app crash somewhere further downstream.
+    expect(() => dayKeysBetween('2026-09-13', '2026-09-03')).toThrow(/before/);
   });
 });
 
