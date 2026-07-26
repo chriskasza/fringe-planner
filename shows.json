@@ -1,0 +1,2937 @@
+{
+  "scrapedAt": "2026-07-26T13:49:15.278Z",
+  "timezone": "America/Halifax",
+  "source": "https://halifaxfringe.ca/home-copy-copy-3/",
+  "shows": [
+    {
+      "showId": 284033,
+      "title": "‘NÔRM(Ə)L",
+      "blurb": "After a pandemic sweeps the planet, a woman grapples with grief, rage, and loss as a mysterious illness disintegrates her reality.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-27-2026-162205-3054.jpg",
+      "venue": "Universalist Unitarian Church of Halifax",
+      "ticketUrl": "https://www.simpletix.com/e/n-rm-l-tickets-284033",
+      "times": [
+        {
+          "timeId": 1521968,
+          "start": "2026-09-06T19:30",
+          "end": "2026-09-06T20:15",
+          "venue": "Universalist Unitarian Church of Halifax",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1521969,
+          "start": "2026-09-12T21:30",
+          "end": "2026-09-12T22:15",
+          "venue": "Universalist Unitarian Church of Halifax",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284035,
+      "title": "A Horror Musical",
+      "blurb": "Join Spontaneity’s ‘Improv the Musical’ for their opening AND closing night. Inspired by horror-comedy musicals, every show is a one night only creation packed with screams, laughs, eerie songs, and twists nobody will see coming, not even the improvisers!",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/06-13-2026-175220-4859.jpg",
+      "venue": "Neptune Theatre Imperial Studio",
+      "ticketUrl": "https://www.simpletix.com/e/a-horror-musical-tickets-284035",
+      "times": [
+        {
+          "timeId": 1521973,
+          "start": "2026-09-03T18:30",
+          "end": "2026-09-03T19:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1521974,
+          "start": "2026-09-10T21:30",
+          "end": "2026-09-10T22:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1521975,
+          "start": "2026-09-13T15:30",
+          "end": "2026-09-13T16:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 282934,
+      "title": "A Life in 60 Minutes",
+      "blurb": "A Life In 60 Minutes is a one-man spoken word theatre performance by Dwayne Morgan, exploring fatherhood, immigrant family life, aging parents, and growing up Black — told with humour, honesty, and unforgettable poetry.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-15-2026-165716-89171.jpg",
+      "venue": "The Art Gallery of Nova Scotia",
+      "ticketUrl": "https://www.simpletix.com/e/a-life-in-60-minutes-tickets-282934",
+      "times": [
+        {
+          "timeId": 1514900,
+          "start": "2026-09-03T18:30",
+          "end": "2026-09-03T19:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1514901,
+          "start": "2026-09-04T17:00",
+          "end": "2026-09-04T18:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1514902,
+          "start": "2026-09-05T15:30",
+          "end": "2026-09-05T16:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1514903,
+          "start": "2026-09-06T14:00",
+          "end": "2026-09-06T15:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1514904,
+          "start": "2026-09-08T20:00",
+          "end": "2026-09-08T21:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1514905,
+          "start": "2026-09-09T17:00",
+          "end": "2026-09-09T18:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1514907,
+          "start": "2026-09-11T20:00",
+          "end": "2026-09-11T21:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1514908,
+          "start": "2026-09-12T21:30",
+          "end": "2026-09-12T22:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1514909,
+          "start": "2026-09-13T18:30",
+          "end": "2026-09-13T19:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284039,
+      "title": "A Night to Remember",
+      "blurb": "Iris has pictured this evening for awhile. Unfortunately... so has her long term boyfriend, Caleb. A candlelit dinner filled with confessions, conflict and champagne. It certainly will be A Night to Remember.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/ANighttoRemember.png",
+      "venue": "Bus Stop Theatre",
+      "ticketUrl": "https://www.simpletix.com/e/a-night-to-remember-tickets-284039",
+      "times": [
+        {
+          "timeId": 1521980,
+          "start": "2026-09-10T18:30",
+          "end": "2026-09-10T19:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1521981,
+          "start": "2026-09-12T21:30",
+          "end": "2026-09-12T22:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1521982,
+          "start": "2026-09-13T17:00",
+          "end": "2026-09-13T18:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284042,
+      "title": "Abagenzi b’Ingoma",
+      "blurb": "Experience the vibrant rhythms of East Africa with our dynamic team of traditional drummers. Dressed in authentic cultural attire and performing powerful, energetic drum beats, we celebrate the rich heritage of our homeland through music and movement. Our",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/02-23-2026-194147-1627.jpg",
+      "venue": "Neptune Theatre Scotiabank Stage",
+      "ticketUrl": "https://www.simpletix.com/e/abagenzi-bingoma-tickets-284042",
+      "times": [
+        {
+          "timeId": 1521989,
+          "start": "2026-09-04T20:00",
+          "end": "2026-09-04T21:00",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1521990,
+          "start": "2026-09-05T21:30",
+          "end": "2026-09-05T22:30",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1521991,
+          "start": "2026-09-06T14:00",
+          "end": "2026-09-06T15:00",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284046,
+      "title": "Actual Wizard TONIGHT",
+      "blurb": "As seen on Penn & Teller: Fool Us, and winner of the Audience Choice Best of the Fest Award at the 2025 Halifax Fringe. Actual Wizard and Halifax Magician Vincenzo Ravina returns to Neptune Theatre with his seventh weird magic show: Actual Wizard TONIGHT",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-26-2026-143308-8963.jpg",
+      "venue": "Neptune Theatre Scotiabank Stage",
+      "ticketUrl": "https://www.simpletix.com/e/actual-wizard-tonight-tickets-284046",
+      "times": [
+        {
+          "timeId": 1522002,
+          "start": "2026-09-05T15:30",
+          "end": "2026-09-05T16:30",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522003,
+          "start": "2026-09-05T20:00",
+          "end": "2026-09-05T21:00",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522004,
+          "start": "2026-09-06T17:00",
+          "end": "2026-09-06T18:00",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522005,
+          "start": "2026-09-11T20:00",
+          "end": "2026-09-11T21:00",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522006,
+          "start": "2026-09-12T17:00",
+          "end": "2026-09-12T18:00",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522007,
+          "start": "2026-09-12T21:30",
+          "end": "2026-09-12T22:30",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284052,
+      "title": "All Below",
+      "blurb": "All Below is a multimedia devised two-person theatreperformance that exists in a pocket universe between clown,cosmic horror, and 19th century poetry. Also, there are puppets.Drawing inspiration from Carlo Rovelli’s book on quantum physics, The Order of Ti",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-04-2026-235858-7865.jpg",
+      "venue": "Neptune Theatre Imperial Studio",
+      "ticketUrl": "https://www.simpletix.com/e/all-below-tickets-284052",
+      "times": [
+        {
+          "timeId": 1522015,
+          "start": "2026-09-11T18:30",
+          "end": "2026-09-11T19:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522016,
+          "start": "2026-09-12T21:30",
+          "end": "2026-09-12T22:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522017,
+          "start": "2026-09-13T20:00",
+          "end": "2026-09-13T21:00",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284054,
+      "title": "Ape Breton",
+      "blurb": "Five years after Cape Breton has been seized by evil apes, the last free human survivors on the island need to know: what is Big Ape hiding under armed guard in the Forbidden-est Zone?",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/06-01-2026-145928-9336.jpg",
+      "venue": "Neptune Theatre Imperial Studio",
+      "ticketUrl": "https://www.simpletix.com/e/ape-breton-tickets-284054",
+      "times": [
+        {
+          "timeId": 1522019,
+          "start": "2026-09-03T17:00",
+          "end": "2026-09-03T17:45",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522020,
+          "start": "2026-09-05T21:30",
+          "end": "2026-09-05T22:15",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522021,
+          "start": "2026-09-12T20:00",
+          "end": "2026-09-12T20:45",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284055,
+      "title": "Ape Play",
+      "blurb": "Diane is an ape who thinks she’s above it all. Living in the forests of Indonesia, she toils at her typewriter, desperate to create a work of art that’ll cement her legacy in a human library!",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-25-2026-150857-2525.jpg",
+      "venue": "Point Pleasant Park - Black Rock Beach Picnic Area",
+      "ticketUrl": "https://www.simpletix.com/e/ape-play-tickets-284055",
+      "times": [
+        {
+          "timeId": 1522043,
+          "start": "2026-09-04T14:00",
+          "end": "2026-09-04T14:40",
+          "venue": "Point Pleasant Park - Black Rock Beach Picnic Area",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522044,
+          "start": "2026-09-04T16:00",
+          "end": "2026-09-04T16:40",
+          "venue": "Point Pleasant Park - Black Rock Beach Picnic Area",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522045,
+          "start": "2026-09-06T14:00",
+          "end": "2026-09-06T14:40",
+          "venue": "Point Pleasant Park - Black Rock Beach Picnic Area",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522046,
+          "start": "2026-09-06T16:00",
+          "end": "2026-09-06T16:40",
+          "venue": "Point Pleasant Park - Black Rock Beach Picnic Area",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522047,
+          "start": "2026-09-09T14:00",
+          "end": "2026-09-09T14:40",
+          "venue": "Point Pleasant Park - Black Rock Beach Picnic Area",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522048,
+          "start": "2026-09-09T16:00",
+          "end": "2026-09-09T16:40",
+          "venue": "Point Pleasant Park - Black Rock Beach Picnic Area",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522049,
+          "start": "2026-09-10T12:30",
+          "end": "2026-09-10T13:10",
+          "venue": "Point Pleasant Park - Black Rock Beach Picnic Area",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284050,
+      "title": "APPLES! as told by an expert",
+      "blurb": "Do you have a favourite apple? Do you like apples? Do you appreciate your local food growers? Join Comedian and Apple Expert August Van Meekeren in this comedy show all about Nova Scotia’s Apples.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-24-2026-002929-3549.jpg",
+      "venue": "Grafton Street Dinner Theatre",
+      "ticketUrl": "https://www.simpletix.com/e/apples-as-told-by-an-expert-tickets-284050",
+      "times": [
+        {
+          "timeId": 1522008,
+          "start": "2026-09-03T15:30",
+          "end": "2026-09-03T16:30",
+          "venue": "Grafton Street Dinner Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522009,
+          "start": "2026-09-03T18:30",
+          "end": "2026-09-03T19:30",
+          "venue": "Grafton Street Dinner Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522010,
+          "start": "2026-09-08T15:30",
+          "end": "2026-09-08T16:30",
+          "venue": "Grafton Street Dinner Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522011,
+          "start": "2026-09-08T18:30",
+          "end": "2026-09-08T19:30",
+          "venue": "Grafton Street Dinner Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522012,
+          "start": "2026-09-10T15:30",
+          "end": "2026-09-10T16:30",
+          "venue": "Grafton Street Dinner Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522013,
+          "start": "2026-09-10T18:30",
+          "end": "2026-09-10T19:30",
+          "venue": "Grafton Street Dinner Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522014,
+          "start": "2026-09-10T21:30",
+          "end": "2026-09-10T22:30",
+          "venue": "Grafton Street Dinner Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284058,
+      "title": "Becoming Psychic",
+      "blurb": "A skeptic begins having psychic experiences and is forced to confront a terrifying possibility: she might be losing her mind. Becoming Psychic is a darkly funny solo show about doubt, belief, and the cultural line between insight and insanity.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-02-2026-164219-7041.jpg",
+      "venue": "Neptune Theatre Imperial Studio",
+      "ticketUrl": "https://www.simpletix.com/e/becoming-psychic-tickets-284058",
+      "times": [
+        {
+          "timeId": 1522050,
+          "start": "2026-09-03T21:30",
+          "end": "2026-09-03T22:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522051,
+          "start": "2026-09-05T18:30",
+          "end": "2026-09-05T19:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522052,
+          "start": "2026-09-06T14:00",
+          "end": "2026-09-06T15:00",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522053,
+          "start": "2026-09-08T21:30",
+          "end": "2026-09-08T22:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522054,
+          "start": "2026-09-09T17:00",
+          "end": "2026-09-09T18:00",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522055,
+          "start": "2026-09-10T18:30",
+          "end": "2026-09-10T19:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522056,
+          "start": "2026-09-11T17:00",
+          "end": "2026-09-11T18:00",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522057,
+          "start": "2026-09-12T15:30",
+          "end": "2026-09-12T16:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522058,
+          "start": "2026-09-13T18:30",
+          "end": "2026-09-13T19:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284063,
+      "title": "Bird Watch",
+      "blurb": "Join two curious birdwatchers on a fun-filled aerial-circus adventure across Nova Scotia as they meet their feathered friends: the playful Atlantic Puffin, the majestic Bald Eagle, the fiery Red Cardinal, and the colourful Blue Jay, a true free spirit.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/06-05-2026-131353-6047.jpg",
+      "venue": "inesS Circus",
+      "ticketUrl": "https://www.simpletix.com/e/bird-watch-tickets-284063",
+      "times": [
+        {
+          "timeId": 1522070,
+          "start": "2026-09-12T16:00",
+          "end": "2026-09-12T16:30",
+          "venue": "inesS Circus",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522071,
+          "start": "2026-09-12T19:00",
+          "end": "2026-09-12T19:30",
+          "venue": "inesS Circus",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284065,
+      "title": "Carrison: The Totally True and Unapologetic Real Story of Harrison Ford and Carrie Fisher’s Love Affair",
+      "blurb": "In 1976, while filming Star Wars, two actors began an affair. One was Harrison Ford, the scoundrel with a wife and kids back home, the other was Carrie Fisher, a princess who was born into stardom. This parody of real events follows their relationship whil",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-20-2026-232242-6099.jpg",
+      "venue": "Bus Stop Theatre",
+      "ticketUrl": "https://www.simpletix.com/e/carrison-the-totally-true-and-unapologetic-real-story-of-harrison-ford-and-carri-tickets-284065",
+      "times": [
+        {
+          "timeId": 1522074,
+          "start": "2026-09-03T17:00",
+          "end": "2026-09-03T18:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522075,
+          "start": "2026-09-05T20:00",
+          "end": "2026-09-05T21:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522076,
+          "start": "2026-09-06T11:00",
+          "end": "2026-09-06T12:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522077,
+          "start": "2026-09-08T20:00",
+          "end": "2026-09-08T21:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522078,
+          "start": "2026-09-12T17:00",
+          "end": "2026-09-12T18:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522079,
+          "start": "2026-09-13T11:00",
+          "end": "2026-09-13T12:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284067,
+      "title": "Cecily Cardew Deserves Better",
+      "blurb": "Freshly eighteen, hopeless romantic Cecily Cardew has fallen in love with an older man while also simultaniously being desperately in love with her best friend and parental guardian’s girlfriend, Gwendolen. What could possibly go wrong? Cecily Cardew Deser",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-28-2026-175217-9166.jpg",
+      "venue": "Neptune Theatre Imperial Studio",
+      "ticketUrl": "https://www.simpletix.com/e/cecily-cardew-deserves-better-tickets-284067",
+      "times": [
+        {
+          "timeId": 1522093,
+          "start": "2026-09-09T18:30",
+          "end": "2026-09-09T19:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522094,
+          "start": "2026-09-11T21:30",
+          "end": "2026-09-11T22:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522095,
+          "start": "2026-09-13T14:00",
+          "end": "2026-09-13T15:00",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 282975,
+      "title": "chronology of a genocide",
+      "blurb": "chronology of a genocide is a poetry reading, chronologically bearing witness to the escalation of the genocide in Gaza, Palestine since October 2023.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/06-03-2026-144232-7048.jpg",
+      "venue": "The Art Gallery of Nova Scotia",
+      "ticketUrl": "https://www.simpletix.com/e/chronology-of-a-genocide-tickets-282975",
+      "times": [
+        {
+          "timeId": 1515012,
+          "start": "2026-09-03T20:00",
+          "end": "2026-09-03T21:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1515013,
+          "start": "2026-09-04T18:30",
+          "end": "2026-09-04T19:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1515014,
+          "start": "2026-09-05T20:00",
+          "end": "2026-09-05T21:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1515015,
+          "start": "2026-09-09T21:30",
+          "end": "2026-09-09T22:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1515016,
+          "start": "2026-09-12T18:30",
+          "end": "2026-09-12T19:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1515017,
+          "start": "2026-09-13T15:30",
+          "end": "2026-09-13T16:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284071,
+      "title": "Craig in Conversation with God",
+      "blurb": "The world is ending. The meteor is dropping. And the only one who can save us... is Craig. Every day is the same for Craig the dinosaur until he is visited by a presence from above.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/CraigTicketingBanner.png",
+      "venue": "Bus Stop Theatre",
+      "ticketUrl": "https://www.simpletix.com/e/craig-in-conversation-with-god-tickets-284071",
+      "times": [
+        {
+          "timeId": 1522096,
+          "start": "2026-09-03T21:30",
+          "end": "2026-09-03T22:15",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522097,
+          "start": "2026-09-04T17:00",
+          "end": "2026-09-04T17:45",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522098,
+          "start": "2026-09-05T14:00",
+          "end": "2026-09-05T14:45",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522099,
+          "start": "2026-09-06T20:00",
+          "end": "2026-09-06T20:45",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522100,
+          "start": "2026-09-11T17:00",
+          "end": "2026-09-11T17:45",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522101,
+          "start": "2026-09-13T21:30",
+          "end": "2026-09-13T22:15",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284075,
+      "title": "Drag me to the Opera",
+      "blurb": "“Can I plausibly pursue this!?” Aida Cupcake is hitting operatic highlights and high notes in this autobiographical revue about a young man facing dreams and doubts. Told through opera arias intended for female characters (hence the drag), Aida embodies th",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/02-25-2026-004707-9366.jpg",
+      "venue": "Stardust Bar",
+      "ticketUrl": "https://www.simpletix.com/e/drag-me-to-the-opera-tickets-284075",
+      "times": [
+        {
+          "timeId": 1522106,
+          "start": "2026-09-08T20:00",
+          "end": "2026-09-08T21:00",
+          "venue": "Stardust Bar",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522107,
+          "start": "2026-09-10T20:00",
+          "end": "2026-09-10T21:00",
+          "venue": "Stardust Bar",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522108,
+          "start": "2026-09-11T21:30",
+          "end": "2026-09-11T22:30",
+          "venue": "Stardust Bar",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522109,
+          "start": "2026-09-12T20:00",
+          "end": "2026-09-12T21:00",
+          "venue": "Stardust Bar",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522110,
+          "start": "2026-09-13T15:30",
+          "end": "2026-09-13T16:30",
+          "venue": "Stardust Bar",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284078,
+      "title": "Everyone is Interesting",
+      "blurb": "Everyone is Interesting is a community-focused project that aims to explore, engage with, and unite the individuals who call Kjipuktuk/Halifax home. Inspired by Mammalian Diving Reflex’s internationally acclaimed ‘social acupuncture,’ audiences will embark",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-27-2026-173730-3010.jpg",
+      "venue": "Outdoor Walk - Meet at Library",
+      "ticketUrl": "https://www.simpletix.com/e/everyone-is-interesting-tickets-284078",
+      "times": [
+        {
+          "timeId": 1522112,
+          "start": "2026-09-12T13:30",
+          "end": "2026-09-12T14:30",
+          "venue": "Outdoor Walk - Meet at Library",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522113,
+          "start": "2026-09-12T16:30",
+          "end": "2026-09-12T17:30",
+          "venue": "Outdoor Walk - Meet at Library",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522114,
+          "start": "2026-09-13T10:30",
+          "end": "2026-09-13T11:30",
+          "venue": "Outdoor Walk - Meet at Library",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522115,
+          "start": "2026-09-13T13:30",
+          "end": "2026-09-13T14:30",
+          "venue": "Outdoor Walk - Meet at Library",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284082,
+      "title": "Game of drones... Drummers Are Coming",
+      "blurb": "Hear massed bagpipes, driving snares, and booming bass as classic pipe tunes meet pop-culture swagger in a tight, pulse- raising set by the Edmonton Police Service.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-03-2026-232457-7330.jpg",
+      "venue": "",
+      "ticketUrl": "https://www.simpletix.com/e/game-of-drones-drummers-are-coming-tickets-284082",
+      "times": [
+        {
+          "timeId": "s284082-2026-09-04T17:45",
+          "start": "2026-09-04T17:45",
+          "end": "2026-09-04T18:15",
+          "venue": "",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": "s284082-2026-09-04T20:40",
+          "start": "2026-09-04T20:40",
+          "end": "2026-09-04T21:10",
+          "venue": "",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "salesEnded": true,
+      "timesIncomplete": true,
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284087,
+      "title": "IAGO vs HAMLET",
+      "blurb": "Two of Shakespeares most famous guys accidentally rented the same rehearsal space, what follows is a FIVE STAR, SOLD OUT comedy that ends with a showdown for the ages.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/02-23-2026-184217-5903.jpg",
+      "venue": "Neptune Theatre Scotiabank Stage",
+      "ticketUrl": "https://www.simpletix.com/e/iago-vs-hamlet-tickets-284087",
+      "times": [
+        {
+          "timeId": 1522129,
+          "start": "2026-09-11T17:00",
+          "end": "2026-09-11T18:00",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522130,
+          "start": "2026-09-11T21:30",
+          "end": "2026-09-11T22:30",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522131,
+          "start": "2026-09-12T15:30",
+          "end": "2026-09-12T16:30",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522132,
+          "start": "2026-09-12T20:00",
+          "end": "2026-09-12T21:00",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522133,
+          "start": "2026-09-13T12:30",
+          "end": "2026-09-13T13:30",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522134,
+          "start": "2026-09-13T15:30",
+          "end": "2026-09-13T16:30",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284088,
+      "title": "Improv Party",
+      "blurb": "Mario Party crossover with Improv? Welcome to Improv Party! Imagine Mario Party, except the boards are custom made Halifax local landmarks, and the minigames are improvisors trying their hardest to act funny in order to impress their hosts.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-24-2026-000623-1758.jpg",
+      "venue": "DANSpace",
+      "ticketUrl": "https://www.simpletix.com/e/improv-party-tickets-284088",
+      "times": [
+        {
+          "timeId": 1522135,
+          "start": "2026-09-06T20:00",
+          "end": "2026-09-06T21:00",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522136,
+          "start": "2026-09-12T18:30",
+          "end": "2026-09-12T19:30",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522137,
+          "start": "2026-09-13T20:00",
+          "end": "2026-09-13T21:00",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284092,
+      "title": "In Search of Black People",
+      "blurb": "Roz Browne searches for her “tribe” and connections as she journeys through life. Boston native talks about moving to a mostly all white neighborhood, being bussed to an all white school in the suburbs, and more.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/02-23-2026-204711-4975.jpg",
+      "venue": "Bus Stop Theatre",
+      "ticketUrl": "https://www.simpletix.com/e/in-search-of-black-people-tickets-284092",
+      "times": [
+        {
+          "timeId": 1522139,
+          "start": "2026-09-09T20:00",
+          "end": "2026-09-09T21:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522140,
+          "start": "2026-09-12T20:00",
+          "end": "2026-09-12T21:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522141,
+          "start": "2026-09-13T12:30",
+          "end": "2026-09-13T13:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284099,
+      "title": "Jon Bennett: AMERICAN'T",
+      "blurb": "“My penis hurts.” That was the first thing Jon’s dad said when he returned home to Australia after 14 years of nomadic touring: “My penis hurts.” Renowned comedian Jon Bennett (Fire in the Meth Lab) tells of his chaotic attempt to navigate life when the pa",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-19-2026-222240-8326.jpg",
+      "venue": "DANSpace",
+      "ticketUrl": "https://www.simpletix.com/e/jon-bennett-americant-tickets-284099",
+      "times": [
+        {
+          "timeId": 1522145,
+          "start": "2026-09-03T17:00",
+          "end": "2026-09-03T18:00",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522146,
+          "start": "2026-09-04T20:00",
+          "end": "2026-09-04T21:00",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522147,
+          "start": "2026-09-05T18:30",
+          "end": "2026-09-05T19:30",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522148,
+          "start": "2026-09-06T14:00",
+          "end": "2026-09-06T15:00",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522149,
+          "start": "2026-09-08T21:30",
+          "end": "2026-09-08T22:30",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522150,
+          "start": "2026-09-09T17:00",
+          "end": "2026-09-09T18:00",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522151,
+          "start": "2026-09-10T20:00",
+          "end": "2026-09-10T21:00",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522152,
+          "start": "2026-09-12T15:30",
+          "end": "2026-09-12T16:30",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522153,
+          "start": "2026-09-13T12:30",
+          "end": "2026-09-13T13:30",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284105,
+      "title": "Jon Pickett fresh off the lot: stories of a used car salesmen",
+      "blurb": "A comedy show that tells the story of my emotional journey through a 10 year car sales career.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-28-2026-135420-3917.jpg",
+      "venue": "Neptune Theatre Imperial Studio",
+      "ticketUrl": "https://www.simpletix.com/e/jon-pickett-fresh-off-the-lot-stories-of-a-used-car-salesmen-tickets-284105",
+      "times": [
+        {
+          "timeId": 1522159,
+          "start": "2026-09-04T17:00",
+          "end": "2026-09-04T18:00",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522160,
+          "start": "2026-09-06T20:00",
+          "end": "2026-09-06T21:00",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522161,
+          "start": "2026-09-08T18:30",
+          "end": "2026-09-08T19:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522162,
+          "start": "2026-09-09T21:30",
+          "end": "2026-09-09T22:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522163,
+          "start": "2026-09-10T17:00",
+          "end": "2026-09-10T18:00",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522164,
+          "start": "2026-09-12T18:30",
+          "end": "2026-09-12T19:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284106,
+      "title": "Kimiko",
+      "blurb": "What happens to a community when thousands are imprisoned because of their race? Kimiko explores this question through a powerful blend of circus, storytelling, and traditional Japanese arts. This award-winning performance traces the generational impact of",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-26-2026-183007-4556.jpg",
+      "venue": "Neptune Theatre Scotiabank Stage",
+      "ticketUrl": "https://www.simpletix.com/e/kimiko-tickets-284106",
+      "times": [
+        {
+          "timeId": 1522165,
+          "start": "2026-09-04T21:30",
+          "end": "2026-09-04T22:30",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522166,
+          "start": "2026-09-05T14:00",
+          "end": "2026-09-05T15:00",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1522167,
+          "start": "2026-09-06T20:00",
+          "end": "2026-09-06T21:00",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284222,
+      "title": "Le Début des Yeux // Everything is Sparkle Sparkle",
+      "blurb": "Everything is SPARKLE SPARKLE — Still dressed in their wedding gowns, Glamour Magique is overtaken by a flood of absurd slogans. Between shaky morals and broken rituals, their bodies stagger, caught in a spiral of flesh; a dance is born.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/LedebutdesyeuxEverythingisSparkleSparkle.jpg",
+      "venue": "Neptune Theatre Imperial Studio",
+      "ticketUrl": "https://www.simpletix.com/e/le-d-but-des-yeux-everything-is-sparkle-sparkle-tickets-284222",
+      "times": [
+        {
+          "timeId": 1525820,
+          "start": "2026-09-04T21:30",
+          "end": "2026-09-04T22:15",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525821,
+          "start": "2026-09-05T20:00",
+          "end": "2026-09-05T20:45",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525822,
+          "start": "2026-09-06T18:30",
+          "end": "2026-09-06T19:15",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284223,
+      "title": "Loony Lundi",
+      "blurb": "River and their mother can’t seem to understand each other. But thanks to an unconventional therapy — maybe they can. This is a fast-paced comedy about queer adulthood, the sacrifices of parenting, and the fine line between trying and actually getting it.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/06-07-2026-151531-2401.jpg",
+      "venue": "DANSpace",
+      "ticketUrl": "https://www.simpletix.com/e/loony-lundi-tickets-284223",
+      "times": [
+        {
+          "timeId": 1525823,
+          "start": "2026-09-05T21:30",
+          "end": "2026-09-05T22:15",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525824,
+          "start": "2026-09-06T15:30",
+          "end": "2026-09-06T16:15",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525825,
+          "start": "2026-09-11T21:30",
+          "end": "2026-09-11T22:15",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284224,
+      "title": "Lou Reed’s Magic and Loss: an interactive show about grief and death",
+      "blurb": "Lou Reed’s Magic and Loss emerged at the height of the AIDS crisis in the early 1990s. It hit hard, shining a light on death, memory, and grieving in inner city New York.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-14-2026-011240-3867.jpg",
+      "venue": "Neptune Theatre Windsor Studio",
+      "ticketUrl": "https://www.simpletix.com/e/lou-reeds-magic-and-loss-an-interactive-show-about-grief-and-death-tickets-284224",
+      "times": [
+        {
+          "timeId": 1525826,
+          "start": "2026-09-08T17:00",
+          "end": "2026-09-08T18:00",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525827,
+          "start": "2026-09-09T18:30",
+          "end": "2026-09-09T19:30",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525828,
+          "start": "2026-09-10T20:00",
+          "end": "2026-09-10T21:00",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525829,
+          "start": "2026-09-11T17:00",
+          "end": "2026-09-11T18:00",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525830,
+          "start": "2026-09-12T21:30",
+          "end": "2026-09-12T22:30",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525831,
+          "start": "2026-09-13T14:00",
+          "end": "2026-09-13T15:00",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 274060,
+      "title": "LUMBER",
+      "blurb": "Join Jack around the fire as he tells his story of finding community in unlikely places and connecting with his home and heritage in an unconventional way.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-28-2026-051708-2519.jpg",
+      "venue": "The Art Gallery of Nova Scotia",
+      "ticketUrl": "https://www.simpletix.com/e/lumber-tickets-274060",
+      "times": [
+        {
+          "timeId": 1461403,
+          "start": "2026-09-03T21:30",
+          "end": "2026-09-03T22:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1512534,
+          "start": "2026-09-04T20:00",
+          "end": "2026-09-04T21:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1512535,
+          "start": "2026-09-05T18:30",
+          "end": "2026-09-05T19:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1514072,
+          "start": "2026-09-06T15:30",
+          "end": "2026-09-06T16:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1514073,
+          "start": "2026-09-08T17:00",
+          "end": "2026-09-08T18:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1514074,
+          "start": "2026-09-09T20:00",
+          "end": "2026-09-09T21:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1514075,
+          "start": "2026-09-10T21:30",
+          "end": "2026-09-10T22:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1514076,
+          "start": "2026-09-11T17:00",
+          "end": "2026-09-11T18:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1514077,
+          "start": "2026-09-12T14:00",
+          "end": "2026-09-12T15:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284225,
+      "title": "Making It!",
+      "blurb": "Success. The Oxford Dictionary calls it, “The accomplishment of an aim or purpose.” Taylor Swift calls it, “Doing what I love, being happy, and making good money.” Megan calls it, “Using all the broccoli up in the fridge before it goes bad.”",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-17-2026-013810-2465.jpg",
+      "venue": "Neptune Theatre Windsor Studio",
+      "ticketUrl": "https://www.simpletix.com/e/making-it-tickets-284225",
+      "times": [
+        {
+          "timeId": 1525832,
+          "start": "2026-09-03T18:30",
+          "end": "2026-09-03T19:30",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525833,
+          "start": "2026-09-04T21:30",
+          "end": "2026-09-04T22:30",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525834,
+          "start": "2026-09-05T17:00",
+          "end": "2026-09-05T18:00",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525835,
+          "start": "2026-09-06T14:00",
+          "end": "2026-09-06T15:00",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525836,
+          "start": "2026-09-06T18:30",
+          "end": "2026-09-06T19:30",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525837,
+          "start": "2026-09-08T21:30",
+          "end": "2026-09-08T22:30",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284226,
+      "title": "Men Love Horsies: The Musical",
+      "blurb": "Just a man singing songs about horses. Men Love Horsies: The Musical won Best In Fringe, Critic’s Pick, and Best In Series at the Hamilton Fringe Festival and was selected to showcase at The San Francisco Sketchfest and Toronto Sketchfest.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/06-01-2026-234556-5266.jpg",
+      "venue": "Neptune Theatre Windsor Studio",
+      "ticketUrl": "https://www.simpletix.com/e/men-love-horsies-the-musical-tickets-284226",
+      "times": [
+        {
+          "timeId": 1525838,
+          "start": "2026-09-03T21:30",
+          "end": "2026-09-03T22:30",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525839,
+          "start": "2026-09-04T18:30",
+          "end": "2026-09-04T19:30",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525840,
+          "start": "2026-09-05T21:30",
+          "end": "2026-09-05T22:30",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525841,
+          "start": "2026-09-06T20:00",
+          "end": "2026-09-06T21:00",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525842,
+          "start": "2026-09-09T20:00",
+          "end": "2026-09-09T21:00",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525843,
+          "start": "2026-09-10T18:30",
+          "end": "2026-09-10T19:30",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525844,
+          "start": "2026-09-11T21:30",
+          "end": "2026-09-11T22:30",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525845,
+          "start": "2026-09-12T20:00",
+          "end": "2026-09-12T21:00",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525846,
+          "start": "2026-09-13T15:30",
+          "end": "2026-09-13T16:30",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284227,
+      "title": "Metal Box",
+      "blurb": "A true story of Wendy Martin’s adventures hitchhiking across the East Coast of Canada and all the way to Paisley Park, the home of musician Prince, in Minnesota.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-25-2026-014414-4563.jpg",
+      "venue": "Cruikshank's Halifax Funeral Home",
+      "ticketUrl": "https://www.simpletix.com/e/metal-box-tickets-284227",
+      "times": [
+        {
+          "timeId": "s284227-2026-09-09T18:00",
+          "start": "2026-09-09T18:00",
+          "end": "2026-09-09T19:00",
+          "venue": "Cruikshank's Halifax Funeral Home",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284228,
+      "title": "Nova Scotia Business Inc.: a decolonial satire",
+      "blurb": "When two hikers somehow wander 75 years forward in time on their way home, they’re shocked to find a dystopian future Halifax where everything — and nothing — has changed. But when they stumble into a secret underground community of artists and land defend",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/04-02-2026-224301-1831.jpg",
+      "venue": "Halifax United Church",
+      "ticketUrl": "https://www.simpletix.com/e/nova-scotia-business-inc-a-decolonial-satire-tickets-284228",
+      "times": [
+        {
+          "timeId": 1525848,
+          "start": "2026-09-08T19:00",
+          "end": "2026-09-08T19:30",
+          "venue": "Halifax United Church",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525849,
+          "start": "2026-09-10T19:00",
+          "end": "2026-09-10T19:30",
+          "venue": "Halifax United Church",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525850,
+          "start": "2026-09-11T19:00",
+          "end": "2026-09-11T19:30",
+          "venue": "Halifax United Church",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525851,
+          "start": "2026-09-12T14:00",
+          "end": "2026-09-12T14:30",
+          "venue": "Halifax United Church",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284231,
+      "title": "Ocean Kin: A Shadow Show",
+      "blurb": "Ocean Kin is a poetic shadow show contemplating our relationship to body and self inspired by the ecology of the sea otter. Three performers animate plexi-glass puppets, 3D sculptural props and projected illustrations onto a screen using flashlights and an",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-26-2026-164821-7982.jpg",
+      "venue": "Wonderneath Art Society",
+      "ticketUrl": "https://www.simpletix.com/e/ocean-kin-a-shadow-show-tickets-284231",
+      "times": [
+        {
+          "timeId": 1525852,
+          "start": "2026-09-09T20:00",
+          "end": "2026-09-09T20:45",
+          "venue": "Wonderneath Art Society",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525853,
+          "start": "2026-09-10T20:00",
+          "end": "2026-09-10T20:45",
+          "venue": "Wonderneath Art Society",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525854,
+          "start": "2026-09-11T20:00",
+          "end": "2026-09-11T20:45",
+          "venue": "Wonderneath Art Society",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 282941,
+      "title": "On Guard For Thee",
+      "blurb": "The country is nearing its end. The four horsemen of the apocalypse appear, looking nothing like you'd expect. Final Snowfall Theatre Collective presents \"On Guard for Thee\", an original script by Kian Diab.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/06-13-2026-010608-4341.jpg",
+      "venue": "The Art Gallery of Nova Scotia",
+      "ticketUrl": "https://www.simpletix.com/e/on-guard-for-thee-tickets-282941",
+      "times": [
+        {
+          "timeId": 1514927,
+          "start": "2026-09-04T21:30",
+          "end": "2026-09-04T22:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1514928,
+          "start": "2026-09-05T14:00",
+          "end": "2026-09-05T15:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1514929,
+          "start": "2026-09-06T20:00",
+          "end": "2026-09-06T21:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1514930,
+          "start": "2026-09-08T21:30",
+          "end": "2026-09-08T22:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1514931,
+          "start": "2026-09-10T17:00",
+          "end": "2026-09-10T18:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1514932,
+          "start": "2026-09-13T17:00",
+          "end": "2026-09-13T18:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284234,
+      "title": "Passed Down",
+      "blurb": "Persephone inherits her Great Aunt Lizzie’s Victorian-style home upon her passing. On her first evening in the house she learns that she may have inherited more than just the house.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/PassedDown.png",
+      "venue": "Bus Stop Theatre",
+      "ticketUrl": "https://www.simpletix.com/e/passed-down-tickets-284234",
+      "times": [
+        {
+          "timeId": 1525859,
+          "start": "2026-09-04T18:30",
+          "end": "2026-09-04T19:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525860,
+          "start": "2026-09-05T21:30",
+          "end": "2026-09-05T22:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525861,
+          "start": "2026-09-06T17:00",
+          "end": "2026-09-06T18:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525862,
+          "start": "2026-09-08T21:30",
+          "end": "2026-09-08T22:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525863,
+          "start": "2026-09-09T18:30",
+          "end": "2026-09-09T19:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525864,
+          "start": "2026-09-10T20:00",
+          "end": "2026-09-10T21:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284235,
+      "title": "Peak Twins",
+      "blurb": "Having successfully (ish) solved last year’s mystery, FBI agents Fulder and Dully find themselves in the bizarre, non-trademarked town of Peak Twins. This sequel to the 2025 fringe hit The Y Files features a cast of local performers in a damn fine venue.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/06-25-2026-161450-3010.jpg",
+      "venue": "Halifax United Church",
+      "ticketUrl": "https://www.simpletix.com/e/peak-twins-tickets-284235",
+      "times": [
+        {
+          "timeId": 1525865,
+          "start": "2026-09-03T21:00",
+          "end": "2026-09-03T21:30",
+          "venue": "Halifax United Church",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525866,
+          "start": "2026-09-04T21:00",
+          "end": "2026-09-04T21:30",
+          "venue": "Halifax United Church",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525867,
+          "start": "2026-09-05T21:00",
+          "end": "2026-09-05T21:30",
+          "venue": "Halifax United Church",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525868,
+          "start": "2026-09-10T21:00",
+          "end": "2026-09-10T21:30",
+          "venue": "Halifax United Church",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525869,
+          "start": "2026-09-11T21:00",
+          "end": "2026-09-11T21:30",
+          "venue": "Halifax United Church",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525870,
+          "start": "2026-09-12T21:00",
+          "end": "2026-09-12T21:30",
+          "venue": "Halifax United Church",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284237,
+      "title": "Polarity",
+      "blurb": "In today’s hustle and bustle, do you feel alone? Unmoored? Unsure which lunch, car, partner, or life path to choose? For millenia, the enlightened stars have been hanging brightly, yearning for our attention! So lock your phones, turn your eyes to the sky,",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-26-2026-223243-9595.jpg",
+      "venue": "Bus Stop Theatre",
+      "ticketUrl": "https://www.simpletix.com/e/polarity-tickets-284237",
+      "times": [
+        {
+          "timeId": 1525872,
+          "start": "2026-09-03T18:30",
+          "end": "2026-09-03T19:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525873,
+          "start": "2026-09-04T21:30",
+          "end": "2026-09-04T22:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525874,
+          "start": "2026-09-05T11:00",
+          "end": "2026-09-05T12:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525875,
+          "start": "2026-09-06T12:30",
+          "end": "2026-09-06T13:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525876,
+          "start": "2026-09-08T18:30",
+          "end": "2026-09-08T19:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525877,
+          "start": "2026-09-09T17:00",
+          "end": "2026-09-09T18:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525878,
+          "start": "2026-09-11T20:00",
+          "end": "2026-09-11T21:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525879,
+          "start": "2026-09-12T11:00",
+          "end": "2026-09-12T12:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525880,
+          "start": "2026-09-13T15:30",
+          "end": "2026-09-13T16:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284238,
+      "title": "Putt Putt Punishment",
+      "blurb": "Get ready for the craziest one-man clown show ever! Putt Putt Punishment is the whacky and heartfelt story about Ehja the Clown, and his golfing quest to make Papa proud by winning the prestigious Putt Putt Trophy.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/05-28-2026-201457-2574.jpg",
+      "venue": "DANSpace",
+      "ticketUrl": "https://www.simpletix.com/e/putt-putt-punishment-tickets-284238",
+      "times": [
+        {
+          "timeId": 1525881,
+          "start": "2026-09-03T21:30",
+          "end": "2026-09-03T22:30",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525882,
+          "start": "2026-09-04T17:00",
+          "end": "2026-09-04T18:00",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525883,
+          "start": "2026-09-05T14:00",
+          "end": "2026-09-05T15:00",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525884,
+          "start": "2026-09-06T18:30",
+          "end": "2026-09-06T19:30",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525885,
+          "start": "2026-09-08T17:00",
+          "end": "2026-09-08T18:00",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525886,
+          "start": "2026-09-09T20:00",
+          "end": "2026-09-09T21:00",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525887,
+          "start": "2026-09-10T21:30",
+          "end": "2026-09-10T22:30",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525888,
+          "start": "2026-09-12T20:00",
+          "end": "2026-09-12T21:00",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525889,
+          "start": "2026-09-13T18:30",
+          "end": "2026-09-13T19:30",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284239,
+      "title": "Seen Worse",
+      "blurb": "Seen Worse is a stand-up comedy show from Karim, a Lebanese comedian now living in Canada, sharing funny and relatable stories about starting over in a new country.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/02-23-2026-213336-8666.jpg",
+      "venue": "Stardust Bar",
+      "ticketUrl": "https://www.simpletix.com/e/seen-worse-tickets-284239",
+      "times": [
+        {
+          "timeId": 1525890,
+          "start": "2026-09-09T21:30",
+          "end": "2026-09-09T22:30",
+          "venue": "Stardust Bar",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525891,
+          "start": "2026-09-11T20:00",
+          "end": "2026-09-11T21:00",
+          "venue": "Stardust Bar",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525892,
+          "start": "2026-09-12T18:30",
+          "end": "2026-09-12T19:30",
+          "venue": "Stardust Bar",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 282971,
+      "title": "So... What ELSE About Love?",
+      "blurb": "Three friends, Kelin, Carrie and Phil, hitting midlife, navigate the realities of 21st century living, recognizing that their salvation may lie in the joy and spirit of resistance they find in making art together.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/06-01-2026-181034-9287.jpg",
+      "venue": "The Art Gallery of Nova Scotia",
+      "ticketUrl": "https://www.simpletix.com/e/so-what-else-about-love-tickets-282971",
+      "times": [
+        {
+          "timeId": 1515005,
+          "start": "2026-09-03T17:00",
+          "end": "2026-09-03T18:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1515006,
+          "start": "2026-09-05T21:30",
+          "end": "2026-09-05T22:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1515007,
+          "start": "2026-09-06T18:30",
+          "end": "2026-09-06T19:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1515008,
+          "start": "2026-09-10T20:00",
+          "end": "2026-09-10T21:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1515009,
+          "start": "2026-09-12T17:00",
+          "end": "2026-09-12T18:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1515010,
+          "start": "2026-09-13T14:00",
+          "end": "2026-09-13T15:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284240,
+      "title": "Steven Goes to Japan to Run a Marathon",
+      "blurb": "Witness the story of a barely average man’s experience at running the dreaded marathon…In Japan! Steven Andrews tells a tale of perseverance, rice balls, Japanese toilets, a failing body, Nintendo, and the importance of embracing a different culture.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/07-08-2026-183654-2042.jpg",
+      "venue": "DANSpace",
+      "ticketUrl": "https://www.simpletix.com/e/steven-goes-to-japan-to-run-a-marathon-tickets-284240",
+      "times": [
+        {
+          "timeId": 1525894,
+          "start": "2026-09-03T20:00",
+          "end": "2026-09-03T21:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525895,
+          "start": "2026-09-05T12:30",
+          "end": "2026-09-05T13:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525896,
+          "start": "2026-09-06T21:30",
+          "end": "2026-09-06T22:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525897,
+          "start": "2026-09-08T20:00",
+          "end": "2026-09-08T21:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525898,
+          "start": "2026-09-09T21:30",
+          "end": "2026-09-09T22:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525899,
+          "start": "2026-09-10T17:00",
+          "end": "2026-09-10T18:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525900,
+          "start": "2026-09-11T20:00",
+          "end": "2026-09-11T21:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525901,
+          "start": "2026-09-12T12:30",
+          "end": "2026-09-12T13:30",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525902,
+          "start": "2026-09-13T14:00",
+          "end": "2026-09-13T15:00",
+          "venue": "The Art Gallery of Nova Scotia",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284243,
+      "title": "Terrible Fish",
+      "blurb": "Terrible Fish is a one-woman show about the gut punch of mid-life. Caitlin Murphy, tackles topics like female rage, ambivalent motherhood, domestic ennui, beauty standards, and, of course, the dreaded dating apps.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/63919892453451905503-12-2026-174500-8911.jpg",
+      "venue": "DANSpace",
+      "ticketUrl": "https://www.simpletix.com/e/terrible-fish-tickets-284243",
+      "times": [
+        {
+          "timeId": 1525903,
+          "start": "2026-09-04T21:30",
+          "end": "2026-09-04T22:30",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525904,
+          "start": "2026-09-05T15:30",
+          "end": "2026-09-05T16:30",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525905,
+          "start": "2026-09-06T12:30",
+          "end": "2026-09-06T13:30",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525906,
+          "start": "2026-09-11T17:00",
+          "end": "2026-09-11T18:00",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525907,
+          "start": "2026-09-12T21:30",
+          "end": "2026-09-12T22:30",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525908,
+          "start": "2026-09-13T15:30",
+          "end": "2026-09-13T16:30",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284244,
+      "title": "The Anytime Hour",
+      "blurb": "Anything is possible and anyone is welcome, so come join Shwing Entertainment, live! From singing and dancing to films and sketches! Expect the unexpected and still be surprised!",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/06-04-2026-173319-3590.jpg",
+      "venue": "DANSpace",
+      "ticketUrl": "https://www.simpletix.com/e/the-anytime-hour-tickets-284244",
+      "times": [
+        {
+          "timeId": 1525909,
+          "start": "2026-09-05T20:00",
+          "end": "2026-09-05T21:00",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525910,
+          "start": "2026-09-12T14:00",
+          "end": "2026-09-12T15:00",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525911,
+          "start": "2026-09-13T21:30",
+          "end": "2026-09-13T22:30",
+          "venue": "DANSpace",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284245,
+      "title": "The Atomic Priesthood",
+      "blurb": "10,000 years in the future, a fringe religious group pleads to their gods for help with a fast spreading plague. Unbeknownst to them, the disease is far more complicated than they could have ever imagined.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/06-05-2026-011452-3810.jpg",
+      "venue": "Bus Stop Theatre",
+      "ticketUrl": "https://www.simpletix.com/e/the-atomic-priesthood-tickets-284245",
+      "times": [
+        {
+          "timeId": 1525912,
+          "start": "2026-09-05T12:30",
+          "end": "2026-09-05T13:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525913,
+          "start": "2026-09-06T21:30",
+          "end": "2026-09-06T22:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525914,
+          "start": "2026-09-09T21:30",
+          "end": "2026-09-09T22:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284246,
+      "title": "The Cult of the Comfy Wizard",
+      "blurb": "In today’s dark times find comfort with The Cult of the Comfy Wizard. Discover a world of rituals, past lives, and ancestral memories. Witness the rise and fall of a misguided guru.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-24-2026-174046-5684.jpg",
+      "venue": "Bus Stop Theatre",
+      "ticketUrl": "https://www.simpletix.com/e/the-cult-of-the-comfy-wizard-tickets-284246",
+      "times": [
+        {
+          "timeId": 1525915,
+          "start": "2026-09-05T17:00",
+          "end": "2026-09-05T18:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525916,
+          "start": "2026-09-06T18:30",
+          "end": "2026-09-06T19:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525917,
+          "start": "2026-09-10T17:00",
+          "end": "2026-09-10T18:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525918,
+          "start": "2026-09-11T21:30",
+          "end": "2026-09-11T22:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525919,
+          "start": "2026-09-12T15:30",
+          "end": "2026-09-12T16:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525920,
+          "start": "2026-09-13T20:00",
+          "end": "2026-09-13T21:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284247,
+      "title": "The Defenestration of Prague",
+      "blurb": "May 23rd, 1618, several aristocrats were tossed out of the Prague Imperial Palace by The Defenders, a ragtag group of Czech nobles. A Shakespearean comedy for ages 14+.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-26-2026-183042-9770.jpg",
+      "venue": "Grafton Street Dinner Theatre",
+      "ticketUrl": "https://www.simpletix.com/e/the-defenestration-of-prague-tickets-284247",
+      "times": [
+        {
+          "timeId": 1525921,
+          "start": "2026-09-03T14:00",
+          "end": "2026-09-03T15:00",
+          "venue": "Grafton Street Dinner Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525922,
+          "start": "2026-09-03T17:00",
+          "end": "2026-09-03T18:00",
+          "venue": "Grafton Street Dinner Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525923,
+          "start": "2026-09-08T14:00",
+          "end": "2026-09-08T15:00",
+          "venue": "Grafton Street Dinner Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525924,
+          "start": "2026-09-08T17:00",
+          "end": "2026-09-08T18:00",
+          "venue": "Grafton Street Dinner Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525925,
+          "start": "2026-09-10T14:00",
+          "end": "2026-09-10T15:00",
+          "venue": "Grafton Street Dinner Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525926,
+          "start": "2026-09-10T17:00",
+          "end": "2026-09-10T18:00",
+          "venue": "Grafton Street Dinner Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525927,
+          "start": "2026-09-10T20:00",
+          "end": "2026-09-10T21:00",
+          "venue": "Grafton Street Dinner Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284249,
+      "title": "The Fabulist",
+      "blurb": "THE FABULIST traces the midpoint in the life of an important trail-blazing folklorist. Helen Creighton has devoted her life to collecting and preserving the songs of her beloved native Maritime Canada. Unfortunately (or is it?), the songs are equaled only",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/06-04-2026-041100-8525.jpg",
+      "venue": "Sanctuary Arts Centre",
+      "ticketUrl": "https://www.simpletix.com/e/the-fabulist-tickets-284249",
+      "times": [
+        {
+          "timeId": 1525928,
+          "start": "2026-09-05T15:00",
+          "end": "2026-09-05T16:00",
+          "venue": "Sanctuary Arts Centre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525929,
+          "start": "2026-09-06T15:00",
+          "end": "2026-09-06T16:00",
+          "venue": "Sanctuary Arts Centre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525930,
+          "start": "2026-09-09T19:00",
+          "end": "2026-09-09T20:00",
+          "venue": "Sanctuary Arts Centre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284251,
+      "title": "the in-between",
+      "blurb": "Snail is a poet snail. Or rather, a snail poet. They were born in a metal bin by a library, cushioned by tossed away sheets of Virginia Woolf’s Orlando. They have ventured far and wide in order to be here, in this garden.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/05-01-2026-193942-2510.jpg",
+      "venue": "Bus Stop Theatre",
+      "ticketUrl": "https://www.simpletix.com/e/the-in-between-tickets-284251",
+      "times": [
+        {
+          "timeId": 1525944,
+          "start": "2026-09-03T20:00",
+          "end": "2026-09-03T21:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525945,
+          "start": "2026-09-05T18:30",
+          "end": "2026-09-05T19:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525946,
+          "start": "2026-09-06T15:30",
+          "end": "2026-09-06T16:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525947,
+          "start": "2026-09-08T17:00",
+          "end": "2026-09-08T18:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525948,
+          "start": "2026-09-10T21:30",
+          "end": "2026-09-10T22:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525949,
+          "start": "2026-09-12T12:30",
+          "end": "2026-09-12T13:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284250,
+      "title": "The Jackson Elementary Gr 6 Drama Club presents: BLOOD & SNOW: THE DONNER PARTY’S FATAL FORAY INTO THE SIERRA NEVADA WILDERNESS",
+      "blurb": "Welcome to Jackson Elementary, where Mrs Hazel’s Grade 6 class is about to unveil the skit they’ve devised for Pioneer Week. What ensues is a pitch-black, fairly-historically-accurate tragicomedy about America’s most notorious overlanders: the Donner Party",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/06-26-2026-204950-1469.jpg",
+      "venue": "Halifax United Church",
+      "ticketUrl": "https://www.simpletix.com/e/the-jackson-elementary-gr-6-drama-club-presents-blood-snow-the-donner-partys-fat-tickets-284250",
+      "times": [
+        {
+          "timeId": 1525931,
+          "start": "2026-09-03T19:45",
+          "end": "2026-09-03T20:35",
+          "venue": "Halifax United Church",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525932,
+          "start": "2026-09-04T19:45",
+          "end": "2026-09-04T20:35",
+          "venue": "Halifax United Church",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525933,
+          "start": "2026-09-05T19:45",
+          "end": "2026-09-05T20:35",
+          "venue": "Halifax United Church",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525934,
+          "start": "2026-09-10T19:45",
+          "end": "2026-09-10T20:35",
+          "venue": "Halifax United Church",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525935,
+          "start": "2026-09-11T19:45",
+          "end": "2026-09-11T20:35",
+          "venue": "Halifax United Church",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525936,
+          "start": "2026-09-12T19:45",
+          "end": "2026-09-12T20:35",
+          "venue": "Halifax United Church",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284253,
+      "title": "The Trouble with My Hair: Coloring, Cutting, and Coming into Who I AM",
+      "blurb": "A Canada and Halifax Fringe premiere, The Trouble with My Hair examines gender, sexual, and racial identity through Cheng’s evolving relationship with her hair—and the stylists who helped shape it.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/02-25-2026-015313-3791.jpg",
+      "venue": "Neptune Theatre Imperial Studio",
+      "ticketUrl": "https://www.simpletix.com/e/the-trouble-with-my-hair-coloring-cutting-and-coming-into-who-i-am-tickets-284253",
+      "times": [
+        {
+          "timeId": 1525965,
+          "start": "2026-09-04T18:30",
+          "end": "2026-09-04T19:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525966,
+          "start": "2026-09-06T15:30",
+          "end": "2026-09-06T16:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525967,
+          "start": "2026-09-08T17:00",
+          "end": "2026-09-08T18:00",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284255,
+      "title": "The Ward and The Watershed",
+      "blurb": "The Ward and The Watershed takes place in a prison, on an island, in an ocean, on a planet, not so different from our own. This prison is built around a spring of fresh water which is controlled by The Warden.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-22-2026-191132-1942.jpg",
+      "venue": "Bus Stop Theatre",
+      "ticketUrl": "https://www.simpletix.com/e/the-ward-and-the-watershed-tickets-284255",
+      "times": [
+        {
+          "timeId": 1525969,
+          "start": "2026-09-04T20:00",
+          "end": "2026-09-04T20:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525970,
+          "start": "2026-09-05T15:30",
+          "end": "2026-09-05T16:00",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525971,
+          "start": "2026-09-12T14:00",
+          "end": "2026-09-12T14:30",
+          "venue": "Bus Stop Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284257,
+      "title": "There is No Anger Like That Of A Woman",
+      "blurb": "When a banker walks into a brothel and pays for an hour with the most expensive woman, what he gets is not what either of them expected. There Is No Anger Like That of a Woman is a show about desire, power, and a woman playing an unbeatable game.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-19-2026-182925-6139.jpg",
+      "venue": "Neptune Theatre Windsor Studio",
+      "ticketUrl": "https://www.simpletix.com/e/there-is-no-anger-like-that-of-a-woman-tickets-284257",
+      "times": [
+        {
+          "timeId": 1525973,
+          "start": "2026-09-03T20:00",
+          "end": "2026-09-03T20:45",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525974,
+          "start": "2026-09-05T18:30",
+          "end": "2026-09-05T19:15",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525975,
+          "start": "2026-09-08T18:30",
+          "end": "2026-09-08T19:15",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525976,
+          "start": "2026-09-09T17:00",
+          "end": "2026-09-09T17:45",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525977,
+          "start": "2026-09-11T18:30",
+          "end": "2026-09-11T19:15",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525978,
+          "start": "2026-09-12T18:30",
+          "end": "2026-09-12T19:15",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284258,
+      "title": "Things That Go Bump",
+      "blurb": "Enter the parlour of a forgotten age, where the veil between worlds grows thin. If the spirits are willing, your mysterious hostess will share strange phenomena, unsettling revelations, and moments that challenge your senses.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/02-25-2026-144334-6774.jpg",
+      "venue": "Neptune Theatre Windsor Studio",
+      "ticketUrl": "https://www.simpletix.com/e/things-that-go-bump-tickets-284258",
+      "times": [
+        {
+          "timeId": 1525981,
+          "start": "2026-09-04T17:00",
+          "end": "2026-09-04T18:00",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525982,
+          "start": "2026-09-05T20:00",
+          "end": "2026-09-05T21:00",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525983,
+          "start": "2026-09-06T15:30",
+          "end": "2026-09-06T16:30",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525984,
+          "start": "2026-09-10T17:00",
+          "end": "2026-09-10T18:00",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525985,
+          "start": "2026-09-11T20:00",
+          "end": "2026-09-11T21:00",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525986,
+          "start": "2026-09-12T17:00",
+          "end": "2026-09-12T18:00",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284260,
+      "title": "WHITE SAMOSA",
+      "blurb": "White Samosa is a spicy stand-up special from Vancouver’s first multilingual comedian, Harmeet Singh Kohli. Armed with accents and unapologetic punchlines, Harmeet takes aim at cultural appropriation, Uber-driving stereotypes, and everything in between.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/WhiteSamosa.jpg",
+      "venue": "Stardust Bar",
+      "ticketUrl": "https://www.simpletix.com/e/white-samosa-tickets-284260",
+      "times": [
+        {
+          "timeId": 1525990,
+          "start": "2026-09-08T21:30",
+          "end": "2026-09-08T22:30",
+          "venue": "Stardust Bar",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525991,
+          "start": "2026-09-09T20:00",
+          "end": "2026-09-09T21:00",
+          "venue": "Stardust Bar",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525992,
+          "start": "2026-09-10T21:30",
+          "end": "2026-09-10T22:30",
+          "venue": "Stardust Bar",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525993,
+          "start": "2026-09-11T18:30",
+          "end": "2026-09-11T19:30",
+          "venue": "Stardust Bar",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525994,
+          "start": "2026-09-12T15:30",
+          "end": "2026-09-12T16:30",
+          "venue": "Stardust Bar",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        },
+        {
+          "timeId": 1525995,
+          "start": "2026-09-13T17:00",
+          "end": "2026-09-13T18:00",
+          "venue": "Stardust Bar",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284262,
+      "title": "Whose Presentation Is It Anyway?",
+      "blurb": "Imagine a convention or conference where all the speakers have gotten sick and random audience members have to step up, improvising their way through each slide. That a good indication of what you’ll experience at Whose Presentation Is It Anyway?",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/06-04-2026-162143-9429.jpg",
+      "venue": "Grafton Street Dinner Theatre",
+      "ticketUrl": "https://www.simpletix.com/e/whose-presentation-is-it-anyway-tickets-284262",
+      "times": [
+        {
+          "timeId": "s284262-2026-09-09T19:30",
+          "start": "2026-09-09T19:30",
+          "end": "2026-09-09T21:00",
+          "venue": "Grafton Street Dinner Theatre",
+          "status": "active",
+          "firstSeen": "2026-07-26T12:52:44.451Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z"
+    }
+  ]
+}
