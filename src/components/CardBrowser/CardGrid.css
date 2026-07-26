@@ -7,6 +7,15 @@
   gap: 18px;
   padding: 22px 26px 28px;
   align-items: start;
+  /* This container is a flex child with a *definite* height, so implicit
+     `auto` rows get sized to fit that height rather than to their content -
+     with 19 rows of cards that collapsed every row to ~19px while the cards
+     still rendered ~324px tall, so every card overlapped the ones below it.
+     `max-content` rows size to the content instead, and `align-content:start`
+     stops the leftover space being redistributed back into the tracks; the
+     overflow then scrolls, which is what overflow-y above is for. */
+  grid-auto-rows: max-content;
+  align-content: start;
 }
 
 .card-grid__empty {

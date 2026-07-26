@@ -1,3 +1,7 @@
+/* Header and footer stay put; only __body scrolls. The rail itself must NOT
+   scroll - when it did, the body (flex:1; min-height:0, no overflow of its
+   own) shrank below its content and the picked-performance rows spilled out
+   and painted over the pinned footer buttons. */
 .my-fringe-rail {
   width: 300px;
   flex: none;
@@ -7,7 +11,7 @@
   border-left: 1px solid var(--line);
   padding: 22px 20px;
   gap: 18px;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .my-fringe-rail__header {
@@ -33,6 +37,7 @@
 .my-fringe-rail__body {
   flex: 1;
   min-height: 0;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 18px;
