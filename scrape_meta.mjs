@@ -12,7 +12,7 @@
 
 import { readFileSync, writeFileSync, renameSync, existsSync, mkdirSync } from 'node:fs';
 
-const SHOW_TIMES = new URL('./show_times.json', import.meta.url).pathname;
+const SHOW_TIMES = new URL('./src/data/show_times.json', import.meta.url).pathname;
 const META_OUT = new URL('./src/data/shows_meta.json', import.meta.url).pathname;
 const VENUES_OUT = new URL('./src/data/venues.json', import.meta.url).pathname;
 

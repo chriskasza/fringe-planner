@@ -8,9 +8,9 @@ Read `README.md` first - it documents the upstream API quirks that explain why
 - **`show_times.json` is generated. Never hand-edit it.** Change `scrape.mjs` and re-run
   `node scrape.mjs`. It holds only what the scraper can see upstream: show IDs, titles,
   and performance times.
-- **`src/data/shows_meta.json` and `src/data/venues.json` are hand-curated, not generated.**
-  They hold everything the scraper can't get: company/artist, rating, content warnings,
-  and venue addresses. Edit these directly; `scrape.mjs` never touches them.
+- **`src/data/shows_meta.json` and `src/data/venues.json` are scraped by `scrape_meta.mjs`, not hand-edited.**
+  They hold everything `scrape.mjs` can't get: credits, rating, content warnings,
+  and venue addresses. Re-run `node scrape_meta.mjs` to refresh them.
 - **No dependencies in `scrape.mjs`.** Node built-ins only (`fetch`, `node:fs`). There is
   deliberately no `package.json` at the repo root for the scraper - don't add one to pull
   in a library. (The front-end under `src/` has its own `package.json` - see below.)
@@ -33,9 +33,9 @@ Verify with a real run, not by reasoning about the diff:
 
 1. `node scrape.mjs` - expect 56 shows / 282 showtimes, exit 0.
 2. Run it twice. The second run must print "No changes since the last run" and leave
-   `show_times.json` byte-identical apart from `scrapedAt`. Churn on a clean re-run means
+   `src/data/show_times.json` byte-identical apart from `scrapedAt`. Churn on a clean re-run means
    the merge keying is broken.
-3. To exercise cancel/reschedule/revive, back `show_times.json` up, mutate the copy in
+3. To exercise cancel/reschedule/revive, back `src/data/show_times.json` up, mutate the copy in
    place, re-scrape, then **restore the good file**. Don't leave test mutations committed.
 
 Spot-check that survives any refactor: show `284247` has 7 showtimes, and its Sep 3

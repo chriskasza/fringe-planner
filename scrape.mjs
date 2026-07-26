@@ -27,7 +27,7 @@ const PINBOARD_URL =
 
 const TICKETS_URL = 'https://halifaxfringe.ca/home-copy-copy-3/';
 const API_BASE = 'https://api.prod.simpletix.com/embed/Event';
-const OUT = new URL('./show_times.json', import.meta.url).pathname;
+const OUT = new URL('./src/data/show_times.json', import.meta.url).pathname;
 
 // "Show Passes" is a bundle product, not a show.
 const SKIP_SHOW_IDS = new Set([284273]);

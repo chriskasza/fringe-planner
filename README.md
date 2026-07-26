@@ -9,7 +9,7 @@ node scrape.mjs
 ```
 
 Re-runnable and safe to run any time. It prints a summary of what changed since the last
-run, then `git diff show_times.json` shows the detail.
+run, then `git diff src/data/show_times.json` shows the detail.
 
 Requires Node 18+ (uses built-in `fetch`). No dependencies, no `npm install`.
 
@@ -86,12 +86,13 @@ the festival guide PDF doesn't reliably fill those gaps either - so `show_times.
 only ever has what the scraper can actually observe: show IDs, titles, blurbs, and
 performance times.
 
-Everything else lives in two hand-curated files under `src/data/`, edited directly (never
-generated):
+Additional show metadata and venue addresses are scraped from each show's own SimpleTix
+page by `scrape_meta.mjs` and written to `src/data/`:
 
-- **`shows_meta.json`** - one entry per `showId`: `company`, `rating`, `warnings`.
-- **`venues.json`** - one entry per venue name: `short` (abbreviated name for tight grid
-  rows), `shortAddress`, `fullAddress`.
+- **`shows_meta.json`** - one entry per `showId`: `credits`, `rating`, `warnings`.
+- **`venues.json`** - one entry per venue name: `short`, `shortAddress`, `fullAddress`.
+
+Run `node scrape_meta.mjs` to refresh both.
 
 The front-end's `transform.ts` joins all three files into the shape the UI renders. There
 is deliberately no genre field or genre filter anywhere in the app.
@@ -99,4 +100,4 @@ is deliberately no genre field or genre filter anywhere in the app.
 ## Status
 
 - [x] `scrape.mjs` + `show_times.json` - 56 shows, 282 showtimes, Sep 3-13 2026
-- [ ] Front-end (in progress - see `design_handoff_fringe_show_selector/`)
+- [x] Front-end — `npm run dev` then `npm run build` (see `design_handoff_fringe_show_selector/`)
