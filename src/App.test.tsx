@@ -417,7 +417,11 @@ describe('Day / Time filters gate which shows are browsable', () => {
     return within(document.querySelector('.dropdown') as HTMLElement);
   }
 
-  const cardCount = () => document.querySelectorAll('.show-card').length;
+  // Both desktop and mobile trees render simultaneously (CSS media query
+  // picks which is visible). The desktop tree has `.card-browser`; the
+  // mobile tree has `.card-browser-mobile` — scope to desktop.
+  const cardBrowserEl = () => document.querySelector('.card-browser') as HTMLElement;
+  const cardCount = () => cardBrowserEl().querySelectorAll('.show-card').length;
 
   it('shows no cards at all when every day is deselected', () => {
     // Reported bug: clearing the day filter left every card on screen,
