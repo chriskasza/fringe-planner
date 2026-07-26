@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-// Scrapes the Halifax Fringe 2026 schedule into shows.json.
+// Scrapes the Halifax Fringe 2026 schedule into show_times.json.
 //
-// Re-runnable: merges into the existing shows.json rather than overwriting it.
+// Re-runnable: merges into the existing show_times.json rather than overwriting it.
 // Nothing is ever deleted -- showtimes that disappear upstream are marked
 // cancelled so the app can render them struck through.
 //
@@ -27,7 +27,7 @@ const PINBOARD_URL =
 
 const TICKETS_URL = 'https://halifaxfringe.ca/home-copy-copy-3/';
 const API_BASE = 'https://api.prod.simpletix.com/embed/Event';
-const OUT = new URL('./shows.json', import.meta.url).pathname;
+const OUT = new URL('./show_times.json', import.meta.url).pathname;
 
 // "Show Passes" is a bundle product, not a show.
 const SKIP_SHOW_IDS = new Set([284273]);
@@ -79,7 +79,7 @@ const byStart = (a, b) =>
 
 function fail(msg) {
   console.error(`\n  FAILED: ${msg}`);
-  console.error('  shows.json was left untouched.\n');
+  console.error('  show_times.json was left untouched.\n');
   process.exit(1);
 }
 
@@ -339,7 +339,7 @@ renameSync(tmp, OUT);
 
 const timeCount = shows.reduce((n, s) => n + s.times.length, 0);
 const activeTimes = shows.reduce((n, s) => n + s.times.filter((t) => t.status === 'active').length, 0);
-console.log(`\nWrote shows.json: ${shows.length} shows, ${timeCount} showtimes (${activeTimes} active).`);
+console.log(`\nWrote show_times.json: ${shows.length} shows, ${timeCount} showtimes (${activeTimes} active).`);
 
 const report = [
   ['new shows', summary.newShows],
@@ -352,7 +352,7 @@ const report = [
 
 if (isFirstRun) {
   // Everything is "new" on a first run; listing all 282 lines is just noise.
-  console.log('Initial scrape -- no previous shows.json to compare against.');
+  console.log('Initial scrape -- no previous show_times.json to compare against.');
 } else if (!report.length) {
   console.log('No changes since the last run.');
 } else {

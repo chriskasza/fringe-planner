@@ -9,7 +9,7 @@ node scrape.mjs
 ```
 
 Re-runnable and safe to run any time. It prints a summary of what changed since the last
-run, then `git diff shows.json` shows the detail.
+run, then `git diff show_times.json` shows the detail.
 
 Requires Node 18+ (uses built-in `fetch`). No dependencies, no `npm install`.
 
@@ -58,7 +58,7 @@ Locations").
 the trailing `showId` alone - the slug is cosmetic, so no slugification edge case can
 break a link.
 
-## `shows.json`
+## `show_times.json`
 
 Accumulated, never destructive. Re-running merges into the existing file:
 
@@ -76,10 +76,27 @@ The scraper writes via a temp file and rename, and aborts without writing if the
 board yields fewer than 50 shows or any show returns no showtimes - a partial scrape
 would otherwise mass-cancel real showtimes.
 
-Don't hand-edit `shows.json`; change `scrape.mjs` and re-run it. See `CLAUDE.md` for the
+Don't hand-edit `show_times.json`; change `scrape.mjs` and re-run it. See `CLAUDE.md` for the
 full set of working rules.
+
+## Data that isn't scraped
+
+The SimpleTix API has no genre, company/artist, rating, or content-warning fields, and
+the festival guide PDF doesn't reliably fill those gaps either - so `show_times.json`
+only ever has what the scraper can actually observe: show IDs, titles, blurbs, and
+performance times.
+
+Everything else lives in two hand-curated files under `src/data/`, edited directly (never
+generated):
+
+- **`shows_meta.json`** - one entry per `showId`: `company`, `rating`, `warnings`.
+- **`venues.json`** - one entry per venue name: `short` (abbreviated name for tight grid
+  rows), `shortAddress`, `fullAddress`.
+
+The front-end's `transform.ts` joins all three files into the shape the UI renders. There
+is deliberately no genre field or genre filter anywhere in the app.
 
 ## Status
 
-- [x] `scrape.mjs` + `shows.json` - 56 shows, 282 showtimes, Sep 3-13 2026
-- [] Front-end (design pending)
+- [x] `scrape.mjs` + `show_times.json` - 56 shows, 282 showtimes, Sep 3-13 2026
+- [ ] Front-end (in progress - see `design_handoff_fringe_show_selector/`)
