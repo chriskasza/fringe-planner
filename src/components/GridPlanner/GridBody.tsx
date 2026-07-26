@@ -8,7 +8,10 @@ import type { Show } from '../../lib/types';
 
 export function GridBody() {
   const { state, shows, days } = useApp();
-  const { startMin, slots } = useMemo(() => gridTimeBounds(shows), [shows]);
+  const { startMin, slots } = useMemo(
+    () => gridTimeBounds(shows, state.gridDay),
+    [shows, state.gridDay],
+  );
 
   const day = days.find((d) => d.key === state.gridDay);
   const dayLabel = day ? day.label.toUpperCase() : state.gridDay;
@@ -44,20 +47,23 @@ export function GridBody() {
         </div>
       </div>
 
-      <TimeHeader slots={slots} />
-
-      {byVenue.length === 0 && <div className="grid-body__empty">No shows on this day match the current filters.</div>}
-
-      {byVenue.map(([venue, entries]) => (
-        <VenueRow
-          key={venue}
-          venue={venue}
-          venueAddress={venueAddress(venue)}
-          entries={entries}
-          slots={slots}
-          gridStartMin={startMin}
-        />
-      ))}
+      {byVenue.length === 0 ? (
+        <div className="grid-body__empty">No shows on this day match the current filters.</div>
+      ) : (
+        <div className="grid-body__scroll">
+          <TimeHeader slots={slots} />
+          {byVenue.map(([venue, entries]) => (
+            <VenueRow
+              key={venue}
+              venue={venue}
+              venueAddress={venueAddress(venue)}
+              entries={entries}
+              slots={slots}
+              gridStartMin={startMin}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

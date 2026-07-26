@@ -14,7 +14,9 @@ export function TimelineCard({ show, perf }: { show: Show; perf: Show['perfs'][n
       onClick={() => dispatch({ type: 'TOGGLE_PICK', key })}
     >
       <div className="timeline-card__top">
-        <span className="timeline-card__title">{show.title}</span>
+        <span className="timeline-card__title" title={show.title}>
+          {show.title}
+        </span>
         <span className="timeline-card__star">{isPicked ? '★' : '☆'}</span>
       </div>
       <div className="timeline-card__meta">

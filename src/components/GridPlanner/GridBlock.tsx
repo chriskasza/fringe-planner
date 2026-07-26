@@ -1,7 +1,7 @@
 import { useApp } from '../../state/AppContext';
 import { perfKey, perfState } from '../../lib/derived';
 import { formatTime } from '../../lib/dates';
-import { columnFor, spanFor } from './gridLayout';
+import { blockLeft, blockWidth, BLOCK_INSET_Y_PX } from './gridLayout';
 import { IconButton } from '../ui/IconButton';
 import type { Show } from '../../lib/types';
 
@@ -17,8 +17,11 @@ export function GridBlock({ show, perf, gridStartMin }: GridBlockProps) {
   const pState = perfState(show, perf, state.picked, shows);
 
   const style: React.CSSProperties = {
-    gridColumn: `${columnFor(perf.start, gridStartMin)} / span ${spanFor(perf.mins)}`,
-    gridRow: 1,
+    position: 'absolute',
+    left: blockLeft(perf.start, gridStartMin),
+    width: blockWidth(perf.mins),
+    top: BLOCK_INSET_Y_PX,
+    bottom: BLOCK_INSET_Y_PX,
   };
 
   return (
@@ -28,7 +31,9 @@ export function GridBlock({ show, perf, gridStartMin }: GridBlockProps) {
       onClick={() => dispatch({ type: 'TOGGLE_PICK', key })}
     >
       <div className="grid-block__top">
-        <span className="grid-block__title">{show.title}</span>
+        <span className="grid-block__title" title={show.title}>
+          {show.title}
+        </span>
         <IconButton
           glyph="ⓘ"
           ariaLabel={`Details for ${show.title}`}

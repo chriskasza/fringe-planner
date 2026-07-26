@@ -1,5 +1,6 @@
 import type { Show } from '../../lib/types';
 import { GridBlock } from './GridBlock';
+import { LABEL_WIDTH, trackWidth } from './gridLayout';
 
 type VenueRowProps = {
   venue: string;
@@ -10,19 +11,14 @@ type VenueRowProps = {
 };
 
 export function VenueRow({ venue, venueAddress, entries, slots, gridStartMin }: VenueRowProps) {
-  const sorted = [...entries].sort((a, b) => a.perf.start - b.perf.start);
-
   return (
-    <div className="venue-row">
+    <div className="venue-row" style={{ width: LABEL_WIDTH + trackWidth(slots.length) }}>
       <div className="venue-row__label">
         <span className="venue-row__name">{venue}</span>
         {venueAddress && <span className="venue-row__address">{venueAddress}</span>}
       </div>
-      <div
-        className="venue-row__track"
-        style={{ gridTemplateColumns: `repeat(${slots.length}, minmax(0,1fr))` }}
-      >
-        {sorted.map(({ show, perf }) => (
+      <div className="venue-row__track" style={{ width: trackWidth(slots.length) }}>
+        {entries.map(({ show, perf }) => (
           <GridBlock key={`${show.id}-${perf.timeId}`} show={show} perf={perf} gridStartMin={gridStartMin} />
         ))}
       </div>

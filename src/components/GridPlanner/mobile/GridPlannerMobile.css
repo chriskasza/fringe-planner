@@ -140,6 +140,11 @@
   font-family: var(--font-body);
   font-weight: 700;
   font-size: 14px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 
 .timeline-card__meta {

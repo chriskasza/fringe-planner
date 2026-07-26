@@ -30,9 +30,11 @@
 
 .grid-body {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   padding-top: 22px;
-  overflow-x: auto;
   min-width: 0;
+  min-height: 0;
 }
 
 .grid-body__heading {
@@ -42,6 +44,19 @@
   padding: 0 26px 14px;
   gap: 18px;
   flex-wrap: wrap;
+}
+
+/* Only the time axis + venue rows scroll horizontally - the heading above
+   stays put. Right padding gives a trailing gutter after the last column;
+   there's deliberately no left padding here - see LABEL_WIDTH in
+   gridLayout.ts for why that gutter has to live inside the sticky label's
+   own box instead (padding on a scroll container doesn't clip content, so a
+   scrolled block would render right into an unsticky-covered left gutter). */
+.grid-body__scroll {
+  flex: 1;
+  overflow-x: auto;
+  padding: 0 26px 0 0;
+  min-height: 0;
 }
 
 .grid-body__day-title {
@@ -94,17 +109,31 @@
 .time-header,
 .venue-row {
   display: grid;
-  grid-template-columns: 150px 1fr;
+  /* Explicit pixel width set inline (label + track) - not `1fr`/`auto`, which
+     can only size within whatever space this block box's container already
+     gives it. 176px must match LABEL_WIDTH in gridLayout.ts. */
+  grid-template-columns: 176px 1fr;
+  /* `isolation: isolate` gives this row its own stacking context, so the
+     sticky label's z-index is only ever compared against this row's own
+     track/blocks - no ambiguity from sibling rows or ancestor context. */
+  position: relative;
+  isolation: isolate;
+  background: var(--ink);
 }
 
 .time-header {
   border-bottom: 1px solid var(--line-soft);
-  padding: 0 26px;
 }
 
-.time-header__track,
-.venue-row__track {
+.time-header__track {
   display: grid;
+}
+
+/* Blocks inside are positioned as continuous pixel offsets (see GridBlock),
+   not CSS grid columns - real showtimes aren't all on the half-hour, and a
+   fractional grid line number is invalid, silently dropping the placement. */
+.venue-row__track {
+  position: relative;
 }
 
 .time-header__label {
@@ -116,9 +145,21 @@
 }
 
 .venue-row {
-  min-height: 74px;
+  /* Tall enough for a 2-line title + gap + meta line + symmetric 8px top/
+     bottom padding, plus the block's own 8px top/bottom inset from the row
+     edge - sized close to the content so there's no leftover slack piling
+     up below the meta line (flex-column content stacks from the top, so any
+     extra row height shows up as an uneven gap at the bottom, not the top). */
+  min-height: 80px;
   border-bottom: 1px solid var(--line-soft);
-  padding: 0 26px;
+}
+
+.venue-row__label,
+.time-header__spacer {
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  background: var(--ink);
 }
 
 .venue-row__label {
@@ -126,7 +167,11 @@
   flex-direction: column;
   justify-content: center;
   gap: 2px;
-  padding-right: 10px;
+  /* Left padding recreates the old scroll-container gutter, but inside the
+     sticky box itself so its opaque background actually covers that space
+     during a horizontal scroll (see .grid-body__scroll comment). */
+  padding: 0 10px 0 26px;
+  box-shadow: 4px 0 6px -4px rgba(0, 0, 0, 0.4);
 }
 
 .venue-row__name {
@@ -143,8 +188,6 @@
 }
 
 .grid-block {
-  grid-row: 1;
-  margin: 8px 4px;
   padding: 8px 9px;
   border-radius: var(--r-block);
   min-width: 0;
@@ -152,6 +195,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  overflow: hidden;
 }
 
 .grid-block:hover {
@@ -196,11 +240,24 @@
   font-size: 12.5px;
   line-height: 1.25;
   overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  cursor: default;
+  /* Reserve space for 2 lines always (not just cap at 2) - otherwise a
+     one-line title collapses to its own height, and the meta line below
+     ends up sitting at a different distance from the block's bottom edge
+     depending on whether the title happened to wrap. */
+  min-height: 2.5em;
 }
 
 .grid-block__meta {
   font-family: var(--font-mono);
   font-size: 9.5px;
+  line-height: 1.3;
   letter-spacing: 0.02em;
   opacity: 0.85;
+  flex: none;
 }
