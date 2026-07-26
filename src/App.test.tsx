@@ -511,3 +511,61 @@ describe('Day / Time filters gate which shows are browsable', () => {
     expect(cardCount()).toBeGreaterThan(twoDayCount);
   });
 });
+
+describe('Sync Sheet', () => {
+  function openSync() {
+    // Button text is "My Fringe" plus a nested <span> badge, so the
+    // accessible name includes the number. Matching by the visible text
+    // prefix gets the button regardless of the count.
+    const btn = desktopEl().querySelector('.topbar__myfringe') as HTMLElement;
+    fireEvent.click(btn);
+  }
+
+  function syncScope() {
+    return within(document.querySelector('.sync-sheet') as HTMLElement);
+  }
+
+  it('opens from the My Fringe button, displays the real URL hash after picking', () => {
+    render(<App />);
+    expect(document.querySelector('.sync-sheet')).not.toBeInTheDocument();
+
+    openSync();
+    expect(document.querySelector('.sync-sheet')).toBeInTheDocument();
+    expect(syncScope().getByText('TAKE IT WITH YOU')).toBeInTheDocument();
+
+    // URL box contains the hash prefix even with an empty schedule.
+    const urlBox = document.querySelector('.sync-link-row__url');
+    expect(urlBox?.textContent).toContain('#p=');
+  });
+
+  it('shows the schedule summary matching the current state', () => {
+    render(<App />);
+    const blocks = desktopEl().querySelectorAll('.grid-block');
+    fireEvent.click(blocks[0]);
+    fireEvent.click(blocks[1]);
+
+    openSync();
+    expect(syncScope().getByText(/2 PERFORMANCE/)).toBeInTheDocument();
+  });
+
+  it('can be dismissed by clicking the backdrop or close button', () => {
+    render(<App />);
+    openSync();
+    expect(document.querySelector('.sync-sheet')).toBeInTheDocument();
+
+    fireEvent.click(document.querySelector('.sync-backdrop')!);
+    expect(document.querySelector('.sync-sheet')).not.toBeInTheDocument();
+
+    openSync();
+    fireEvent.click(syncScope().getByRole('button', { name: 'Close sync' }));
+    expect(document.querySelector('.sync-sheet')).not.toBeInTheDocument();
+  });
+
+  it('renders the .ics, .json download and restore rows', () => {
+    render(<App />);
+    openSync();
+    expect(syncScope().getByText('.ICS')).toBeInTheDocument();
+    expect(syncScope().getByText('.JSON')).toBeInTheDocument();
+    expect(syncScope().getByPlaceholderText(/Restore from/)).toBeInTheDocument();
+  });
+});

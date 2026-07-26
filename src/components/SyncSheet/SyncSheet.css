@@ -1,0 +1,330 @@
+.sync-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sync-backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 0;
+  cursor: pointer;
+}
+
+.sync-sheet {
+  position: relative;
+  width: 460px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--ink);
+  border: 1px solid var(--gold);
+  border-radius: var(--r-frame);
+  overflow: hidden;
+  box-shadow: var(--shadow-frame);
+}
+
+.sync-sheet__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 22px;
+  background: var(--ink-sunken);
+  border-bottom: 1px solid var(--line);
+  flex: none;
+}
+
+.sync-sheet__header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sync-sheet__title {
+  font-family: var(--font-display);
+  font-size: 19px;
+  letter-spacing: 0.02em;
+  color: var(--cream);
+}
+
+.sync-sheet__summary {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-mute);
+  letter-spacing: 0.04em;
+}
+
+.sync-sheet__close {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: var(--ink-sunken);
+  color: var(--text-3);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.sync-sheet__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Link row ------------------------------------------------------------ */
+
+.sync-link-row {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.sync-link-row__left {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.sync-link-row__label-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sync-link-row__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.sync-link-row__badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border: 1px solid var(--live-border);
+  border-radius: var(--r-pill);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--cyan);
+  letter-spacing: 0.08em;
+}
+
+.sync-link-row__badge-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--cyan);
+}
+
+.sync-link-row__url {
+  padding: 11px 12px;
+  background: var(--ink-sunken);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-button);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-2);
+  line-height: 1.55;
+  word-break: break-all;
+}
+
+.sync-link-row__hash {
+  color: var(--gold);
+}
+
+.sync-link-row__buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.sync-link-row__copy {
+  flex: 1;
+  text-align: center;
+  padding: 11px;
+  border: none;
+  border-radius: var(--r-button);
+  background: var(--gold);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.sync-link-row__share {
+  padding: 11px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-button);
+  background: transparent;
+  color: var(--text-2);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.sync-link-row__help {
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.sync-link-row__right {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  align-items: center;
+}
+
+.sync-qr {
+  width: 136px;
+  height: 136px;
+  border-radius: 8px;
+  border: 1px solid var(--line-strong);
+}
+
+.sync-link-row__qr-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
+}
+
+/* Divider ------------------------------------------------------------- */
+
+.sync-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sync-divider__line {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.sync-divider__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 0.16em;
+}
+
+/* Action rows --------------------------------------------------------- */
+
+.sync-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sync-action-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  background: var(--ink-raised);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.sync-action-row:hover {
+  border-color: var(--gold);
+}
+
+.sync-action-row--restore {
+  background: var(--ink-sunken);
+  border-style: dashed;
+}
+
+.sync-action-row__type {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  flex: none;
+  width: 52px;
+}
+
+.sync-action-row--restore .sync-action-row__type {
+  color: var(--text-mute);
+}
+
+.sync-action-row__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sync-action-row__title {
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--cream);
+}
+
+.sync-action-row__desc {
+  font-size: 12px;
+  color: var(--text-mute);
+}
+
+.sync-restore-input {
+  background: none;
+  border: none;
+  color: var(--cream);
+  font-weight: 700;
+  font-size: 13.5px;
+  padding: 0;
+}
+
+.sync-restore-input::placeholder {
+  color: var(--text-mute);
+  font-weight: 700;
+}
+
+/* Note ---------------------------------------------------------------- */
+
+.sync-note {
+  display: flex;
+  gap: 10px;
+  padding: 13px 14px;
+  background: var(--gold-fill-note);
+  border: 1px solid var(--gold-border-note);
+  border-radius: 8px;
+}
+
+.sync-note__icon {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--gold);
+  flex: none;
+}
+
+.sync-note__text {
+  font-size: 12px;
+  color: var(--text-3);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
