@@ -58,6 +58,26 @@ itself to `overflow: hidden`, giving the intended fixed-header / scrolling-body
 - 1000px correctly collapses to 2 columns.
 - No console/page errors in any state.
 
+## Since fixed (mobile treatment)
+
+### Card Browser now has mobile and intermediate breakpoints
+
+At 390px the layout was previously unusable: the 300px rail left ~90px for
+cards (one letter per line); the desktop TopBar wrapped to multiple lines;
+the desktop FilterBar ate four rows of the viewport. Now:
+
+- Responsive wrapper mirrors GridPlanner — desktop tree (`.card-browser`) at
+  >=700px, mobile tree (`.card-browser-mobile`) below.
+- Mobile: compact TopBar (collapsed "HF" wordmark) + Cards/Grid switch +
+  Filters button + My Fringe button on one row; single `CardGrid` column
+  with no rail (the 300px rail is hidden); consolidated `MobileFiltersButton`
+  / `MobileFiltersPanel` instead of the desktop FilterBar.
+- Desktop intermediate (700-1000px): the 300px rail hides to free card-grid
+  space, per the handoff's "rail becomes a bottom sheet under ~1000px" note.
+
+All mobile pieces (compact TopBar, mobile filters panel) already existed from
+the Grid Planner pass — they just needed wiring up.
+
 ## Since fixed (filter inconsistency pass)
 
 ### Day/Time filters had no effect on which shows were browsable (critical)
@@ -101,29 +121,3 @@ boundaries, with per-bucket counts.
 search box inside the Shows panel. That doesn't filter the grid, so the
 mobile badge claimed a filter was active while nothing on screen changed.
 
-## Outstanding — not yet fixed
-
-### Card Browser has no mobile treatment (high)
-
-At 390px the layout is unusable:
-
-- The 300px `.my-fringe-rail` is still `flex: none`, leaving the card grid
-  ~90px wide — titles wrap to one letter per line.
-- It renders the **desktop** `TopBar` (wordmark wraps to two lines, tagline to
-  three, `ON NOW` pill shown) instead of the `compact` variant the Grid
-  Planner uses.
-- It renders the **desktop** `FilterBar`, which wraps to four rows and eats
-  most of the viewport, instead of the consolidated `MobileFiltersButton` /
-  `MobileFiltersPanel` already built for the Grid Planner.
-- The day rail's 11 columns overlap themselves at that width (a cell's centre
-  hit-tests to a *different* cell's numeral).
-
-Per the design handoff the rail should become a bottom sheet under ~1000px.
-The mobile pieces (`compact` TopBar, mobile filters panel) already exist and
-just need wiring up, mirroring `GridPlannerMobile`.
-
-### Card Browser is not vertically contained like Grid Planner (low)
-
-`.card-browser` follows the same height chain, but unlike the Grid Planner
-its `TopBar`/`FilterBar` aren't verified against the fixed-viewport shell at
-small heights. Worth re-checking once the mobile work lands.
