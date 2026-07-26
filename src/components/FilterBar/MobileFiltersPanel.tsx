@@ -35,6 +35,7 @@ export function MobileFiltersPanel({ view }: MobileFiltersPanelProps) {
     dayLabelFor,
     timeKeys,
     timeLabelFor,
+    timeCounts,
     venues,
     venueKeys,
     ratings,
@@ -109,6 +110,7 @@ export function MobileFiltersPanel({ view }: MobileFiltersPanelProps) {
                 <CheckboxRow
                   key={b.key}
                   label={b.label}
+                  count={timeCounts.get(b.key) ?? 0}
                   checked={state.timeBucketsOn[b.key]}
                   onChange={() => dispatch({ type: 'SET_TIME_BUCKET_ON', bucket: b.key, on: !state.timeBucketsOn[b.key] })}
                 />

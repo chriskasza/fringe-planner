@@ -56,18 +56,20 @@ export function buildFestivalDays(counts: Record<DayKey, number>): Day[] {
   });
 }
 
-export const TIME_BUCKETS: { key: TimeBucket; label: string }[] = [
-  { key: 'morning', label: 'MORNING' },
-  { key: 'afternoon', label: 'AFTERNOON' },
-  { key: 'evening', label: 'EVENING' },
-  { key: 'late', label: 'LATE NIGHT' },
+// `label` spells out the boundary so the filter panel needs no legend;
+// `short` is what the filter *button* shows when exactly one bucket is
+// picked, since the bar must not grow with the selection. See the TimeBucket
+// comment for why these three and where the cut-offs come from.
+export const TIME_BUCKETS: { key: TimeBucket; label: string; short: string }[] = [
+  { key: 'matinee', label: 'MATINEE · BEFORE 5PM', short: 'MATINEE' },
+  { key: 'evening', label: 'EVENING · 5–8PM', short: 'EVENING' },
+  { key: 'night', label: 'NIGHT · 8PM ON', short: 'NIGHT' },
 ];
 
 export function timeBucket(minutes: number): TimeBucket {
-  if (minutes < 720) return 'morning'; // before noon
-  if (minutes < 1020) return 'afternoon'; // before 5pm
+  if (minutes < 1020) return 'matinee'; // before 5pm
   if (minutes < 1200) return 'evening'; // before 8pm
-  return 'late';
+  return 'night';
 }
 
 // The current instant, read back as Halifax *wall-clock* components via Intl -

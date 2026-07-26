@@ -101,10 +101,11 @@ export type ClashMode = 'all' | 'only' | 'hide';
 
 export type ViewMode = 'grid' | 'cards';
 
-// Coarse time-of-day buckets for the Time filter - the real showtimes run
-// roughly 10:30am-10:30pm, so four buckets is enough resolution to be useful
-// without pretending to more precision than the design calls for ("EVENING").
-export type TimeBucket = 'morning' | 'afternoon' | 'evening' | 'late';
+// Time-of-day buckets for the Time filter (the handoff styles the button but
+// leaves the panel's contents unspecified). Boundaries are fitted to the real
+// 2026 showtimes, which cluster into daytime / early-evening / night:
+// 71 performances before 5pm, 100 between 5 and 8, 111 from 8 onward.
+export type TimeBucket = 'matinee' | 'evening' | 'night';
 
 // 'all' is the mobile consolidated filters panel (Day/Time/Venue/Age/
 // Clashes/Shows stacked in one sheet, rather than desktop's five separate

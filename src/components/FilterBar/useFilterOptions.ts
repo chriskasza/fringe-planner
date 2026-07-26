@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { useApp } from '../../state/AppContext';
-import { TIME_BUCKETS } from '../../lib/dates';
+import { TIME_BUCKETS, timeBucket } from '../../lib/dates';
 import { matchesQuery } from '../../lib/derived';
+import type { TimeBucket } from '../../lib/types';
 import { sortRatings } from './filterSummary';
 
 // Shared computed filter option lists - both the desktop FilterBar (one
@@ -14,7 +15,22 @@ export function useFilterOptions() {
   const dayLabelFor = (key: string) => days.find((d) => d.key === key)?.label.toUpperCase() ?? key;
 
   const timeKeys = useMemo(() => TIME_BUCKETS.map((b) => b.key), []);
-  const timeLabelFor = (key: string) => TIME_BUCKETS.find((b) => b.key === key)?.label ?? key;
+  // Short form: this feeds the filter button's summary, not the panel rows.
+  const timeLabelFor = (key: string) => TIME_BUCKETS.find((b) => b.key === key)?.short ?? key;
+
+  // Performances (not shows) per bucket - a show can span buckets, and the
+  // count is there to show how the festival is distributed across the day.
+  const timeCounts = useMemo(() => {
+    const counts = new Map<TimeBucket, number>();
+    for (const s of shows) {
+      for (const p of s.perfs) {
+        if (p.status !== 'active') continue;
+        const b = timeBucket(p.start);
+        counts.set(b, (counts.get(b) ?? 0) + 1);
+      }
+    }
+    return counts;
+  }, [shows]);
 
   const venues = useMemo(() => {
     const counts = new Map<string, number>();
@@ -50,6 +66,7 @@ export function useFilterOptions() {
     dayLabelFor,
     timeKeys,
     timeLabelFor,
+    timeCounts,
     venues,
     venueKeys,
     ratings,

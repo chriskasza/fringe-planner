@@ -2,6 +2,12 @@ import { TIME_BUCKETS } from './dates';
 import { perfKey } from './derived';
 import type { ClashMode, Day, DayKey, DetailTarget, MenuKey, PerfKey, Show, TimeBucket, ViewMode } from './types';
 
+// Derived from TIME_BUCKETS rather than spelled out, so adding or renaming a
+// bucket doesn't need matching edits in the initial state and the reset.
+function allTimeBucketsOn(): Record<TimeBucket, boolean> {
+  return Object.fromEntries(TIME_BUCKETS.map((b) => [b.key, true])) as Record<TimeBucket, boolean>;
+}
+
 export type AppState = {
   picked: Set<PerfKey>;
   daysOn: Record<DayKey, boolean>;
@@ -23,12 +29,7 @@ export function createInitialState(days: Day[], shows: Show[]): AppState {
   const daysOn: Record<DayKey, boolean> = {};
   for (const d of days) daysOn[d.key] = true;
 
-  const timeBucketsOn: Record<TimeBucket, boolean> = {
-    morning: true,
-    afternoon: true,
-    evening: true,
-    late: true,
-  };
+  const timeBucketsOn = allTimeBucketsOn();
 
   const venuesOn: Record<string, boolean> = {};
   for (const v of new Set(shows.map((s) => s.venue))) venuesOn[v] = true;
@@ -207,12 +208,7 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       for (const v of action.venues) venuesOn[v] = true;
       const ratingsOn: Record<string, boolean> = {};
       for (const r of action.ratings) ratingsOn[r] = true;
-      const timeBucketsOn: Record<TimeBucket, boolean> = {
-        morning: true,
-        afternoon: true,
-        evening: true,
-        late: true,
-      };
+      const timeBucketsOn = allTimeBucketsOn();
       return {
         ...state,
         daysOn,
