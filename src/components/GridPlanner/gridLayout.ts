@@ -22,15 +22,13 @@ export const LABEL_WIDTH = 176;
 // shrinks to 14px to match the tighter mobile spacing scale.
 export const MOBILE_LABEL_WIDTH = 112;
 
-// Bounds are computed per day, not once across the whole festival - most
-// nights start well after 10:30am and end well before 10:30pm, and showing
-// that full range every day would waste most of the grid on empty columns
-// before the first show and after the last. A day with a late cabaret
-// running past midnight still gets those hours shown; a day that's all
-// matinees doesn't drag the axis out to 10:30pm for no reason.
+// Bounds are computed per day, not once across the whole festival. On the
+// current day the axis clips performances that already started — a showtime
+// from two hours ago isn't useful browsing real estate.
 export function gridTimeBounds(
   shows: Show[],
   day: DayKey,
+  now: { date: DayKey; minutes: number },
 ): { startMin: number; endMin: number; slots: number[] } {
   let min = Infinity;
   let max = -Infinity;
@@ -47,7 +45,11 @@ export function gridTimeBounds(
     return { startMin: 1080, endMin: 1230, slots: [1080] };
   }
 
-  const startMin = Math.floor(min / 30) * 30;
+  // On the current day, start at now — or at the first show of the evening,
+  // whichever is later. Days that are entirely in the past (first show
+  // already over) still show their full range; the user can still look back.
+  const effectiveMin = day === now.date ? Math.max(min, now.minutes) : min;
+  const startMin = Math.floor(effectiveMin / 30) * 30;
   const endMin = Math.ceil(max / 30) * 30;
 
   const slots: number[] = [];

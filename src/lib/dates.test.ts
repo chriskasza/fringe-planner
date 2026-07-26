@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { TIME_BUCKETS, timeBucket } from './dates';
-import { shows } from './loadData';
+import { shows, shows as allShows } from './loadData';
+import { createInitialState } from './state';
 
 describe('time-of-day buckets', () => {
   const at = (h: number, m = 0) => h * 60 + m;
@@ -43,5 +44,31 @@ describe('time-of-day buckets', () => {
       'EVENING · 5–8PM',
       'NIGHT · 8PM ON',
     ]);
+  });
+});
+
+describe('past-day deselection', () => {
+  // Build a fake set of festival days so the test doesn't depend on the
+  // real show data, which might change.
+  const days = [
+    { key: '2026-09-03', dow: 'THU', dateNum: 3, label: 'Thu 3 Sep', count: 1 },
+    { key: '2026-09-04', dow: 'FRI', dateNum: 4, label: 'Fri 4 Sep', count: 1 },
+    { key: '2026-09-05', dow: 'SAT', dateNum: 5, label: 'Sat 5 Sep', count: 1 },
+    { key: '2026-09-06', dow: 'SUN', dateNum: 6, label: 'Sun 6 Sep', count: 1 },
+  ];
+
+  it('selects all days when the festival has not started yet', () => {
+    const now = { date: '2026-07-26', minutes: 720 };
+    const s = createInitialState(days, allShows, now);
+    for (const d of days) expect(s.daysOn[d.key]).toBe(true);
+  });
+
+  it('deselects days before today when the festival is underway', () => {
+    const now = { date: '2026-09-05', minutes: 720 }; // midday Sat 5 Sep
+    const s = createInitialState(days, allShows, now);
+    expect(s.daysOn['2026-09-03']).toBe(false);
+    expect(s.daysOn['2026-09-04']).toBe(false);
+    expect(s.daysOn['2026-09-05']).toBe(true); // today
+    expect(s.daysOn['2026-09-06']).toBe(true); // future
   });
 });

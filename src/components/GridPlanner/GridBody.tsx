@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useApp } from '../../state/AppContext';
 import { visible } from '../../lib/derived';
+import { nowInHalifax } from '../../lib/dates';
 import { gridTimeBounds, LABEL_WIDTH } from './gridLayout';
 import { TimeHeader } from './TimeHeader';
 import { VenueRow } from './VenueRow';
@@ -14,7 +15,7 @@ type GridBodyProps = {
 export function GridBody({ labelWidth = LABEL_WIDTH, compact = false }: GridBodyProps) {
   const { state, shows, days } = useApp();
   const { startMin, slots } = useMemo(
-    () => gridTimeBounds(shows, state.gridDay),
+    () => gridTimeBounds(shows, state.gridDay, nowInHalifax()),
     [shows, state.gridDay],
   );
 

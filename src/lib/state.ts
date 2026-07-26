@@ -1,4 +1,4 @@
-import { TIME_BUCKETS } from './dates';
+import { nowInHalifax, TIME_BUCKETS } from './dates';
 import { perfKey } from './derived';
 import type { ClashMode, Day, DayKey, DetailTarget, MenuKey, PerfKey, Show, TimeBucket, ViewMode } from './types';
 
@@ -25,9 +25,18 @@ export type AppState = {
   syncOpen: boolean;
 };
 
-export function createInitialState(days: Day[], shows: Show[]): AppState {
+export function createInitialState(
+  days: Day[],
+  shows: Show[],
+  now: { date: DayKey; minutes: number } = nowInHalifax(),
+): AppState {
   const daysOn: Record<DayKey, boolean> = {};
-  for (const d of days) daysOn[d.key] = true;
+  for (const d of days) {
+    // Days before today (Halifax wall clock) are deselected on load so the
+    // user starts browsing the festival from today forward. They can
+    // re-enable past days in the Day filter to look back at what was on.
+    daysOn[d.key] = d.key >= now.date;
+  }
 
   const timeBucketsOn = allTimeBucketsOn();
 
