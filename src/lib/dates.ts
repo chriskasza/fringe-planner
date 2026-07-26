@@ -40,6 +40,14 @@ function toDayKey(date: Date): DayKey {
   return `${y}-${m}-${d}`;
 }
 
+// Calendar arithmetic on a day key, month and year boundaries included. Same
+// rule as toDayKey: the Date is built from y/m/d integers, never parsed from
+// a timestamp, so no timezone enters into it.
+export function addDays(day: DayKey, n: number): DayKey {
+  const [y, m, d] = day.split('-').map(Number);
+  return toDayKey(new Date(y, m - 1, d + n));
+}
+
 // Every date from `first` to `last`, inclusive. Stepping a Date built from
 // plain y/m/d integers (never from an API instant - see splitNaiveTimestamp)
 // is what makes month, year, and leap-day boundaries take care of themselves;

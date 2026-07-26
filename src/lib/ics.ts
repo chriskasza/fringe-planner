@@ -1,10 +1,18 @@
-import type { Show } from './types';
+import { addDays } from './dates';
+import type { DayKey, Show } from './types';
 
 // Stable identifier for iCalendar UIDs - doesn't need to survive page reloads,
 // just be unique within this export so a re-import can cross-reference.
 const PID = 'fringe-selector';
 
 const FESTIVAL_TZID = 'America/Halifax';
+
+// "2026-09-11" + 1170 -> "20260911T193000", the RFC 5545 local date-time form.
+function stamp(day: DayKey, minutes: number): string {
+  const hh = String(Math.floor(minutes / 60)).padStart(2, '0');
+  const mm = String(minutes % 60).padStart(2, '0');
+  return `${day.replace(/-/g, '')}T${hh}${mm}00`;
+}
 
 // Build an RFC 5545 iCalendar file from the user's picked performances.
 // Each entry is a VEVENT with DTSTART/DTEND as TZID-anchored local times
@@ -22,14 +30,13 @@ export function generateIcs(picks: { show: Show; perf: Show['perfs'][number] }[]
   for (const { show, perf } of picks) {
     if (perf.status !== 'active') continue;
 
-    const startH = Math.floor(perf.start / 60);
-    const startM = perf.start % 60;
-    const endMins = perf.end >= 1440 ? perf.end - 1440 : perf.end;
-    const endH = Math.floor(endMins / 60);
-    const endMm = endMins % 60;
-
-    const dtStart = perf.day.replace(/-/g, '') + 'T' + String(startH).padStart(2, '0') + String(startM).padStart(2, '0') + '00';
-    const dtEnd = perf.day.replace(/-/g, '') + 'T' + String(endH).padStart(2, '0') + String(endMm).padStart(2, '0') + '00';
+    // transform.ts encodes an end past midnight as `end += 1440`, so the end
+    // minutes have to carry their day with them: subtracting 1440 while
+    // keeping perf.day writes a DTEND 23 hours before its own DTSTART, which
+    // calendars either reject or draw as a negative-duration event.
+    const endDayOffset = Math.floor(perf.end / 1440);
+    const dtStart = stamp(perf.day, perf.start);
+    const dtEnd = stamp(addDays(perf.day, endDayOffset), perf.end - endDayOffset * 1440);
 
     const summary = `${show.title}`;
     const location = show.venueAddress ? `${show.venue}, ${show.venueAddress}` : show.venue;
