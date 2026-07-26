@@ -1,6 +1,6 @@
 .filter-bar {
   position: relative;
-  z-index: 10;
+  z-index: 15;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
