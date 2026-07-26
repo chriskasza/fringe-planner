@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { TIME_BUCKETS } from '../../lib/dates';
 import { CheckboxRow } from '../ui/CheckboxRow';
 import { SegmentedControl } from '../ui/SegmentedControl';
-import { activeFilterCount, summarizeCount, summarizeLabelled } from './filterSummary';
+import { activeFilterCount, summarizeCount, summarizeLabelled, summarizeSelected } from './filterSummary';
 import { useFilterOptions } from './useFilterOptions';
 import './MobileFiltersPanel.css';
 
@@ -195,7 +195,7 @@ export function MobileFiltersPanel({ view }: MobileFiltersPanelProps) {
             <div className="mobile-filters-section__header">
               <span className="mobile-filters-section__label">Shows</span>
               <span className="mobile-filters-section__value">
-                {includedCount}/{shows.length}
+                {summarizeSelected(includedCount, shows.length)}
               </span>
             </div>
             <input

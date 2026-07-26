@@ -5,7 +5,7 @@ import { FilterButton } from '../ui/FilterButton';
 import { Dropdown } from '../ui/Dropdown';
 import { CheckboxRow } from '../ui/CheckboxRow';
 import { SegmentedControl } from '../ui/SegmentedControl';
-import { summarizeCount, summarizeLabelled } from './filterSummary';
+import { summarizeCount, summarizeLabelled, summarizeSelected } from './filterSummary';
 import { useFilterOptions } from './useFilterOptions';
 import './FilterBar.css';
 
@@ -190,7 +190,7 @@ export function FilterBar({ view, visibleCount, countLabel, rightExtra }: Filter
       <div className="filter-bar__item">
         <FilterButton
           label="Shows"
-          value={`${includedCount}/${shows.length}`}
+          value={summarizeSelected(includedCount, shows.length)}
           active={includedCount !== shows.length}
           onClick={() => toggleMenu('shows')}
         />
