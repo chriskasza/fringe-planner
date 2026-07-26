@@ -1,22 +1,32 @@
+import type { ReactNode } from 'react';
 import { useApp } from '../../state/AppContext';
 import { onNowCount } from '../../lib/derived';
 import './TopBar.css';
 
-export function TopBar() {
+type TopBarProps = {
+  compact?: boolean;
+  rightExtra?: ReactNode;
+};
+
+export function TopBar({ compact = false, rightExtra }: TopBarProps) {
   const { state, dispatch, shows } = useApp();
   const onNow = onNowCount(shows);
 
   return (
-    <div className="topbar">
+    <div className={`topbar ${compact ? 'topbar--compact' : ''}`}>
       <div className="topbar__brand">
-        <span className="topbar__wordmark">HALIFAX FRINGE</span>
-        <span className="topbar__tagline">SHOW SELECTOR · 2026</span>
+        {/* Collapsed to initials on mobile so Filters + My Fringe both fit on one line. */}
+        <span className="topbar__wordmark">{compact ? 'HF' : 'HALIFAX FRINGE'}</span>
+        {!compact && <span className="topbar__tagline">SHOW SELECTOR · 2026</span>}
       </div>
       <div className="topbar__right">
-        <span className="topbar__onnow">
-          <span className="topbar__onnow-dot" />
-          ON NOW: {onNow} SHOW{onNow === 1 ? '' : 'S'}
-        </span>
+        {!compact && (
+          <span className="topbar__onnow">
+            <span className="topbar__onnow-dot" />
+            ON NOW: {onNow} SHOW{onNow === 1 ? '' : 'S'}
+          </span>
+        )}
+        {rightExtra}
         <button
           type="button"
           className="topbar__myfringe"

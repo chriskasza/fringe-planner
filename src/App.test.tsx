@@ -1,45 +1,65 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, fireEvent, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import App from './App';
 import { LABEL_WIDTH } from './components/GridPlanner/gridLayout';
 
+// The mobile Grid Planner reuses the same components as desktop (shared
+// wordmark, grid blocks, badges, etc.), both rendered at once and toggled
+// via a CSS media query - so tests about desktop-specific behavior need to
+// scope their queries to the desktop tree, not the whole document.
+function desktopEl(): HTMLElement {
+  return document.querySelector('.grid-planner-responsive__desktop') as HTMLElement;
+}
+
+function desktop() {
+  return within(desktopEl());
+}
+
+function mobileEl(): HTMLElement {
+  return document.querySelector('.grid-planner-responsive__mobile') as HTMLElement;
+}
+
+function mobile() {
+  return within(mobileEl());
+}
+
 describe('App (Grid Planner)', () => {
   it('renders without throwing and shows the wordmark', () => {
     render(<App />);
-    expect(screen.getByText('HALIFAX FRINGE')).toBeInTheDocument();
+    expect(desktop().getByText('HALIFAX FRINGE')).toBeInTheDocument();
   });
 
   it('renders a day strip with 11 festival days', () => {
     render(<App />);
-    expect(screen.getAllByText(/shows$/).length).toBe(11);
+    expect(desktop().getAllByText(/shows$/).length).toBe(11);
   });
 
   it('renders grid blocks for the selected day and toggling a pick updates the My Fringe counter', () => {
     render(<App />);
-    const badgeBefore = screen.getByText('0');
+    const badgeBefore = desktop().getByText('0');
     expect(badgeBefore).toBeInTheDocument();
 
-    const blocks = document.querySelectorAll('.grid-block');
+    const blocks = desktopEl().querySelectorAll('.grid-block');
     expect(blocks.length).toBeGreaterThan(0);
 
     fireEvent.click(blocks[0]);
 
     // Badge should now read 1
-    expect(screen.getByText('1')).toBeInTheDocument();
+    expect(desktop().getByText('1')).toBeInTheDocument();
   });
 
   it('opens the detail panel when the info button is clicked, without also toggling the pick', () => {
     render(<App />);
-    const infoButtons = screen.getAllByRole('button', { name: /Details for/ });
+    const infoButtons = desktop().getAllByRole('button', { name: /Details for/ });
     expect(infoButtons.length).toBeGreaterThan(0);
 
     fireEvent.click(infoButtons[0]);
 
     expect(document.querySelector('.detail-panel')).toBeInTheDocument();
     // stopPropagation means the pick count should still be 0
-    expect(screen.getByText('0')).toBeInTheDocument();
+    expect(desktop().getByText('0')).toBeInTheDocument();
   });
 
   it('positions a 3:30pm show under the 3:30pm column, not shifted a slot late', () => {
@@ -49,7 +69,9 @@ describe('App (Grid Planner)', () => {
     // (see next test) - Sep 3's earliest active performance is 14:00 (840 min):
     // left = (930-840)/30 * 140 + 4 = 424px, width = (60/30) * 140 - 8 = 272px.
     render(<App />);
-    const blocks = screen.getAllByTitle('APPLES! as told by an expert').map((el) => el.closest('.grid-block') as HTMLElement);
+    const blocks = desktop()
+      .getAllByTitle('APPLES! as told by an expert')
+      .map((el) => el.closest('.grid-block') as HTMLElement);
     const block = blocks.find((b) => b.textContent?.includes('3:30 PM'));
     expect(block).toBeDefined();
     expect(block!.style.left).toBe('424px');
@@ -64,9 +86,7 @@ describe('App (Grid Planner)', () => {
     // first cell. Pixel-based left/width handles any start time:
     // left = (1185-840)/30 * 140 + 4 = 1614px.
     render(<App />);
-    // Both the desktop grid block and the mobile timeline card render (CSS
-    // media query picks which is visible), so disambiguate to the grid block.
-    const blocks = screen
+    const blocks = desktop()
       .getAllByTitle(/Jackson Elementary/)
       .map((el) => el.closest('.grid-block'))
       .filter((el): el is HTMLElement => el !== null);
@@ -79,7 +99,9 @@ describe('App (Grid Planner)', () => {
     // axis was computed once across every day in the festival (10:30am-10:30pm),
     // wasting most of the grid on hours nothing runs on any given night.
     render(<App />);
-    const headerLabels = Array.from(document.querySelectorAll('.time-header__label')).map((el) => el.textContent);
+    const headerLabels = Array.from(desktopEl().querySelectorAll('.time-header__label')).map(
+      (el) => el.textContent,
+    );
     expect(headerLabels[0]).toBe('2:00 PM');
     expect(headerLabels).not.toContain('10:30 AM');
     expect(headerLabels).not.toContain('11:00 AM');
@@ -92,21 +114,20 @@ describe('App (Grid Planner)', () => {
     // 'Craig in Conversation with God' 20:00-20:45 (20:00-20:15).
     render(<App />);
 
-    // Both the desktop day strip and the mobile day strip render (CSS media
-    // query picks which is visible), so scope to the desktop one.
-    const desktopDayStrip = document.querySelector('.day-strip')!;
-    const sep6Tab = Array.from(desktopDayStrip.querySelectorAll('.day-strip__tab')).find((el) =>
-      el.textContent?.includes('SUN') && el.textContent?.includes('6'),
+    const sep6Tab = Array.from(desktopEl().querySelectorAll('.day-strip__tab')).find(
+      (el) => el.textContent?.includes('SUN') && el.textContent?.includes('6'),
     ) as HTMLElement;
     expect(sep6Tab).toBeDefined();
     fireEvent.click(sep6Tab);
 
-    const normBlocks = screen.getAllByTitle('‘NÔRM(Ə)L').map((el) => el.closest('.grid-block') as HTMLElement);
+    const normBlocks = desktop()
+      .getAllByTitle('‘NÔRM(Ə)L')
+      .map((el) => el.closest('.grid-block') as HTMLElement);
     const normBlock = normBlocks.find((b) => b.textContent?.includes('7:30 PM'));
     expect(normBlock).toBeDefined();
     fireEvent.click(normBlock!);
 
-    const craigBlocks = screen
+    const craigBlocks = desktop()
       .getAllByTitle('Craig in Conversation with God')
       .map((el) => el.closest('.grid-block') as HTMLElement);
     const craigBlock = craigBlocks.find((b) => b.textContent?.includes('8:00 PM'));
@@ -123,11 +144,11 @@ describe('App (Grid Planner)', () => {
     // shows don't visually overlap.
     render(<App />);
 
-    const peakTwins = screen
+    const peakTwins = desktop()
       .getAllByTitle('Peak Twins')
       .map((el) => el.closest('.grid-block'))
       .filter((el): el is HTMLElement => el !== null);
-    const puttPutt = screen
+    const puttPutt = desktop()
       .getAllByTitle('Putt Putt Punishment')
       .map((el) => el.closest('.grid-block'))
       .filter((el): el is HTMLElement => el !== null);
@@ -145,21 +166,26 @@ describe('App (Grid Planner)', () => {
     // Regression test: padding on .grid-body__scroll doesn't clip content, so
     // a block scrolled to that position rendered visibly to the left of the
     // sticky venue label, in the gap the label's background didn't cover.
-    // The grid-template-columns width (checked here) must match LABEL_WIDTH,
-    // and the scroll container must have no left padding of its own.
+    // The rendered grid-template-columns (label width + 1fr) must match
+    // LABEL_WIDTH on desktop, and the scroll container must have no left
+    // padding of its own.
+    render(<App />);
+    expect(LABEL_WIDTH).toBe(176);
+
+    const timeHeader = desktopEl().querySelector('.time-header') as HTMLElement;
+    expect(timeHeader.style.gridTemplateColumns).toBe(`${LABEL_WIDTH}px 1fr`);
+
     const css = readFileSync(
       resolve(process.cwd(), 'src/components/GridPlanner/GridPlanner.css'),
       'utf8',
     );
-    expect(LABEL_WIDTH).toBe(176);
-    expect(css).toMatch(new RegExp(`grid-template-columns:\\s*${LABEL_WIDTH}px 1fr`));
     expect(css).toMatch(/\.grid-body__scroll\s*{[^}]*padding:\s*0 26px 0 0/);
   });
 
   it('sizes the time header and every venue row to the same explicit width, so borders span the full scrollable grid', () => {
     render(<App />);
-    const timeHeader = document.querySelector('.time-header') as HTMLElement;
-    const venueRows = Array.from(document.querySelectorAll('.venue-row')) as HTMLElement[];
+    const timeHeader = desktopEl().querySelector('.time-header') as HTMLElement;
+    const venueRows = Array.from(desktopEl().querySelectorAll('.venue-row')) as HTMLElement[];
     expect(venueRows.length).toBeGreaterThan(0);
 
     const headerWidth = timeHeader.style.width;
@@ -167,5 +193,92 @@ describe('App (Grid Planner)', () => {
     for (const row of venueRows) {
       expect(row.style.width).toBe(headerWidth);
     }
+  });
+
+  it('pins the time header to the top of the grid scroll area and bounds the app to the viewport', () => {
+    // Only .grid-body__scroll should scroll vertically - the top bar, day
+    // strip, filter bar, and time header all stay put, with the time header
+    // specifically sticky at the top of the scroll area (the vertical
+    // counterpart to the venue-label's horizontal sticky).
+    const gridCss = readFileSync(
+      resolve(process.cwd(), 'src/components/GridPlanner/GridPlanner.css'),
+      'utf8',
+    );
+    expect(gridCss).toMatch(/\.time-header\s*{[^}]*position:\s*sticky;[^}]*top:\s*0;/);
+
+    const globalCss = readFileSync(resolve(process.cwd(), 'src/styles/global.css'), 'utf8');
+    expect(globalCss).toMatch(/html,\s*\n?\s*body,\s*\n?\s*#root\s*{[^}]*height:\s*100%/);
+    expect(globalCss).toMatch(/body\s*{[^}]*overflow:\s*hidden/);
+  });
+});
+
+describe('App (mobile Grid Planner)', () => {
+  it('shows the app initials (not the selected date) alongside Filters and My Fringe on one row', () => {
+    // Collapsed to "HF" (not the full "HALIFAX FRINGE") specifically so
+    // title + Filters + My Fringe all fit on the same line on a phone.
+    render(<App />);
+    expect(mobile().queryByText('HALIFAX FRINGE')).not.toBeInTheDocument();
+    expect(mobile().getByText('HF')).toBeInTheDocument();
+
+    const topbar = mobileEl().querySelector('.topbar') as HTMLElement;
+    expect(within(topbar).getByRole('button', { name: /^Filters/ })).toBeInTheDocument();
+    expect(within(topbar).getByRole('button', { name: /My Fringe/ })).toBeInTheDocument();
+  });
+
+  it('hides per-day show counts on the day strip', () => {
+    render(<App />);
+    expect(mobile().queryAllByText(/shows$/).length).toBe(0);
+  });
+
+  it('opens the consolidated filters panel from a single Filters button', () => {
+    render(<App />);
+    expect(document.querySelector('.mobile-filters-overlay')).not.toBeInTheDocument();
+
+    fireEvent.click(mobile().getByRole('button', { name: /^Filters/ }));
+
+    const overlay = document.querySelector('.mobile-filters-overlay');
+    expect(overlay).toBeInTheDocument();
+    // All six filter sections should be present in one panel.
+    for (const label of ['Day', 'Time', 'Venue', 'Age & content', 'Clashes', 'Shows']) {
+      expect(within(overlay as HTMLElement).getByText(label)).toBeInTheDocument();
+    }
+  });
+
+  it('reuses the same grid blocks as desktop, including pick-toggle and the info button', () => {
+    render(<App />);
+    const blocks = mobileEl().querySelectorAll('.grid-block');
+    expect(blocks.length).toBeGreaterThan(0);
+
+    fireEvent.click(blocks[0]);
+    expect(mobile().getByText('1')).toBeInTheDocument();
+
+    const infoButtons = mobile().getAllByRole('button', { name: /Details for/ });
+    fireEvent.click(infoButtons[0]);
+    expect(document.querySelector('.detail-panel')).toBeInTheDocument();
+  });
+
+  it('uses a narrower venue column with no address line, clamped to 3 lines', () => {
+    render(<App />);
+    const label = mobileEl().querySelector('.venue-row__label') as HTMLElement;
+    expect(label.className).toContain('venue-row__label--compact');
+    expect(mobileEl().querySelector('.venue-row__address')).not.toBeInTheDocument();
+
+    const timeHeader = mobileEl().querySelector('.time-header') as HTMLElement;
+    expect(timeHeader.style.gridTemplateColumns).toMatch(/^\d+px 1fr$/);
+    expect(timeHeader.style.gridTemplateColumns).not.toBe(`${LABEL_WIDTH}px 1fr`);
+
+    const css = readFileSync(
+      resolve(process.cwd(), 'src/components/GridPlanner/GridPlanner.css'),
+      'utf8',
+    );
+    expect(css).toMatch(/\.venue-row__name--compact\s*{[^}]*-webkit-line-clamp:\s*3;/);
+  });
+
+  it('hides the grid legend on narrow phones (under ~520px)', () => {
+    const css = readFileSync(
+      resolve(process.cwd(), 'src/components/GridPlanner/GridPlanner.css'),
+      'utf8',
+    );
+    expect(css).toMatch(/@media \(max-width:\s*520px\)\s*{\s*\.grid-body__legend\s*{\s*display:\s*none;/);
   });
 });

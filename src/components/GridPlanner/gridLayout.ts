@@ -17,6 +17,11 @@ export const SLOT_WIDTH = 140;
 // anything to show through.
 export const LABEL_WIDTH = 176;
 
+// Mobile's narrower venue column: no address line, so the venue name gets a
+// 3-line clamp instead, and needs less width than the desktop version. Gutter
+// shrinks to 14px to match the tighter mobile spacing scale.
+export const MOBILE_LABEL_WIDTH = 112;
+
 // Bounds are computed per day, not once across the whole festival - most
 // nights start well after 10:30am and end well before 10:30pm, and showing
 // that full range every day would waste most of the grid on empty columns

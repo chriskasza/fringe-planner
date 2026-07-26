@@ -7,6 +7,19 @@
   flex-direction: column;
 }
 
+/* No room for a 318px side panel on a 390px frame - full-screen overlay
+   instead, matching the mobile filters sheet's overlay pattern. */
+@media (max-width: 700px) {
+  .detail-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    width: auto;
+    border-left: none;
+    border-top: 1px solid var(--gold);
+  }
+}
+
 .detail-panel__image {
   position: relative;
   height: 186px;
@@ -37,6 +50,8 @@
 }
 
 .detail-panel__body {
+  flex: 1;
+  min-height: 0;
   padding: 20px;
   display: flex;
   flex-direction: column;

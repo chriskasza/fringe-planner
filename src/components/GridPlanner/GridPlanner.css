@@ -1,3 +1,19 @@
+/* The app is a fixed-viewport shell (see #root in global.css) - everything
+   down to .grid-body__scroll just passes its full height along so that
+   final element is the only thing that actually scrolls vertically. */
+.grid-planner-responsive {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-planner-responsive__desktop {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
 .grid-planner-responsive__mobile {
   display: none;
 }
@@ -7,11 +23,15 @@
     display: none;
   }
   .grid-planner-responsive__mobile {
-    display: block;
+    flex: 1;
+    min-height: 0;
+    display: flex;
   }
 }
 
 .grid-planner {
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   background: var(--ink);
@@ -19,13 +39,15 @@
   overflow: hidden;
   box-shadow: var(--shadow-frame);
   max-width: 1500px;
+  width: 100%;
   margin: 0 auto;
 }
 
 .grid-planner__content {
+  flex: 1;
+  min-height: 0;
   display: flex;
   align-items: stretch;
-  min-height: 0;
 }
 
 .grid-body {
@@ -46,15 +68,17 @@
   flex-wrap: wrap;
 }
 
-/* Only the time axis + venue rows scroll horizontally - the heading above
-   stays put. Right padding gives a trailing gutter after the last column;
-   there's deliberately no left padding here - see LABEL_WIDTH in
-   gridLayout.ts for why that gutter has to live inside the sticky label's
-   own box instead (padding on a scroll container doesn't clip content, so a
-   scrolled block would render right into an unsticky-covered left gutter). */
+/* This is the only element that scrolls, in either direction - the heading
+   above stays put, and .time-header stays pinned to its top edge (below) as
+   venue rows scroll past underneath it. Right padding gives a trailing
+   gutter after the last column; there's deliberately no left padding here -
+   see LABEL_WIDTH in gridLayout.ts for why that gutter has to live inside
+   the sticky label's own box instead (padding on a scroll container doesn't
+   clip content, so a scrolled block would render right into an
+   unsticky-covered left gutter). */
 .grid-body__scroll {
   flex: 1;
-  overflow-x: auto;
+  overflow: auto;
   padding: 0 26px 0 0;
   min-height: 0;
 }
@@ -74,6 +98,14 @@
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--text-2);
+}
+
+/* No room for the legend text on a narrow phone - the states are still
+   distinguishable by color/border alone once the block itself is visible. */
+@media (max-width: 520px) {
+  .grid-body__legend {
+    display: none;
+  }
 }
 
 .grid-body__legend-item {
@@ -109,10 +141,10 @@
 .time-header,
 .venue-row {
   display: grid;
-  /* Explicit pixel width set inline (label + track) - not `1fr`/`auto`, which
-     can only size within whatever space this block box's container already
-     gives it. 176px must match LABEL_WIDTH in gridLayout.ts. */
-  grid-template-columns: 176px 1fr;
+  /* Explicit pixel width AND grid-template-columns set inline per instance
+     (label width varies - narrower on mobile, see LABEL_WIDTH/
+     MOBILE_LABEL_WIDTH in gridLayout.ts) - not `1fr`/`auto`, which can only
+     size within whatever space this block box's container already gives it. */
   /* `isolation: isolate` gives this row its own stacking context, so the
      sticky label's z-index is only ever compared against this row's own
      track/blocks - no ambiguity from sibling rows or ancestor context. */
@@ -123,6 +155,13 @@
 
 .time-header {
   border-bottom: 1px solid var(--line-soft);
+  /* Pinned to the top of .grid-body__scroll as venue rows scroll past
+     underneath it - the vertical counterpart to the venue-label's
+     horizontal sticky. z-index above .venue-row (which has none set, so
+     defaults to 0 within this same isolated-per-row stacking arrangement). */
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .time-header__track {
@@ -174,11 +213,27 @@
   box-shadow: 4px 0 6px -4px rgba(0, 0, 0, 0.4);
 }
 
+/* Mobile: narrower column (MOBILE_LABEL_WIDTH), tighter gutter to match. */
+.venue-row__label--compact {
+  padding: 0 8px 0 14px;
+}
+
 .venue-row__name {
   font-family: var(--font-body);
   font-weight: 700;
   font-size: 13px;
   color: var(--cream);
+}
+
+/* Mobile: no room for the address line, so the name gets the space instead -
+   clamped to 3 lines with an ellipsis rather than overflowing the row. */
+.venue-row__name--compact {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+  line-height: 1.25;
 }
 
 .venue-row__address {

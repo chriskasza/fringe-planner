@@ -1,12 +1,17 @@
 import { useMemo } from 'react';
 import { useApp } from '../../state/AppContext';
 import { visible } from '../../lib/derived';
-import { gridTimeBounds } from './gridLayout';
+import { gridTimeBounds, LABEL_WIDTH } from './gridLayout';
 import { TimeHeader } from './TimeHeader';
 import { VenueRow } from './VenueRow';
 import type { Show } from '../../lib/types';
 
-export function GridBody() {
+type GridBodyProps = {
+  labelWidth?: number;
+  compact?: boolean;
+};
+
+export function GridBody({ labelWidth = LABEL_WIDTH, compact = false }: GridBodyProps) {
   const { state, shows, days } = useApp();
   const { startMin, slots } = useMemo(
     () => gridTimeBounds(shows, state.gridDay),
@@ -51,7 +56,7 @@ export function GridBody() {
         <div className="grid-body__empty">No shows on this day match the current filters.</div>
       ) : (
         <div className="grid-body__scroll">
-          <TimeHeader slots={slots} />
+          <TimeHeader slots={slots} labelWidth={labelWidth} />
           {byVenue.map(([venue, entries]) => (
             <VenueRow
               key={venue}
@@ -60,6 +65,8 @@ export function GridBody() {
               entries={entries}
               slots={slots}
               gridStartMin={startMin}
+              labelWidth={labelWidth}
+              compact={compact}
             />
           ))}
         </div>

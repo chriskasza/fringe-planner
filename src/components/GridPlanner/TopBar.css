@@ -7,6 +7,10 @@
   border-bottom: 1px solid var(--line);
 }
 
+.topbar--compact {
+  padding: 14px 18px;
+}
+
 .topbar__brand {
   display: flex;
   flex-direction: column;
@@ -20,6 +24,15 @@
   color: var(--cream);
 }
 
+.topbar--compact .topbar__wordmark {
+  font-size: 17px;
+}
+
+.topbar--compact .topbar__myfringe {
+  padding: 7px 13px;
+  font-size: 12px;
+}
+
 .topbar__tagline {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -31,6 +44,10 @@
   display: flex;
   align-items: center;
   gap: 14px;
+}
+
+.topbar--compact .topbar__right {
+  gap: 8px;
 }
 
 .topbar__onnow {

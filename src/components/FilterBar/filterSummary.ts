@@ -24,6 +24,30 @@ export function summarizeCount(onMap: Record<string, boolean>, allKeys: string[]
   return String(selected);
 }
 
+// Single number for the mobile "Filters · N" button - counts every switched-
+// off day/time/venue/rating, every excluded show, plus clash mode and search
+// query if they're off their defaults.
+export function activeFilterCount(args: {
+  daysOn: Record<string, boolean>;
+  timeBucketsOn: Record<string, boolean>;
+  venuesOn: Record<string, boolean>;
+  ratingsOn: Record<string, boolean>;
+  excluded: Record<string, boolean>;
+  clash: string;
+  query: string;
+}): number {
+  const countOff = (map: Record<string, boolean>) => Object.values(map).filter((v) => v === false).length;
+  return (
+    countOff(args.daysOn) +
+    countOff(args.timeBucketsOn) +
+    countOff(args.venuesOn) +
+    countOff(args.ratingsOn) +
+    Object.values(args.excluded).filter(Boolean).length +
+    (args.clash !== 'all' ? 1 : 0) +
+    (args.query.trim() ? 1 : 0)
+  );
+}
+
 const RATING_ORDER = ['All', '5+', '8+', '12+', '14+', '16+', '18+', 'NOT RATED'];
 
 export function sortRatings(ratings: string[]): string[] {

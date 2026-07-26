@@ -1,13 +1,12 @@
-import { useEffect, useMemo, useRef } from 'react';
-import { useApp } from '../../state/AppContext';
+import { useEffect, useRef } from 'react';
 import { TIME_BUCKETS } from '../../lib/dates';
-import { matchesQuery } from '../../lib/derived';
 import type { MenuKey } from '../../lib/types';
 import { FilterButton } from '../ui/FilterButton';
 import { Dropdown } from '../ui/Dropdown';
 import { CheckboxRow } from '../ui/CheckboxRow';
 import { SegmentedControl } from '../ui/SegmentedControl';
-import { summarizeCount, summarizeLabelled, sortRatings } from './filterSummary';
+import { summarizeCount, summarizeLabelled } from './filterSummary';
+import { useFilterOptions } from './useFilterOptions';
 import './FilterBar.css';
 
 type FilterBarProps = {
@@ -18,7 +17,23 @@ type FilterBarProps = {
 };
 
 export function FilterBar({ view, visibleCount, countLabel, rightExtra }: FilterBarProps) {
-  const { state, dispatch, shows, days } = useApp();
+  const {
+    state,
+    dispatch,
+    shows,
+    days,
+    dayKeys,
+    dayLabelFor,
+    timeKeys,
+    timeLabelFor,
+    venues,
+    venueKeys,
+    ratings,
+    ratingKeys,
+    showsMatching,
+    includedCount,
+    resetAll,
+  } = useFilterOptions();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const openMenu = state.openMenu[view];
@@ -34,39 +49,8 @@ export function FilterBar({ view, visibleCount, countLabel, rightExtra }: Filter
     return () => document.removeEventListener('mousedown', onMouseDown, true);
   }, [dispatch]);
 
-  const dayKeys = useMemo(() => days.map((d) => d.key), [days]);
-  const dayLabelFor = (key: string) => days.find((d) => d.key === key)?.label.toUpperCase() ?? key;
-
-  const timeKeys = useMemo(() => TIME_BUCKETS.map((b) => b.key), []);
-  const timeLabelFor = (key: string) => TIME_BUCKETS.find((b) => b.key === key)?.label ?? key;
-
-  const venues = useMemo(() => {
-    const counts = new Map<string, number>();
-    for (const s of shows) counts.set(s.venue, (counts.get(s.venue) ?? 0) + 1);
-    return [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0]));
-  }, [shows]);
-  const venueKeys = useMemo(() => venues.map(([v]) => v), [venues]);
-
-  const ratings = useMemo(() => {
-    const counts = new Map<string, number>();
-    for (const s of shows) counts.set(s.rating, (counts.get(s.rating) ?? 0) + 1);
-    return sortRatings([...counts.keys()]).map((r) => [r, counts.get(r) ?? 0] as const);
-  }, [shows]);
-  const ratingKeys = useMemo(() => ratings.map(([r]) => r), [ratings]);
-
-  const showsSorted = useMemo(() => [...shows].sort((a, b) => a.title.localeCompare(b.title)), [shows]);
-  const showsMatching = useMemo(
-    () => showsSorted.filter((s) => matchesQuery(s, state.query)),
-    [showsSorted, state.query],
-  );
-  const includedCount = shows.filter((s) => !state.excluded[s.id]).length;
-
   function toggleMenu(menu: MenuKey) {
     dispatch({ type: 'SET_OPEN_MENU', view, menu: openMenu === menu ? null : menu });
-  }
-
-  function resetAll() {
-    dispatch({ type: 'RESET_ALL_FILTERS', days: dayKeys, venues: venueKeys, ratings: ratingKeys });
   }
 
   return (

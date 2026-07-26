@@ -1,181 +1,44 @@
+/* Mirrors the desktop .grid-planner height chain (see GridPlanner.css) -
+   only .grid-body__scroll (inside .grid-planner-mobile__content) actually
+   scrolls; everything above it here stays fixed. */
 .grid-planner-mobile {
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  width: 390px;
-  max-width: 100%;
-  margin: 0 auto;
   background: var(--ink);
-  border-radius: var(--r-frame-mobile);
-  overflow: hidden;
-  box-shadow: var(--shadow-frame);
+  width: 100%;
 }
 
-.gpm-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 18px;
-  background: var(--ink-sunken);
-  border-bottom: 1px solid var(--line);
-}
-
-.gpm-topbar__day {
-  font-family: var(--font-display);
-  font-size: 16px;
-  color: var(--cream);
-}
-
-.gpm-topbar__filters {
-  font-family: var(--font-mono);
+/* Tighter than the default so title + Filters + My Fringe all fit one line. */
+.topbar--compact .mobile-filters-button {
+  padding: 7px 11px;
   font-size: 11px;
-  color: var(--gold);
 }
 
-.gpm-daystrip {
-  display: flex;
-  overflow-x: auto;
-  background: var(--ink-sunken);
-  border-bottom: 1px solid var(--line);
-}
-
-.gpm-daystrip__tab {
+.grid-planner-mobile__content {
   flex: 1;
-  min-width: 52px;
+  min-height: 0;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  padding: 10px 6px;
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
 }
 
-.gpm-daystrip__tab--selected {
-  border-bottom-color: var(--gold);
-  background: var(--ink-raised);
+.grid-planner-mobile__content .grid-body {
+  padding-top: 14px;
 }
 
-.gpm-daystrip__dow {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  color: var(--text-mute);
+.grid-planner-mobile__content .grid-body__heading {
+  padding: 0 14px 10px;
 }
 
-.gpm-daystrip__num {
-  font-family: var(--font-display);
-  font-size: 14px;
-  color: var(--cream);
+.grid-planner-mobile__content .grid-body__scroll {
+  padding: 0 14px 0 0;
 }
 
-.gpm-timeline {
-  flex: 1;
-  overflow-y: auto;
+.grid-planner-mobile__content .grid-body__day-title {
+  font-size: 18px;
 }
 
-.gpm-timeline__row {
-  display: flex;
-  border-bottom: 1px solid var(--line-soft);
-}
-
-.gpm-timeline__gutter {
-  width: 72px;
-  flex: none;
-  padding: 12px 10px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--gold);
-  border-right: 1px solid var(--line-soft);
-}
-
-.gpm-timeline__cards {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 12px 14px;
-}
-
-.timeline-card {
-  padding: 10px 12px;
-  border-radius: var(--r-block);
-  cursor: pointer;
-  min-height: 44px;
-}
-
-.timeline-card--free {
-  background: var(--ink-raised);
-  border: 1px solid var(--line);
-}
-
-.timeline-card--clash {
-  background: var(--ink-raised);
-  border: 1px solid var(--coral-border);
-  border-left-width: 3px;
-  border-left-color: var(--coral);
-}
-
-.timeline-card--picked {
-  background: var(--gold);
-  border: 1px solid var(--gold);
-  color: var(--ink);
-}
-
-.timeline-card--picked-clash {
-  background: var(--gold);
-  border: 1px solid var(--coral);
-  border-left-width: 6px;
-  color: var(--ink);
-}
-
-.timeline-card__top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.timeline-card__title {
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 14px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  overflow: hidden;
-}
-
-.timeline-card__meta {
-  font-family: var(--font-mono);
+.grid-planner-mobile__content .grid-body__legend {
+  gap: 10px;
   font-size: 10px;
-  opacity: 0.85;
-}
-
-.gpm-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 18px;
-  background: var(--ink-sunken);
-  border-top: 1px solid var(--line);
-}
-
-.gpm-footer__starred {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text-2);
-}
-
-.gpm-footer__myfringe {
-  padding: 10px 18px;
-  border: none;
-  border-radius: var(--r-pill);
-  background: var(--gold);
-  color: var(--ink);
-  font-weight: 700;
-  font-size: 13px;
-  text-transform: uppercase;
-  cursor: pointer;
 }

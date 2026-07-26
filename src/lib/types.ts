@@ -103,7 +103,10 @@ export type ViewMode = 'grid' | 'cards';
 // without pretending to more precision than the design calls for ("EVENING").
 export type TimeBucket = 'morning' | 'afternoon' | 'evening' | 'late';
 
-export type MenuKey = 'day' | 'time' | 'venue' | 'age' | 'clash' | 'shows' | null;
+// 'all' is the mobile consolidated filters panel (Day/Time/Venue/Age/
+// Clashes/Shows stacked in one sheet, rather than desktop's five separate
+// dropdowns) - stored in the same per-view openMenu slot as the others.
+export type MenuKey = 'day' | 'time' | 'venue' | 'age' | 'clash' | 'shows' | 'all' | null;
 
 // Which show and which specific performance opened the detail panel - the
 // panel's TIME/VENUE/LENGTH fields describe this one performance, and every
