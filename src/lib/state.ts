@@ -1,6 +1,6 @@
 import { TIME_BUCKETS } from './dates';
 import { perfKey } from './derived';
-import type { ClashMode, Day, DayKey, MenuKey, PerfKey, Show, TimeBucket, ViewMode } from './types';
+import type { ClashMode, Day, DayKey, DetailTarget, MenuKey, PerfKey, Show, TimeBucket, ViewMode } from './types';
 
 export type AppState = {
   picked: Set<PerfKey>;
@@ -15,7 +15,8 @@ export type AppState = {
   gridDay: DayKey;
   openMenu: { grid: MenuKey; cards: MenuKey };
   expanded: Record<string, boolean>; // showId -> time list expanded
-  detail: string | null; // showId
+  detail: DetailTarget | null;
+  syncOpen: boolean;
 };
 
 export function createInitialState(days: Day[], shows: Show[]): AppState {
@@ -51,6 +52,7 @@ export function createInitialState(days: Day[], shows: Show[]): AppState {
     openMenu: { grid: null, cards: null },
     expanded: {},
     detail: null,
+    syncOpen: false,
   };
 }
 
@@ -75,7 +77,8 @@ export type AppAction =
   | { type: 'SET_OPEN_MENU'; view: 'grid' | 'cards'; menu: MenuKey }
   | { type: 'CLOSE_MENUS' }
   | { type: 'TOGGLE_EXPANDED'; showId: string }
-  | { type: 'SET_DETAIL'; showId: string | null }
+  | { type: 'SET_DETAIL'; detail: DetailTarget | null }
+  | { type: 'SET_SYNC_OPEN'; open: boolean }
   | { type: 'RESET_ALL_FILTERS'; days: DayKey[]; venues: string[]; ratings: string[] };
 
 function toggleSet(set: Set<PerfKey>, key: PerfKey): Set<PerfKey> {
@@ -182,7 +185,10 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       };
 
     case 'SET_DETAIL':
-      return { ...state, detail: action.showId };
+      return { ...state, detail: action.detail };
+
+    case 'SET_SYNC_OPEN':
+      return { ...state, syncOpen: action.open };
 
     case 'RESET_ALL_FILTERS': {
       const daysOn: Record<DayKey, boolean> = {};

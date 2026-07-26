@@ -1,0 +1,129 @@
+.filter-bar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 15px 26px;
+  border-bottom: 1px solid var(--line);
+}
+
+.filter-bar__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-mute);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+
+.filter-bar__item {
+  position: relative;
+}
+
+.filter-bar__reset {
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--text-mute);
+  color: var(--text-mute);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 2px 0;
+}
+
+.filter-bar__reset:hover {
+  color: var(--cream);
+  border-color: var(--cream);
+}
+
+.filter-bar__right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  white-space: nowrap;
+}
+
+.filter-bar__shared {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--gold);
+}
+
+.filter-bar__summary {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-mute);
+}
+
+.filter-bar__typeahead {
+  width: 100%;
+  padding: 8px 10px;
+  background: var(--ink-raised);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-block);
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+}
+
+.filter-bar__typeahead::placeholder {
+  color: var(--text-faint);
+}
+
+.filter-bar__typeahead:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+.filter-bar__shows-header {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-mute);
+}
+
+.filter-bar__show-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border-radius: var(--r-cell);
+  cursor: pointer;
+}
+
+.filter-bar__show-row:hover {
+  background: var(--ink-raised);
+}
+
+.filter-bar__show-row--off {
+  opacity: 0.55;
+}
+
+.filter-bar__show-row--off .filter-bar__show-title {
+  color: var(--text-mute);
+}
+
+.filter-bar__show-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.filter-bar__show-title {
+  font-size: 12.5px;
+  color: var(--cream);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.filter-bar__show-meta {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-faint);
+}

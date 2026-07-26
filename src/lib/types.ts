@@ -104,3 +104,8 @@ export type ViewMode = 'grid' | 'cards';
 export type TimeBucket = 'morning' | 'afternoon' | 'evening' | 'late';
 
 export type MenuKey = 'day' | 'time' | 'venue' | 'age' | 'clash' | 'shows' | null;
+
+// Which show and which specific performance opened the detail panel - the
+// panel's TIME/VENUE/LENGTH fields describe this one performance, and every
+// other active performance of the show lists in "Other performances".
+export type DetailTarget = { showId: string; perfKey: PerfKey };

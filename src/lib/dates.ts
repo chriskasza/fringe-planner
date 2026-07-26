@@ -70,6 +70,26 @@ export function timeBucket(minutes: number): TimeBucket {
   return 'late';
 }
 
+// The current instant, read back as Halifax *wall-clock* components via Intl -
+// this is the one safe way to compare "now" against the naive local timestamps
+// in show_times.json without ever parsing a date string by hand.
+export function nowInHalifax(): { date: DayKey; minutes: number } {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Halifax',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  }).formatToParts(new Date());
+
+  const get = (type: string) => parts.find((p) => p.type === type)?.value ?? '00';
+  const date = `${get('year')}-${get('month')}-${get('day')}`;
+  const minutes = minutesFromMidnight(Number(get('hour')), Number(get('minute')));
+  return { date, minutes };
+}
+
 // minutes-from-midnight -> "7:30 PM"
 export function formatTime(minutes: number): string {
   const total = ((minutes % 1440) + 1440) % 1440;

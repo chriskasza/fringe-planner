@@ -1,0 +1,117 @@
+import { useApp } from '../../state/AppContext';
+import { parsePerfKey, perfKey, perfState } from '../../lib/derived';
+import { formatTime } from '../../lib/dates';
+import './DetailPanel.css';
+
+const STATUS_LABEL: Record<string, string> = {
+  picked: 'PICKED',
+  'picked-clash': 'PICKED',
+  clash: 'OVERLAPS',
+  free: 'FREE SLOT',
+};
+
+export function DetailPanel() {
+  const { state, dispatch, shows, days } = useApp();
+  if (!state.detail) return null;
+
+  const show = shows.find((s) => s.id === state.detail!.showId);
+  if (!show) return null;
+
+  const { day: primaryDay, start: primaryStart } = parsePerfKey(state.detail.perfKey);
+  const primaryPerf = show.perfs.find((p) => p.day === primaryDay && p.start === primaryStart);
+  if (!primaryPerf) return null;
+
+  const dayLabel = days.find((d) => d.key === primaryPerf.day)?.label ?? primaryPerf.day;
+  const pState = perfState(show, primaryPerf, state.picked, shows);
+  const isPicked = pState === 'picked' || pState === 'picked-clash';
+
+  const otherPerfs = show.perfs.filter((p) => p.status === 'active' && !(p.day === primaryDay && p.start === primaryStart));
+
+  return (
+    <div className="detail-panel">
+      <div className="detail-panel__image">
+        <span className="detail-panel__image-label">[ SHOW IMAGE ]</span>
+        <button
+          type="button"
+          className="detail-panel__close"
+          onClick={() => dispatch({ type: 'SET_DETAIL', detail: null })}
+          aria-label="Close details"
+        >
+          ×
+        </button>
+      </div>
+
+      <div className="detail-panel__body">
+        <h2 className="detail-panel__title">{show.title}</h2>
+        {show.credits.length > 0 && <div className="detail-panel__credits">{show.credits[0]}</div>}
+
+        <div className="detail-panel__spec">
+          <span className="detail-panel__spec-key">TIME</span>
+          <span className="detail-panel__spec-value">
+            {dayLabel} · {formatTime(primaryPerf.start)}–{formatTime(primaryPerf.end)}
+          </span>
+          <span className="detail-panel__spec-key">VENUE</span>
+          <span className="detail-panel__spec-value">
+            {show.venue}
+            {show.venueAddress ? ` · ${show.venueAddress}` : ''}
+          </span>
+          <span className="detail-panel__spec-key">LENGTH</span>
+          <span className="detail-panel__spec-value">{primaryPerf.mins} min</span>
+          <span className="detail-panel__spec-key">RATING</span>
+          <span className="detail-panel__spec-value">{show.rating}</span>
+        </div>
+
+        <p className="detail-panel__blurb">{show.blurb}</p>
+
+        {show.warnings.length > 0 && (
+          <div className="detail-panel__warnings">
+            {show.warnings.map((w) => (
+              <span key={w} className="detail-panel__warning-chip">
+                {w}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {otherPerfs.length > 0 && (
+          <div className="detail-panel__others">
+            <div className="detail-panel__others-label">OTHER PERFORMANCES</div>
+            {otherPerfs.map((p) => {
+              const key = perfKey(show.id, p.day, p.start);
+              const s = perfState(show, p, state.picked, shows);
+              const label = days.find((d) => d.key === p.day)?.label ?? p.day;
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  className="detail-panel__other-row"
+                  onClick={() => dispatch({ type: 'TOGGLE_PICK', key })}
+                >
+                  <span>
+                    {label} · {formatTime(p.start)}
+                  </span>
+                  <span className={`detail-panel__other-status detail-panel__other-status--${s}`}>
+                    {STATUS_LABEL[s]}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        <div className="detail-panel__footer">
+          <button
+            type="button"
+            className={`detail-panel__primary ${isPicked ? 'detail-panel__primary--remove' : ''}`}
+            onClick={() => dispatch({ type: 'TOGGLE_PICK', key: state.detail!.perfKey })}
+          >
+            {isPicked ? '✓ In My Fringe — remove' : '★ Add to My Fringe'}
+          </button>
+          <a className="detail-panel__tickets" href={show.ticketUrl} target="_blank" rel="noreferrer">
+            Tickets
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -1,4 +1,4 @@
-import { timeBucket } from './dates';
+import { nowInHalifax, timeBucket } from './dates';
 import type { ClashMode, DayKey, PerfKey, Show, TimeBucket } from './types';
 
 export function perfKey(showId: string, day: DayKey, start: number): PerfKey {
@@ -143,4 +143,18 @@ export function matchesQuery(show: Show, query: string): boolean {
 
 export function clashModeLabel(mode: ClashMode): string {
   return mode.toUpperCase();
+}
+
+// Shows currently in progress, for the top bar's "ON NOW" pill.
+export function onNowCount(shows: Show[]): number {
+  const now = nowInHalifax();
+  let count = 0;
+  for (const show of shows) {
+    for (const p of show.perfs) {
+      if (p.status === 'active' && p.day === now.date && p.start <= now.minutes && now.minutes < p.end) {
+        count++;
+      }
+    }
+  }
+  return count;
 }

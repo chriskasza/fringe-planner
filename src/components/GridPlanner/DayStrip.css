@@ -1,0 +1,46 @@
+.day-strip {
+  display: flex;
+  background: var(--ink-sunken);
+  overflow-x: auto;
+}
+
+.day-strip__tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  padding: 14px 18px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+}
+
+.day-strip__tab--selected {
+  background: var(--ink-raised);
+  border-bottom-color: var(--gold);
+}
+
+.day-strip__dow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-mute);
+  letter-spacing: 0.06em;
+}
+
+.day-strip__dow--selected {
+  color: var(--gold);
+}
+
+.day-strip__num {
+  font-family: var(--font-display);
+  font-size: 17px;
+  color: var(--cream);
+}
+
+.day-strip__count {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-faint);
+}
