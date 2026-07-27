@@ -55,6 +55,12 @@
   color: var(--cream);
 }
 
+/* Flush against this button's own border, not offset 2px out like
+   global.css's default :focus-visible outline. */
+.dropdown__footer-btn:focus-visible {
+  outline-offset: 0;
+}
+
 .dropdown__empty {
   font-family: var(--font-mono);
   font-size: 10px;

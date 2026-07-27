@@ -36,3 +36,10 @@
   background: var(--gold);
   color: var(--ink);
 }
+
+/* This option's own selected/hover treatment is enough of a focus cue on
+   its own - global.css's default :focus-visible outline sits offset 2px
+   out, which reads oddly against the segmented track's tight corners. */
+.segmented__option:focus-visible {
+  outline-offset: 0;
+}

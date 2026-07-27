@@ -72,6 +72,12 @@
   cursor: pointer;
 }
 
+/* Flush against this circular button's own border, not offset 2px out
+   like global.css's default :focus-visible outline. */
+.sync-sheet__close:focus-visible {
+  outline-offset: 0;
+}
+
 .sync-sheet__body {
   flex: 1;
   min-height: 0;

@@ -88,6 +88,12 @@
   cursor: pointer;
 }
 
+/* Flush against this pill's own rounded edge, not offset 2px out like
+   global.css's default :focus-visible outline. */
+.topbar__myfringe:focus-visible {
+  outline-offset: 0;
+}
+
 .topbar__badge {
   display: inline-flex;
   align-items: center;

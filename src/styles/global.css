@@ -29,7 +29,7 @@ body {
 
 /* The app is a fixed-viewport shell: chrome (top bar, day strip, filters,
    time header) stays put, and only the grid body scrolls - see
-   .grid-body__scroll in GridPlanner.css. */
+   .grid-body__scroll in GridPlanner.module.css. */
 #root {
   display: flex;
   flex-direction: column;
@@ -55,17 +55,6 @@ input {
 :focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 2px;
-}
-
-/* Override the browser default on elements that carry their own focus style. */
-.segmented__option:focus-visible,
-.topbar__myfringe:focus-visible,
-.filter-bar__reset:focus-visible,
-.dropdown__footer-btn:focus-visible,
-.mobile-filters-sheet__close:focus-visible,
-.mobile-filters-sheet__reset:focus-visible,
-.sync-sheet__close:focus-visible {
-  outline-offset: 0;
 }
 
 ::-webkit-scrollbar {

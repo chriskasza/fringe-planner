@@ -63,6 +63,12 @@
   border-color: var(--cream);
 }
 
+/* No border on this text-only button for the default outline to sit 2px
+   outside of - flush reads better than global.css's default offset. */
+.filter-bar__reset:focus-visible {
+  outline-offset: 0;
+}
+
 .filter-bar__right {
   margin-left: auto;
   display: flex;
