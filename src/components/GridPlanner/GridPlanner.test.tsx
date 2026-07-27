@@ -9,7 +9,7 @@ import { LABEL_WIDTH } from './gridLayout';
 describe('App (Grid Planner)', () => {
   it('renders without throwing and shows the wordmark', () => {
     render(<App />);
-    expect(desktopEl().querySelector('.topbar__wordmark')?.textContent).toBe('Halifax Fringe Planner');
+    expect(desktopEl().querySelector('[data-testid="topbar-wordmark"]')?.textContent).toBe('Halifax Fringe Planner');
   });
 
   it('renders a day strip with 11 festival days', () => {

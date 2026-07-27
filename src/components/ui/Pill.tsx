@@ -1,4 +1,4 @@
-import './Pill.css';
+import styles from './Pill.module.css';
 import type { PerfState } from '../../lib/derived';
 
 type PillProps = {
@@ -12,7 +12,7 @@ export function Pill({ state, children, onClick, ariaLabel }: PillProps) {
   return (
     <button
       type="button"
-      className={`pill pill--${state}`}
+      className={`${styles.pill} ${styles[`pill--${state}`]}`}
       onClick={onClick}
       aria-label={ariaLabel}
     >

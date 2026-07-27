@@ -8,11 +8,11 @@ describe('Day / Time filters gate which shows are browsable', () => {
   // Idempotent - the Day button toggles, and openMenu persists across a
   // view switch, so blindly clicking it can close an already-open menu.
   function openDayMenu() {
-    if (!document.querySelector('.dropdown')) {
-      const browser = within(document.querySelector('.card-browser') as HTMLElement);
+    const browser = within(document.querySelector('.card-browser') as HTMLElement);
+    if (!browser.queryByRole('dialog', { name: 'Day' })) {
       fireEvent.click(browser.getByRole('button', { name: /^Day/ }));
     }
-    return within(document.querySelector('.dropdown') as HTMLElement);
+    return within(browser.getByRole('dialog', { name: 'Day' }));
   }
 
   // Both desktop and mobile trees render simultaneously (CSS media query
@@ -45,7 +45,7 @@ describe('Day / Time filters gate which shows are browsable', () => {
 
     // Clear, then re-enable a single day.
     fireEvent.click(openDayMenu().getByRole('button', { name: /Clear/ }));
-    fireEvent.click(within(document.querySelector('.dropdown') as HTMLElement).getByText('Thu 3 Sep'));
+    fireEvent.click(openDayMenu().getByText('Thu 3 Sep'));
 
     const expected = shows.filter((s) =>
       s.perfs.some((p) => p.status === 'active' && p.day === '2026-09-03'),
@@ -86,9 +86,8 @@ describe('Day / Time filters gate which shows are browsable', () => {
     // Narrow to two days in the Card Browser first.
     switchToCards();
     fireEvent.click(openDayMenu().getByRole('button', { name: /Clear/ }));
-    const menu = () => within(document.querySelector('.dropdown') as HTMLElement);
-    fireEvent.click(menu().getByText('Thu 3 Sep'));
-    fireEvent.click(menu().getByText('Fri 4 Sep'));
+    fireEvent.click(openDayMenu().getByText('Thu 3 Sep'));
+    fireEvent.click(openDayMenu().getByText('Fri 4 Sep'));
     const twoDayCount = cardCount();
     expect(twoDayCount).toBeGreaterThan(0);
 

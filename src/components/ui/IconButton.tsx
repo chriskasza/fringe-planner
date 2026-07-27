@@ -1,4 +1,4 @@
-import './IconButton.css';
+import styles from './IconButton.module.css';
 
 type IconButtonProps = {
   glyph: string;
@@ -6,6 +6,7 @@ type IconButtonProps = {
   ariaLabel: string;
   variant?: 'default' | 'on-gold' | 'star-picked' | 'star-unpicked';
   size?: number;
+  className?: string;
 };
 
 export function IconButton({
@@ -14,11 +15,12 @@ export function IconButton({
   ariaLabel,
   variant = 'default',
   size = 18,
+  className = '',
 }: IconButtonProps) {
   return (
     <button
       type="button"
-      className={`icon-button icon-button--${variant}`}
+      className={`${styles['icon-button']} ${styles[`icon-button--${variant}`]} ${className}`}
       style={{ width: size, height: size }}
       onClick={(e) => {
         e.stopPropagation();

@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import './FilterButton.css';
+import styles from './FilterButton.module.css';
 
 type FilterButtonProps = {
   label: string;
@@ -13,13 +13,13 @@ export const FilterButton = forwardRef<HTMLButtonElement, FilterButtonProps>(
     <button
       ref={ref}
       type="button"
-      className={`filter-button ${active ? 'filter-button--active' : 'filter-button--idle'}`}
+      className={`${styles['filter-button']} ${active ? styles['filter-button--active'] : styles['filter-button--idle']}`}
       onClick={onClick}
     >
-      <span className="filter-button__label">{label}</span>
-      <span className="filter-button__sep"> · </span>
-      <span className="filter-button__value">{value}</span>
-      <span className="filter-button__caret">▾</span>
+      <span className={styles['filter-button__label']}>{label}</span>
+      <span className={styles['filter-button__sep']}> · </span>
+      <span className={styles['filter-button__value']}>{value}</span>
+      <span className={styles['filter-button__caret']}>▾</span>
     </button>
   ),
 );

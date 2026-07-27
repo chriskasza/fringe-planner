@@ -1,8 +1,8 @@
 import { useApp } from '../../state/AppContext';
 import { onNowCount } from '../../lib/derived';
 import { useNow } from '../../lib/useNow';
-import '../ui/SegmentedControl.css';
-import './TopBar.css';
+import segmentedStyles from '../ui/SegmentedControl.module.css';
+import styles from './TopBar.module.css';
 
 type TopBarProps = {
   compact?: boolean;
@@ -25,35 +25,35 @@ export function TopBar({ compact = false }: TopBarProps) {
   const nextView = state.viewMode === 'grid' ? 'cards' : 'grid';
 
   return (
-    <div className={`topbar ${compact ? 'topbar--compact' : ''}`}>
-      <div className="topbar__brand">
+    <div data-testid="topbar" className={`${styles.topbar} ${compact ? styles['topbar--compact'] : ''}`}>
+      <div className={styles['topbar__brand']}>
         {/* "Halifax" drops first (mobile tree) so the view toggle + My Fringe
             still fit on one line; "Planner" drops next (CSS, under 520px)
             for phones too narrow for even "Fringe Planner". */}
-        <span className="topbar__wordmark">
+        <span data-testid="topbar-wordmark" className={styles['topbar__wordmark']}>
           {compact ? 'Fringe' : 'Halifax Fringe'}
-          <span className="topbar__wordmark-planner"> Planner</span>
+          <span className={styles['topbar__wordmark-planner']}> Planner</span>
         </span>
       </div>
-      <div className="topbar__right">
+      <div className={styles['topbar__right']}>
         {!compact && onNow > 0 && (
-          <span className="topbar__onnow">
-            <span className="topbar__onnow-dot" />
+          <span className={styles['topbar__onnow']}>
+            <span className={styles['topbar__onnow-dot']} />
             ON NOW: {onNow} SHOW{onNow === 1 ? '' : 'S'}
           </span>
         )}
-        <div className="segmented">
-          <div className="segmented__options">
+        <div className={segmentedStyles.segmented}>
+          <div className={segmentedStyles['segmented__options']}>
             <button
               type="button"
-              className={`segmented__option ${state.viewMode === 'grid' ? 'segmented__option--selected' : ''}`}
+              className={`${segmentedStyles['segmented__option']} ${state.viewMode === 'grid' ? segmentedStyles['segmented__option--selected'] : ''}`}
               onClick={() => dispatch({ type: 'SET_VIEW', view: nextView })}
             >
               Grid
             </button>
             <button
               type="button"
-              className={`segmented__option ${state.viewMode === 'cards' ? 'segmented__option--selected' : ''}`}
+              className={`${segmentedStyles['segmented__option']} ${state.viewMode === 'cards' ? segmentedStyles['segmented__option--selected'] : ''}`}
               onClick={() => dispatch({ type: 'SET_VIEW', view: nextView })}
             >
               Cards
@@ -62,11 +62,11 @@ export function TopBar({ compact = false }: TopBarProps) {
         </div>
         <button
           type="button"
-          className="topbar__myfringe"
+          className={styles['topbar__myfringe']}
           onClick={() => dispatch({ type: 'SET_SYNC_OPEN', open: true })}
         >
           My Fringe
-          <span className="topbar__badge">{state.picked.size}</span>
+          <span className={styles['topbar__badge']}>{state.picked.size}</span>
         </button>
       </div>
     </div>

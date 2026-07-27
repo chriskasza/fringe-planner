@@ -8,11 +8,9 @@ const DEBOUNCE_SETTLE_MS = 400;
 
 describe('Sync Sheet', () => {
   function openSync() {
-    // Button text is "My Fringe" plus a nested <span> badge, so the
-    // accessible name includes the number. Matching by the visible text
-    // prefix gets the button regardless of the count.
-    const btn = desktopEl().querySelector('.topbar__myfringe') as HTMLElement;
-    fireEvent.click(btn);
+    // Accessible name includes the badge count, so match by the visible
+    // text prefix to get the button regardless of the count.
+    fireEvent.click(desktop().getByRole('button', { name: /My Fringe/ }));
   }
 
   function syncScope() {

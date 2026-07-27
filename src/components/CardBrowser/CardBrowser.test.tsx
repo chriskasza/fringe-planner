@@ -22,7 +22,9 @@ describe('App (Card Browser)', () => {
     switchToCards();
     const browser = within(document.querySelector('.card-browser') as HTMLElement);
     expect(browser.getByText('FILTER')).toBeInTheDocument(); // FilterBar label
-    expect(document.querySelector('.card-browser .topbar__wordmark')?.textContent).toBe('Halifax Fringe Planner'); // TopBar wordmark
+    expect(
+      document.querySelector('.card-browser [data-testid="topbar-wordmark"]')?.textContent,
+    ).toBe('Halifax Fringe Planner'); // TopBar wordmark
   });
 
   it('omits the search field and starting-soon band from the original mockup', () => {

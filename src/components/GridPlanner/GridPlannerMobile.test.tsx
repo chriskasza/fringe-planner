@@ -13,9 +13,9 @@ describe('App (mobile Grid Planner)', () => {
     // a phone. The Filters button that used to live here is gone - filters
     // live in the FilterBar row below, the same component desktop uses.
     render(<App />);
-    expect(mobileEl().querySelector('.topbar__wordmark')?.textContent).toBe('Fringe Planner');
+    expect(mobileEl().querySelector('[data-testid="topbar-wordmark"]')?.textContent).toBe('Fringe Planner');
 
-    const topbar = mobileEl().querySelector('.topbar') as HTMLElement;
+    const topbar = mobileEl().querySelector('[data-testid="topbar"]') as HTMLElement;
     expect(within(topbar).queryByRole('button', { name: /^Filters/ })).not.toBeInTheDocument();
     expect(within(topbar).getByRole('button', { name: /My Fringe/ })).toBeInTheDocument();
   });

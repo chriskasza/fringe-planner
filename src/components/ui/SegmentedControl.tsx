@@ -1,4 +1,4 @@
-import './SegmentedControl.css';
+import styles from './SegmentedControl.module.css';
 
 type Option<T extends string> = { value: T; label: string };
 
@@ -16,14 +16,14 @@ export function SegmentedControl<T extends string>({
   onChange,
 }: SegmentedControlProps<T>) {
   return (
-    <div className="segmented">
-      {label && <span className="segmented__label">{label}</span>}
-      <div className="segmented__options">
+    <div className={styles.segmented}>
+      {label && <span className={styles['segmented__label']}>{label}</span>}
+      <div className={styles['segmented__options']}>
         {options.map((opt) => (
           <button
             key={opt.value}
             type="button"
-            className={`segmented__option ${value === opt.value ? 'segmented__option--selected' : ''}`}
+            className={`${styles['segmented__option']} ${value === opt.value ? styles['segmented__option--selected'] : ''}`}
             onClick={() => onChange(opt.value)}
           >
             {opt.label}

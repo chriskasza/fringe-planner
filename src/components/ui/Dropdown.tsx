@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
-import './Dropdown.css';
+import styles from './Dropdown.module.css';
 
 type DropdownProps = {
   open: boolean;
@@ -55,13 +55,13 @@ export function Dropdown({ open, title, width, onClose, children }: DropdownProp
   return (
     <div
       ref={panelRef}
-      className="dropdown"
+      className={styles.dropdown}
       style={{ width }}
       role="dialog"
       aria-label={title}
       tabIndex={-1}
     >
-      <div className="dropdown__title">{title}</div>
+      <div className={styles['dropdown__title']}>{title}</div>
       {children}
     </div>
   );

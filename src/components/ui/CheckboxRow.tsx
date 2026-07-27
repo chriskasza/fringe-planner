@@ -1,4 +1,4 @@
-import './CheckboxRow.css';
+import styles from './CheckboxRow.module.css';
 
 type CheckboxRowProps = {
   label: string;
@@ -10,9 +10,9 @@ type CheckboxRowProps = {
 
 export function CheckboxRow({ label, checked, count, dimmed, onChange }: CheckboxRowProps) {
   return (
-    <label className={`checkbox-row ${dimmed ? 'checkbox-row--dimmed' : ''}`}>
+    <label className={`${styles['checkbox-row']} ${dimmed ? styles['checkbox-row--dimmed'] : ''}`}>
       <span
-        className={`checkbox-row__box ${checked ? 'checkbox-row__box--checked' : ''}`}
+        className={`${styles['checkbox-row__box']} ${checked ? styles['checkbox-row__box--checked'] : ''}`}
         aria-hidden="true"
       >
         {checked ? '✓' : ''}
@@ -21,10 +21,10 @@ export function CheckboxRow({ label, checked, count, dimmed, onChange }: Checkbo
         type="checkbox"
         checked={checked}
         onChange={onChange}
-        className="checkbox-row__input"
+        className={styles['checkbox-row__input']}
       />
-      <span className="checkbox-row__label">{label}</span>
-      {count !== undefined && <span className="checkbox-row__count">{count}</span>}
+      <span className={styles['checkbox-row__label']}>{label}</span>
+      {count !== undefined && <span className={styles['checkbox-row__count']}>{count}</span>}
     </label>
   );
 }
