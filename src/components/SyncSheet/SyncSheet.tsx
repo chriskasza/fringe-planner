@@ -61,7 +61,7 @@ export function SyncSheet() {
                 <ShareButton url={shareUrl} />
               </div>
               <span className="sync-link-row__help">
-                The address bar rewrites itself every time you pick a show, so this link always matches your schedule. Bookmark it and it doubles as your backup — and Back undoes a pick.
+                The address bar rewrites itself every time you pick a show, so this link always matches your schedule. Bookmark it and it doubles as your backup.
               </span>
             </div>
             <div className="sync-link-row__right">

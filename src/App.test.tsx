@@ -512,6 +512,9 @@ describe('Day / Time filters gate which shows are browsable', () => {
   });
 });
 
+// Comfortably past the 250ms debounce persistence.ts writes the URL on.
+const DEBOUNCE_SETTLE_MS = 400;
+
 describe('Sync Sheet', () => {
   function openSync() {
     // Button text is "My Fringe" plus a nested <span> badge, so the
@@ -595,6 +598,33 @@ describe('Sync Sheet', () => {
 
     expect(syncScope().getByText('Restored 2 performances.')).toBeInTheDocument();
     expect(syncScope().getByText(/^2 PERFORMANCE/)).toBeInTheDocument();
+  });
+
+  // Picks are written with replaceState, which never fires popstate. The old
+  // guard set a flag before each of those writes and cleared it in the
+  // popstate handler, so the flag was still set when the first genuine Back
+  // arrived and that navigation was ignored: the address bar changed and the
+  // schedule on screen didn't.
+  it('applies the hash from a genuine Back navigation', async () => {
+    render(<App />);
+    const blocks = () => desktopEl().querySelectorAll('.grid-block');
+
+    fireEvent.click(blocks()[0]);
+    await new Promise((r) => setTimeout(r, DEBOUNCE_SETTLE_MS));
+    const onePickHash = window.location.hash;
+    expect(onePickHash).toMatch(/#p=.+/);
+
+    fireEvent.click(blocks()[1]);
+    await new Promise((r) => setTimeout(r, DEBOUNCE_SETTLE_MS));
+    expect(window.location.hash).not.toBe(onePickHash);
+    expect(desktop().getByText('2')).toBeInTheDocument();
+
+    // What the browser does on Back: the URL is already the earlier one by
+    // the time the event fires.
+    window.history.replaceState(null, '', onePickHash);
+    fireEvent.popState(window);
+
+    expect(desktop().getByText('1')).toBeInTheDocument();
   });
 
   it('reports unusable restore input instead of silently doing nothing', () => {

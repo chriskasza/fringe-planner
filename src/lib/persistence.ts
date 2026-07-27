@@ -151,19 +151,23 @@ export function loadInitialPicked(shows: Show[]): Set<PerfKey> {
 }
 
 // Keeps the URL hash and localStorage in sync with `picked`, debounced, using
-// history.replaceState so picking doesn't spam browser history. Parses the URL
-// back on `popstate` (Back/Forward), guarded so our own writes don't re-trigger
-// a parse.
+// history.replaceState so picking doesn't spam browser history - which also
+// means picks are not undoable with Back. Any popstate that does arrive is a
+// real history traversal (or a hand-edited hash), so the URL is read back and
+// applied.
 export function usePersistence(picked: Set<PerfKey>, shows: Show[], onExternalChange: (picked: Set<PerfKey>) => void) {
-  const selfWrite = useRef(false);
   const timer = useRef<number | undefined>(undefined);
+
+  // Read inside the popstate handler without making the listener re-subscribe
+  // on every pick.
+  const latestPicked = useRef(picked);
+  latestPicked.current = picked;
 
   useEffect(() => {
     if (timer.current) window.clearTimeout(timer.current);
 
     timer.current = window.setTimeout(() => {
       const encoded = encodePicked(picked, shows);
-      selfWrite.current = true;
       const url = new URL(window.location.href);
       url.hash = encoded ? `p=${encoded}` : '';
       window.history.replaceState(null, '', url);
@@ -180,11 +184,14 @@ export function usePersistence(picked: Set<PerfKey>, shows: Show[], onExternalCh
 
   useEffect(() => {
     function onPopState() {
-      if (selfWrite.current) {
-        selfWrite.current = false;
-        return;
-      }
-      onExternalChange(decodePicked(readHashParam(), shows));
+      // The old guard here tried to ignore this hook's own writes by setting
+      // a flag before each replaceState - but replaceState doesn't fire
+      // popstate, so the flag was only ever cleared by the first *genuine*
+      // Back, which was then swallowed. Comparing against what's on screen
+      // does the same job without eating a navigation.
+      const fromUrl = readHashParam();
+      if (fromUrl === encodePicked(latestPicked.current, shows)) return;
+      onExternalChange(decodePicked(fromUrl, shows));
     }
 
     window.addEventListener('popstate', onPopState);
