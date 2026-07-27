@@ -31,7 +31,7 @@ function mobile() {
 describe('App (Grid Planner)', () => {
   it('renders without throwing and shows the wordmark', () => {
     render(<App />);
-    expect(desktop().getByText('HALIFAX FRINGE')).toBeInTheDocument();
+    expect(desktopEl().querySelector('.topbar__wordmark')?.textContent).toBe('Halifax Fringe Planner');
   });
 
   it('renders a day strip with 11 festival days', () => {
@@ -216,14 +216,13 @@ describe('App (Grid Planner)', () => {
 });
 
 describe('App (mobile Grid Planner)', () => {
-  it('shows the app initials (not the selected date) alongside just the view toggle and My Fringe', () => {
-    // Collapsed to "HF" (not the full "HALIFAX FRINGE") specifically so the
-    // wordmark, view toggle and My Fringe all fit on the same line on a
-    // phone. The Filters button that used to live here is gone - filters
+  it('shows the shortened wordmark (not the selected date) alongside just the view toggle and My Fringe', () => {
+    // Drops "Halifax" (not the full "Halifax Fringe Planner") specifically
+    // so the wordmark, view toggle and My Fringe all fit on the same line on
+    // a phone. The Filters button that used to live here is gone - filters
     // live in the FilterBar row below, the same component desktop uses.
     render(<App />);
-    expect(mobile().queryByText('HALIFAX FRINGE')).not.toBeInTheDocument();
-    expect(mobile().getByText('HF')).toBeInTheDocument();
+    expect(mobileEl().querySelector('.topbar__wordmark')?.textContent).toBe('Fringe Planner');
 
     const topbar = mobileEl().querySelector('.topbar') as HTMLElement;
     expect(within(topbar).queryByRole('button', { name: /^Filters/ })).not.toBeInTheDocument();
@@ -350,8 +349,17 @@ describe('FiltersOverflowModal', () => {
   });
 });
 
+// The top bar toggle is a flip button, not a segmented control: it always
+// shows the CURRENT view and switches to the other one when clicked - so
+// switching TO Cards means clicking the button while it reads "Grid" (see
+// TopBar.tsx). Named for what it does, not for the button text it happens to
+// click, since that text is the opposite of the view you're headed to.
 function switchToCards() {
-  fireEvent.click(desktop().getByRole('button', { name: 'Cards' }));
+  fireEvent.click(desktop().getByRole('button', { name: 'Grid' }));
+}
+
+function switchToGridFrom(scope: HTMLElement) {
+  fireEvent.click(within(scope).getByRole('button', { name: 'Cards' }));
 }
 
 describe('App (Card Browser)', () => {
@@ -364,7 +372,7 @@ describe('App (Card Browser)', () => {
     expect(document.querySelector('.card-browser')).toBeInTheDocument();
     expect(document.querySelector('.grid-planner')).not.toBeInTheDocument();
 
-    fireEvent.click(within(document.querySelector('.card-browser') as HTMLElement).getByRole('button', { name: 'Grid' }));
+    switchToGridFrom(document.querySelector('.card-browser') as HTMLElement);
     expect(document.querySelector('.grid-planner')).toBeInTheDocument();
   });
 
@@ -373,7 +381,7 @@ describe('App (Card Browser)', () => {
     switchToCards();
     const browser = within(document.querySelector('.card-browser') as HTMLElement);
     expect(browser.getByText('FILTER')).toBeInTheDocument(); // FilterBar label
-    expect(browser.getByText('HALIFAX FRINGE')).toBeInTheDocument(); // TopBar wordmark
+    expect(document.querySelector('.card-browser .topbar__wordmark')?.textContent).toBe('Halifax Fringe Planner'); // TopBar wordmark
   });
 
   it('omits the search field and starting-soon band from the original mockup', () => {
@@ -561,14 +569,14 @@ describe('Day / Time filters gate which shows are browsable', () => {
     expect(twoDayCount).toBeGreaterThan(0);
 
     // Go to the grid and click a third day's tab.
-    fireEvent.click(within(document.querySelector('.card-browser') as HTMLElement).getByRole('button', { name: 'Grid' }));
+    switchToGridFrom(document.querySelector('.card-browser') as HTMLElement);
     const sep5Tab = Array.from(desktopEl().querySelectorAll('.day-strip__tab')).find(
       (el) => el.textContent?.includes('SAT') && el.textContent?.includes('5'),
     ) as HTMLElement;
     fireEvent.click(sep5Tab);
 
     // Back in Cards, the original two days must still be on - now three.
-    fireEvent.click(desktop().getByRole('button', { name: 'Cards' }));
+    switchToCards();
     const dayMenu = openDayMenu();
     for (const label of ['Thu 3 Sep', 'Fri 4 Sep', 'Sat 5 Sep']) {
       const row = dayMenu.getByText(label).closest('label') as HTMLElement;
