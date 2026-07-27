@@ -161,7 +161,9 @@ export function usePersistence(picked: Set<PerfKey>, shows: Show[], onExternalCh
   // Read inside the popstate handler without making the listener re-subscribe
   // on every pick.
   const latestPicked = useRef(picked);
-  latestPicked.current = picked;
+  useEffect(() => {
+    latestPicked.current = picked;
+  }, [picked]);
 
   useEffect(() => {
     if (timer.current) window.clearTimeout(timer.current);
