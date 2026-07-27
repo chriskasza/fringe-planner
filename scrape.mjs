@@ -264,6 +264,17 @@ function mergeShow(prev, next) {
     times: times.sort(byStart),
   };
   delete merged.cancelledAt;
+
+  // These are only ever *written* when they're true, so spreading prev
+  // would keep them forever: a show whose ticket sales reopen, or whose
+  // showtimes come back complete, would stay flagged for the rest of the
+  // festival and keep printing the incomplete-showtimes warning. Merging is
+  // about not losing history; a flag describing the show's current upstream
+  // state isn't history.
+  for (const flag of ['salesEnded', 'timesIncomplete']) {
+    if (!next[flag]) delete merged[flag];
+  }
+
   return merged;
 }
 
