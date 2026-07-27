@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { useApp } from '../../state/AppContext';
 import { onNowCount } from '../../lib/derived';
+import { useNow } from '../../lib/useNow';
 import { SegmentedControl } from '../ui/SegmentedControl';
 import './TopBar.css';
 
@@ -11,7 +12,8 @@ type TopBarProps = {
 
 export function TopBar({ compact = false, rightExtra }: TopBarProps) {
   const { state, dispatch, shows } = useApp();
-  const onNow = onNowCount(shows);
+  const now = useNow();
+  const onNow = onNowCount(shows, now);
 
   return (
     <div className={`topbar ${compact ? 'topbar--compact' : ''}`}>

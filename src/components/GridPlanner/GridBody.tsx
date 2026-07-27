@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { useApp } from '../../state/AppContext';
 import { visible } from '../../lib/derived';
-import { nowInHalifax } from '../../lib/dates';
-import { gridTimeBounds, LABEL_WIDTH } from './gridLayout';
+import { useNow } from '../../lib/useNow';
+import { gridTimeBounds, isPastPerf, LABEL_WIDTH } from './gridLayout';
 import { TimeHeader } from './TimeHeader';
 import { VenueRow } from './VenueRow';
 import type { Show } from '../../lib/types';
@@ -14,9 +14,10 @@ type GridBodyProps = {
 
 export function GridBody({ labelWidth = LABEL_WIDTH, compact = false }: GridBodyProps) {
   const { state, shows, days } = useApp();
+  const now = useNow();
   const { startMin, slots } = useMemo(
-    () => gridTimeBounds(shows, state.gridDay, nowInHalifax()),
-    [shows, state.gridDay],
+    () => gridTimeBounds(shows, state.gridDay, now),
+    [shows, state.gridDay, now],
   );
 
   const day = days.find((d) => d.key === state.gridDay);
@@ -28,13 +29,22 @@ export function GridBody({ labelWidth = LABEL_WIDTH, compact = false }: GridBody
       if (!visible(show, state, shows)) continue;
       for (const perf of show.perfs) {
         if (perf.status !== 'active' || perf.day !== state.gridDay) continue;
+        // Same rule the axis uses, so a block can never sit off the left edge
+        // of its own track.
+        if (isPastPerf(perf, now)) continue;
         const list = map.get(show.venue) ?? [];
         list.push({ show, perf });
         map.set(show.venue, list);
       }
     }
     return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0]));
-  }, [shows, state]);
+  }, [shows, state, now]);
+
+  // "Nothing matched" and "today is over" are different situations and the
+  // filter advice is wrong for the second one.
+  const dayIsSpent =
+    state.gridDay === now.date &&
+    shows.some((s) => s.perfs.some((p) => p.status === 'active' && p.day === state.gridDay));
 
   const venueAddress = (venue: string) => shows.find((s) => s.venue === venue)?.venueAddress ?? null;
 
@@ -54,7 +64,11 @@ export function GridBody({ labelWidth = LABEL_WIDTH, compact = false }: GridBody
       </div>
 
       {byVenue.length === 0 ? (
-        <div className="grid-body__empty">No shows on this day match the current filters.</div>
+        <div className="grid-body__empty">
+          {dayIsSpent
+            ? "Every performance today has finished. Pick another day to keep browsing."
+            : 'No shows on this day match the current filters.'}
+        </div>
       ) : (
         <div className="grid-body__scroll">
           <TimeHeader slots={slots} labelWidth={labelWidth} />

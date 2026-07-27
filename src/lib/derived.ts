@@ -1,4 +1,4 @@
-import { nowInHalifax, timeBucket } from './dates';
+import { timeBucket } from './dates';
 import type { ClashMode, DayKey, PerfKey, Show, TimeBucket } from './types';
 
 export function perfKey(showId: string, day: DayKey, start: number): PerfKey {
@@ -159,9 +159,11 @@ export function clashModeLabel(mode: ClashMode): string {
   return mode.toUpperCase();
 }
 
-// Shows currently in progress, for the top bar's "ON NOW" pill.
-export function onNowCount(shows: Show[]): number {
-  const now = nowInHalifax();
+// Shows currently in progress, for the top bar's "ON NOW" pill. `now` is
+// passed in rather than read here, so the caller's clock (useNow) is what
+// decides when this recounts - reading it internally froze the pill at
+// whatever it said when the page was opened.
+export function onNowCount(shows: Show[], now: { date: DayKey; minutes: number }): number {
   let count = 0;
   for (const show of shows) {
     for (const p of show.perfs) {

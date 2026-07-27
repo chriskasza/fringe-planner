@@ -22,9 +22,24 @@ export const LABEL_WIDTH = 176;
 // shrinks to 14px to match the tighter mobile spacing scale.
 export const MOBILE_LABEL_WIDTH = 112;
 
-// Bounds are computed per day, not once across the whole festival. On the
-// current day the axis clips performances that already started — a showtime
-// from two hours ago isn't useful browsing real estate.
+// On the current day a performance that has already finished isn't useful
+// browsing real estate, so it drops off the grid. "Finished", not "started":
+// a show that's running right now is exactly what the ON NOW pill is pointing
+// at, and it keeps its block until it ends.
+//
+// This is the single rule the axis and the blocks both go through. Clipping
+// only the axis (as this used to) left the blocks in place: a 14:00
+// performance viewed at 20:00 was positioned 1676px to the left of the track
+// - invisible, but still focusable, so keyboard users tabbed through picks
+// they couldn't see - and late enough in the evening the axis start ran past
+// the axis end and the day rendered as venue rows with no time slots and
+// nothing in them, with no empty-state message either.
+export function isPastPerf(perf: { day: DayKey; end: number }, now: { date: DayKey; minutes: number }): boolean {
+  return perf.day === now.date && perf.end <= now.minutes;
+}
+
+// Bounds are computed per day, not once across the whole festival. Days
+// entirely in the past still show their full range - the user can look back.
 export function gridTimeBounds(
   shows: Show[],
   day: DayKey,
@@ -36,20 +51,20 @@ export function gridTimeBounds(
   for (const show of shows) {
     for (const p of show.perfs) {
       if (p.status !== 'active' || p.day !== day) continue;
+      if (isPastPerf(p, now)) continue;
       if (p.start < min) min = p.start;
       if (p.end > max) max = p.end;
     }
   }
 
+  // Nothing left to show today, or a day with no performances at all. The
+  // caller filters by the same rule and renders its empty state; these bounds
+  // just have to be harmless.
   if (!Number.isFinite(min) || !Number.isFinite(max)) {
     return { startMin: 1080, endMin: 1230, slots: [1080] };
   }
 
-  // On the current day, start at now — or at the first show of the evening,
-  // whichever is later. Days that are entirely in the past (first show
-  // already over) still show their full range; the user can still look back.
-  const effectiveMin = day === now.date ? Math.max(min, now.minutes) : min;
-  const startMin = Math.floor(effectiveMin / 30) * 30;
+  const startMin = Math.floor(min / 30) * 30;
   const endMin = Math.ceil(max / 30) * 30;
 
   const slots: number[] = [];
