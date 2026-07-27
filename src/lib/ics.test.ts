@@ -44,7 +44,7 @@ describe('generateIcs', () => {
     expect(fieldsOf(ics, 'DTEND')).toEqual(['20260911T210000']);
     expect(ics).toContain('DTSTART;TZID=America/Halifax:');
     expect(ics).toMatch(/^BEGIN:VCALENDAR/);
-    expect(ics.endsWith('END:VCALENDAR\r\n')).toBe(true);
+    expect(ics.endsWith('END:VCALENDAR')).toBe(true);
   });
 
   it('skips cancelled performances', () => {
