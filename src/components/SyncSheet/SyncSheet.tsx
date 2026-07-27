@@ -2,8 +2,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import QRCode from "qrcode";
 import { useApp } from "../../state/AppContext";
 import { pickedList } from "../../lib/derived";
-import { encodePicked, decodePicked } from "../../lib/persistence";
+import { encodePicked, parseRestoreInput } from "../../lib/persistence";
 import { generateIcs, downloadFile } from "../../lib/ics";
+import type { PerfKey } from "../../lib/types";
 import "./SyncSheet.css";
 
 export function SyncSheet() {
@@ -98,6 +99,11 @@ export function SyncSheet() {
               onClick={() => {
                 const json = JSON.stringify(
                   picks.map((e) => ({
+                    // The stable upstream key, so restoring this file lands
+                    // on exactly these performances even if the schedule has
+                    // changed since. Everything after it is for the human
+                    // reading the file.
+                    timeId: e.perf.timeId,
                     title: e.show.title,
                     venue: e.show.venue,
                     address: e.show.venueAddress,
@@ -188,20 +194,19 @@ function QrBlock({ url }: { url: string }) {
   return <canvas ref={canvasRef} className="sync-qr" width={136} height={136} />;
 }
 
-function RestoreRow({ onRestore }: { onRestore: (picked: ReturnType<typeof decodePicked>) => void }) {
+function RestoreRow({ onRestore }: { onRestore: (picked: Set<PerfKey>) => void }) {
   const { shows } = useApp();
-  const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   function handleRestore(text: string) {
-    setError(null);
-    const picked = decodePicked(text.trim(), shows);
+    const picked = parseRestoreInput(text, shows);
     if (picked.size === 0) {
-      setError("No valid picks found in that link or file.");
+      setMessage("No valid picks found in that link or file.");
       return;
     }
     onRestore(picked);
-    setError(`Restored ${picked.size} performance${picked.size === 1 ? "" : "s"}.`);
+    setMessage(`Restored ${picked.size} performance${picked.size === 1 ? "" : "s"}.`);
   }
 
   function handlePaste(e: React.ClipboardEvent) {
@@ -221,6 +226,10 @@ function RestoreRow({ onRestore }: { onRestore: (picked: ReturnType<typeof decod
   }
 
   return (
+    // One paste handler for the whole row, on the container: a second one on
+    // the input fired for the same event as it bubbled, restoring twice per
+    // paste. The pasted text is left in the input rather than swallowed, so
+    // it's visible what was read.
     <div
       className="sync-action-row sync-action-row--restore"
       onPaste={handlePaste}
@@ -233,13 +242,17 @@ function RestoreRow({ onRestore }: { onRestore: (picked: ReturnType<typeof decod
           ref={inputRef}
           className="sync-restore-input"
           placeholder="Restore from a link or file"
-          onPaste={(e) => {
-            e.preventDefault();
-            handlePaste(e);
+          aria-label="Restore from a link or file"
+          onChange={(e) => {
+            // Typed or autofilled rather than pasted - restore on Enter.
+            if (!e.target.value) setMessage(null);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && e.currentTarget.value.trim()) handleRestore(e.currentTarget.value);
           }}
         />
         <span className="sync-action-row__desc">
-          {error ?? "Paste a schedule link, or drop a .json backup here"}
+          {message ?? "Paste a schedule link, or drop a .json backup here"}
         </span>
       </div>
     </div>

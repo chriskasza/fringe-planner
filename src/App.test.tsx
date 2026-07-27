@@ -568,4 +568,40 @@ describe('Sync Sheet', () => {
     expect(syncScope().getByText('.JSON')).toBeInTheDocument();
     expect(syncScope().getByPlaceholderText(/Restore from/)).toBeInTheDocument();
   });
+
+  // The restore row used to hand the pasted text straight to decodePicked,
+  // which takes only the bare token string - so pasting the very link the
+  // sheet had just produced always answered "No valid picks found".
+  it('restores the schedule from a link pasted into the restore row', () => {
+    render(<App />);
+    const blocks = desktopEl().querySelectorAll('.grid-block');
+    fireEvent.click(blocks[0]);
+    fireEvent.click(blocks[1]);
+
+    openSync();
+    // Exactly the string the sheet offers for copying.
+    const link = document.querySelector('.sync-link-row__url')!.textContent as string;
+    expect(link).toMatch(/#p=.+/);
+
+    // Clear the schedule, then paste the link back in.
+    fireEvent.click(syncScope().getByRole('button', { name: 'Close sync' }));
+    fireEvent.click(desktopEl().querySelectorAll('.grid-block')[0]);
+    fireEvent.click(desktopEl().querySelectorAll('.grid-block')[1]);
+    openSync();
+    expect(syncScope().getByText(/^0 PERFORMANCE/)).toBeInTheDocument();
+
+    const input = syncScope().getByPlaceholderText(/Restore from/);
+    fireEvent.paste(input, { clipboardData: { getData: () => link } });
+
+    expect(syncScope().getByText('Restored 2 performances.')).toBeInTheDocument();
+    expect(syncScope().getByText(/^2 PERFORMANCE/)).toBeInTheDocument();
+  });
+
+  it('reports unusable restore input instead of silently doing nothing', () => {
+    render(<App />);
+    openSync();
+    const input = syncScope().getByPlaceholderText(/Restore from/);
+    fireEvent.paste(input, { clipboardData: { getData: () => 'https://example.test/not-a-schedule' } });
+    expect(syncScope().getByText('No valid picks found in that link or file.')).toBeInTheDocument();
+  });
 });

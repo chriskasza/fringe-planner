@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { decodePicked, encodePicked } from './persistence';
+import { decodePicked, encodePicked, parseRestoreInput } from './persistence';
 import { perfKey } from './derived';
 import { shows as realShows } from './loadData';
 import type { Perf, PerfKey, Show } from './types';
@@ -126,5 +126,58 @@ describe('encodePicked / decodePicked', () => {
       }),
     );
     expect(keysOf(decodePicked(encodePicked(picked, realShows), realShows))).toEqual(keysOf(picked));
+  });
+});
+
+// The Sync sheet offers two ways back in - "paste a schedule link" and "drop
+// a .json backup" - and neither is the bare token string decodePicked takes.
+// Both used to be handed straight to it, so both always failed with "No valid
+// picks found in that link or file."
+describe('parseRestoreInput', () => {
+  const show = showWith([perf(101, '2026-09-03', 840), perf(102, '2026-09-03', 1020)]);
+  const both = [perfKey('284247', '2026-09-03', 840), perfKey('284247', '2026-09-03', 1020)].sort();
+
+  it('accepts a pasted schedule link', () => {
+    expect(keysOf(parseRestoreInput('https://example.test/fringe/#p=101.102', [show]))).toEqual(both);
+  });
+
+  it('accepts a link with surrounding whitespace, a percent-encoded token, and a query string', () => {
+    const synthetic = showWith([perf('s284082-2026-09-04T17:45', '2026-09-04', 1065)], '284082');
+    expect(
+      keysOf(parseRestoreInput('  https://example.test/#p=s284082-2026-09-04T17%3A45\n', [synthetic])),
+    ).toEqual([perfKey('284082', '2026-09-04', 1065)]);
+    expect(keysOf(parseRestoreInput('https://example.test/?p=101#p=101.102', [show]))).toEqual(both);
+  });
+
+  it('still accepts a bare token string', () => {
+    expect(keysOf(parseRestoreInput('101.102', [show]))).toEqual(both);
+  });
+
+  it('accepts the .json backup the sheet itself writes', () => {
+    const backup = JSON.stringify([
+      { timeId: 101, title: 'A Show', venue: 'The Bus Stop Theatre', day: '2026-09-03', start: 840, mins: 60 },
+      { timeId: 102, title: 'A Show', venue: 'The Bus Stop Theatre', day: '2026-09-03', start: 1020, mins: 60 },
+    ]);
+    expect(keysOf(parseRestoreInput(backup, [show]))).toEqual(both);
+  });
+
+  it('falls back to title + day + start for a backup written without timeIds', () => {
+    const backup = JSON.stringify([{ title: 'A Show', day: '2026-09-03', start: 1020 }]);
+    expect(keysOf(parseRestoreInput(backup, [show]))).toEqual([perfKey('284247', '2026-09-03', 1020)]);
+  });
+
+  it('returns nothing for empty, malformed, or unrecognised input', () => {
+    expect(parseRestoreInput('', [show]).size).toBe(0);
+    expect(parseRestoreInput('   ', [show]).size).toBe(0);
+    expect(parseRestoreInput('[{"timeId":', [show]).size).toBe(0); // truncated JSON
+    expect(parseRestoreInput('[1, null, "x"]', [show]).size).toBe(0);
+    expect(parseRestoreInput('https://example.test/fringe/', [show]).size).toBe(0);
+    expect(parseRestoreInput('68abcA.68abcC', [show]).size).toBe(0); // old index-format link
+  });
+
+  it('round-trips a share link built the way the Sync sheet builds it', () => {
+    const picked = new Set([perfKey('284247', '2026-09-03', 1020)]);
+    const link = `https://example.test/fringe/#p=${encodePicked(picked, [show])}`;
+    expect(keysOf(parseRestoreInput(link, [show]))).toEqual(keysOf(picked));
   });
 });

@@ -66,6 +66,70 @@ export function decodePicked(encoded: string, shows: Show[]): Set<PerfKey> {
   return result;
 }
 
+// What the Sync sheet's restore box is handed: a whole schedule link, a bare
+// token string, or the contents of the .json backup the sheet itself writes.
+// Only the middle one is the on-the-wire encoding, so the other two have to
+// be recognised here rather than passed straight to decodePicked - which is
+// what made both of the sheet's advertised inputs fail.
+export function parseRestoreInput(text: string, shows: Show[]): Set<PerfKey> {
+  const trimmed = text.trim();
+  if (!trimmed) return new Set();
+  if (trimmed.startsWith('[')) return decodeJsonBackup(trimmed, shows);
+
+  // "https://host/path/#p=101.102" -> "101.102"; a bare token string has no
+  // p= at all and is used as-is. The hash is where the app itself writes
+  // picks, so it wins over a query string that happens to carry a stale p=.
+  const param = /#p=([^&\s]*)/.exec(trimmed) ?? /[?&]p=([^&\s#]*)/.exec(trimmed);
+  if (!param) return decodePicked(trimmed, shows);
+
+  let value = param[1];
+  try {
+    value = decodeURIComponent(value); // a shared link may arrive percent-encoded
+  } catch {
+    // malformed escape - fall back to the raw value
+  }
+  return decodePicked(value, shows);
+}
+
+type BackupEntry = { timeId?: number | string; title?: string; day?: string; start?: number };
+
+// The .json backup is written for humans to read (title, venue, address,
+// times), so it carries a timeId for exact restores and is matched on
+// title + day + start when reading a file written before that field existed.
+function decodeJsonBackup(text: string, shows: Show[]): Set<PerfKey> {
+  const result = new Set<PerfKey>();
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    return result;
+  }
+  if (!Array.isArray(parsed)) return result;
+
+  const byTimeId = perfsByTimeId(shows);
+
+  for (const raw of parsed) {
+    if (!raw || typeof raw !== 'object') continue;
+    const entry = raw as BackupEntry;
+
+    const hit =
+      entry.timeId !== undefined
+        ? byTimeId.get(String(entry.timeId))
+        : findByTitle(shows, entry.title, entry.day, entry.start);
+    if (hit) result.add(perfKey(hit.show.id, hit.perf.day, hit.perf.start));
+  }
+
+  return result;
+}
+
+function findByTitle(shows: Show[], title?: string, day?: string, start?: number) {
+  if (!title || !day || typeof start !== 'number') return undefined;
+  const show = shows.find((s) => s.title === title);
+  const perf = show && activePerfs(show).find((p) => p.day === day && p.start === start);
+  return show && perf ? { show, perf } : undefined;
+}
+
 function readHashParam(): string {
   const hash = window.location.hash.replace(/^#/, '');
   const params = new URLSearchParams(hash);
