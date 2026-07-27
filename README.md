@@ -113,8 +113,10 @@ npm run build    # tsc -b && vite build
 npm test         # vitest run
 ```
 
-Design spec lives in `design_handoff_fringe_show_selector/`. Where the implementation
-knowingly departs from it, the reason is below - don't "restore" these to the spec.
+Built from a design handoff that is no longer in the repo - the designs are implemented,
+so the bundle was dropped. A few decisions below read as odd without it, because they are
+places the implementation deliberately went against what that spec prescribed. The
+reasoning is kept here so they don't get "corrected" back into bugs.
 
 ### Picks live in the URL
 
@@ -122,16 +124,16 @@ The schedule is encoded into the hash on a 250ms debounce with `history.replaceS
 and mirrored to `localStorage` for anyone arriving at the bare URL. The Sync sheet builds
 its share link and QR code from the same string.
 
-- **Tokens are `timeId`s**, dot-separated - not the handoff's base-36 show id + letter.
+- **Tokens are `timeId`s**, dot-separated - not the spec's base-36 show id + letter.
   That scheme encoded a performance's *position* in the show's active list, so a single
   cancellation upstream shifted every later pick onto the wrong showtime, silently. The
   festival's own `timeId`s are unique across all 282 performances, so a token needs no
   show prefix. Links are a little longer and stay well inside QR limits.
-- **`popstate` is not guarded by an "I wrote this" flag**, as the spec suggests.
+- **`popstate` is not guarded by an "I wrote this" flag**, as the spec called for.
   `replaceState` never fires `popstate`, so such a flag is only ever cleared by the first
   genuine Back - which is then swallowed. The handler compares the URL against what's on
   screen instead.
-- **Back does not undo a pick.** The spec makes that optional (`pushState` per action);
+- **Back does not undo a pick.** The spec made that optional (`pushState` per action);
   picks use `replaceState` only, so they don't fill the history stack.
 - The Sync sheet's restore box accepts a full schedule link, a bare token string, or the
   `.json` backup it writes. The backup carries `timeId` per pick for exact restores.

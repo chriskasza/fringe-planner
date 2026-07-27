@@ -30,8 +30,8 @@ Read `README.md` first - it documents the upstream API quirks that explain why
 - **`timeId` is the stable key for UI state.** Don't renumber, reassign, or derive it from
   array position. Saved and shared schedules are encoded as `timeId`s
   (`src/lib/persistence.ts`) precisely so a cancellation upstream can't shift a pick onto
-  a different showtime. The design handoff specifies a position-based encoding; that's
-  the bug, not the spec to restore.
+  a different showtime. The original design handoff specified a position-based
+  encoding, and that's the bug - if it resurfaces from anywhere, it isn't a fix.
 - **The mobile tree is always mounted.** Desktop and mobile render simultaneously and are
   switched by CSS media queries alone, so any `document`-level listener written for one
   is live in the other. Scope it, or gate it on state that only one of them sets.
