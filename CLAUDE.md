@@ -34,6 +34,11 @@ Read `README.md` first - it documents the upstream API quirks that explain why
 - **The mobile tree is always mounted.** Desktop and mobile render simultaneously and are
   switched by CSS media queries alone, so any `document`-level listener written for one
   is live in the other. Scope it, or gate it on state that only one of them sets.
+  Four breakpoints, each meaning something different:
+  - `1100px` - card grid drops 3 columns to 2.
+  - `1000px` - the 300px My Fringe rail hides, freeing card-grid width.
+  - `700px` - the desktop/mobile tree switch. Both trees exist either side of it.
+  - `520px` - phone tweaks: legend hidden, 44px touch targets.
 - **No genre field.** Genre data isn't available on the festival website or in the PDF
   guide. Don't invent one - the front-end has no genre filter or genre-coded accents.
 - **Don't commit the festival PDF** (it's gitignored - 32MB).
@@ -68,3 +73,11 @@ Two habits that have caught real bugs here:
 - **`fireEvent.click` does not dispatch `mousedown`**, but a real tap does. Anything
   involving outside-click, dismissal or drag needs the lower-level event, or the test
   passes while the feature is unusable.
+- **jsdom does no layout, so vitest cannot see a layout bug.** The two worst defects this
+  app has had - every card overlapping the one below it, and the rail footer painting
+  over the picks - were both invisible to a green suite. `playwright` is a devDependency
+  for this: render the running app at 1440 / 1000 / 390, screenshot it, and hit-test the
+  live DOM rather than reading CSS and reasoning. Any change to grid, flex or overflow
+  ownership needs that pass. Both of those bugs came from a container with a *definite*
+  height sizing its children to fit rather than to their content; the diagnoses are
+  written up in `CardGrid.css` and `MyFringeRail.css` where they can't drift.
