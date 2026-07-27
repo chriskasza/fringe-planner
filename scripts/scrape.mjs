@@ -5,7 +5,7 @@
 // Nothing is ever deleted -- showtimes that disappear upstream are marked
 // cancelled so the app can render them struck through.
 //
-//   node scrape.mjs
+//   node scripts/scrape.mjs
 
 import { fileURLToPath } from 'node:url';
 import { readFileSync, writeFileSync, renameSync, existsSync } from 'node:fs';
@@ -28,7 +28,7 @@ const PINBOARD_URL =
 
 const TICKETS_URL = 'https://halifaxfringe.ca/home-copy-copy-3/';
 const API_BASE = 'https://api.prod.simpletix.com/embed/Event';
-const OUT = fileURLToPath(new URL('./src/data/show_times.json', import.meta.url));
+const OUT = fileURLToPath(new URL('../src/data/show_times.json', import.meta.url));
 
 // "Show Passes" is a bundle product, not a show.
 const SKIP_SHOW_IDS = new Set([284273]);

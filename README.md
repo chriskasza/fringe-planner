@@ -5,7 +5,7 @@ Personal tool for picking which Fringe shows and times to attend.
 ## Updating the data
 
 ```bash
-node scrape.mjs
+npm run scrape        # node scripts/scrape.mjs
 ```
 
 Re-runnable and safe to run any time. It prints a summary of what changed since the last
@@ -29,7 +29,7 @@ widget calls:
 2. **Showtimes + venue** - `api.prod.simpletix.com/embed/Event/GetMultiTimeSelectionData/{showId}`
    Requires the headers `application`, `isBoxOffice: 0`, `originType: 9`.
 
-## Gotchas worth knowing before editing `scrape.mjs`
+## Gotchas worth knowing before editing `scripts/scrape.mjs`
 
 **Timestamps lie about their timezone.** The API returns `dateStart` with a trailing `Z`,
 but the value is *Halifax local wall time*, not UTC - `2026-09-03T14:00:00Z` is the 2:00 PM
@@ -83,7 +83,7 @@ The scraper writes via a temp file and rename, and aborts without writing if the
 board yields fewer than 50 shows or any show returns no showtimes - a partial scrape
 would otherwise mass-cancel real showtimes.
 
-Don't hand-edit `src/data/show_times.json`; change `scrape.mjs` and re-run it. See
+Don't hand-edit `src/data/show_times.json`; change `scripts/scrape.mjs` and re-run it. See
 `CLAUDE.md` for the full set of working rules.
 
 ## Data that isn't scraped
@@ -94,12 +94,12 @@ only ever has what the scraper can actually observe: show IDs, titles, blurbs, a
 performance times.
 
 Additional show metadata and venue addresses are scraped from each show's own SimpleTix
-page by `scrape_meta.mjs` and written to `src/data/`:
+page by `scripts/scrape_meta.mjs` and written to `src/data/`:
 
 - **`shows_meta.json`** - one entry per `showId`: `credits`, `rating`, `warnings`.
 - **`venues.json`** - one entry per venue name: `short`, `shortAddress`, `fullAddress`.
 
-Run `node scrape_meta.mjs` to refresh both.
+Run `npm run scrape:meta` to refresh both.
 
 The front-end's `transform.ts` joins all three files into the shape the UI renders. There
 is deliberately no genre field or genre filter anywhere in the app.
@@ -152,6 +152,6 @@ filter, and the app opens on the first day from today forward that has shows.
 
 ## Status
 
-- [x] `scrape.mjs` + `src/data/show_times.json` - 56 shows, 282 showtimes, Sep 3-13 2026
-- [x] `scrape_meta.mjs` + `shows_meta.json` / `venues.json`
+- [x] `scripts/scrape.mjs` + `src/data/show_times.json` - 56 shows, 282 showtimes, Sep 3-13 2026
+- [x] `scripts/scrape_meta.mjs` + `shows_meta.json` / `venues.json`
 - [x] Front-end - Grid Planner, Card Browser, Sync sheet, desktop + mobile

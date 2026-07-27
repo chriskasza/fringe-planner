@@ -1,19 +1,20 @@
 # Working in this repo
 
 Read `README.md` first - it documents the upstream API quirks that explain why
-`scrape.mjs` looks the way it does. The rules below are the short version.
+`scripts/scrape.mjs` looks the way it does. The rules below are the short version.
 
 ## Rules
 
-- **`src/data/show_times.json` is generated. Never hand-edit it.** Change `scrape.mjs` and
-  re-run `node scrape.mjs`. It holds only what the scraper can see upstream: show IDs,
-  titles, and performance times.
-- **`src/data/shows_meta.json` and `src/data/venues.json` are scraped by `scrape_meta.mjs`, not hand-edited.**
-  They hold everything `scrape.mjs` can't get: credits, rating, content warnings,
-  and venue addresses. Re-run `node scrape_meta.mjs` to refresh them.
-- **No dependencies in `scrape.mjs`.** Node built-ins only (`fetch`, `node:fs`,
-  `node:url`). The root `package.json` belongs to the front-end; the scrapers must run
-  with nothing installed, so don't reach for a library from them.
+- **`src/data/show_times.json` is generated. Never hand-edit it.** Change
+  `scripts/scrape.mjs` and re-run `npm run scrape`. It holds only what the scraper can
+  see upstream: show IDs, titles, and performance times.
+- **`src/data/shows_meta.json` and `src/data/venues.json` are generated too**, by
+  `scripts/scrape_meta.mjs`. They hold everything `scrape.mjs` can't get: credits,
+  rating, content warnings, and venue addresses. Refresh with `npm run scrape:meta`.
+- **No dependencies in either scraper.** Node built-ins only (`fetch`, `node:fs`,
+  `node:url`). The root `package.json` belongs to the front-end - the `scrape` scripts in
+  it are just aliases, and the scrapers must keep running with nothing installed, so
+  don't reach for a library from them.
 - **Never pass an API `dateStart` to `new Date()`.** It carries a trailing `Z` but holds
   Halifax local wall time. Strip the `Z` and keep timestamps as naive local strings
   (`2026-09-03T14:00`). This is the single easiest way to silently break every showtime
@@ -47,7 +48,7 @@ Read `README.md` first - it documents the upstream API quirks that explain why
 
 Verify with a real run, not by reasoning about the diff:
 
-1. `node scrape.mjs` - expect 56 shows / 282 showtimes, exit 0.
+1. `npm run scrape` - expect 56 shows / 282 showtimes, exit 0.
 2. Run it twice. The second run must print "No changes since the last run" and leave
    `src/data/show_times.json` byte-identical apart from `scrapedAt`. Churn on a clean re-run means
    the merge keying is broken.

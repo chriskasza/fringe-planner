@@ -8,14 +8,14 @@
 // change after a show is listed. Re-run whenever show_times.json gains new
 // shows, or to pick up a rating/warning correction upstream.
 //
-//   node scrape_meta.mjs
+//   node scripts/scrape_meta.mjs
 
 import { fileURLToPath } from 'node:url';
 import { readFileSync, writeFileSync, renameSync, existsSync, mkdirSync } from 'node:fs';
 
-const SHOW_TIMES = fileURLToPath(new URL('./src/data/show_times.json', import.meta.url));
-const META_OUT = fileURLToPath(new URL('./src/data/shows_meta.json', import.meta.url));
-const VENUES_OUT = fileURLToPath(new URL('./src/data/venues.json', import.meta.url));
+const SHOW_TIMES = fileURLToPath(new URL('../src/data/show_times.json', import.meta.url));
+const META_OUT = fileURLToPath(new URL('../src/data/shows_meta.json', import.meta.url));
+const VENUES_OUT = fileURLToPath(new URL('../src/data/venues.json', import.meta.url));
 
 // Cosmetic abbreviations of the venues' own names, for tight grid rows. Not
 // upstream data - purely a display shorthand, kept here so it's easy to spot
@@ -212,7 +212,7 @@ for (const [i, show] of shows.entries()) {
 }
 process.stdout.write('\n');
 
-mkdirSync(fileURLToPath(new URL('./src/data', import.meta.url)), { recursive: true });
+mkdirSync(fileURLToPath(new URL('../src/data', import.meta.url)), { recursive: true });
 
 for (const [out, data] of [[META_OUT, meta], [VENUES_OUT, venues]]) {
   const tmp = `${out}.tmp`;

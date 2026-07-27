@@ -8,7 +8,9 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "scrape": "node scripts/scrape.mjs",
+    "scrape:meta": "node scripts/scrape_meta.mjs"
   },
   "dependencies": {
     "qrcode": "^1.5.4",
