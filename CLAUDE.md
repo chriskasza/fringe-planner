@@ -11,9 +11,9 @@ Read `README.md` first - it documents the upstream API quirks that explain why
 - **`src/data/shows_meta.json` and `src/data/venues.json` are scraped by `scrape_meta.mjs`, not hand-edited.**
   They hold everything `scrape.mjs` can't get: credits, rating, content warnings,
   and venue addresses. Re-run `node scrape_meta.mjs` to refresh them.
-- **No dependencies in `scrape.mjs`.** Node built-ins only (`fetch`, `node:fs`). There is
-  deliberately no `package.json` at the repo root for the scraper - don't add one to pull
-  in a library. (The front-end under `src/` has its own `package.json` - see below.)
+- **No dependencies in `scrape.mjs`.** Node built-ins only (`fetch`, `node:fs`,
+  `node:url`). The root `package.json` belongs to the front-end; the scrapers must run
+  with nothing installed, so don't reach for a library from them.
 - **Never pass an API `dateStart` to `new Date()`.** It carries a trailing `Z` but holds
   Halifax local wall time. Strip the `Z` and keep timestamps as naive local strings
   (`2026-09-03T14:00`). This is the single easiest way to silently break every showtime

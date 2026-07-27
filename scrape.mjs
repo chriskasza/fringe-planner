@@ -7,6 +7,7 @@
 //
 //   node scrape.mjs
 
+import { fileURLToPath } from 'node:url';
 import { readFileSync, writeFileSync, renameSync, existsSync } from 'node:fs';
 
 const APP_ID = '1b63385b-47c1-46d8-a3ea-07a70e6f045f';
@@ -27,7 +28,7 @@ const PINBOARD_URL =
 
 const TICKETS_URL = 'https://halifaxfringe.ca/home-copy-copy-3/';
 const API_BASE = 'https://api.prod.simpletix.com/embed/Event';
-const OUT = new URL('./src/data/show_times.json', import.meta.url).pathname;
+const OUT = fileURLToPath(new URL('./src/data/show_times.json', import.meta.url));
 
 // "Show Passes" is a bundle product, not a show.
 const SKIP_SHOW_IDS = new Set([284273]);

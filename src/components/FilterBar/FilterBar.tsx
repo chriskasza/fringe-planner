@@ -66,7 +66,7 @@ export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
   }
 
   return (
-    <div className="filter-bar" ref={containerRef} data-filter-menu>
+    <div className="filter-bar" ref={containerRef}>
       <span className="filter-bar__label">FILTER</span>
 
       <div className="filter-bar__item">

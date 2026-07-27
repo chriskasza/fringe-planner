@@ -10,11 +10,12 @@
 //
 //   node scrape_meta.mjs
 
+import { fileURLToPath } from 'node:url';
 import { readFileSync, writeFileSync, renameSync, existsSync, mkdirSync } from 'node:fs';
 
-const SHOW_TIMES = new URL('./src/data/show_times.json', import.meta.url).pathname;
-const META_OUT = new URL('./src/data/shows_meta.json', import.meta.url).pathname;
-const VENUES_OUT = new URL('./src/data/venues.json', import.meta.url).pathname;
+const SHOW_TIMES = fileURLToPath(new URL('./src/data/show_times.json', import.meta.url));
+const META_OUT = fileURLToPath(new URL('./src/data/shows_meta.json', import.meta.url));
+const VENUES_OUT = fileURLToPath(new URL('./src/data/venues.json', import.meta.url));
 
 // Cosmetic abbreviations of the venues' own names, for tight grid rows. Not
 // upstream data - purely a display shorthand, kept here so it's easy to spot
@@ -211,7 +212,7 @@ for (const [i, show] of shows.entries()) {
 }
 process.stdout.write('\n');
 
-mkdirSync(new URL('./src/data', import.meta.url).pathname, { recursive: true });
+mkdirSync(fileURLToPath(new URL('./src/data', import.meta.url)), { recursive: true });
 
 for (const [out, data] of [[META_OUT, meta], [VENUES_OUT, venues]]) {
   const tmp = `${out}.tmp`;

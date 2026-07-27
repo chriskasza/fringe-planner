@@ -10,10 +10,10 @@ type DropdownProps = {
   children: ReactNode;
 };
 
-// Positioned panel for filter menus. Carries `data-filter-menu` so the
-// document-level outside-click listener (see FilterBar) can tell panel clicks
-// apart from anywhere-else clicks. Esc closes; focus moves into the panel on
-// open so Tab stays inside it while it's up.
+// Positioned panel for filter menus. Esc closes; focus moves into the panel
+// on open so Tab stays inside it while it's up. Clicks outside are handled by
+// FilterBar, which tests containment against its own container - the panel
+// renders inside it, so no marker attribute is involved.
 export function Dropdown({ open, title, width, onClose, children }: DropdownProps) {
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -57,7 +57,6 @@ export function Dropdown({ open, title, width, onClose, children }: DropdownProp
       ref={panelRef}
       className="dropdown"
       style={{ width }}
-      data-filter-menu
       role="dialog"
       aria-label={title}
       tabIndex={-1}
