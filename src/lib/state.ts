@@ -1,5 +1,5 @@
 import { nowInHalifax, TIME_BUCKETS } from './dates';
-import { perfKey } from './derived';
+import { perfInFilter, perfKey } from './derived';
 import type { ClashMode, Day, DayKey, DetailTarget, MenuKey, PerfKey, Show, TimeBucket, ViewMode } from './types';
 
 // Derived from TIME_BUCKETS rather than spelled out, so adding or renaming a
@@ -130,8 +130,15 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       if (anyPicked) {
         for (const k of allKeys) picked.delete(k);
       } else {
+        // "In filter" has to mean the same thing here as it does everywhere
+        // else (perfInFilter: day *and* time-of-day bucket). Gating on daysOn
+        // alone let the star add performances the card, the time pills and
+        // the rail all treat as filtered out, so they landed in the schedule
+        // dimmed and unexplained.
         const inFilterKeys = show.perfs
-          .filter((p) => p.status === 'active' && state.daysOn[p.day])
+          .filter(
+            (p) => p.status === 'active' && perfInFilter(p, state.daysOn, state.timeBucketsOn),
+          )
           .map((p) => perfKey(show.id, p.day, p.start));
         for (const k of inFilterKeys) picked.add(k);
       }
