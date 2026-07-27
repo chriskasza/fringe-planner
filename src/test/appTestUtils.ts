@@ -5,7 +5,7 @@ import { fireEvent, within } from '@testing-library/react';
 // via a CSS media query - so tests about desktop-specific behavior need to
 // scope their queries to the desktop tree, not the whole document.
 export function desktopEl(): HTMLElement {
-  return document.querySelector('.grid-planner-responsive__desktop') as HTMLElement;
+  return document.querySelector('[data-testid="grid-planner-desktop"]') as HTMLElement;
 }
 
 export function desktop() {
@@ -13,7 +13,7 @@ export function desktop() {
 }
 
 export function mobileEl(): HTMLElement {
-  return document.querySelector('.grid-planner-responsive__mobile') as HTMLElement;
+  return document.querySelector('[data-testid="grid-planner-mobile"]') as HTMLElement;
 }
 
 export function mobile() {

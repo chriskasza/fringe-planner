@@ -6,6 +6,7 @@ import { gridTimeBounds, isPastPerf, LABEL_WIDTH } from './gridLayout';
 import { TimeHeader } from './TimeHeader';
 import { VenueRow } from './VenueRow';
 import type { Show } from '../../lib/types';
+import styles from './GridPlanner.module.css';
 
 type GridBodyProps = {
   labelWidth?: number;
@@ -49,28 +50,32 @@ export function GridBody({ labelWidth = LABEL_WIDTH, compact = false }: GridBody
   const venueAddress = (venue: string) => shows.find((s) => s.venue === venue)?.venueAddress ?? null;
 
   return (
-    <div className="grid-body">
-      <div className="grid-body__heading">
-        <span className="grid-body__day-title">{dayLabel}</span>
-        <div className="grid-body__legend">
-          <span className="grid-body__legend-item">
-            <span className="grid-body__swatch grid-body__swatch--picked" /> IN MY FRINGE
+    <div className={`${styles['grid-body']} ${compact ? styles['grid-body--compact'] : ''}`}>
+      <div className={`${styles['grid-body__heading']} ${compact ? styles['grid-body__heading--compact'] : ''}`}>
+        <span className={`${styles['grid-body__day-title']} ${compact ? styles['grid-body__day-title--compact'] : ''}`}>
+          {dayLabel}
+        </span>
+        <div className={`${styles['grid-body__legend']} ${compact ? styles['grid-body__legend--compact'] : ''}`}>
+          <span className={styles['grid-body__legend-item']}>
+            <span className={`${styles['grid-body__swatch']} ${styles['grid-body__swatch--picked']}`} /> IN MY FRINGE
           </span>
-          <span className="grid-body__legend-item">
-            <span className="grid-body__swatch grid-body__swatch--overlap" /> OVERLAP
+          <span className={styles['grid-body__legend-item']}>
+            <span className={`${styles['grid-body__swatch']} ${styles['grid-body__swatch--overlap']}`} /> OVERLAP
           </span>
-          <span className="grid-body__legend-item grid-body__legend-item--faint">CLICK = PICK · ⓘ = DETAILS</span>
+          <span className={`${styles['grid-body__legend-item']} ${styles['grid-body__legend-item--faint']}`}>
+            CLICK = PICK · ⓘ = DETAILS
+          </span>
         </div>
       </div>
 
       {byVenue.length === 0 ? (
-        <div className="grid-body__empty">
+        <div className={styles['grid-body__empty']}>
           {dayIsSpent
             ? "Every performance today has finished. Pick another day to keep browsing."
             : 'No shows on this day match the current filters.'}
         </div>
       ) : (
-        <div className="grid-body__scroll">
+        <div className={`${styles['grid-body__scroll']} ${compact ? styles['grid-body__scroll--compact'] : ''}`}>
           <TimeHeader slots={slots} labelWidth={labelWidth} />
           {byVenue.map(([venue, entries]) => (
             <VenueRow

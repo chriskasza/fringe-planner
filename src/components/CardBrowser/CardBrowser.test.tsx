@@ -7,14 +7,14 @@ describe('App (Card Browser)', () => {
   it('switches from Grid to Cards via the shared top bar toggle, and back', () => {
     render(<App />);
     expect(document.querySelector('.card-browser')).not.toBeInTheDocument();
-    expect(document.querySelector('.grid-planner')).toBeInTheDocument();
+    expect(document.querySelector('[data-testid="grid-planner"]')).toBeInTheDocument();
 
     switchToCards();
     expect(document.querySelector('.card-browser')).toBeInTheDocument();
-    expect(document.querySelector('.grid-planner')).not.toBeInTheDocument();
+    expect(document.querySelector('[data-testid="grid-planner"]')).not.toBeInTheDocument();
 
     switchToGridFrom(document.querySelector('.card-browser') as HTMLElement);
-    expect(document.querySelector('.grid-planner')).toBeInTheDocument();
+    expect(document.querySelector('[data-testid="grid-planner"]')).toBeInTheDocument();
   });
 
   it('reuses the same FilterBar and TopBar components as Grid Planner', () => {

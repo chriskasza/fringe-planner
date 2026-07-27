@@ -1,7 +1,7 @@
 import { useApp } from '../../state/AppContext';
 import { parsePerfKey, perfKey, perfState } from '../../lib/derived';
 import { formatTime } from '../../lib/dates';
-import './DetailPanel.css';
+import styles from './DetailPanel.module.css';
 
 const STATUS_LABEL: Record<string, string> = {
   picked: 'PICKED',
@@ -28,12 +28,12 @@ export function DetailPanel() {
   const otherPerfs = show.perfs.filter((p) => p.status === 'active' && !(p.day === primaryDay && p.start === primaryStart));
 
   return (
-    <div className="detail-panel">
-      <div className="detail-panel__image">
-        <span className="detail-panel__image-label">[ SHOW IMAGE ]</span>
+    <div data-testid="detail-panel" className={styles['detail-panel']}>
+      <div className={styles['detail-panel__image']}>
+        <span className={styles['detail-panel__image-label']}>[ SHOW IMAGE ]</span>
         <button
           type="button"
-          className="detail-panel__close"
+          className={styles['detail-panel__close']}
           onClick={() => dispatch({ type: 'SET_DETAIL', detail: null })}
           aria-label="Close details"
         >
@@ -41,32 +41,32 @@ export function DetailPanel() {
         </button>
       </div>
 
-      <div className="detail-panel__body">
-        <h2 className="detail-panel__title">{show.title}</h2>
-        {show.credits.length > 0 && <div className="detail-panel__credits">{show.credits[0]}</div>}
+      <div className={styles['detail-panel__body']}>
+        <h2 className={styles['detail-panel__title']}>{show.title}</h2>
+        {show.credits.length > 0 && <div className={styles['detail-panel__credits']}>{show.credits[0]}</div>}
 
-        <div className="detail-panel__spec">
-          <span className="detail-panel__spec-key">TIME</span>
-          <span className="detail-panel__spec-value">
+        <div className={styles['detail-panel__spec']}>
+          <span className={styles['detail-panel__spec-key']}>TIME</span>
+          <span className={styles['detail-panel__spec-value']}>
             {dayLabel} · {formatTime(primaryPerf.start)}–{formatTime(primaryPerf.end)}
           </span>
-          <span className="detail-panel__spec-key">VENUE</span>
-          <span className="detail-panel__spec-value">
+          <span className={styles['detail-panel__spec-key']}>VENUE</span>
+          <span className={styles['detail-panel__spec-value']}>
             {show.venue}
             {show.venueAddress ? ` · ${show.venueAddress}` : ''}
           </span>
-          <span className="detail-panel__spec-key">LENGTH</span>
-          <span className="detail-panel__spec-value">{primaryPerf.mins} min</span>
-          <span className="detail-panel__spec-key">RATING</span>
-          <span className="detail-panel__spec-value">{show.rating}</span>
+          <span className={styles['detail-panel__spec-key']}>LENGTH</span>
+          <span className={styles['detail-panel__spec-value']}>{primaryPerf.mins} min</span>
+          <span className={styles['detail-panel__spec-key']}>RATING</span>
+          <span className={styles['detail-panel__spec-value']}>{show.rating}</span>
         </div>
 
-        <p className="detail-panel__blurb">{show.blurb}</p>
+        <p className={styles['detail-panel__blurb']}>{show.blurb}</p>
 
         {show.warnings.length > 0 && (
-          <div className="detail-panel__warnings">
+          <div className={styles['detail-panel__warnings']}>
             {show.warnings.map((w) => (
-              <span key={w} className="detail-panel__warning-chip">
+              <span key={w} className={styles['detail-panel__warning-chip']}>
                 {w}
               </span>
             ))}
@@ -74,8 +74,8 @@ export function DetailPanel() {
         )}
 
         {otherPerfs.length > 0 && (
-          <div className="detail-panel__others">
-            <div className="detail-panel__others-label">OTHER PERFORMANCES</div>
+          <div className={styles['detail-panel__others']}>
+            <div className={styles['detail-panel__others-label']}>OTHER PERFORMANCES</div>
             {otherPerfs.map((p) => {
               const key = perfKey(show.id, p.day, p.start);
               const s = perfState(show, p, state.picked, shows);
@@ -84,13 +84,13 @@ export function DetailPanel() {
                 <button
                   key={key}
                   type="button"
-                  className="detail-panel__other-row"
+                  className={styles['detail-panel__other-row']}
                   onClick={() => dispatch({ type: 'TOGGLE_PICK', key })}
                 >
                   <span>
                     {label} · {formatTime(p.start)}
                   </span>
-                  <span className={`detail-panel__other-status detail-panel__other-status--${s}`}>
+                  <span className={`${styles['detail-panel__other-status']} ${styles[`detail-panel__other-status--${s}`]}`}>
                     {STATUS_LABEL[s]}
                   </span>
                 </button>
@@ -99,15 +99,15 @@ export function DetailPanel() {
           </div>
         )}
 
-        <div className="detail-panel__footer">
+        <div className={styles['detail-panel__footer']}>
           <button
             type="button"
-            className={`detail-panel__primary ${isPicked ? 'detail-panel__primary--remove' : ''}`}
+            className={`${styles['detail-panel__primary']} ${isPicked ? styles['detail-panel__primary--remove'] : ''}`}
             onClick={() => dispatch({ type: 'TOGGLE_PICK', key: state.detail!.perfKey })}
           >
             {isPicked ? '✓ In My Fringe — remove' : '★ Add to My Fringe'}
           </button>
-          <a className="detail-panel__tickets" href={show.ticketUrl} target="_blank" rel="noreferrer">
+          <a className={styles['detail-panel__tickets']} href={show.ticketUrl} target="_blank" rel="noreferrer">
             Tickets
           </a>
         </div>

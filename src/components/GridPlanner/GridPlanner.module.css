@@ -59,6 +59,12 @@
   min-height: 0;
 }
 
+/* Mobile: tighter than the desktop default (see GridPlannerMobile, which
+   renders this same GridBody with compact set). */
+.grid-body--compact {
+  padding-top: 14px;
+}
+
 .grid-body__heading {
   display: flex;
   align-items: baseline;
@@ -66,6 +72,10 @@
   padding: 0 26px 14px;
   gap: 18px;
   flex-wrap: wrap;
+}
+
+.grid-body__heading--compact {
+  padding: 0 14px 10px;
 }
 
 /* This is the only element that scrolls, in either direction - the heading
@@ -83,12 +93,20 @@
   min-height: 0;
 }
 
+.grid-body__scroll--compact {
+  padding: 0 14px 0 0;
+}
+
 .grid-body__day-title {
   font-family: var(--font-display);
   font-size: 24px;
   letter-spacing: 0.01em;
   color: var(--cream);
   text-transform: uppercase;
+}
+
+.grid-body__day-title--compact {
+  font-size: 18px;
 }
 
 .grid-body__legend {
@@ -98,6 +116,11 @@
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--text-2);
+}
+
+.grid-body__legend--compact {
+  gap: 10px;
+  font-size: 10px;
 }
 
 /* No room for the legend text on a narrow phone - the states are still

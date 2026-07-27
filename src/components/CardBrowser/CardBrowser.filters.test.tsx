@@ -93,7 +93,7 @@ describe('Day / Time filters gate which shows are browsable', () => {
 
     // Go to the grid and click a third day's tab.
     switchToGridFrom(document.querySelector('.card-browser') as HTMLElement);
-    const sep5Tab = Array.from(desktopEl().querySelectorAll('.day-strip__tab')).find(
+    const sep5Tab = Array.from(desktopEl().querySelectorAll('[data-testid="day-strip-tab"]')).find(
       (el) => el.textContent?.includes('SAT') && el.textContent?.includes('5'),
     ) as HTMLElement;
     fireEvent.click(sep5Tab);

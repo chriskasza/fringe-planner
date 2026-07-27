@@ -41,7 +41,7 @@ describe('App (mobile Grid Planner)', () => {
 
   it('reuses the same grid blocks as desktop, including pick-toggle and the info button', () => {
     render(<App />);
-    const blocks = mobileEl().querySelectorAll('.grid-block');
+    const blocks = mobileEl().querySelectorAll('[data-testid="grid-block"]');
     expect(blocks.length).toBeGreaterThan(0);
 
     fireEvent.click(blocks[0]);
@@ -49,21 +49,21 @@ describe('App (mobile Grid Planner)', () => {
 
     const infoButtons = mobile().getAllByRole('button', { name: /Details for/ });
     fireEvent.click(infoButtons[0]);
-    expect(document.querySelector('.detail-panel')).toBeInTheDocument();
+    expect(document.querySelector('[data-testid="detail-panel"]')).toBeInTheDocument();
   });
 
   it('uses a narrower venue column with no address line, clamped to 3 lines', () => {
     render(<App />);
-    const label = mobileEl().querySelector('.venue-row__label') as HTMLElement;
-    expect(label.className).toContain('venue-row__label--compact');
-    expect(mobileEl().querySelector('.venue-row__address')).not.toBeInTheDocument();
+    const label = mobileEl().querySelector('[data-testid="venue-row-label"]') as HTMLElement;
+    expect(label.dataset.compact).toBe('true');
+    expect(mobileEl().querySelector('[data-testid="venue-row-address"]')).not.toBeInTheDocument();
 
-    const timeHeader = mobileEl().querySelector('.time-header') as HTMLElement;
+    const timeHeader = mobileEl().querySelector('[data-testid="time-header"]') as HTMLElement;
     expect(timeHeader.style.gridTemplateColumns).toMatch(/^\d+px 1fr$/);
     expect(timeHeader.style.gridTemplateColumns).not.toBe(`${LABEL_WIDTH}px 1fr`);
 
     const css = readFileSync(
-      resolve(process.cwd(), 'src/components/GridPlanner/GridPlanner.css'),
+      resolve(process.cwd(), 'src/components/GridPlanner/GridPlanner.module.css'),
       'utf8',
     );
     expect(css).toMatch(/\.venue-row__name--compact\s*{[^}]*-webkit-line-clamp:\s*3;/);
@@ -71,7 +71,7 @@ describe('App (mobile Grid Planner)', () => {
 
   it('hides the grid legend on narrow phones (under ~520px)', () => {
     const css = readFileSync(
-      resolve(process.cwd(), 'src/components/GridPlanner/GridPlanner.css'),
+      resolve(process.cwd(), 'src/components/GridPlanner/GridPlanner.module.css'),
       'utf8',
     );
     expect(css).toMatch(/@media \(max-width:\s*520px\)\s*{\s*\.grid-body__legend\s*{\s*display:\s*none;/);

@@ -14,7 +14,7 @@ describe('App (Grid Planner)', () => {
 
   it('renders a day strip with 11 festival days', () => {
     render(<App />);
-    expect(desktopEl().querySelectorAll('.day-strip__tab').length).toBe(11);
+    expect(desktopEl().querySelectorAll('[data-testid="day-strip-tab"]').length).toBe(11);
   });
 
   it('renders grid blocks for the selected day and toggling a pick updates the My Fringe counter', () => {
@@ -22,7 +22,7 @@ describe('App (Grid Planner)', () => {
     const badgeBefore = desktop().getByText('0');
     expect(badgeBefore).toBeInTheDocument();
 
-    const blocks = desktopEl().querySelectorAll('.grid-block');
+    const blocks = desktopEl().querySelectorAll('[data-testid="grid-block"]');
     expect(blocks.length).toBeGreaterThan(0);
 
     fireEvent.click(blocks[0]);
@@ -38,7 +38,7 @@ describe('App (Grid Planner)', () => {
 
     fireEvent.click(infoButtons[0]);
 
-    expect(document.querySelector('.detail-panel')).toBeInTheDocument();
+    expect(document.querySelector('[data-testid="detail-panel"]')).toBeInTheDocument();
     // stopPropagation means the pick count should still be 0
     expect(desktop().getByText('0')).toBeInTheDocument();
   });
@@ -52,7 +52,7 @@ describe('App (Grid Planner)', () => {
     render(<App />);
     const blocks = desktop()
       .getAllByTitle('APPLES! as told by an expert')
-      .map((el) => el.closest('.grid-block') as HTMLElement);
+      .map((el) => el.closest('[data-testid="grid-block"]') as HTMLElement);
     const block = blocks.find((b) => b.textContent?.includes('3:30 PM'));
     expect(block).toBeDefined();
     expect(block!.style.left).toBe('424px');
@@ -69,7 +69,7 @@ describe('App (Grid Planner)', () => {
     render(<App />);
     const blocks = desktop()
       .getAllByTitle(/Jackson Elementary/)
-      .map((el) => el.closest('.grid-block'))
+      .map((el) => el.closest('[data-testid="grid-block"]'))
       .filter((el): el is HTMLElement => el !== null);
     expect(blocks.length).toBe(1);
     expect(blocks[0].style.left).toBe('1614px');
@@ -80,7 +80,7 @@ describe('App (Grid Planner)', () => {
     // axis was computed once across every day in the festival (10:30am-10:30pm),
     // wasting most of the grid on hours nothing runs on any given night.
     render(<App />);
-    const headerLabels = Array.from(desktopEl().querySelectorAll('.time-header__label')).map(
+    const headerLabels = Array.from(desktopEl().querySelectorAll('[data-testid="time-header-label"]')).map(
       (el) => el.textContent,
     );
     expect(headerLabels[0]).toBe('2:00 PM');
@@ -95,7 +95,7 @@ describe('App (Grid Planner)', () => {
     // 'Craig in Conversation with God' 20:00-20:45 (20:00-20:15).
     render(<App />);
 
-    const sep6Tab = Array.from(desktopEl().querySelectorAll('.day-strip__tab')).find(
+    const sep6Tab = Array.from(desktopEl().querySelectorAll('[data-testid="day-strip-tab"]')).find(
       (el) => el.textContent?.includes('SUN') && el.textContent?.includes('6'),
     ) as HTMLElement;
     expect(sep6Tab).toBeDefined();
@@ -103,17 +103,19 @@ describe('App (Grid Planner)', () => {
 
     const normBlocks = desktop()
       .getAllByTitle('‘NÔRM(Ə)L')
-      .map((el) => el.closest('.grid-block') as HTMLElement);
+      .map((el) => el.closest('[data-testid="grid-block"]') as HTMLElement);
     const normBlock = normBlocks.find((b) => b.textContent?.includes('7:30 PM'));
     expect(normBlock).toBeDefined();
     fireEvent.click(normBlock!);
 
     const craigBlocks = desktop()
       .getAllByTitle('Craig in Conversation with God')
-      .map((el) => el.closest('.grid-block') as HTMLElement);
+      .map((el) => el.closest('[data-testid="grid-block"]') as HTMLElement);
     const craigBlock = craigBlocks.find((b) => b.textContent?.includes('8:00 PM'));
     expect(craigBlock).toBeDefined();
-    expect(craigBlock!.className).toContain('grid-block--clash');
+    // The aria-label already encodes clash state ("...Overlaps"), so assert
+    // on the accessible name rather than the (now CSS-Modules-hashed) class.
+    expect(craigBlock!.getAttribute('aria-label')).toContain('Overlaps');
   });
 
   it("sizes a block's width proportionally to its actual duration, not a fixed minimum", () => {
@@ -127,11 +129,11 @@ describe('App (Grid Planner)', () => {
 
     const peakTwins = desktop()
       .getAllByTitle('Peak Twins')
-      .map((el) => el.closest('.grid-block'))
+      .map((el) => el.closest('[data-testid="grid-block"]'))
       .filter((el): el is HTMLElement => el !== null);
     const puttPutt = desktop()
       .getAllByTitle('Putt Putt Punishment')
-      .map((el) => el.closest('.grid-block'))
+      .map((el) => el.closest('[data-testid="grid-block"]'))
       .filter((el): el is HTMLElement => el !== null);
     expect(peakTwins.length).toBe(1);
     expect(puttPutt.length).toBe(1);
@@ -153,11 +155,11 @@ describe('App (Grid Planner)', () => {
     render(<App />);
     expect(LABEL_WIDTH).toBe(176);
 
-    const timeHeader = desktopEl().querySelector('.time-header') as HTMLElement;
+    const timeHeader = desktopEl().querySelector('[data-testid="time-header"]') as HTMLElement;
     expect(timeHeader.style.gridTemplateColumns).toBe(`${LABEL_WIDTH}px 1fr`);
 
     const css = readFileSync(
-      resolve(process.cwd(), 'src/components/GridPlanner/GridPlanner.css'),
+      resolve(process.cwd(), 'src/components/GridPlanner/GridPlanner.module.css'),
       'utf8',
     );
     expect(css).toMatch(/\.grid-body__scroll\s*{[^}]*padding:\s*0 26px 0 0/);
@@ -165,8 +167,8 @@ describe('App (Grid Planner)', () => {
 
   it('sizes the time header and every venue row to the same explicit width, so borders span the full scrollable grid', () => {
     render(<App />);
-    const timeHeader = desktopEl().querySelector('.time-header') as HTMLElement;
-    const venueRows = Array.from(desktopEl().querySelectorAll('.venue-row')) as HTMLElement[];
+    const timeHeader = desktopEl().querySelector('[data-testid="time-header"]') as HTMLElement;
+    const venueRows = Array.from(desktopEl().querySelectorAll('[data-testid="venue-row"]')) as HTMLElement[];
     expect(venueRows.length).toBeGreaterThan(0);
 
     const headerWidth = timeHeader.style.width;
@@ -182,7 +184,7 @@ describe('App (Grid Planner)', () => {
     // specifically sticky at the top of the scroll area (the vertical
     // counterpart to the venue-label's horizontal sticky).
     const gridCss = readFileSync(
-      resolve(process.cwd(), 'src/components/GridPlanner/GridPlanner.css'),
+      resolve(process.cwd(), 'src/components/GridPlanner/GridPlanner.module.css'),
       'utf8',
     );
     expect(gridCss).toMatch(/\.time-header\s*{[^}]*position:\s*sticky;[^}]*top:\s*0;/);

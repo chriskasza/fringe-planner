@@ -32,7 +32,7 @@ describe('Sync Sheet', () => {
 
   it('shows the schedule summary matching the current state', () => {
     render(<App />);
-    const blocks = desktopEl().querySelectorAll('.grid-block');
+    const blocks = desktopEl().querySelectorAll('[data-testid="grid-block"]');
     fireEvent.click(blocks[0]);
     fireEvent.click(blocks[1]);
 
@@ -66,7 +66,7 @@ describe('Sync Sheet', () => {
   // sheet had just produced always answered "No valid picks found".
   it('restores the schedule from a link pasted into the restore row', () => {
     render(<App />);
-    const blocks = desktopEl().querySelectorAll('.grid-block');
+    const blocks = desktopEl().querySelectorAll('[data-testid="grid-block"]');
     fireEvent.click(blocks[0]);
     fireEvent.click(blocks[1]);
 
@@ -77,8 +77,8 @@ describe('Sync Sheet', () => {
 
     // Clear the schedule, then paste the link back in.
     fireEvent.click(syncScope().getByRole('button', { name: 'Close sync' }));
-    fireEvent.click(desktopEl().querySelectorAll('.grid-block')[0]);
-    fireEvent.click(desktopEl().querySelectorAll('.grid-block')[1]);
+    fireEvent.click(desktopEl().querySelectorAll('[data-testid="grid-block"]')[0]);
+    fireEvent.click(desktopEl().querySelectorAll('[data-testid="grid-block"]')[1]);
     openSync();
     expect(syncScope().getByText(/^0 PERFORMANCE/)).toBeInTheDocument();
 
@@ -96,7 +96,7 @@ describe('Sync Sheet', () => {
   // schedule on screen didn't.
   it('applies the hash from a genuine Back navigation', async () => {
     render(<App />);
-    const blocks = () => desktopEl().querySelectorAll('.grid-block');
+    const blocks = () => desktopEl().querySelectorAll('[data-testid="grid-block"]');
 
     fireEvent.click(blocks()[0]);
     await new Promise((r) => setTimeout(r, DEBOUNCE_SETTLE_MS));

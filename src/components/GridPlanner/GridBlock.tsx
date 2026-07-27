@@ -4,6 +4,7 @@ import { formatTime } from '../../lib/dates';
 import { blockLeft, blockWidth, BLOCK_INSET_Y_PX } from './gridLayout';
 import { IconButton } from '../ui/IconButton';
 import type { Show } from '../../lib/types';
+import styles from './GridPlanner.module.css';
 
 type GridBlockProps = {
   show: Show;
@@ -29,7 +30,8 @@ export function GridBlock({ show, perf, gridStartMin }: GridBlockProps) {
 
   return (
     <div
-      className={`grid-block grid-block--${pState}`}
+      data-testid="grid-block"
+      className={`${styles['grid-block']} ${styles[`grid-block--${pState}`]}`}
       style={style}
       onClick={() => dispatch({ type: 'TOGGLE_PICK', key })}
       role="button"
@@ -42,8 +44,8 @@ export function GridBlock({ show, perf, gridStartMin }: GridBlockProps) {
       }}
       aria-label={`${show.title}, ${formatTime(perf.start)}, ${perf.mins} min, ${stateLabel}`}
     >
-      <div className="grid-block__top">
-        <span className="grid-block__title" title={show.title}>
+      <div className={styles['grid-block__top']}>
+        <span className={styles['grid-block__title']} title={show.title}>
           {show.title}
         </span>
         <IconButton
@@ -54,7 +56,7 @@ export function GridBlock({ show, perf, gridStartMin }: GridBlockProps) {
           onClick={() => dispatch({ type: 'SET_DETAIL', detail: { showId: show.id, perfKey: key } })}
         />
       </div>
-      <div className="grid-block__meta">
+      <div className={styles['grid-block__meta']}>
         {formatTime(perf.start)} · {perf.mins} MIN
       </div>
     </div>
