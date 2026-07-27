@@ -38,7 +38,19 @@ export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
 
   const openMenu = state.openMenu[view];
 
+  // Outside-click closes this bar's own dropdowns. Two things it must not do:
+  //
+  // - run when nothing is open, which dispatched CLOSE_MENUS on every click
+  //   anywhere in the app and re-rendered both view trees for nothing;
+  // - touch the mobile filters sheet ('all'). Desktop and mobile are both
+  //   always mounted and switched by CSS alone, so this listener is live at
+  //   phone widths too - and the sheet renders outside this container, so
+  //   every tap inside it counted as an outside click and unmounted the sheet
+  //   during mousedown, before the tap could reach the control under it. The
+  //   sheet closes itself via its backdrop, close button and Escape.
   useEffect(() => {
+    if (!openMenu || openMenu === 'all') return;
+
     function onMouseDown(e: MouseEvent) {
       if (!containerRef.current) return;
       if (!containerRef.current.contains(e.target as Node)) {
@@ -47,7 +59,7 @@ export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
     }
     document.addEventListener('mousedown', onMouseDown, true);
     return () => document.removeEventListener('mousedown', onMouseDown, true);
-  }, [dispatch]);
+  }, [dispatch, openMenu]);
 
   function toggleMenu(menu: MenuKey) {
     dispatch({ type: 'SET_OPEN_MENU', view, menu: openMenu === menu ? null : menu });

@@ -245,6 +245,44 @@ describe('App (mobile Grid Planner)', () => {
     }
   });
 
+  // Desktop and mobile are both mounted at all times and switched by CSS
+  // alone, so the desktop FilterBar's document-level outside-click listener is
+  // live at phone widths too. The mobile sheet renders outside that bar's
+  // container, so every tap inside the sheet counted as an outside click and
+  // unmounted it on mousedown - before the tap ever reached the control. Real
+  // taps dispatch mousedown; fireEvent.click alone does not, which is why the
+  // panel test above passed throughout.
+  it('stays open when a control inside it is tapped, and toggles that control', () => {
+    render(<App />);
+    fireEvent.click(mobile().getByRole('button', { name: /^Filters/ }));
+
+    const overlay = () => document.querySelector('.mobile-filters-overlay');
+    const dayRow = within(overlay() as HTMLElement).getByText('Fri 4 Sep').closest('label') as HTMLElement;
+    const checkbox = within(dayRow).getByRole('checkbox');
+    expect(checkbox).toBeChecked();
+
+    fireEvent.mouseDown(checkbox);
+    expect(overlay()).toBeInTheDocument();
+
+    fireEvent.click(checkbox);
+    expect(overlay()).toBeInTheDocument();
+    expect(within(overlay() as HTMLElement).getByText('Fri 4 Sep').closest('label')).not.toBeNull();
+    expect(
+      within(within(overlay() as HTMLElement).getByText('Fri 4 Sep').closest('label') as HTMLElement).getByRole(
+        'checkbox',
+      ),
+    ).not.toBeChecked();
+  });
+
+  it('closes the filters sheet from its own backdrop', () => {
+    render(<App />);
+    fireEvent.click(mobile().getByRole('button', { name: /^Filters/ }));
+    expect(document.querySelector('.mobile-filters-overlay')).toBeInTheDocument();
+
+    fireEvent.click(document.querySelector('.mobile-filters-backdrop')!);
+    expect(document.querySelector('.mobile-filters-overlay')).not.toBeInTheDocument();
+  });
+
   it('reuses the same grid blocks as desktop, including pick-toggle and the info button', () => {
     render(<App />);
     const blocks = mobileEl().querySelectorAll('.grid-block');
