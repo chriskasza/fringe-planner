@@ -1,10 +1,12 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { render, fireEvent, within } from '@testing-library/react';
+import { render, fireEvent, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import App from './App';
+import { AppProvider } from './state/AppContext';
 import { shows } from './lib/loadData';
 import { LABEL_WIDTH } from './components/GridPlanner/gridLayout';
+import { FiltersOverflowModal, MoreFiltersButton } from './components/FilterBar/FiltersOverflowModal';
 
 // The mobile Grid Planner reuses the same components as desktop (shared
 // wordmark, grid blocks, badges, etc.), both rendered at once and toggled
@@ -214,15 +216,17 @@ describe('App (Grid Planner)', () => {
 });
 
 describe('App (mobile Grid Planner)', () => {
-  it('shows the app initials (not the selected date) alongside Filters and My Fringe on one row', () => {
-    // Collapsed to "HF" (not the full "HALIFAX FRINGE") specifically so
-    // title + Filters + My Fringe all fit on the same line on a phone.
+  it('shows the app initials (not the selected date) alongside just the view toggle and My Fringe', () => {
+    // Collapsed to "HF" (not the full "HALIFAX FRINGE") specifically so the
+    // wordmark, view toggle and My Fringe all fit on the same line on a
+    // phone. The Filters button that used to live here is gone - filters
+    // live in the FilterBar row below, the same component desktop uses.
     render(<App />);
     expect(mobile().queryByText('HALIFAX FRINGE')).not.toBeInTheDocument();
     expect(mobile().getByText('HF')).toBeInTheDocument();
 
     const topbar = mobileEl().querySelector('.topbar') as HTMLElement;
-    expect(within(topbar).getByRole('button', { name: /^Filters/ })).toBeInTheDocument();
+    expect(within(topbar).queryByRole('button', { name: /^Filters/ })).not.toBeInTheDocument();
     expect(within(topbar).getByRole('button', { name: /My Fringe/ })).toBeInTheDocument();
   });
 
@@ -231,56 +235,18 @@ describe('App (mobile Grid Planner)', () => {
     expect(mobile().queryAllByText(/shows$/).length).toBe(0);
   });
 
-  it('opens the consolidated filters panel from a single Filters button', () => {
+  // jsdom has no layout engine (offsetWidth/clientWidth are always 0), so
+  // useOverflowFilters can never measure a real overflow here - it falls
+  // back to "everything fits", which is also exactly the state that should
+  // make More… disappear entirely. The reverse (More… appearing once real
+  // content actually overflows a real viewport) is a layout behavior and
+  // belongs to the Playwright pass instead (see CLAUDE.md).
+  it('renders every filter inline with no More… button when nothing needs to collapse', () => {
     render(<App />);
-    expect(document.querySelector('.mobile-filters-overlay')).not.toBeInTheDocument();
-
-    fireEvent.click(mobile().getByRole('button', { name: /^Filters/ }));
-
-    const overlay = document.querySelector('.mobile-filters-overlay');
-    expect(overlay).toBeInTheDocument();
-    // All six filter sections should be present in one panel.
-    for (const label of ['Day', 'Time', 'Venue', 'Age & content', 'Conflicts', 'Shows']) {
-      expect(within(overlay as HTMLElement).getByText(label)).toBeInTheDocument();
+    expect(mobile().queryByRole('button', { name: /^More/ })).not.toBeInTheDocument();
+    for (const label of ['Venue', 'Shows', 'Time', 'Day', 'Age & content', 'Content']) {
+      expect(mobile().getByRole('button', { name: new RegExp(`^${label}`) })).toBeInTheDocument();
     }
-  });
-
-  // Desktop and mobile are both mounted at all times and switched by CSS
-  // alone, so the desktop FilterBar's document-level outside-click listener is
-  // live at phone widths too. The mobile sheet renders outside that bar's
-  // container, so every tap inside the sheet counted as an outside click and
-  // unmounted it on mousedown - before the tap ever reached the control. Real
-  // taps dispatch mousedown; fireEvent.click alone does not, which is why the
-  // panel test above passed throughout.
-  it('stays open when a control inside it is tapped, and toggles that control', () => {
-    render(<App />);
-    fireEvent.click(mobile().getByRole('button', { name: /^Filters/ }));
-
-    const overlay = () => document.querySelector('.mobile-filters-overlay');
-    const dayRow = within(overlay() as HTMLElement).getByText('Fri 4 Sep').closest('label') as HTMLElement;
-    const checkbox = within(dayRow).getByRole('checkbox');
-    expect(checkbox).toBeChecked();
-
-    fireEvent.mouseDown(checkbox);
-    expect(overlay()).toBeInTheDocument();
-
-    fireEvent.click(checkbox);
-    expect(overlay()).toBeInTheDocument();
-    expect(within(overlay() as HTMLElement).getByText('Fri 4 Sep').closest('label')).not.toBeNull();
-    expect(
-      within(within(overlay() as HTMLElement).getByText('Fri 4 Sep').closest('label') as HTMLElement).getByRole(
-        'checkbox',
-      ),
-    ).not.toBeChecked();
-  });
-
-  it('closes the filters sheet from its own backdrop', () => {
-    render(<App />);
-    fireEvent.click(mobile().getByRole('button', { name: /^Filters/ }));
-    expect(document.querySelector('.mobile-filters-overlay')).toBeInTheDocument();
-
-    fireEvent.click(document.querySelector('.mobile-filters-backdrop')!);
-    expect(document.querySelector('.mobile-filters-overlay')).not.toBeInTheDocument();
   });
 
   it('reuses the same grid blocks as desktop, including pick-toggle and the info button', () => {
@@ -319,6 +285,68 @@ describe('App (mobile Grid Planner)', () => {
       'utf8',
     );
     expect(css).toMatch(/@media \(max-width:\s*520px\)\s*{\s*\.grid-body__legend\s*{\s*display:\s*none;/);
+  });
+});
+
+// The More… button's own click/open/close/tap-through wiring, tested
+// directly rather than through the real FilterBar - whether More… is
+// present at all in a given layout is a width-driven decision jsdom can't
+// make (see the "no More… button when nothing needs to collapse" test
+// above and the Playwright pass in CLAUDE.md), but once it exists, clicking
+// it and interacting with the modal it opens has nothing to do with layout.
+describe('FiltersOverflowModal', () => {
+  function renderModal() {
+    return render(
+      <AppProvider>
+        <MoreFiltersButton view="grid" />
+        <FiltersOverflowModal view="grid" />
+      </AppProvider>,
+    );
+  }
+
+  it('opens from the More… button and lists every filter', () => {
+    renderModal();
+    expect(document.querySelector('.filters-overflow-overlay')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /^More/ }));
+
+    const overlay = document.querySelector('.filters-overflow-overlay');
+    expect(overlay).toBeInTheDocument();
+    for (const label of ['Day', 'Time', 'Venue', 'Age & content', 'Content', 'Conflicts', 'Shows']) {
+      expect(within(overlay as HTMLElement).getByText(label)).toBeInTheDocument();
+    }
+  });
+
+  it('stays open when a control inside it is tapped, and toggles that control', () => {
+    // Real taps dispatch mousedown before click; FilterBar's own outside-click
+    // listener (live at every width, since desktop and mobile are both always
+    // mounted) used to unmount a sibling copy of this sheet on that mousedown,
+    // before the tap ever reached the control inside it.
+    renderModal();
+    fireEvent.click(screen.getByRole('button', { name: /^More/ }));
+
+    const overlay = () => document.querySelector('.filters-overflow-overlay') as HTMLElement;
+    const dayRow = within(overlay()).getByText('Fri 4 Sep').closest('label') as HTMLElement;
+    const checkbox = within(dayRow).getByRole('checkbox');
+    expect(checkbox).toBeChecked();
+
+    fireEvent.mouseDown(checkbox);
+    expect(overlay()).toBeInTheDocument();
+
+    fireEvent.click(checkbox);
+    expect(overlay()).toBeInTheDocument();
+    expect(
+      within(within(overlay()).getByText('Fri 4 Sep').closest('label') as HTMLElement).getByRole('checkbox'),
+    ).not.toBeChecked();
+  });
+
+  it('closes from its own backdrop', () => {
+    renderModal();
+    fireEvent.click(screen.getByRole('button', { name: /^More/ }));
+    expect(document.querySelector('.filters-overflow-overlay')).toBeInTheDocument();
+
+    fireEvent.click(document.querySelector('.filters-overflow-backdrop')!);
+    expect(document.querySelector('.filters-overflow-overlay')).not.toBeInTheDocument();
   });
 });
 

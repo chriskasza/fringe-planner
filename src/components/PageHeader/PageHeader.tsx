@@ -1,6 +1,6 @@
 import { TopBar } from './TopBar';
 import { FilterBar } from '../FilterBar/FilterBar';
-import { MobileFiltersButton, MobileFiltersPanel } from '../FilterBar/MobileFiltersPanel';
+import { FiltersOverflowModal } from '../FilterBar/FiltersOverflowModal';
 
 type PageHeaderProps = {
   view: 'grid' | 'cards';
@@ -8,24 +8,24 @@ type PageHeaderProps = {
   countLabel?: string;
 };
 
-export function PageHeader({ view, visibleCount, countLabel }: PageHeaderProps) {
+// Same FilterBar at every width - it collapses its own inline filters down to
+// however many fit (0 on the narrowest phones), so desktop and mobile share
+// one implementation here too; only TopBar's `compact` brand treatment
+// differs between them.
+function Header({ view, visibleCount, countLabel, compact }: PageHeaderProps & { compact: boolean }) {
   return (
     <>
-      <TopBar />
+      <TopBar compact={compact} />
       <FilterBar view={view} visibleCount={visibleCount} countLabel={countLabel} />
+      <FiltersOverflowModal view={view} />
     </>
   );
 }
 
-type PageHeaderMobileProps = {
-  view: 'grid' | 'cards';
-};
+export function PageHeader(props: PageHeaderProps) {
+  return <Header {...props} compact={false} />;
+}
 
-export function PageHeaderMobile({ view }: PageHeaderMobileProps) {
-  return (
-    <>
-      <TopBar compact rightExtra={<MobileFiltersButton view={view} />} />
-      <MobileFiltersPanel view={view} />
-    </>
-  );
+export function PageHeaderMobile({ view }: { view: 'grid' | 'cards' }) {
+  return <Header view={view} compact />;
 }

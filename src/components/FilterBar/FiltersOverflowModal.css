@@ -1,4 +1,4 @@
-.mobile-filters-button {
+.filters-overflow-trigger {
   padding: 9px 14px;
   border-radius: var(--r-button);
   background: var(--ink-sunken);
@@ -7,10 +7,11 @@
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.04em;
+  white-space: nowrap;
   cursor: pointer;
 }
 
-.mobile-filters-overlay {
+.filters-overflow-overlay {
   position: fixed;
   inset: 0;
   z-index: 100;
@@ -18,7 +19,7 @@
   align-items: flex-end;
 }
 
-.mobile-filters-backdrop {
+.filters-overflow-backdrop {
   position: absolute;
   inset: 0;
   border: none;
@@ -27,7 +28,7 @@
   cursor: pointer;
 }
 
-.mobile-filters-sheet {
+.filters-overflow-sheet {
   position: relative;
   width: 100%;
   max-height: 85vh;
@@ -41,7 +42,7 @@
   box-shadow: var(--shadow-frame);
 }
 
-.mobile-filters-sheet__header {
+.filters-overflow-sheet__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -50,14 +51,14 @@
   flex: none;
 }
 
-.mobile-filters-sheet__title {
+.filters-overflow-sheet__title {
   font-family: var(--font-display);
   font-size: 16px;
   letter-spacing: 0.02em;
   color: var(--cream);
 }
 
-.mobile-filters-sheet__close {
+.filters-overflow-sheet__close {
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -68,7 +69,7 @@
   cursor: pointer;
 }
 
-.mobile-filters-sheet__body {
+.filters-overflow-sheet__body {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
@@ -78,23 +79,23 @@
   gap: 8px;
 }
 
-.mobile-filters-section {
+.filters-overflow-section {
   padding: 14px 0;
   border-bottom: 1px solid var(--line-soft);
 }
 
-.mobile-filters-section:last-child {
+.filters-overflow-section:last-child {
   border-bottom: none;
 }
 
-.mobile-filters-section__header {
+.filters-overflow-section__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
 }
 
-.mobile-filters-section__label {
+.filters-overflow-section__label {
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.14em;
@@ -102,13 +103,13 @@
   color: var(--gold);
 }
 
-.mobile-filters-section__value {
+.filters-overflow-section__value {
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--text-mute);
 }
 
-.mobile-filters-section__list {
+.filters-overflow-section__list {
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -116,19 +117,19 @@
   overflow-y: auto;
 }
 
-.mobile-filters-section__footer {
+.filters-overflow-section__footer {
   display: flex;
   gap: 8px;
   margin-top: 10px;
 }
 
-.mobile-filters-sheet__footer {
+.filters-overflow-sheet__footer {
   flex: none;
   padding: 14px 18px;
   border-top: 1px solid var(--line);
 }
 
-.mobile-filters-sheet__reset {
+.filters-overflow-sheet__reset {
   width: 100%;
   padding: 12px;
   border-radius: var(--r-button);
@@ -142,7 +143,7 @@
   cursor: pointer;
 }
 
-.mobile-filters-sheet__reset:hover {
+.filters-overflow-sheet__reset:hover {
   border-color: var(--gold);
   color: var(--cream);
 }

@@ -112,18 +112,24 @@ type VisibilityState = {
   timeBucketsOn: Record<TimeBucket, boolean>;
   venuesOn: Record<string, boolean>;
   ratingsOn: Record<string, boolean>;
+  warningsOn: Record<string, boolean>;
   clash: ClashMode;
   picked: Set<PerfKey>;
 };
 
 // A show is visible when it isn't excluded, it still has at least one
 // performance inside the day/time filter, its venue/rating are switched on,
-// and clash mode allows it. Clash mode tests whether *any* of the show's
-// performances is in a clash state.
+// none of its content warnings have been switched off, and clash mode allows
+// it. Clash mode tests whether *any* of the show's performances is in a
+// clash state.
 export function visible(show: Show, state: VisibilityState, shows: Show[]): boolean {
   if (state.excluded[show.id]) return false;
   if (state.venuesOn[show.venue] === false) return false;
   if (state.ratingsOn[show.rating] === false) return false;
+  // Unlike venue/rating (one value per show), warnings is a list - a show
+  // carrying any switched-off warning drops out. Shows with no warnings are
+  // never affected by this filter.
+  if (show.warnings.some((w) => state.warningsOn[w] === false)) return false;
 
   // Day/Time gate what you're *browsing*: a show with nothing playing in the
   // selected days and times has nothing to offer, so it drops out entirely

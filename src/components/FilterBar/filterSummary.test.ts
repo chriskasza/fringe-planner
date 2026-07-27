@@ -38,6 +38,7 @@ describe('activeFilterCount', () => {
     timeBucketsOn: { m: true },
     venuesOn: { v: true },
     ratingsOn: { r: true },
+    warningsOn: { w: true },
     excluded: {},
     clash: 'show',
   };
@@ -48,6 +49,7 @@ describe('activeFilterCount', () => {
 
   it('counts each switched-off option, excluded show, and a non-default clash mode', () => {
     expect(activeFilterCount({ ...base, daysOn: { a: true, b: false } })).toBe(1);
+    expect(activeFilterCount({ ...base, warningsOn: { w: false } })).toBe(1);
     expect(activeFilterCount({ ...base, excluded: { s1: true, s2: true } })).toBe(2);
     expect(activeFilterCount({ ...base, clash: 'hide' })).toBe(1);
   });

@@ -39,7 +39,11 @@ Read `README.md` first - it documents the upstream API quirks that explain why
   - `1100px` - card grid drops 3 columns to 2.
   - `1000px` - the 300px My Fringe rail hides, freeing card-grid width.
   - `700px` - the desktop/mobile tree switch. Both trees exist either side of it.
-  - `520px` - phone tweaks: legend hidden, 44px touch targets.
+  - `520px` - phone tweaks: legend hidden. (No longer bumps FilterButton/
+    SegmentedControl padding for a 44px touch target - once the FilterBar
+    became a single component rendered at every width, that bump made Venue/
+    Shows/Grid/Cards visibly taller than their neighbors in the same row,
+    which read as broken rather than deliberate.)
 - **No genre field.** Genre data isn't available on the festival website or in the PDF
   guide. Don't invent one - the front-end has no genre filter or genre-coded accents.
 - **Don't commit the festival PDF** (it's gitignored - 32MB).

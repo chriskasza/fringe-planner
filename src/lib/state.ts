@@ -14,6 +14,7 @@ export type AppState = {
   timeBucketsOn: Record<TimeBucket, boolean>;
   venuesOn: Record<string, boolean>;
   ratingsOn: Record<string, boolean>;
+  warningsOn: Record<string, boolean>;
   excluded: Record<string, boolean>; // showId -> excluded
   clash: ClashMode;
   query: string;
@@ -46,6 +47,9 @@ export function createInitialState(
   const ratingsOn: Record<string, boolean> = {};
   for (const r of new Set(shows.map((s) => s.rating))) ratingsOn[r] = true;
 
+  const warningsOn: Record<string, boolean> = {};
+  for (const w of new Set(shows.flatMap((s) => s.warnings))) warningsOn[w] = true;
+
   // The landing day has to agree with `daysOn` above: opening on the first
   // day of the festival while that day is filtered out puts the user on a
   // grid whose own day is switched off. Prefer the first day from today
@@ -64,6 +68,7 @@ export function createInitialState(
     timeBucketsOn,
     venuesOn,
     ratingsOn,
+    warningsOn,
     excluded: {},
     clash: 'show',
     query: '',
@@ -91,6 +96,8 @@ export type AppAction =
   | { type: 'SET_ALL_VENUES'; venues: string[]; on: boolean }
   | { type: 'SET_RATING_ON'; rating: string; on: boolean }
   | { type: 'SET_ALL_RATINGS'; ratings: string[]; on: boolean }
+  | { type: 'SET_WARNING_ON'; warning: string; on: boolean }
+  | { type: 'SET_ALL_WARNINGS'; warnings: string[]; on: boolean }
   | { type: 'SET_EXCLUDED'; showId: string; excluded: boolean }
   | { type: 'SET_ALL_EXCLUDED'; showIds: string[]; excluded: boolean }
   | { type: 'SET_CLASH'; mode: ClashMode }
@@ -102,7 +109,7 @@ export type AppAction =
   | { type: 'TOGGLE_EXPANDED'; showId: string }
   | { type: 'SET_DETAIL'; detail: DetailTarget | null }
   | { type: 'SET_SYNC_OPEN'; open: boolean }
-  | { type: 'RESET_ALL_FILTERS'; days: DayKey[]; venues: string[]; ratings: string[] };
+  | { type: 'RESET_ALL_FILTERS'; days: DayKey[]; venues: string[]; ratings: string[]; warnings: string[] };
 
 function toggleSet(set: Set<PerfKey>, key: PerfKey): Set<PerfKey> {
   const next = new Set(set);
@@ -181,6 +188,15 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, ratingsOn };
     }
 
+    case 'SET_WARNING_ON':
+      return { ...state, warningsOn: { ...state.warningsOn, [action.warning]: action.on } };
+
+    case 'SET_ALL_WARNINGS': {
+      const warningsOn = { ...state.warningsOn };
+      for (const w of action.warnings) warningsOn[w] = action.on;
+      return { ...state, warningsOn };
+    }
+
     case 'SET_EXCLUDED':
       return { ...state, excluded: { ...state.excluded, [action.showId]: action.excluded } };
 
@@ -234,12 +250,15 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       for (const v of action.venues) venuesOn[v] = true;
       const ratingsOn: Record<string, boolean> = {};
       for (const r of action.ratings) ratingsOn[r] = true;
+      const warningsOn: Record<string, boolean> = {};
+      for (const w of action.warnings) warningsOn[w] = true;
       const timeBucketsOn = allTimeBucketsOn();
       return {
         ...state,
         daysOn,
         venuesOn,
         ratingsOn,
+        warningsOn,
         timeBucketsOn,
         excluded: {},
         clash: 'show',

@@ -39,6 +39,7 @@ export function activeFilterCount(args: {
   timeBucketsOn: Record<string, boolean>;
   venuesOn: Record<string, boolean>;
   ratingsOn: Record<string, boolean>;
+  warningsOn: Record<string, boolean>;
   excluded: Record<string, boolean>;
   clash: string;
 }): number {
@@ -48,6 +49,7 @@ export function activeFilterCount(args: {
     countOff(args.timeBucketsOn) +
     countOff(args.venuesOn) +
     countOff(args.ratingsOn) +
+    countOff(args.warningsOn) +
     Object.values(args.excluded).filter(Boolean).length +
     (args.clash !== 'show' ? 1 : 0)
   );

@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react';
 import { useApp } from '../../state/AppContext';
 import { onNowCount } from '../../lib/derived';
 import { useNow } from '../../lib/useNow';
@@ -7,10 +6,9 @@ import './TopBar.css';
 
 type TopBarProps = {
   compact?: boolean;
-  rightExtra?: ReactNode;
 };
 
-export function TopBar({ compact = false, rightExtra }: TopBarProps) {
+export function TopBar({ compact = false }: TopBarProps) {
   const { state, dispatch, shows } = useApp();
   const now = useNow();
   const onNow = onNowCount(shows, now);
@@ -18,7 +16,7 @@ export function TopBar({ compact = false, rightExtra }: TopBarProps) {
   return (
     <div className={`topbar ${compact ? 'topbar--compact' : ''}`}>
       <div className="topbar__brand">
-        {/* Collapsed to initials on mobile so Filters + My Fringe both fit on one line. */}
+        {/* Collapsed to initials on mobile so the view toggle + My Fringe both fit on one line. */}
         <span className="topbar__wordmark">{compact ? 'HF' : 'HALIFAX FRINGE'}</span>
         {!compact && <span className="topbar__tagline">SHOW SELECTOR · 2026</span>}
       </div>
@@ -37,7 +35,6 @@ export function TopBar({ compact = false, rightExtra }: TopBarProps) {
             { value: 'cards', label: 'Cards' },
           ]}
         />
-        {rightExtra}
         <button
           type="button"
           className="topbar__myfringe"

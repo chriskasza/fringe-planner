@@ -107,10 +107,10 @@ export type ViewMode = 'grid' | 'cards';
 // 71 performances before 5pm, 100 between 5 and 8, 111 from 8 onward.
 export type TimeBucket = 'matinee' | 'evening' | 'night';
 
-// 'all' is the mobile consolidated filters panel (Day/Time/Venue/Age/
-// Clashes/Shows stacked in one sheet, rather than desktop's five separate
-// dropdowns) - stored in the same per-view openMenu slot as the others.
-export type MenuKey = 'day' | 'time' | 'venue' | 'age' | 'clash' | 'shows' | 'all' | null;
+// 'all' is the overflow filters modal (every filter stacked in one sheet,
+// rather than a single inline dropdown) - stored in the same per-view
+// openMenu slot as the others.
+export type MenuKey = 'day' | 'time' | 'venue' | 'age' | 'content' | 'clash' | 'shows' | 'all' | null;
 
 // Which show and which specific performance opened the detail panel - the
 // panel's TIME/VENUE/LENGTH fields describe this one performance, and every

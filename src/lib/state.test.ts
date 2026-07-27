@@ -25,7 +25,7 @@ const SHOW: Show = {
   venueAddress: null,
   credits: [],
   rating: 'PG',
-  warnings: [],
+  warnings: ['flashing lights'],
   mins: 60,
   salesEnded: false,
   timesIncomplete: false,
@@ -88,5 +88,33 @@ describe('SET_GRID_DAY', () => {
     expect(s.gridDay).toBe('2026-09-04');
     expect(s.daysOn['2026-09-04']).toBe(true);
     expect(s.daysOn['2026-09-03']).toBe(true);
+  });
+});
+
+describe('content warnings filter', () => {
+  it('defaults every distinct warning across shows to on', () => {
+    expect(initial().warningsOn).toEqual({ 'flashing lights': true });
+  });
+
+  it('SET_WARNING_ON toggles a single warning', () => {
+    const s = appReducer(initial(), { type: 'SET_WARNING_ON', warning: 'flashing lights', on: false });
+    expect(s.warningsOn['flashing lights']).toBe(false);
+  });
+
+  it('SET_ALL_WARNINGS sets every given warning at once', () => {
+    const s = appReducer(initial(), { type: 'SET_ALL_WARNINGS', warnings: ['flashing lights'], on: false });
+    expect(s.warningsOn['flashing lights']).toBe(false);
+  });
+
+  it('RESET_ALL_FILTERS switches every warning back on', () => {
+    const off = appReducer(initial(), { type: 'SET_WARNING_ON', warning: 'flashing lights', on: false });
+    const s = appReducer(off, {
+      type: 'RESET_ALL_FILTERS',
+      days: ['2026-09-03', '2026-09-04'],
+      venues: ['The Bus Stop Theatre'],
+      ratings: ['PG'],
+      warnings: ['flashing lights'],
+    });
+    expect(s.warningsOn['flashing lights']).toBe(true);
   });
 });

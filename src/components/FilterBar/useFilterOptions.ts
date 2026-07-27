@@ -46,6 +46,13 @@ export function useFilterOptions() {
   }, [shows]);
   const ratingKeys = useMemo(() => ratings.map(([r]) => r), [ratings]);
 
+  const warnings = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const s of shows) for (const w of s.warnings) counts.set(w, (counts.get(w) ?? 0) + 1);
+    return [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+  }, [shows]);
+  const warningKeys = useMemo(() => warnings.map(([w]) => w), [warnings]);
+
   const showsSorted = useMemo(() => [...shows].sort((a, b) => a.title.localeCompare(b.title)), [shows]);
   const showsMatching = useMemo(
     () => showsSorted.filter((s) => matchesQuery(s, state.query)),
@@ -54,7 +61,13 @@ export function useFilterOptions() {
   const includedCount = shows.filter((s) => !state.excluded[s.id]).length;
 
   function resetAll() {
-    dispatch({ type: 'RESET_ALL_FILTERS', days: dayKeys, venues: venueKeys, ratings: ratingKeys });
+    dispatch({
+      type: 'RESET_ALL_FILTERS',
+      days: dayKeys,
+      venues: venueKeys,
+      ratings: ratingKeys,
+      warnings: warningKeys,
+    });
   }
 
   return {
@@ -71,6 +84,8 @@ export function useFilterOptions() {
     venueKeys,
     ratings,
     ratingKeys,
+    warnings,
+    warningKeys,
     showsSorted,
     showsMatching,
     includedCount,

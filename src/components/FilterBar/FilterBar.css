@@ -3,10 +3,31 @@
   z-index: 15;
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  /* nowrap, not overflow:hidden - items past the cutoff are pulled out of
+     flow individually (position:absolute + visibility:hidden, see
+     useOverflowFilters), which already keeps them from taking space or
+     painting. Clipping the row itself would also clip each dropdown's
+     popover, which renders as an absolutely positioned child that
+     deliberately extends below this row's own box. */
+  flex-wrap: nowrap;
   gap: 10px;
   padding: 15px 26px;
   border-bottom: 1px solid var(--line);
+}
+
+/* Flex items shrink to their min-content width by default, and for
+   wrappable text that's the width of the longest single word ("RESET" or
+   "ALL"), not the whole phrase - so any tiny gap between what
+   useOverflowFilters budgeted and the real rendered width (subpixel
+   rounding, a font metrics quirk) would let the row's default shrink
+   behavior break "RESET ALL" onto two lines rather than trimming a filter
+   that's supposed to already be accounted for. These items are exactly the
+   set useOverflowFilters measures and budgets space for, so none of them
+   should ever be a candidate for the browser's own shrinking - only the
+   hook's own cutoff decides what's inline. */
+.filter-bar__item,
+.filter-bar > [data-overflow-reserved] {
+  flex-shrink: 0;
 }
 
 .filter-bar__label {
@@ -16,6 +37,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-right: 4px;
+  white-space: nowrap;
 }
 
 .filter-bar__item {
@@ -31,6 +53,7 @@
   font-size: 10px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  white-space: nowrap;
   cursor: pointer;
   padding: 2px 0;
 }
