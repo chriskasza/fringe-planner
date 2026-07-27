@@ -1,7 +1,7 @@
 import { useApp } from '../../state/AppContext';
 import { overlapping, perfInFilter, pickedList, type PickedEntry } from '../../lib/derived';
 import { formatTime } from '../../lib/dates';
-import './MyFringeRail.css';
+import styles from './MyFringeRail.module.css';
 
 export function MyFringeRail() {
   const { state, dispatch, shows, days } = useApp();
@@ -18,15 +18,15 @@ export function MyFringeRail() {
   const totalOverlaps = entries.filter((e) => overlapping(e.key, state.picked, shows)).length;
 
   return (
-    <div className="my-fringe-rail">
-      <div className="my-fringe-rail__header">
-        <span className="my-fringe-rail__title">MY FRINGE</span>
-        <span className="my-fringe-rail__count">{state.picked.size} PICKED</span>
+    <div data-testid="my-fringe-rail" className={styles['my-fringe-rail']}>
+      <div className={styles['my-fringe-rail__header']}>
+        <span className={styles['my-fringe-rail__title']}>MY FRINGE</span>
+        <span className={styles['my-fringe-rail__count']}>{state.picked.size} PICKED</span>
       </div>
 
-      <div className="my-fringe-rail__body">
+      <div className={styles['my-fringe-rail__body']}>
         {orderedDayKeys.length === 0 && (
-          <div className="my-fringe-rail__empty">No shows picked yet. Star a show to add it here.</div>
+          <div className={styles['my-fringe-rail__empty']}>No shows picked yet. Star a show to add it here.</div>
         )}
         {orderedDayKeys.map((dayKey) => {
           const dayEntries = [...(byDay.get(dayKey) ?? [])].sort((a, b) => a.perf.start - b.perf.start);
@@ -34,11 +34,11 @@ export function MyFringeRail() {
           const dayOverlaps = dayEntries.filter((e) => overlapping(e.key, state.picked, shows)).length;
 
           return (
-            <div className="my-fringe-rail__group" key={dayKey}>
-              <div className="my-fringe-rail__group-header">
-                <span className="my-fringe-rail__day-label">{day?.label.toUpperCase() ?? dayKey}</span>
+            <div className={styles['my-fringe-rail__group']} key={dayKey}>
+              <div className={styles['my-fringe-rail__group-header']}>
+                <span className={styles['my-fringe-rail__day-label']}>{day?.label.toUpperCase() ?? dayKey}</span>
                 <span
-                  className={`my-fringe-rail__badge ${dayOverlaps > 0 ? 'my-fringe-rail__badge--overlap' : 'my-fringe-rail__badge--clear'}`}
+                  className={`${styles['my-fringe-rail__badge']} ${dayOverlaps > 0 ? styles['my-fringe-rail__badge--overlap'] : styles['my-fringe-rail__badge--clear']}`}
                 >
                   {dayOverlaps > 0 ? `${dayOverlaps} OVERLAP` : 'CLEAR'}
                 </span>
@@ -49,17 +49,19 @@ export function MyFringeRail() {
                 return (
                   <div
                     key={entry.key}
-                    className={`my-fringe-rail__row ${isOverlap ? 'my-fringe-rail__row--overlap' : ''} ${isOutsideFilter ? 'my-fringe-rail__row--outside' : ''}`}
+                    className={`${styles['my-fringe-rail__row']} ${isOverlap ? styles['my-fringe-rail__row--overlap'] : ''} ${isOutsideFilter ? styles['my-fringe-rail__row--outside'] : ''}`}
                   >
-                    <span className="my-fringe-rail__time">{formatTime(entry.perf.start)}</span>
-                    <span className="my-fringe-rail__info">
-                      <span className="my-fringe-rail__row-title">{entry.show.title}</span>
-                      <span className="my-fringe-rail__row-venue">{entry.show.venueShort}</span>
-                      {isOutsideFilter && <span className="my-fringe-rail__outside-tag">OUTSIDE DATE FILTER</span>}
+                    <span className={styles['my-fringe-rail__time']}>{formatTime(entry.perf.start)}</span>
+                    <span className={styles['my-fringe-rail__info']}>
+                      <span className={styles['my-fringe-rail__row-title']}>{entry.show.title}</span>
+                      <span className={styles['my-fringe-rail__row-venue']}>{entry.show.venueShort}</span>
+                      {isOutsideFilter && (
+                        <span className={styles['my-fringe-rail__outside-tag']}>OUTSIDE DATE FILTER</span>
+                      )}
                     </span>
                     <button
                       type="button"
-                      className="my-fringe-rail__remove"
+                      className={styles['my-fringe-rail__remove']}
                       onClick={() => dispatch({ type: 'TOGGLE_PICK', key: entry.key })}
                       aria-label={`Remove ${entry.show.title} from My Fringe`}
                     >
@@ -73,18 +75,18 @@ export function MyFringeRail() {
         })}
       </div>
 
-      <div className="my-fringe-rail__footer">
-        <button type="button" className="my-fringe-rail__tickets">
+      <div className={styles['my-fringe-rail__footer']}>
+        <button type="button" className={styles['my-fringe-rail__tickets']}>
           Get tickets · {state.picked.size}
         </button>
         <button
           type="button"
-          className="my-fringe-rail__sync"
+          className={styles['my-fringe-rail__sync']}
           onClick={() => dispatch({ type: 'SET_SYNC_OPEN', open: true })}
         >
           SYNC TO ANOTHER DEVICE ↗
         </button>
-        <div className="my-fringe-rail__overlap-summary">
+        <div className={styles['my-fringe-rail__overlap-summary']}>
           {totalOverlaps > 0 ? `${totalOverlaps} PERFORMANCE${totalOverlaps > 1 ? 'S' : ''} OVERLAP` : 'NO OVERLAPS'}
         </div>
       </div>

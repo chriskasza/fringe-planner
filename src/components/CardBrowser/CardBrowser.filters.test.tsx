@@ -1,4 +1,4 @@
-import { render, fireEvent, within } from '@testing-library/react';
+import { render, fireEvent, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import App from '../../App';
 import { shows } from '../../lib/loadData';
@@ -8,7 +8,7 @@ describe('Day / Time filters gate which shows are browsable', () => {
   // Idempotent - the Day button toggles, and openMenu persists across a
   // view switch, so blindly clicking it can close an already-open menu.
   function openDayMenu() {
-    const browser = within(document.querySelector('.card-browser') as HTMLElement);
+    const browser = within(document.querySelector('[data-testid="card-browser"]') as HTMLElement);
     if (!browser.queryByRole('dialog', { name: 'Day' })) {
       fireEvent.click(browser.getByRole('button', { name: /^Day/ }));
     }
@@ -18,8 +18,8 @@ describe('Day / Time filters gate which shows are browsable', () => {
   // Both desktop and mobile trees render simultaneously (CSS media query
   // picks which is visible). The desktop tree has `.card-browser`; the
   // mobile tree has `.card-browser-mobile` — scope to desktop.
-  const cardBrowserEl = () => document.querySelector('.card-browser') as HTMLElement;
-  const cardCount = () => cardBrowserEl().querySelectorAll('.show-card').length;
+  const cardBrowserEl = () => document.querySelector('[data-testid="card-browser"]') as HTMLElement;
+  const cardCount = () => cardBrowserEl().querySelectorAll('[data-testid="show-card"]').length;
 
   it('shows no cards at all when every day is deselected', () => {
     // Reported bug: clearing the day filter left every card on screen,
@@ -33,7 +33,7 @@ describe('Day / Time filters gate which shows are browsable', () => {
 
     expect(cardCount()).toBe(0);
     expect(
-      within(document.querySelector('.card-browser') as HTMLElement).getByText(
+      within(document.querySelector('[data-testid="card-browser"]') as HTMLElement).getByText(
         /No shows match the current filters/,
       ),
     ).toBeInTheDocument();
@@ -61,8 +61,8 @@ describe('Day / Time filters gate which shows are browsable', () => {
     render(<App />);
     switchToCards();
 
-    const browser = within(document.querySelector('.card-browser') as HTMLElement);
-    const card = browser.getByText('Peak Twins').closest('.show-card') as HTMLElement;
+    const browser = within(document.querySelector('[data-testid="card-browser"]') as HTMLElement);
+    const card = browser.getByText('Peak Twins').closest('[data-testid="show-card"]') as HTMLElement;
     fireEvent.click(within(card).getByRole('button', { name: /Add all of Peak Twins/ }));
     expect(browser.getByText('6 PICKED')).toBeInTheDocument();
 
@@ -70,9 +70,9 @@ describe('Day / Time filters gate which shows are browsable', () => {
 
     // No cards browsable, but the schedule is untouched.
     expect(cardCount()).toBe(0);
-    const rail = within(document.querySelector('.my-fringe-rail') as HTMLElement);
+    const rail = within(document.querySelector('[data-testid="my-fringe-rail"]') as HTMLElement);
     expect(rail.getByText('6 PICKED')).toBeInTheDocument();
-    expect(document.querySelectorAll('.my-fringe-rail__row--outside').length).toBe(6);
+    expect(screen.getAllByText('OUTSIDE DATE FILTER').length).toBe(6);
   });
 
   it('clicking a grid day tab enables that day without switching the others off', () => {
@@ -92,7 +92,7 @@ describe('Day / Time filters gate which shows are browsable', () => {
     expect(twoDayCount).toBeGreaterThan(0);
 
     // Go to the grid and click a third day's tab.
-    switchToGridFrom(document.querySelector('.card-browser') as HTMLElement);
+    switchToGridFrom(document.querySelector('[data-testid="card-browser"]') as HTMLElement);
     const sep5Tab = Array.from(desktopEl().querySelectorAll('[data-testid="day-strip-tab"]')).find(
       (el) => el.textContent?.includes('SAT') && el.textContent?.includes('5'),
     ) as HTMLElement;

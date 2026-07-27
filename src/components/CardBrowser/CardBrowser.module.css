@@ -51,11 +51,19 @@
   align-items: stretch;
 }
 
+/* Wraps MyFringeRail so this file can hide it without reaching into a class
+   MyFringeRail.css owns - `display: contents` keeps the wrapper out of the
+   flex layout (the rail itself, not this div, is the flex item) until the
+   media query below turns it off entirely. */
+.card-browser__rail {
+  display: contents;
+}
+
 /* At narrower widths, move the 300px rail to a bottom sheet (mobile-only via
    the responsive wrapper already handled above). Between 700px and ~1000px
    the rail lives behind a toggle instead of always being visible. */
 @media (max-width: 1000px) {
-  .card-browser .my-fringe-rail {
+  .card-browser__rail {
     display: none;
   }
 }

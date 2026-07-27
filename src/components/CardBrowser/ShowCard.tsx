@@ -4,7 +4,7 @@ import { IconButton } from '../ui/IconButton';
 import { DayRail } from './DayRail';
 import { TimePills } from './TimePills';
 import type { Show } from '../../lib/types';
-import './ShowCard.css';
+import styles from './ShowCard.module.css';
 
 export function ShowCard({ show }: { show: Show }) {
   const { state, dispatch } = useApp();
@@ -20,29 +20,30 @@ export function ShowCard({ show }: { show: Show }) {
   }
 
   return (
-    <div className={`show-card ${anyPicked ? 'show-card--picked' : ''}`}>
-      <div className="show-card__image">
-        <span className="show-card__image-label">[ SHOW IMAGE ]</span>
+    <div data-testid="show-card" className={`${styles['show-card']} ${anyPicked ? styles['show-card--picked'] : ''}`}>
+      <div className={styles['show-card__image']}>
+        <span className={styles['show-card__image-label']}>[ SHOW IMAGE ]</span>
         <IconButton
           glyph={anyPicked ? '★' : '☆'}
           ariaLabel={anyPicked ? `Remove ${show.title} from My Fringe` : `Add all of ${show.title} to My Fringe`}
           variant={anyPicked ? 'star-picked' : 'star-unpicked'}
           size={28}
           onClick={toggleStar}
+          className={styles['show-card__icon']}
         />
       </div>
 
-      <div className="show-card__body">
-        <h3 className="show-card__title">{show.title}</h3>
-        <div className="show-card__credits">
+      <div className={styles['show-card__body']}>
+        <h3 className={styles['show-card__title']}>{show.title}</h3>
+        <div className={styles['show-card__credits']}>
           {show.credits[0] ?? 'Independent artist'} · {show.mins} MIN
         </div>
-        <div className="show-card__venue">{show.venueShort}</div>
-        <div className="show-card__rating">{show.rating}</div>
+        <div className={styles['show-card__venue']}>{show.venueShort}</div>
+        <div className={styles['show-card__rating']}>{show.rating}</div>
       </div>
 
-      <div className="show-card__footer">
-        <div className="show-card__summary">
+      <div className={styles['show-card__footer']}>
+        <div className={styles['show-card__summary']}>
           {activePerfs.length} PERFORMANCE{activePerfs.length === 1 ? '' : 'S'}
           {pickedPerfs.length > 0 && ` · ${pickedPerfs.length} PICKED`}
           {outsideFilterCount > 0 && ` · ${outsideFilterCount} OUTSIDE FILTER`}
@@ -52,7 +53,7 @@ export function ShowCard({ show }: { show: Show }) {
 
         <button
           type="button"
-          className="show-card__toggle-times"
+          className={styles['show-card__toggle-times']}
           onClick={() => dispatch({ type: 'TOGGLE_EXPANDED', showId: show.id })}
           aria-expanded={expanded}
           aria-controls={expanded ? `times-${show.id}` : undefined}

@@ -3,7 +3,7 @@ import { perfInFilter, perfKey, perfState } from '../../lib/derived';
 import { formatTime } from '../../lib/dates';
 import { Pill } from '../ui/Pill';
 import type { Show } from '../../lib/types';
-import './TimePills.css';
+import styles from './TimePills.module.css';
 
 // One pill per performance within the current date/time filter, sorted by
 // day then time. Clicking toggles that single performance.
@@ -15,7 +15,7 @@ export function TimePills({ show }: { show: Show }) {
     .sort((a, b) => a.day.localeCompare(b.day) || a.start - b.start);
 
   return (
-    <div className="time-pills">
+    <div className={styles['time-pills']}>
       {perfs.map((p) => {
         const key = perfKey(show.id, p.day, p.start);
         const pState = perfState(show, p, state.picked, shows);

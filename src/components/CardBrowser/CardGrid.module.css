@@ -37,3 +37,12 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Mobile (CardBrowserMobile, which renders this same CardGrid with compact
+   set): tighter padding/gap than the desktop default. The column count
+   above already collapses to 1fr under 700px, which is the only width
+   CardBrowserMobile ever renders at. */
+.card-grid--compact {
+  padding: 14px;
+  gap: 12px;
+}

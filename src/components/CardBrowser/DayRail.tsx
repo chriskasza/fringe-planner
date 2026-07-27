@@ -2,7 +2,7 @@ import { useApp } from '../../state/AppContext';
 import { perfKey } from '../../lib/derived';
 import { dayRailCellState } from './dayRailState';
 import type { Show } from '../../lib/types';
-import './DayRail.css';
+import styles from './DayRail.module.css';
 
 type DayRailProps = {
   show: Show;
@@ -13,7 +13,7 @@ export function DayRail({ show, onExpand }: DayRailProps) {
   const { state, dispatch, shows, days } = useApp();
 
   return (
-    <div className="day-rail">
+    <div className={styles['day-rail']}>
       {days.map((d) => {
         const { cellState, count } = dayRailCellState(show, d.key, state, shows);
 
@@ -31,7 +31,7 @@ export function DayRail({ show, onExpand }: DayRailProps) {
           <button
             key={d.key}
             type="button"
-            className={`day-rail__cell day-rail__cell--${cellState}`}
+            className={`${styles['day-rail__cell']} ${styles[`day-rail__cell--${cellState}`]}`}
             onClick={handleClick}
             disabled={count === 0}
             aria-label={
@@ -40,8 +40,8 @@ export function DayRail({ show, onExpand }: DayRailProps) {
                 : `${d.label}: ${count} performance${count > 1 ? 's' : ''}, ${cellState.replace('-', ' ')}`
             }
           >
-            <span className="day-rail__num">{d.dateNum}</span>
-            {count > 1 && <span className="day-rail__mult">×{count}</span>}
+            <span className={styles['day-rail__num']}>{d.dateNum}</span>
+            {count > 1 && <span className={styles['day-rail__mult']}>×{count}</span>}
           </button>
         );
       })}
