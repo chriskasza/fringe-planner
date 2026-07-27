@@ -14,19 +14,19 @@ describe('Sync Sheet', () => {
   }
 
   function syncScope() {
-    return within(document.querySelector('.sync-sheet') as HTMLElement);
+    return within(document.querySelector('[data-testid="sync-sheet"]') as HTMLElement);
   }
 
   it('opens from the My Fringe button, displays the real URL hash after picking', () => {
     render(<App />);
-    expect(document.querySelector('.sync-sheet')).not.toBeInTheDocument();
+    expect(document.querySelector('[data-testid="sync-sheet"]')).not.toBeInTheDocument();
 
     openSync();
-    expect(document.querySelector('.sync-sheet')).toBeInTheDocument();
+    expect(document.querySelector('[data-testid="sync-sheet"]')).toBeInTheDocument();
     expect(syncScope().getByText('TAKE IT WITH YOU')).toBeInTheDocument();
 
     // URL box contains the hash prefix even with an empty schedule.
-    const urlBox = document.querySelector('.sync-link-row__url');
+    const urlBox = document.querySelector('[data-testid="sync-link-row-url"]');
     expect(urlBox?.textContent).toContain('#p=');
   });
 
@@ -43,14 +43,14 @@ describe('Sync Sheet', () => {
   it('can be dismissed by clicking the backdrop or close button', () => {
     render(<App />);
     openSync();
-    expect(document.querySelector('.sync-sheet')).toBeInTheDocument();
+    expect(document.querySelector('[data-testid="sync-sheet"]')).toBeInTheDocument();
 
-    fireEvent.click(document.querySelector('.sync-backdrop')!);
-    expect(document.querySelector('.sync-sheet')).not.toBeInTheDocument();
+    fireEvent.click(document.querySelector('[data-testid="sync-backdrop"]')!);
+    expect(document.querySelector('[data-testid="sync-sheet"]')).not.toBeInTheDocument();
 
     openSync();
     fireEvent.click(syncScope().getByRole('button', { name: 'Close sync' }));
-    expect(document.querySelector('.sync-sheet')).not.toBeInTheDocument();
+    expect(document.querySelector('[data-testid="sync-sheet"]')).not.toBeInTheDocument();
   });
 
   it('renders the .ics, .json download and restore rows', () => {
@@ -72,7 +72,7 @@ describe('Sync Sheet', () => {
 
     openSync();
     // Exactly the string the sheet offers for copying.
-    const link = document.querySelector('.sync-link-row__url')!.textContent as string;
+    const link = document.querySelector('[data-testid="sync-link-row-url"]')!.textContent as string;
     expect(link).toMatch(/#p=.+/);
 
     // Clear the schedule, then paste the link back in.
