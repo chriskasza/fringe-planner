@@ -1,6 +1,6 @@
 .day-strip {
   display: flex;
-  background: var(--ink-sunken);
+  background: var(--ink);
   overflow-x: auto;
 }
 
@@ -23,7 +23,7 @@
 }
 
 .day-strip__tab--selected {
-  background: var(--ink-raised);
+  background: var(--ink-sunken);
   border-bottom-color: var(--gold);
 }
 
@@ -42,10 +42,4 @@
   font-family: var(--font-display);
   font-size: 17px;
   color: var(--cream);
-}
-
-.day-strip__count {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--text-faint);
 }

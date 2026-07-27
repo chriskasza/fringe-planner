@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 import { useApp } from '../../state/AppContext';
 import { visible } from '../../lib/derived';
-import { TopBar } from '../GridPlanner/TopBar';
-import { FilterBar } from '../FilterBar/FilterBar';
+import { PageHeader } from '../PageHeader/PageHeader';
 import { CardGrid } from './CardGrid';
 import { MyFringeRail } from './MyFringeRail';
 import { CardBrowserMobile } from './mobile/CardBrowserMobile';
@@ -17,8 +16,7 @@ export function CardBrowser() {
     <div className="card-browser-responsive">
       <div className="card-browser-responsive__desktop">
         <div className="card-browser">
-          <TopBar />
-          <FilterBar view="cards" visibleCount={visibleCount} countLabel="SHOWN" />
+          <PageHeader view="cards" visibleCount={visibleCount} countLabel="SHOWN" />
           <div className="card-browser__content">
             <CardGrid />
             <MyFringeRail />

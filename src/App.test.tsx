@@ -34,7 +34,7 @@ describe('App (Grid Planner)', () => {
 
   it('renders a day strip with 11 festival days', () => {
     render(<App />);
-    expect(desktop().getAllByText(/shows$/).length).toBe(11);
+    expect(desktopEl().querySelectorAll('.day-strip__tab').length).toBe(11);
   });
 
   it('renders grid blocks for the selected day and toggling a pick updates the My Fringe counter', () => {

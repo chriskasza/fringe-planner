@@ -1,11 +1,10 @@
 import { useMemo } from 'react';
 import { useApp } from '../../state/AppContext';
 import { visible } from '../../lib/derived';
-import { TopBar } from './TopBar';
 import { DayStrip } from './DayStrip';
 import { GridBody } from './GridBody';
 import { DetailPanel } from './DetailPanel';
-import { FilterBar } from '../FilterBar/FilterBar';
+import { PageHeader } from '../PageHeader/PageHeader';
 import { GridPlannerMobile } from './mobile/GridPlannerMobile';
 import './GridPlanner.css';
 
@@ -24,9 +23,8 @@ export function GridPlanner() {
     <div className="grid-planner-responsive">
       <div className="grid-planner-responsive__desktop">
         <div className="grid-planner">
-          <TopBar />
+          <PageHeader view="grid" visibleCount={visibleCount} countLabel="ON THE GRID" />
           <DayStrip />
-          <FilterBar view="grid" visibleCount={visibleCount} countLabel="ON THE GRID" />
           <div className="grid-planner__content">
             <GridBody />
             <DetailPanel />

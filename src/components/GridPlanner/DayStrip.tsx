@@ -19,7 +19,6 @@ export function DayStrip({ compact = false }: { compact?: boolean }) {
           >
             <span className={`day-strip__dow ${selected ? 'day-strip__dow--selected' : ''}`}>{d.dow}</span>
             <span className="day-strip__num">{d.dateNum}</span>
-            {!compact && <span className="day-strip__count">{d.count} shows</span>}
           </button>
         );
       })}
