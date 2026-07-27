@@ -33,8 +33,8 @@ export function TopBar({ compact = false, rightExtra }: TopBarProps) {
           value={state.viewMode}
           onChange={(view) => dispatch({ type: 'SET_VIEW', view })}
           options={[
-            { value: 'cards', label: 'Cards' },
             { value: 'grid', label: 'Grid' },
+            { value: 'cards', label: 'Cards' },
           ]}
         />
         {rightExtra}

@@ -65,7 +65,7 @@ export function createInitialState(
     venuesOn,
     ratingsOn,
     excluded: {},
-    clash: 'all',
+    clash: 'show',
     query: '',
     // TODO: default to 'cards' (matching the design's intended first
     // screen) once Card Browser is fully built - 'grid' for now since it's
@@ -242,7 +242,7 @@ export function appReducer(state: AppState, action: AppAction): AppState {
         ratingsOn,
         timeBucketsOn,
         excluded: {},
-        clash: 'all',
+        clash: 'show',
         query: '',
       };
     }

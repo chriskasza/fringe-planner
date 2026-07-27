@@ -10,16 +10,20 @@
   color: var(--text-2);
 }
 
+/* A single toggle track, not a row of separate buttons - `overflow: hidden`
+   on the rounded container is what gives the two flush-adjacent options one
+   continuous outline instead of each carrying its own corners. */
 .segmented__options {
   display: inline-flex;
-  gap: 2px;
+  border-radius: var(--r-cell);
+  overflow: hidden;
+  background: var(--ink-raised);
 }
 
 .segmented__option {
   padding: 5px 9px;
-  border-radius: var(--r-cell);
   border: none;
-  background: var(--ink-raised);
+  background: transparent;
   color: var(--text-mute);
   font-family: var(--font-mono);
   font-size: 10px;

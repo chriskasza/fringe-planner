@@ -240,7 +240,7 @@ describe('App (mobile Grid Planner)', () => {
     const overlay = document.querySelector('.mobile-filters-overlay');
     expect(overlay).toBeInTheDocument();
     // All six filter sections should be present in one panel.
-    for (const label of ['Day', 'Time', 'Venue', 'Age & content', 'Clashes', 'Shows']) {
+    for (const label of ['Day', 'Time', 'Venue', 'Age & content', 'Conflicts', 'Shows']) {
       expect(within(overlay as HTMLElement).getByText(label)).toBeInTheDocument();
     }
   });

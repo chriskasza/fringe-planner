@@ -49,7 +49,7 @@ export function activeFilterCount(args: {
     countOff(args.venuesOn) +
     countOff(args.ratingsOn) +
     Object.values(args.excluded).filter(Boolean).length +
-    (args.clash !== 'all' ? 1 : 0)
+    (args.clash !== 'show' ? 1 : 0)
   );
 }
 

@@ -135,14 +135,14 @@ export function visible(show: Show, state: VisibilityState, shows: Show[]): bool
   );
   if (!hasPerfInFilter) return false;
 
-  if (state.clash === 'all') return true;
+  if (state.clash === 'show') return true;
 
   const hasClash = show.perfs.some((p) => {
     const s = perfState(show, p, state.picked, shows);
     return s === 'clash' || s === 'picked-clash';
   });
 
-  return state.clash === 'only' ? hasClash : !hasClash;
+  return !hasClash;
 }
 
 export function matchesQuery(show: Show, query: string): boolean {

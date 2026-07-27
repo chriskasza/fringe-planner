@@ -4,8 +4,8 @@ import { MobileFiltersButton, MobileFiltersPanel } from '../FilterBar/MobileFilt
 
 type PageHeaderProps = {
   view: 'grid' | 'cards';
-  visibleCount: number;
-  countLabel: string;
+  visibleCount?: number;
+  countLabel?: string;
 };
 
 export function PageHeader({ view, visibleCount, countLabel }: PageHeaderProps) {

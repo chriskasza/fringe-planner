@@ -39,7 +39,7 @@ describe('activeFilterCount', () => {
     venuesOn: { v: true },
     ratingsOn: { r: true },
     excluded: {},
-    clash: 'all',
+    clash: 'show',
   };
 
   it('is zero when nothing is filtered', () => {
@@ -49,6 +49,6 @@ describe('activeFilterCount', () => {
   it('counts each switched-off option, excluded show, and a non-default clash mode', () => {
     expect(activeFilterCount({ ...base, daysOn: { a: true, b: false } })).toBe(1);
     expect(activeFilterCount({ ...base, excluded: { s1: true, s2: true } })).toBe(2);
-    expect(activeFilterCount({ ...base, clash: 'only' })).toBe(1);
+    expect(activeFilterCount({ ...base, clash: 'hide' })).toBe(1);
   });
 });

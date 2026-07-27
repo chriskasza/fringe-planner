@@ -180,14 +180,13 @@ export function MobileFiltersPanel({ view }: MobileFiltersPanelProps) {
 
           <section className="mobile-filters-section">
             <div className="mobile-filters-section__header">
-              <span className="mobile-filters-section__label">Clashes</span>
+              <span className="mobile-filters-section__label">Conflicts</span>
             </div>
             <SegmentedControl
               value={state.clash}
               onChange={(mode) => dispatch({ type: 'SET_CLASH', mode })}
               options={[
-                { value: 'all', label: 'ALL' },
-                { value: 'only', label: 'ONLY' },
+                { value: 'show', label: 'SHOW' },
                 { value: 'hide', label: 'HIDE' },
               ]}
             />

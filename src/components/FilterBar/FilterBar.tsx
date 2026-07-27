@@ -11,8 +11,8 @@ import './FilterBar.css';
 
 type FilterBarProps = {
   view: 'grid' | 'cards';
-  visibleCount: number;
-  countLabel: string; // "ON THE GRID" | "SHOWN"
+  visibleCount?: number;
+  countLabel?: string; // e.g. "SHOWN" - omit to render without a summary
 };
 
 export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
@@ -190,12 +190,11 @@ export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
       </div>
 
       <SegmentedControl
-        label="Clashes"
+        label="Conflicts"
         value={state.clash}
         onChange={(mode) => dispatch({ type: 'SET_CLASH', mode })}
         options={[
-          { value: 'all', label: 'ALL' },
-          { value: 'only', label: 'ONLY' },
+          { value: 'show', label: 'SHOW' },
           { value: 'hide', label: 'HIDE' },
         ]}
       />
@@ -261,11 +260,13 @@ export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
         RESET ALL
       </button>
 
-      <div className="filter-bar__right">
-        <span className="filter-bar__summary">
-          {visibleCount} {countLabel}
-        </span>
-      </div>
+      {countLabel && (
+        <div className="filter-bar__right">
+          <span className="filter-bar__summary">
+            {visibleCount} {countLabel}
+          </span>
+        </div>
+      )}
     </div>
   );
 }

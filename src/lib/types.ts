@@ -97,7 +97,7 @@ export type Show = {
 // `${showId}|${day}|${start}` - the unit the user picks, never the show.
 export type PerfKey = string;
 
-export type ClashMode = 'all' | 'only' | 'hide';
+export type ClashMode = 'show' | 'hide';
 
 export type ViewMode = 'grid' | 'cards';
 
