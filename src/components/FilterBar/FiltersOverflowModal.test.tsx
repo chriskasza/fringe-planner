@@ -22,11 +22,11 @@ describe('FiltersOverflowModal', () => {
 
   it('opens from the More… button and lists every filter', () => {
     renderModal();
-    expect(document.querySelector('.filters-overflow-overlay')).not.toBeInTheDocument();
+    expect(document.querySelector('[data-testid="filters-overflow-overlay"]')).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: /^More/ }));
 
-    const overlay = document.querySelector('.filters-overflow-overlay');
+    const overlay = document.querySelector('[data-testid="filters-overflow-overlay"]');
     expect(overlay).toBeInTheDocument();
     for (const label of ['Day', 'Time', 'Venue', 'Age & content', 'Content', 'Conflicts', 'Shows']) {
       expect(within(overlay as HTMLElement).getByText(label)).toBeInTheDocument();
@@ -41,7 +41,7 @@ describe('FiltersOverflowModal', () => {
     renderModal();
     fireEvent.click(screen.getByRole('button', { name: /^More/ }));
 
-    const overlay = () => document.querySelector('.filters-overflow-overlay') as HTMLElement;
+    const overlay = () => document.querySelector('[data-testid="filters-overflow-overlay"]') as HTMLElement;
     const dayRow = within(overlay()).getByText('Fri 4 Sep').closest('label') as HTMLElement;
     const checkbox = within(dayRow).getByRole('checkbox');
     expect(checkbox).toBeChecked();
@@ -59,9 +59,9 @@ describe('FiltersOverflowModal', () => {
   it('closes from its own backdrop', () => {
     renderModal();
     fireEvent.click(screen.getByRole('button', { name: /^More/ }));
-    expect(document.querySelector('.filters-overflow-overlay')).toBeInTheDocument();
+    expect(document.querySelector('[data-testid="filters-overflow-overlay"]')).toBeInTheDocument();
 
-    fireEvent.click(document.querySelector('.filters-overflow-backdrop')!);
-    expect(document.querySelector('.filters-overflow-overlay')).not.toBeInTheDocument();
+    fireEvent.click(document.querySelector('[data-testid="filters-overflow-backdrop"]')!);
+    expect(document.querySelector('[data-testid="filters-overflow-overlay"]')).not.toBeInTheDocument();
   });
 });

@@ -9,7 +9,8 @@ import { summarizeCount, summarizeLabelled, summarizeSelected } from './filterSu
 import { useFilterOptions } from './useFilterOptions';
 import { useOverflowFilters } from './useOverflowFilters';
 import { MoreFiltersButton } from './FiltersOverflowModal';
-import './FilterBar.css';
+import styles from './FilterBar.module.css';
+import dropdownStyles from '../ui/Dropdown.module.css';
 
 type FilterBarProps = {
   view: 'grid' | 'cards';
@@ -61,7 +62,7 @@ export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
             onClick={() => toggleMenu('venue')}
           />
           <Dropdown open={openMenu === 'venue'} title="Venue" width={260} onClose={() => dispatch({ type: 'CLOSE_MENUS' })}>
-            <div className="dropdown__list" style={{ maxHeight: 232, overflowY: 'auto' }}>
+            <div className={dropdownStyles['dropdown__list']} style={{ maxHeight: 232, overflowY: 'auto' }}>
               {venues.map(([venue, count]) => (
                 <CheckboxRow
                   key={venue}
@@ -72,11 +73,11 @@ export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
                 />
               ))}
             </div>
-            <div className="dropdown__footer">
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_VENUES', venues: venueKeys, on: true })}>
+            <div className={dropdownStyles['dropdown__footer']}>
+              <button className={dropdownStyles['dropdown__footer-btn']} onClick={() => dispatch({ type: 'SET_ALL_VENUES', venues: venueKeys, on: true })}>
                 Select all
               </button>
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_VENUES', venues: venueKeys, on: false })}>
+              <button className={dropdownStyles['dropdown__footer-btn']} onClick={() => dispatch({ type: 'SET_ALL_VENUES', venues: venueKeys, on: false })}>
                 Deselect all
               </button>
             </div>
@@ -96,46 +97,46 @@ export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
           />
           <Dropdown open={openMenu === 'shows'} title="Shows" width={322} onClose={() => dispatch({ type: 'CLOSE_MENUS' })}>
             <input
-              className="filter-bar__typeahead"
+              className={styles['filter-bar__typeahead']}
               placeholder="Type to filter shows or venues…"
               value={state.query}
               onChange={(e) => dispatch({ type: 'SET_QUERY', query: e.target.value })}
             />
-            <div className="filter-bar__shows-header">
+            <div className={styles['filter-bar__shows-header']}>
               {includedCount}/{shows.length} ON
             </div>
-            <div className="dropdown__list" style={{ maxHeight: 230, overflowY: 'auto' }}>
+            <div className={dropdownStyles['dropdown__list']} style={{ maxHeight: 230, overflowY: 'auto' }}>
               {showsMatching.length === 0 && (
-                <div className="dropdown__empty">NO SHOWS MATCH &quot;{state.query}&quot;</div>
+                <div className={dropdownStyles['dropdown__empty']}>NO SHOWS MATCH &quot;{state.query}&quot;</div>
               )}
               {showsMatching.map((s) => (
                 <label
                   key={s.id}
-                  className={`filter-bar__show-row ${state.excluded[s.id] ? 'filter-bar__show-row--off' : ''}`}
+                  className={`${styles['filter-bar__show-row']} ${state.excluded[s.id] ? styles['filter-bar__show-row--off'] : ''}`}
                 >
                   <input
                     type="checkbox"
                     checked={!state.excluded[s.id]}
                     onChange={() => dispatch({ type: 'SET_EXCLUDED', showId: s.id, excluded: !state.excluded[s.id] })}
                   />
-                  <span className="filter-bar__show-info">
-                    <span className="filter-bar__show-title">{s.title}</span>
-                    <span className="filter-bar__show-meta">
+                  <span className={styles['filter-bar__show-info']}>
+                    <span className={styles['filter-bar__show-title']}>{s.title}</span>
+                    <span className={styles['filter-bar__show-meta']}>
                       {s.perfs.filter((p) => p.status === 'active').length} PERFS · {s.venueShort}
                     </span>
                   </span>
                 </label>
               ))}
             </div>
-            <div className="dropdown__footer">
+            <div className={dropdownStyles['dropdown__footer']}>
               <button
-                className="dropdown__footer-btn"
+                className={dropdownStyles['dropdown__footer-btn']}
                 onClick={() => dispatch({ type: 'SET_ALL_EXCLUDED', showIds: showsMatching.map((s) => s.id), excluded: false })}
               >
                 Select all
               </button>
               <button
-                className="dropdown__footer-btn"
+                className={dropdownStyles['dropdown__footer-btn']}
                 onClick={() => dispatch({ type: 'SET_ALL_EXCLUDED', showIds: showsMatching.map((s) => s.id), excluded: true })}
               >
                 Deselect all
@@ -156,7 +157,7 @@ export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
             onClick={() => toggleMenu('time')}
           />
           <Dropdown open={openMenu === 'time'} title="Time" width={220} onClose={() => dispatch({ type: 'CLOSE_MENUS' })}>
-            <div className="dropdown__list">
+            <div className={dropdownStyles['dropdown__list']}>
               {TIME_BUCKETS.map((b) => (
                 <CheckboxRow
                   key={b.key}
@@ -167,11 +168,11 @@ export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
                 />
               ))}
             </div>
-            <div className="dropdown__footer">
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_TIME_BUCKETS', on: true })}>
+            <div className={dropdownStyles['dropdown__footer']}>
+              <button className={dropdownStyles['dropdown__footer-btn']} onClick={() => dispatch({ type: 'SET_ALL_TIME_BUCKETS', on: true })}>
                 Select all
               </button>
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_TIME_BUCKETS', on: false })}>
+              <button className={dropdownStyles['dropdown__footer-btn']} onClick={() => dispatch({ type: 'SET_ALL_TIME_BUCKETS', on: false })}>
                 Deselect all
               </button>
             </div>
@@ -190,7 +191,7 @@ export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
             onClick={() => toggleMenu('day')}
           />
           <Dropdown open={openMenu === 'day'} title="Day" width={240} onClose={() => dispatch({ type: 'CLOSE_MENUS' })}>
-            <div className="dropdown__list" style={{ maxHeight: 230 }}>
+            <div className={dropdownStyles['dropdown__list']} style={{ maxHeight: 230 }}>
               {days.map((d) => (
                 <CheckboxRow
                   key={d.key}
@@ -201,11 +202,11 @@ export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
                 />
               ))}
             </div>
-            <div className="dropdown__footer">
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_DAYS', days: dayKeys, on: true })}>
+            <div className={dropdownStyles['dropdown__footer']}>
+              <button className={dropdownStyles['dropdown__footer-btn']} onClick={() => dispatch({ type: 'SET_ALL_DAYS', days: dayKeys, on: true })}>
                 All days
               </button>
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_DAYS', days: dayKeys, on: false })}>
+              <button className={dropdownStyles['dropdown__footer-btn']} onClick={() => dispatch({ type: 'SET_ALL_DAYS', days: dayKeys, on: false })}>
                 Clear
               </button>
             </div>
@@ -224,7 +225,7 @@ export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
             onClick={() => toggleMenu('age')}
           />
           <Dropdown open={openMenu === 'age'} title="Age & content" width={220} onClose={() => dispatch({ type: 'CLOSE_MENUS' })}>
-            <div className="dropdown__list" style={{ maxHeight: 224, overflowY: 'auto' }}>
+            <div className={dropdownStyles['dropdown__list']} style={{ maxHeight: 224, overflowY: 'auto' }}>
               {ratings.map(([rating, count]) => (
                 <CheckboxRow
                   key={rating}
@@ -235,11 +236,11 @@ export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
                 />
               ))}
             </div>
-            <div className="dropdown__footer">
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_RATINGS', ratings: ratingKeys, on: true })}>
+            <div className={dropdownStyles['dropdown__footer']}>
+              <button className={dropdownStyles['dropdown__footer-btn']} onClick={() => dispatch({ type: 'SET_ALL_RATINGS', ratings: ratingKeys, on: true })}>
                 Select all
               </button>
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_RATINGS', ratings: ratingKeys, on: false })}>
+              <button className={dropdownStyles['dropdown__footer-btn']} onClick={() => dispatch({ type: 'SET_ALL_RATINGS', ratings: ratingKeys, on: false })}>
                 Deselect all
               </button>
             </div>
@@ -258,8 +259,8 @@ export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
             onClick={() => toggleMenu('content')}
           />
           <Dropdown open={openMenu === 'content'} title="Content" width={240} onClose={() => dispatch({ type: 'CLOSE_MENUS' })}>
-            <div className="dropdown__list" style={{ maxHeight: 224, overflowY: 'auto' }}>
-              {warnings.length === 0 && <div className="dropdown__empty">NO CONTENT WARNINGS</div>}
+            <div className={dropdownStyles['dropdown__list']} style={{ maxHeight: 224, overflowY: 'auto' }}>
+              {warnings.length === 0 && <div className={dropdownStyles['dropdown__empty']}>NO CONTENT WARNINGS</div>}
               {warnings.map(([warning, count]) => (
                 <CheckboxRow
                   key={warning}
@@ -270,11 +271,11 @@ export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
                 />
               ))}
             </div>
-            <div className="dropdown__footer">
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_WARNINGS', warnings: warningKeys, on: true })}>
+            <div className={dropdownStyles['dropdown__footer']}>
+              <button className={dropdownStyles['dropdown__footer-btn']} onClick={() => dispatch({ type: 'SET_ALL_WARNINGS', warnings: warningKeys, on: true })}>
                 Select all
               </button>
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_WARNINGS', warnings: warningKeys, on: false })}>
+              <button className={dropdownStyles['dropdown__footer-btn']} onClick={() => dispatch({ type: 'SET_ALL_WARNINGS', warnings: warningKeys, on: false })}>
                 Deselect all
               </button>
             </div>
@@ -324,15 +325,15 @@ export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
   }, [containerRef, dispatch, openMenu]);
 
   return (
-    <div className="filter-bar" ref={containerRef}>
-      <span className="filter-bar__label" data-overflow-reserved>
+    <div className={styles['filter-bar']} ref={containerRef}>
+      <span className={styles['filter-bar__label']} data-overflow-reserved>
         FILTER
       </span>
 
       {items.map((item, i) => (
         <div
           key={item.key}
-          className="filter-bar__item"
+          className={styles['filter-bar__item']}
           ref={itemRef(i)}
           style={i >= inlineCount ? { position: 'absolute', visibility: 'hidden', pointerEvents: 'none' } : undefined}
           aria-hidden={i >= inlineCount ? true : undefined}
@@ -347,13 +348,13 @@ export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
         </div>
       )}
 
-      <button type="button" className="filter-bar__reset" onClick={resetAll} data-overflow-reserved>
+      <button type="button" className={styles['filter-bar__reset']} onClick={resetAll} data-overflow-reserved>
         RESET ALL
       </button>
 
       {countLabel && (
-        <div className="filter-bar__right" data-overflow-reserved>
-          <span className="filter-bar__summary">
+        <div className={styles['filter-bar__right']} data-overflow-reserved>
+          <span className={styles['filter-bar__summary']}>
             {visibleCount} {countLabel}
           </span>
         </div>

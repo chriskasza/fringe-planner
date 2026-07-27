@@ -4,7 +4,14 @@ import { CheckboxRow } from '../ui/CheckboxRow';
 import { SegmentedControl } from '../ui/SegmentedControl';
 import { activeFilterCount, summarizeCount, summarizeLabelled, summarizeSelected } from './filterSummary';
 import { useFilterOptions } from './useFilterOptions';
-import './FiltersOverflowModal.css';
+import styles from './FiltersOverflowModal.module.css';
+// Reuses FilterBar's show-row/typeahead styling and Dropdown's list/footer/
+// empty styling for the same checkbox-list-with-footer pattern both already
+// use - see review-for-non-standard-patterns.md point 1/3: this only worked
+// before CSS Modules because FilterBar.tsx (which imports both) also
+// happens to be mounted, making the plain global CSS ambient everywhere.
+import filterBarStyles from './FilterBar.module.css';
+import dropdownStyles from '../ui/Dropdown.module.css';
 
 type FiltersOverflowModalProps = {
   view: 'grid' | 'cards';
@@ -23,7 +30,7 @@ export function MoreFiltersButton({ view }: FiltersOverflowModalProps) {
   return (
     <button
       type="button"
-      className="filters-overflow-trigger"
+      className={styles['filters-overflow-trigger']}
       onClick={() => dispatch({ type: 'SET_OPEN_MENU', view, menu: 'all' })}
     >
       More…{count > 0 ? ` (${count})` : ''}
@@ -69,23 +76,36 @@ export function FiltersOverflowModal({ view }: FiltersOverflowModalProps) {
   if (!open) return null;
 
   return (
-    <div className="filters-overflow-overlay">
-      <button type="button" className="filters-overflow-backdrop" aria-label="Close filters" onClick={close} />
-      <div className="filters-overflow-sheet" role="dialog" aria-label="Filters">
-        <div className="filters-overflow-sheet__header">
-          <span className="filters-overflow-sheet__title">FILTERS</span>
-          <button type="button" className="filters-overflow-sheet__close" onClick={close} aria-label="Close filters">
+    <div data-testid="filters-overflow-overlay" className={styles['filters-overflow-overlay']}>
+      <button
+        type="button"
+        data-testid="filters-overflow-backdrop"
+        className={styles['filters-overflow-backdrop']}
+        aria-label="Close filters"
+        onClick={close}
+      />
+      <div className={styles['filters-overflow-sheet']} role="dialog" aria-label="Filters">
+        <div className={styles['filters-overflow-sheet__header']}>
+          <span className={styles['filters-overflow-sheet__title']}>FILTERS</span>
+          <button
+            type="button"
+            className={styles['filters-overflow-sheet__close']}
+            onClick={close}
+            aria-label="Close filters"
+          >
             ×
           </button>
         </div>
 
-        <div className="filters-overflow-sheet__body">
-          <section className="filters-overflow-section">
-            <div className="filters-overflow-section__header">
-              <span className="filters-overflow-section__label">Venue</span>
-              <span className="filters-overflow-section__value">{summarizeCount(state.venuesOn, venueKeys)}</span>
+        <div className={styles['filters-overflow-sheet__body']}>
+          <section className={styles['filters-overflow-section']}>
+            <div className={styles['filters-overflow-section__header']}>
+              <span className={styles['filters-overflow-section__label']}>Venue</span>
+              <span className={styles['filters-overflow-section__value']}>
+                {summarizeCount(state.venuesOn, venueKeys)}
+              </span>
             </div>
-            <div className="filters-overflow-section__list">
+            <div className={styles['filters-overflow-section__list']}>
               {venues.map(([venue, count]) => (
                 <CheckboxRow
                   key={venue}
@@ -96,61 +116,67 @@ export function FiltersOverflowModal({ view }: FiltersOverflowModalProps) {
                 />
               ))}
             </div>
-            <div className="filters-overflow-section__footer">
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_VENUES', venues: venueKeys, on: true })}>
+            <div className={styles['filters-overflow-section__footer']}>
+              <button
+                className={dropdownStyles['dropdown__footer-btn']}
+                onClick={() => dispatch({ type: 'SET_ALL_VENUES', venues: venueKeys, on: true })}
+              >
                 Select all
               </button>
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_VENUES', venues: venueKeys, on: false })}>
+              <button
+                className={dropdownStyles['dropdown__footer-btn']}
+                onClick={() => dispatch({ type: 'SET_ALL_VENUES', venues: venueKeys, on: false })}
+              >
                 Deselect all
               </button>
             </div>
           </section>
 
-          <section className="filters-overflow-section">
-            <div className="filters-overflow-section__header">
-              <span className="filters-overflow-section__label">Shows</span>
-              <span className="filters-overflow-section__value">
+          <section className={styles['filters-overflow-section']}>
+            <div className={styles['filters-overflow-section__header']}>
+              <span className={styles['filters-overflow-section__label']}>Shows</span>
+              <span className={styles['filters-overflow-section__value']}>
                 {summarizeSelected(includedCount, shows.length)}
               </span>
             </div>
             <input
-              className="filter-bar__typeahead"
+              className={filterBarStyles['filter-bar__typeahead']}
               placeholder="Type to filter shows or venues…"
               value={state.query}
               onChange={(e) => dispatch({ type: 'SET_QUERY', query: e.target.value })}
             />
-            <div className="filters-overflow-section__list">
+            <div className={styles['filters-overflow-section__list']}>
               {showsMatching.length === 0 && (
-                <div className="dropdown__empty">NO SHOWS MATCH &quot;{state.query}&quot;</div>
+                <div className={dropdownStyles['dropdown__empty']}>NO SHOWS MATCH &quot;{state.query}&quot;</div>
               )}
               {showsMatching.map((s) => (
                 <label
                   key={s.id}
-                  className={`filter-bar__show-row ${state.excluded[s.id] ? 'filter-bar__show-row--off' : ''}`}
+                  className={`${filterBarStyles['filter-bar__show-row']} ${state.excluded[s.id] ? filterBarStyles['filter-bar__show-row--off'] : ''}`}
                 >
                   <input
                     type="checkbox"
                     checked={!state.excluded[s.id]}
                     onChange={() => dispatch({ type: 'SET_EXCLUDED', showId: s.id, excluded: !state.excluded[s.id] })}
                   />
-                  <span className="filter-bar__show-info">
-                    <span className="filter-bar__show-title">{s.title}</span>
-                    <span className="filter-bar__show-meta">
+                  <span className={filterBarStyles['filter-bar__show-info']}>
+                    <span className={filterBarStyles['filter-bar__show-title']}>{s.title}</span>
+                    <span className={filterBarStyles['filter-bar__show-meta']}>
                       {s.perfs.filter((p) => p.status === 'active').length} PERFS · {s.venueShort}
                     </span>
                   </span>
                 </label>
               ))}
             </div>
-            <div className="filters-overflow-section__footer">
+            <div className={styles['filters-overflow-section__footer']}>
               <button
-                className="dropdown__footer-btn"
+                className={dropdownStyles['dropdown__footer-btn']}
                 onClick={() => dispatch({ type: 'SET_ALL_EXCLUDED', showIds: showsMatching.map((s) => s.id), excluded: false })}
               >
                 Select all
               </button>
               <button
-                className="dropdown__footer-btn"
+                className={dropdownStyles['dropdown__footer-btn']}
                 onClick={() => dispatch({ type: 'SET_ALL_EXCLUDED', showIds: showsMatching.map((s) => s.id), excluded: true })}
               >
                 Deselect all
@@ -158,14 +184,14 @@ export function FiltersOverflowModal({ view }: FiltersOverflowModalProps) {
             </div>
           </section>
 
-          <section className="filters-overflow-section">
-            <div className="filters-overflow-section__header">
-              <span className="filters-overflow-section__label">Time</span>
-              <span className="filters-overflow-section__value">
+          <section className={styles['filters-overflow-section']}>
+            <div className={styles['filters-overflow-section__header']}>
+              <span className={styles['filters-overflow-section__label']}>Time</span>
+              <span className={styles['filters-overflow-section__value']}>
                 {summarizeLabelled(state.timeBucketsOn, timeKeys, timeLabelFor)}
               </span>
             </div>
-            <div className="filters-overflow-section__list">
+            <div className={styles['filters-overflow-section__list']}>
               {TIME_BUCKETS.map((b) => (
                 <CheckboxRow
                   key={b.key}
@@ -176,22 +202,24 @@ export function FiltersOverflowModal({ view }: FiltersOverflowModalProps) {
                 />
               ))}
             </div>
-            <div className="filters-overflow-section__footer">
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_TIME_BUCKETS', on: true })}>
+            <div className={styles['filters-overflow-section__footer']}>
+              <button className={dropdownStyles['dropdown__footer-btn']} onClick={() => dispatch({ type: 'SET_ALL_TIME_BUCKETS', on: true })}>
                 Select all
               </button>
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_TIME_BUCKETS', on: false })}>
+              <button className={dropdownStyles['dropdown__footer-btn']} onClick={() => dispatch({ type: 'SET_ALL_TIME_BUCKETS', on: false })}>
                 Deselect all
               </button>
             </div>
           </section>
 
-          <section className="filters-overflow-section">
-            <div className="filters-overflow-section__header">
-              <span className="filters-overflow-section__label">Day</span>
-              <span className="filters-overflow-section__value">{summarizeLabelled(state.daysOn, dayKeys, dayLabelFor)}</span>
+          <section className={styles['filters-overflow-section']}>
+            <div className={styles['filters-overflow-section__header']}>
+              <span className={styles['filters-overflow-section__label']}>Day</span>
+              <span className={styles['filters-overflow-section__value']}>
+                {summarizeLabelled(state.daysOn, dayKeys, dayLabelFor)}
+              </span>
             </div>
-            <div className="filters-overflow-section__list">
+            <div className={styles['filters-overflow-section__list']}>
               {days.map((d) => (
                 <CheckboxRow
                   key={d.key}
@@ -202,22 +230,24 @@ export function FiltersOverflowModal({ view }: FiltersOverflowModalProps) {
                 />
               ))}
             </div>
-            <div className="filters-overflow-section__footer">
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_DAYS', days: dayKeys, on: true })}>
+            <div className={styles['filters-overflow-section__footer']}>
+              <button className={dropdownStyles['dropdown__footer-btn']} onClick={() => dispatch({ type: 'SET_ALL_DAYS', days: dayKeys, on: true })}>
                 All days
               </button>
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_DAYS', days: dayKeys, on: false })}>
+              <button className={dropdownStyles['dropdown__footer-btn']} onClick={() => dispatch({ type: 'SET_ALL_DAYS', days: dayKeys, on: false })}>
                 Clear
               </button>
             </div>
           </section>
 
-          <section className="filters-overflow-section">
-            <div className="filters-overflow-section__header">
-              <span className="filters-overflow-section__label">Age &amp; content</span>
-              <span className="filters-overflow-section__value">{summarizeCount(state.ratingsOn, ratingKeys)}</span>
+          <section className={styles['filters-overflow-section']}>
+            <div className={styles['filters-overflow-section__header']}>
+              <span className={styles['filters-overflow-section__label']}>Age &amp; content</span>
+              <span className={styles['filters-overflow-section__value']}>
+                {summarizeCount(state.ratingsOn, ratingKeys)}
+              </span>
             </div>
-            <div className="filters-overflow-section__list">
+            <div className={styles['filters-overflow-section__list']}>
               {ratings.map(([rating, count]) => (
                 <CheckboxRow
                   key={rating}
@@ -228,23 +258,27 @@ export function FiltersOverflowModal({ view }: FiltersOverflowModalProps) {
                 />
               ))}
             </div>
-            <div className="filters-overflow-section__footer">
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_RATINGS', ratings: ratingKeys, on: true })}>
+            <div className={styles['filters-overflow-section__footer']}>
+              <button className={dropdownStyles['dropdown__footer-btn']} onClick={() => dispatch({ type: 'SET_ALL_RATINGS', ratings: ratingKeys, on: true })}>
                 Select all
               </button>
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_RATINGS', ratings: ratingKeys, on: false })}>
+              <button className={dropdownStyles['dropdown__footer-btn']} onClick={() => dispatch({ type: 'SET_ALL_RATINGS', ratings: ratingKeys, on: false })}>
                 Deselect all
               </button>
             </div>
           </section>
 
-          <section className="filters-overflow-section">
-            <div className="filters-overflow-section__header">
-              <span className="filters-overflow-section__label">Content</span>
-              <span className="filters-overflow-section__value">{summarizeCount(state.warningsOn, warningKeys)}</span>
+          <section className={styles['filters-overflow-section']}>
+            <div className={styles['filters-overflow-section__header']}>
+              <span className={styles['filters-overflow-section__label']}>Content</span>
+              <span className={styles['filters-overflow-section__value']}>
+                {summarizeCount(state.warningsOn, warningKeys)}
+              </span>
             </div>
-            <div className="filters-overflow-section__list">
-              {warnings.length === 0 && <div className="dropdown__empty">NO CONTENT WARNINGS</div>}
+            <div className={styles['filters-overflow-section__list']}>
+              {warnings.length === 0 && (
+                <div className={dropdownStyles['dropdown__empty']}>NO CONTENT WARNINGS</div>
+              )}
               {warnings.map(([warning, count]) => (
                 <CheckboxRow
                   key={warning}
@@ -255,19 +289,19 @@ export function FiltersOverflowModal({ view }: FiltersOverflowModalProps) {
                 />
               ))}
             </div>
-            <div className="filters-overflow-section__footer">
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_WARNINGS', warnings: warningKeys, on: true })}>
+            <div className={styles['filters-overflow-section__footer']}>
+              <button className={dropdownStyles['dropdown__footer-btn']} onClick={() => dispatch({ type: 'SET_ALL_WARNINGS', warnings: warningKeys, on: true })}>
                 Select all
               </button>
-              <button className="dropdown__footer-btn" onClick={() => dispatch({ type: 'SET_ALL_WARNINGS', warnings: warningKeys, on: false })}>
+              <button className={dropdownStyles['dropdown__footer-btn']} onClick={() => dispatch({ type: 'SET_ALL_WARNINGS', warnings: warningKeys, on: false })}>
                 Deselect all
               </button>
             </div>
           </section>
 
-          <section className="filters-overflow-section">
-            <div className="filters-overflow-section__header">
-              <span className="filters-overflow-section__label">Conflicts</span>
+          <section className={styles['filters-overflow-section']}>
+            <div className={styles['filters-overflow-section__header']}>
+              <span className={styles['filters-overflow-section__label']}>Conflicts</span>
             </div>
             <SegmentedControl
               value={state.clash}
@@ -280,8 +314,8 @@ export function FiltersOverflowModal({ view }: FiltersOverflowModalProps) {
           </section>
         </div>
 
-        <div className="filters-overflow-sheet__footer">
-          <button type="button" className="filters-overflow-sheet__reset" onClick={resetAll}>
+        <div className={styles['filters-overflow-sheet__footer']}>
+          <button type="button" className={styles['filters-overflow-sheet__reset']} onClick={resetAll}>
             RESET ALL
           </button>
         </div>
