@@ -41,6 +41,33 @@ describe('App (Grid Planner)', () => {
     expect(screen.getByText('0')).toBeInTheDocument();
   });
 
+  it('clicking the same block\'s info icon again closes the detail panel', () => {
+    render(<App />);
+    const infoButtons = screen.getAllByRole('button', { name: /Details for/ });
+
+    fireEvent.click(infoButtons[0]);
+    expect(document.querySelector('[data-testid="detail-panel"]')).toBeInTheDocument();
+
+    fireEvent.click(infoButtons[0]);
+    expect(document.querySelector('[data-testid="detail-panel"]')).not.toBeInTheDocument();
+  });
+
+  it('opening My Fringe closes an open detail panel, and vice versa', () => {
+    render(<App />);
+    const infoButtons = screen.getAllByRole('button', { name: /Details for/ });
+
+    fireEvent.click(infoButtons[0]);
+    expect(document.querySelector('[data-testid="detail-panel"]')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /^My Fringe/ }));
+    expect(document.querySelector('[data-testid="detail-panel"]')).not.toBeInTheDocument();
+    expect(document.querySelector('[data-testid="my-fringe-panel"]')).toBeInTheDocument();
+
+    fireEvent.click(infoButtons[0]);
+    expect(document.querySelector('[data-testid="my-fringe-panel"]')).not.toBeInTheDocument();
+    expect(document.querySelector('[data-testid="detail-panel"]')).toBeInTheDocument();
+  });
+
   it('positions a 3:30pm show under the 3:30pm column, not shifted a slot late', () => {
     // Regression test: APPLES! as told by an expert has a real Sep 3 15:30-16:30
     // performance (it also runs at 18:30 the same day, hence matching on the

@@ -13,7 +13,14 @@ describe('Sync Sheet', () => {
     // the visible text prefix to get the button regardless of the count -
     // anchored, since the panel's own remove buttons are labeled "Remove ...
     // from My Fringe" and would otherwise also match.
-    fireEvent.click(screen.getByRole('button', { name: /^My Fringe/ }));
+    //
+    // The button now toggles the panel rather than only ever opening it, so
+    // only click it if the panel isn't already open (tests that call
+    // openSync() twice, e.g. to close and reopen SyncSheet, would otherwise
+    // toggle My Fringe closed instead of reopening SyncSheet).
+    if (!document.querySelector('[data-testid="my-fringe-panel"]')) {
+      fireEvent.click(screen.getByRole('button', { name: /^My Fringe/ }));
+    }
     fireEvent.click(screen.getByRole('button', { name: /SYNC TO ANOTHER DEVICE/ }));
   }
 

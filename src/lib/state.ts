@@ -226,14 +226,17 @@ export function appReducer(state: AppState, action: AppAction): AppState {
         expanded: { ...state.expanded, [action.showId]: !state.expanded[action.showId] },
       };
 
+    // DetailPanel and MyFringePanel are mutually exclusive (same width, same
+    // mount point, only one visible at a time) - opening one closes the
+    // other, here rather than in every call site that dispatches either.
     case 'SET_DETAIL':
-      return { ...state, detail: action.detail };
+      return { ...state, detail: action.detail, myFringeOpen: action.detail ? false : state.myFringeOpen };
 
     case 'SET_SYNC_OPEN':
       return { ...state, syncOpen: action.open };
 
     case 'SET_MY_FRINGE_OPEN':
-      return { ...state, myFringeOpen: action.open };
+      return { ...state, myFringeOpen: action.open, detail: action.open ? null : state.detail };
 
     case 'RESET_ALL_FILTERS': {
       const daysOn: Record<DayKey, boolean> = {};

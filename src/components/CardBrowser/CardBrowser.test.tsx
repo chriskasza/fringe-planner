@@ -46,9 +46,29 @@ describe('App (Card Browser)', () => {
     fireEvent.click(infoButton);
 
     expect(document.querySelector('[data-testid="detail-panel"]')).toBeInTheDocument();
-    // The My Fringe badge (mounted in TopBar, at the App level) shows the
-    // raw picked count at all times, so no pick was added.
+    // The My Fringe badge shows the raw picked count at all times, so no
+    // pick was added.
     expect(screen.getByText('0')).toBeInTheDocument();
+  });
+
+  it('opening My Fringe closes an open detail panel, and vice versa', () => {
+    render(<App />);
+    switchToCards();
+    const browser = within(document.querySelector('[data-testid="card-browser"]') as HTMLElement);
+
+    const card = browser.getByText('Peak Twins').closest('[data-testid="show-card"]') as HTMLElement;
+    const infoButton = within(card).getByRole('button', { name: /Details for Peak Twins/ });
+
+    fireEvent.click(infoButton);
+    expect(document.querySelector('[data-testid="detail-panel"]')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /^My Fringe/ }));
+    expect(document.querySelector('[data-testid="detail-panel"]')).not.toBeInTheDocument();
+    expect(document.querySelector('[data-testid="my-fringe-panel"]')).toBeInTheDocument();
+
+    fireEvent.click(infoButton);
+    expect(document.querySelector('[data-testid="my-fringe-panel"]')).not.toBeInTheDocument();
+    expect(document.querySelector('[data-testid="detail-panel"]')).toBeInTheDocument();
   });
 
   it('clicking a day-rail cell with a single performance toggles it directly', () => {

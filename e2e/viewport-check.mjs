@@ -148,7 +148,7 @@ async function main() {
     await page.keyboard.press('Escape');
     check('Dropdown: Escape closes the panel', !(await dialog.isVisible()));
 
-    // Switch to Cards view and pick a show to exercise CardGrid + MyFringeRail.
+    // Switch to Cards view and pick a show to exercise CardGrid + MyFringePanel.
     await page.getByRole('button', { name: 'Grid', exact: true }).click();
     await page.waitForSelector('[data-testid="card-browser"]');
 

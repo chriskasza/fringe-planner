@@ -53,7 +53,9 @@ export function GridBlock({ show, perf, gridStartMin }: GridBlockProps) {
           ariaLabel={`Details for ${show.title}`}
           variant={pState === 'picked' || pState === 'picked-clash' ? 'on-gold' : 'default'}
           size={18}
-          onClick={() => dispatch({ type: 'SET_DETAIL', detail: { timeId } })}
+          onClick={() =>
+            dispatch({ type: 'SET_DETAIL', detail: state.detail?.timeId === timeId ? null : { timeId } })
+          }
         />
       </div>
       <div className={styles['grid-block__meta']}>

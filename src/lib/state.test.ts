@@ -35,6 +35,34 @@ function initial(): AppState {
   return createInitialState(DAYS, [SHOW], { date: '2026-07-26', minutes: 720 });
 }
 
+describe('DetailPanel / MyFringePanel mutual exclusion', () => {
+  it('SET_DETAIL with a target closes My Fringe', () => {
+    const open = appReducer(initial(), { type: 'SET_MY_FRINGE_OPEN', open: true });
+    const s = appReducer(open, { type: 'SET_DETAIL', detail: { timeId: 'x' } });
+    expect(s.detail).toEqual({ timeId: 'x' });
+    expect(s.myFringeOpen).toBe(false);
+  });
+
+  it('SET_MY_FRINGE_OPEN with open:true closes the detail panel', () => {
+    const withDetail = appReducer(initial(), { type: 'SET_DETAIL', detail: { timeId: 'x' } });
+    const s = appReducer(withDetail, { type: 'SET_MY_FRINGE_OPEN', open: true });
+    expect(s.myFringeOpen).toBe(true);
+    expect(s.detail).toBeNull();
+  });
+
+  it('closing one leaves the other alone', () => {
+    const withDetail = appReducer(initial(), { type: 'SET_DETAIL', detail: { timeId: 'x' } });
+    const s = appReducer(withDetail, { type: 'SET_DETAIL', detail: null });
+    expect(s.detail).toBeNull();
+    expect(s.myFringeOpen).toBe(false);
+
+    const open = appReducer(initial(), { type: 'SET_MY_FRINGE_OPEN', open: true });
+    const closed = appReducer(open, { type: 'SET_MY_FRINGE_OPEN', open: false });
+    expect(closed.myFringeOpen).toBe(false);
+    expect(closed.detail).toBeNull();
+  });
+});
+
 describe('SET_GRID_DAY', () => {
   it('switches its own day on without disturbing the other days', () => {
     const off = appReducer(initial(), { type: 'SET_DAY_ON', day: '2026-09-04', on: false });

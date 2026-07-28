@@ -1,16 +1,14 @@
-/* Mounted once in App.tsx (see App.tsx), alongside SyncSheet, so it's reachable
-   from both Grid and Cards at every width - a fixed-position drawer rather
-   than a flex sibling inside either view's own layout. Header and footer stay
+/* Mounted once per view (GridPlanner, CardBrowser - see each), as a flex
+   sibling of GridBody/CardGrid, same as DetailPanel and the same 318px width -
+   the two are mutually exclusive (see state.ts SET_DETAIL/SET_MY_FRINGE_OPEN)
+   and only ever one is visible, so they're built to feel like one panel that
+   swaps content rather than two different UI elements. Header and footer stay
    put; only __body scrolls - same reasoning as the old MyFringeRail: a body
    with min-height:0 and no overflow of its own let picked rows spill out and
    paint over the footer buttons. */
 .my-fringe-panel {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 300px;
-  z-index: 100;
+  width: 318px;
+  flex: none;
   display: flex;
   flex-direction: column;
   background: var(--ink-sunken);
@@ -21,11 +19,13 @@
   overflow: hidden;
 }
 
-/* No room for a 300px side drawer on a narrow phone - full-screen overlay
-   instead, same treatment DetailPanel uses at this breakpoint. */
+/* No room for a 318px side panel on a narrow phone - full-screen overlay
+   instead, the same treatment DetailPanel uses at this breakpoint. */
 @media (max-width: 700px) {
   .my-fringe-panel {
-    left: 0;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
     width: auto;
     border-left: none;
   }

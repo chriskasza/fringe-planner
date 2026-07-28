@@ -14,6 +14,7 @@ export function ShowCard({ show }: { show: Show }) {
   const outsideFilterCount = activePerfs.filter((p) => !perfInFilter(p, state.daysOn, state.timeBucketsOn)).length;
   const anyPicked = pickedPerfs.length > 0;
   const expanded = Boolean(state.expanded[show.id]);
+  const isThisShowOpen = state.detail != null && show.perfs.some((p) => p.timeId === state.detail!.timeId);
 
   return (
     <div data-testid="show-card" className={`${styles['show-card']} ${anyPicked ? styles['show-card--picked'] : ''}`}>
@@ -28,7 +29,9 @@ export function ShowCard({ show }: { show: Show }) {
           ariaLabel={`Details for ${show.title}`}
           variant="default"
           size={28}
-          onClick={() => dispatch({ type: 'SET_DETAIL', detail: { timeId: activePerfs[0].timeId } })}
+          onClick={() =>
+            dispatch({ type: 'SET_DETAIL', detail: isThisShowOpen ? null : { timeId: activePerfs[0].timeId } })
+          }
           className={styles['show-card__icon']}
         />
       </div>

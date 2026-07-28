@@ -14,6 +14,16 @@ describe('TopBar My Fringe button', () => {
     fireEvent.click(screen.getByRole('button', { name: /^My Fringe/ }));
     expect(document.querySelector('[data-testid="my-fringe-panel"]')).toBeInTheDocument();
   });
+
+  it('closes the panel when clicked again', () => {
+    render(<App />);
+    const button = screen.getByRole('button', { name: /^My Fringe/ });
+    fireEvent.click(button);
+    expect(document.querySelector('[data-testid="my-fringe-panel"]')).toBeInTheDocument();
+
+    fireEvent.click(button);
+    expect(document.querySelector('[data-testid="my-fringe-panel"]')).not.toBeInTheDocument();
+  });
 });
 
 describe('TopBar My Fringe badge pop', () => {

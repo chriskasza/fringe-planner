@@ -41,22 +41,27 @@ Read `README.md` first - it documents the upstream API quirks that explain why
   custom properties and `@media` blocks on the same selectors, never a JS prop or a
   second component. `DetailPanel` is the pattern to copy for anything new - one
   component, CSS alone flips it from a side panel to a full-screen overlay.
+  `MyFringePanel` now follows the same pattern and the same 318px width (it used to be
+  an always-`position:fixed` 300px drawer mounted once at the App level - see
+  `state.ts`'s `SET_DETAIL`/`SET_MY_FRINGE_OPEN`): the two panels are mutually
+  exclusive, so they read as one panel that swaps content rather than two different
+  UI elements.
   **Watch source order inside a CSS Modules file**: a base rule and its `@media`
   override share the same specificity (both are plain single-class selectors), so the
   override has to come *after* the base rule in the file, or the base rule wins
   regardless of which media query is active. This exact bug shipped once - a base
   rule below its own `@media (max-width: 700px)` override silently cancelled it - and
   the Playwright pass below is what caught it, not vitest.
-  Four breakpoints, each meaning something different:
+  Three breakpoints, each meaning something different:
   - `1100px` - card grid drops 3 columns to 2.
-  - `1000px` - the 300px My Fringe rail hides, freeing card-grid width.
   - `700px` - the compact breakpoint: sticky label column narrows, "Halifax " drops
-    from the wordmark, spacing tightens throughout.
-  - `520px` - phone tweaks: legend hidden, "Planner" drops from the wordmark too.
-    (No longer bumps FilterButton/SegmentedControl padding for a 44px touch target -
-    once the FilterBar became a single component rendered at every width, that bump
-    made Venue/Shows/Grid/Cards visibly taller than their neighbors in the same row,
-    which read as broken rather than deliberate.)
+    from the wordmark, spacing tightens throughout, and `DetailPanel`/`MyFringePanel`
+    both switch from a static side panel to a full-screen overlay.
+  - `520px` - phone tweaks: "Planner" drops from the wordmark too, leaving just
+    "Fringe". (No longer bumps FilterButton/SegmentedControl padding for a 44px touch
+    target - once the FilterBar became a single component rendered at every width,
+    that bump made Venue/Shows/Grid/Cards visibly taller than their neighbors in the
+    same row, which read as broken rather than deliberate.)
 - **No genre field.** Genre data isn't available on the festival website or in the PDF
   guide. Don't invent one - the front-end has no genre filter or genre-coded accents.
 - **Don't commit the festival PDF** (it's gitignored - 32MB).
@@ -102,4 +107,4 @@ Two habits that have caught real bugs here:
   overflow ownership, or a breakpoint needs that pass, not just `npm test`. Both layout bugs
   came from a container with a *definite* height sizing its children to fit rather than to
   their content; the diagnoses are written up in `CardGrid.module.css` and
-  `MyFringeRail.module.css` where they can't drift.
+  `MyFringePanel.module.css` where they can't drift.

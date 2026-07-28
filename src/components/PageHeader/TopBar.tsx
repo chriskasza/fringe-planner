@@ -62,7 +62,7 @@ export function TopBar() {
         <button
           type="button"
           className={styles['topbar__myfringe']}
-          onClick={() => dispatch({ type: 'SET_MY_FRINGE_OPEN', open: true })}
+          onClick={() => dispatch({ type: 'SET_MY_FRINGE_OPEN', open: !state.myFringeOpen })}
         >
           My Fringe
           <span
