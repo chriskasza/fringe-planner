@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 
 // Pure cutoff math, unit-testable without touching the DOM: how many items
 // (in priority order) fit in `containerWidth` once `reservedWidth` (the
-// always-visible controls - label, Conflicts, More, Reset, summary) and the
+// always-visible controls - label, Overlaps, More, Reset, summary) and the
 // gap between every rendered element are accounted for.
 export function computeVisibleCount(
   itemWidths: number[],

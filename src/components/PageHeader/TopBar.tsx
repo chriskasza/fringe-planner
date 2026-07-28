@@ -10,7 +10,7 @@ export function TopBar() {
   const onNow = onNowCount(shows, now);
 
   // A switch, not a real segmented control (SegmentedControl sets state to
-  // whichever option was clicked - see its use for Conflicts below). Both
+  // whichever option was clicked - see its use for Overlaps below). Both
   // Grid and Cards labels stay visible so it reads as "there are two views,"
   // but *either* side dispatches the same flip: clicking the already-active
   // side still switches away from it, the same as clicking the inactive
@@ -62,10 +62,21 @@ export function TopBar() {
         <button
           type="button"
           className={styles['topbar__myfringe']}
-          onClick={() => dispatch({ type: 'SET_SYNC_OPEN', open: true })}
+          onClick={() => dispatch({ type: 'SET_MY_FRINGE_OPEN', open: true })}
         >
           My Fringe
-          <span className={styles['topbar__badge']}>{state.picked.size}</span>
+          <span
+            // Remounting on every pickPulse change restarts the CSS
+            // animation each time (a plain class toggle wouldn't replay it
+            // for back-to-back picks, since the class name never actually
+            // changes). pickPulse starts at 0, so --pop is never applied on
+            // initial mount.
+            key={state.pickPulse}
+            data-testid="topbar-myfringe-badge"
+            className={`${styles['topbar__badge']} ${state.pickPulse > 0 ? styles['topbar__badge--pop'] : ''}`}
+          >
+            {state.picked.size}
+          </span>
         </button>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { render, fireEvent, within } from '@testing-library/react';
+import { render, fireEvent, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import App from '../../App';
 import { switchToCards, switchToGridFrom } from '../../test/appTestUtils';
@@ -44,11 +44,15 @@ describe('App (Card Browser)', () => {
     const card = browser.getByText('Peak Twins').closest('[data-testid="show-card"]') as HTMLElement;
     const star = within(card).getByRole('button', { name: /Add all of Peak Twins/ });
 
+    // Picking no longer auto-opens the panel (it just pulses the My Fringe
+    // button - see TopBar.test.tsx), so open it explicitly to inspect the
+    // count. The panel is mounted at the App level, not inside card-browser.
     fireEvent.click(star);
-    expect(browser.getByText('6 PICKED')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /^My Fringe/ }));
+    expect(screen.getByText('6 PICKED')).toBeInTheDocument();
 
     fireEvent.click(within(card).getByRole('button', { name: /Remove Peak Twins/ }));
-    expect(browser.getByText('0 PICKED')).toBeInTheDocument();
+    expect(screen.getByText('0 PICKED')).toBeInTheDocument();
   });
 
   it('clicking a day-rail cell with a single performance toggles it directly', () => {
@@ -61,7 +65,8 @@ describe('App (Card Browser)', () => {
     expect(sep3Cell).toBeDefined();
 
     fireEvent.click(sep3Cell!);
-    expect(browser.getByText('1 PICKED')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /^My Fringe/ }));
+    expect(screen.getByText('1 PICKED')).toBeInTheDocument();
     // The aria-label already encodes cell state ("...picked"), so assert on
     // the accessible name rather than the (now CSS-Modules-hashed) class.
     expect(sep3Cell!.getAttribute('aria-label')).toContain('picked');
@@ -80,8 +85,8 @@ describe('App (Card Browser)', () => {
     expect(sep3Cell!.textContent).toContain('×2');
 
     fireEvent.click(sep3Cell!);
-    // Expanding shouldn't pick anything, but should reveal the time pills.
-    expect(browser.getByText('0 PICKED')).toBeInTheDocument();
+    // Expanding shouldn't pick anything, and nothing here opens the panel.
+    expect(document.querySelector('[data-testid="my-fringe-panel"]')).not.toBeInTheDocument();
     expect(within(card).getByText('HIDE TIMES ▲')).toBeInTheDocument();
     expect(within(card).getAllByRole('button', { name: /THU 3/ }).length).toBe(2);
   });
@@ -99,24 +104,26 @@ describe('App (Card Browser)', () => {
     expect(pills.length).toBe(2);
 
     fireEvent.click(pills[0]);
-    expect(browser.getByText('1 PICKED')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /^My Fringe/ }));
+    expect(screen.getByText('1 PICKED')).toBeInTheDocument();
   });
 
-  it('lists picks grouped by day in the My Fringe rail, with a working remove button', () => {
+  it('lists picks grouped by day in the My Fringe panel, with a working remove button', () => {
     render(<App />);
     switchToCards();
     const browser = within(document.querySelector('[data-testid="card-browser"]') as HTMLElement);
 
     const card = browser.getByText('Peak Twins').closest('[data-testid="show-card"]') as HTMLElement;
     fireEvent.click(within(card).getByRole('button', { name: /Add all of Peak Twins/ }));
+    fireEvent.click(screen.getByRole('button', { name: /^My Fringe/ }));
 
-    const rail = document.querySelector('[data-testid="my-fringe-rail"]') as HTMLElement;
-    expect(rail).toBeInTheDocument();
-    const railScope = within(rail);
-    expect(railScope.getByText('6 PICKED')).toBeInTheDocument();
-    expect(railScope.getAllByText('Peak Twins').length).toBe(6);
+    const panel = document.querySelector('[data-testid="my-fringe-panel"]') as HTMLElement;
+    expect(panel).toBeInTheDocument();
+    const panelScope = within(panel);
+    expect(panelScope.getByText('6 PICKED')).toBeInTheDocument();
+    expect(panelScope.getAllByText('Peak Twins').length).toBe(6);
 
-    fireEvent.click(railScope.getAllByRole('button', { name: /Remove Peak Twins/ })[0]);
-    expect(railScope.getByText('5 PICKED')).toBeInTheDocument();
+    fireEvent.click(panelScope.getAllByRole('button', { name: /Remove Peak Twins/ })[0]);
+    expect(panelScope.getByText('5 PICKED')).toBeInTheDocument();
   });
 });

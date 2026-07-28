@@ -174,30 +174,42 @@ async function main() {
     }
     check('1440px: no card in the grid overlaps another', !overlapFound);
 
-    // Pick every performance of the first show to populate MyFringeRail.
+    // Pick every performance of the first show. Picking only pops the My
+    // Fringe badge now (see state.ts TOGGLE_SHOW_STAR and TopBar.tsx) - it
+    // no longer force-opens the panel, so open it explicitly to exercise
+    // CardGrid + MyFringePanel together.
     const starButtons = await page.$$('[data-testid="show-card"] button[aria-label^="Add all of"]');
     if (starButtons.length > 0) {
       await starButtons[0].click();
     }
-    await page.waitForSelector('[data-testid="my-fringe-rail"]');
+    await page.getByRole('button', { name: /^My Fringe/ }).click();
+    await page.waitForSelector('[data-testid="my-fringe-panel"]');
 
-    // Regression check #2 (CLAUDE.md): the rail footer doesn't paint over
+    // Regression check #2 (CLAUDE.md): the panel footer doesn't paint over
     // the picks list.
-    const railBodyRect = await page.$eval('[data-testid="my-fringe-rail"] > div:nth-child(2)', (el) => el.getBoundingClientRect());
-    const railFooterRect = await page.$eval('[data-testid="my-fringe-rail"] > div:last-child', (el) => el.getBoundingClientRect());
+    const panelBodyRect = await page.$eval('[data-testid="my-fringe-panel"] > div:nth-child(2)', (el) => el.getBoundingClientRect());
+    const panelFooterRect = await page.$eval('[data-testid="my-fringe-panel"] > div:last-child', (el) => el.getBoundingClientRect());
     check(
-      '1440px: MyFringeRail footer does not paint over the picks list',
-      railBodyRect.bottom <= railFooterRect.top + 1,
-      `body bottom=${railBodyRect.bottom}, footer top=${railFooterRect.top}`,
+      '1440px: My Fringe panel footer does not paint over the picks list',
+      panelBodyRect.bottom <= panelFooterRect.top + 1,
+      `body bottom=${panelBodyRect.bottom}, footer top=${panelFooterRect.top}`,
     );
 
     await screenshot(page, '1440-cards');
 
-    // --- 1000px: MyFringeRail hides (breakpoint out of scope for this
-    // refactor, spot-checked for collateral damage from removing wrappers). ---
+    // --- 1000px: the panel used to hide here with no way to reopen it
+    // before 700px (see docs/my-fringe-panel-notes.md) - now it's a fixed
+    // overlay mounted at the App level, reachable at every width, so it
+    // should still be visible after the pick made above. ---
     await page.setViewportSize({ width: 1000, height: 900 });
-    check('1000px: MyFringeRail hidden', !(await isVisible(page, '[data-testid="my-fringe-rail"]')));
+    check('1000px: My Fringe panel still visible (reachable at every width)', await isVisible(page, '[data-testid="my-fringe-panel"]'));
     await screenshot(page, '1000-cards');
+
+    // Close it via its own X before continuing - narrower widths below turn
+    // it into a full-screen overlay that would otherwise intercept clicks on
+    // the view toggle.
+    await page.getByRole('button', { name: 'Close My Fringe' }).click();
+    check('1000px: My Fringe panel closes via its own X', !(await isVisible(page, '[data-testid="my-fringe-panel"]')));
 
     // --- 620px: between the 700px and 520px thresholds - "Halifax " is
     // dropped but "Planner" still fits. ---
@@ -236,6 +248,18 @@ async function main() {
     check('390px: venue-row__name computed line-clamp is 3', nameClamp390 === '3', nameClamp390);
 
     await screenshot(page, '390-grid');
+
+    // --- My Fringe panel reachable from Grid view too, as a full-screen
+    // overlay under the 700px breakpoint (same treatment as DetailPanel). ---
+    await page.getByRole('button', { name: /^My Fringe/ }).click();
+    await page.waitForSelector('[data-testid="my-fringe-panel"]');
+    const panelRect390 = await page.$eval('[data-testid="my-fringe-panel"]', (el) => el.getBoundingClientRect());
+    check(
+      '390px: My Fringe panel is a full-width overlay from Grid view',
+      panelRect390.width >= 389,
+      `${panelRect390.width}px`,
+    );
+    await screenshot(page, '390-my-fringe-panel');
 
     await browser.close();
   } finally {

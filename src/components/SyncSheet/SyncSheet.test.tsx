@@ -7,16 +7,21 @@ const DEBOUNCE_SETTLE_MS = 400;
 
 describe('Sync Sheet', () => {
   function openSync() {
-    // Accessible name includes the badge count, so match by the visible
-    // text prefix to get the button regardless of the count.
-    fireEvent.click(screen.getByRole('button', { name: /My Fringe/ }));
+    // My Fringe opens the picks panel, not SyncSheet directly - the panel's
+    // own "sync to another device" button is the sole remaining entry point
+    // into SyncSheet. Accessible name includes the badge count, so match by
+    // the visible text prefix to get the button regardless of the count -
+    // anchored, since the panel's own remove buttons are labeled "Remove ...
+    // from My Fringe" and would otherwise also match.
+    fireEvent.click(screen.getByRole('button', { name: /^My Fringe/ }));
+    fireEvent.click(screen.getByRole('button', { name: /SYNC TO ANOTHER DEVICE/ }));
   }
 
   function syncScope() {
     return within(document.querySelector('[data-testid="sync-sheet"]') as HTMLElement);
   }
 
-  it('opens from the My Fringe button, displays the real URL hash after picking', () => {
+  it('opens from the My Fringe panel, displays the real URL hash after picking', () => {
     render(<App />);
     expect(document.querySelector('[data-testid="sync-sheet"]')).not.toBeInTheDocument();
 

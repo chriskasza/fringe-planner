@@ -301,7 +301,7 @@ export function FiltersOverflowModal({ view }: FiltersOverflowModalProps) {
 
           <section className={styles['filters-overflow-section']}>
             <div className={styles['filters-overflow-section__header']}>
-              <span className={styles['filters-overflow-section__label']}>Conflicts</span>
+              <span className={styles['filters-overflow-section__label']}>Overlaps</span>
             </div>
             <SegmentedControl
               value={state.clash}

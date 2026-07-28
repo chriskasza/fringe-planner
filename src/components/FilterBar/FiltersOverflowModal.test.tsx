@@ -28,7 +28,7 @@ describe('FiltersOverflowModal', () => {
 
     const overlay = document.querySelector('[data-testid="filters-overflow-overlay"]');
     expect(overlay).toBeInTheDocument();
-    for (const label of ['Day', 'Time', 'Venue', 'Age & content', 'Content', 'Conflicts', 'Shows']) {
+    for (const label of ['Day', 'Time', 'Venue', 'Age & content', 'Content', 'Overlaps', 'Shows']) {
       expect(within(overlay as HTMLElement).getByText(label)).toBeInTheDocument();
     }
   });

@@ -24,6 +24,11 @@ export type AppState = {
   expanded: Record<string, boolean>; // showId -> time list expanded
   detail: DetailTarget | null;
   syncOpen: boolean;
+  myFringeOpen: boolean;
+  // Incremented on every pick that *adds* a performance - TopBar keys its
+  // picked-count badge on this to replay a "pop" animation each time,
+  // without forcing the panel open.
+  pickPulse: number;
 };
 
 export function createInitialState(
@@ -81,6 +86,8 @@ export function createInitialState(
     expanded: {},
     detail: null,
     syncOpen: false,
+    myFringeOpen: false,
+    pickPulse: 0,
   };
 }
 
@@ -109,6 +116,7 @@ export type AppAction =
   | { type: 'TOGGLE_EXPANDED'; showId: string }
   | { type: 'SET_DETAIL'; detail: DetailTarget | null }
   | { type: 'SET_SYNC_OPEN'; open: boolean }
+  | { type: 'SET_MY_FRINGE_OPEN'; open: boolean }
   | { type: 'RESET_ALL_FILTERS'; days: DayKey[]; venues: string[]; ratings: string[]; warnings: string[] };
 
 function toggleSet(set: Set<TimeId>, timeId: TimeId): Set<TimeId> {
@@ -120,8 +128,17 @@ function toggleSet(set: Set<TimeId>, timeId: TimeId): Set<TimeId> {
 
 export function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
-    case 'TOGGLE_PICK':
-      return { ...state, picked: toggleSet(state.picked, action.timeId) };
+    case 'TOGGLE_PICK': {
+      // Only bumps pickPulse when this toggle *adds* a pick - un-picking
+      // (including via the panel's own remove button) leaves it untouched,
+      // so removing a show doesn't replay the badge-pop cue.
+      const adding = !state.picked.has(action.timeId);
+      return {
+        ...state,
+        picked: toggleSet(state.picked, action.timeId),
+        pickPulse: adding ? state.pickPulse + 1 : state.pickPulse,
+      };
+    }
 
     case 'SET_PICKED':
       return { ...state, picked: action.picked };
@@ -147,7 +164,9 @@ export function appReducer(state: AppState, action: AppAction): AppState {
           .map((p) => p.timeId);
         for (const id of inFilterIds) picked.add(id);
       }
-      return { ...state, picked };
+      // Same add-vs-remove rule as TOGGLE_PICK: only the branch that adds
+      // picks (the !anyPicked branch above) bumps pickPulse.
+      return { ...state, picked, pickPulse: anyPicked ? state.pickPulse : state.pickPulse + 1 };
     }
 
     case 'SET_DAY_ON':
@@ -240,6 +259,9 @@ export function appReducer(state: AppState, action: AppAction): AppState {
 
     case 'SET_SYNC_OPEN':
       return { ...state, syncOpen: action.open };
+
+    case 'SET_MY_FRINGE_OPEN':
+      return { ...state, myFringeOpen: action.open };
 
     case 'RESET_ALL_FILTERS': {
       const daysOn: Record<DayKey, boolean> = {};

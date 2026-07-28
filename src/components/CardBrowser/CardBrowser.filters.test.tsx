@@ -61,14 +61,19 @@ describe('Day / Time filters gate which shows are browsable', () => {
     const browser = within(document.querySelector('[data-testid="card-browser"]') as HTMLElement);
     const card = browser.getByText('Peak Twins').closest('[data-testid="show-card"]') as HTMLElement;
     fireEvent.click(within(card).getByRole('button', { name: /Add all of Peak Twins/ }));
-    expect(browser.getByText('6 PICKED')).toBeInTheDocument();
+    // Picking pulses the My Fringe button rather than auto-opening the panel
+    // (see TopBar.test.tsx), so open it explicitly. It's mounted at the App
+    // level, not inside card-browser, so its count is asserted against the
+    // document.
+    fireEvent.click(screen.getByRole('button', { name: /^My Fringe/ }));
+    expect(screen.getByText('6 PICKED')).toBeInTheDocument();
 
     fireEvent.click(openDayMenu().getByRole('button', { name: /Clear/ }));
 
     // No cards browsable, but the schedule is untouched.
     expect(cardCount()).toBe(0);
-    const rail = within(document.querySelector('[data-testid="my-fringe-rail"]') as HTMLElement);
-    expect(rail.getByText('6 PICKED')).toBeInTheDocument();
+    const panel = within(document.querySelector('[data-testid="my-fringe-panel"]') as HTMLElement);
+    expect(panel.getByText('6 PICKED')).toBeInTheDocument();
     expect(screen.getAllByText('OUTSIDE DATE FILTER').length).toBe(6);
   });
 

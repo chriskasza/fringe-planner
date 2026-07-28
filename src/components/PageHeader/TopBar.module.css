@@ -83,6 +83,43 @@
   font-size: 11px;
 }
 
+/* Scale-and-flash on the count itself when a pick is added (see TopBar.tsx) -
+   motion catches peripheral attention far more reliably than a static color
+   or contrast change alone. Cyan rather than coral: coral is already this
+   app's "conflict/overlap" accent (.grid-block--clash,
+   my-fringe-panel__badge--overlap), so reusing it for a positive "added" cue
+   would read as a warning. Cyan is already the app's "affirmative/current"
+   accent instead (sync-link-row__badge's "ALWAYS CURRENT"). Re-keyed on
+   every pickPulse change (see the `key` prop in TopBar.tsx) so the
+   animation restarts on each new pick rather than only firing once. */
+@keyframes topbar-badge-pop {
+  0% {
+    transform: scale(1);
+    background: var(--ink);
+    color: var(--gold);
+  }
+  40% {
+    transform: scale(1.35);
+    background: var(--cyan);
+    color: var(--ink);
+  }
+  100% {
+    transform: scale(1);
+    background: var(--ink);
+    color: var(--gold);
+  }
+}
+
+.topbar__badge--pop {
+  animation: topbar-badge-pop 450ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topbar__badge--pop {
+    animation: none;
+  }
+}
+
 /* Below 700px (the old mobile-tree threshold), shrink to match what the
    mobile tree's compact treatment used to do: tighter padding, smaller
    wordmark, "Halifax " and the ON NOW badge dropped so the view toggle + My

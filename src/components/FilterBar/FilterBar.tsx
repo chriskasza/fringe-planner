@@ -46,7 +46,7 @@ export function FilterBar({ view }: FilterBarProps) {
 
   // Priority order: the items most likely to be used come first, so they're
   // the ones still inline once narrower viewports start collapsing the tail
-  // into "More...". Conflicts and Reset All are never part of this list -
+  // into "More...". Overlaps and Reset All are never part of this list -
   // they always render.
   const items = [
     {
@@ -285,7 +285,7 @@ export function FilterBar({ view }: FilterBarProps) {
       key: 'conflicts',
       render: () => (
         <SegmentedControl
-          label="Conflicts"
+          label="Overlaps"
           value={state.clash}
           onChange={(mode) => dispatch({ type: 'SET_CLASH', mode })}
           options={[
