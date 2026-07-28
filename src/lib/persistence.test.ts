@@ -5,7 +5,7 @@ import { shows as realShows } from './loadData';
 import type { Perf, PerfKey, Show } from './types';
 
 function perf(timeId: number | string, day: string, start: number, status: Perf['status'] = 'active'): Perf {
-  return { timeId, showId: '284247', day, start, end: start + 60, mins: 60, status };
+  return { timeId: String(timeId), showId: '284247', day, start, end: start + 60, mins: 60, status };
 }
 
 function showWith(perfs: Perf[], id = '284247'): Show {

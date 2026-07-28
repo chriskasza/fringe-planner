@@ -21,7 +21,7 @@ function show(perfs: [start: number, end: number][], day = DAY, status: Perf['st
     salesEnded: false,
     timesIncomplete: false,
     perfs: perfs.map(([start, end], i) => ({
-      timeId: i,
+      timeId: String(i),
       showId: '1',
       day,
       start,

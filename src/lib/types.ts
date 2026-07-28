@@ -66,8 +66,12 @@ export type Day = {
 
 export type PerfStatus = 'active' | 'cancelled';
 
+// The upstream-stable id (see CLAUDE.md) - stringified once at the raw->Perf
+// boundary in transform.ts, so nothing downstream ever sees `number | string`.
+export type TimeId = string;
+
 export type Perf = {
-  timeId: number | string;
+  timeId: TimeId;
   showId: string;
   day: DayKey;
   start: number; // minutes from midnight
