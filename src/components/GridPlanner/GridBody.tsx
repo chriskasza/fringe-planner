@@ -2,18 +2,13 @@ import { useMemo } from 'react';
 import { useApp } from '../../state/AppContext';
 import { visible } from '../../lib/derived';
 import { useNow } from '../../lib/useNow';
-import { gridTimeBounds, isPastPerf, LABEL_WIDTH } from './gridLayout';
+import { gridTimeBounds, isPastPerf } from './gridLayout';
 import { TimeHeader } from './TimeHeader';
 import { VenueRow } from './VenueRow';
 import type { Show } from '../../lib/types';
 import styles from './GridPlanner.module.css';
 
-type GridBodyProps = {
-  labelWidth?: number;
-  compact?: boolean;
-};
-
-export function GridBody({ labelWidth = LABEL_WIDTH, compact = false }: GridBodyProps) {
+export function GridBody() {
   const { state, shows, days } = useApp();
   const now = useNow();
   const { startMin, slots } = useMemo(
@@ -50,12 +45,10 @@ export function GridBody({ labelWidth = LABEL_WIDTH, compact = false }: GridBody
   const venueAddress = (venue: string) => shows.find((s) => s.venue === venue)?.venueAddress ?? null;
 
   return (
-    <div className={`${styles['grid-body']} ${compact ? styles['grid-body--compact'] : ''}`}>
-      <div className={`${styles['grid-body__heading']} ${compact ? styles['grid-body__heading--compact'] : ''}`}>
-        <span className={`${styles['grid-body__day-title']} ${compact ? styles['grid-body__day-title--compact'] : ''}`}>
-          {dayLabel}
-        </span>
-        <div className={`${styles['grid-body__legend']} ${compact ? styles['grid-body__legend--compact'] : ''}`}>
+    <div className={styles['grid-body']}>
+      <div className={styles['grid-body__heading']}>
+        <span className={styles['grid-body__day-title']}>{dayLabel}</span>
+        <div className={styles['grid-body__legend']}>
           <span className={styles['grid-body__legend-item']}>
             <span className={`${styles['grid-body__swatch']} ${styles['grid-body__swatch--picked']}`} /> IN MY FRINGE
           </span>
@@ -75,8 +68,8 @@ export function GridBody({ labelWidth = LABEL_WIDTH, compact = false }: GridBody
             : 'No shows on this day match the current filters.'}
         </div>
       ) : (
-        <div className={`${styles['grid-body__scroll']} ${compact ? styles['grid-body__scroll--compact'] : ''}`}>
-          <TimeHeader slots={slots} labelWidth={labelWidth} />
+        <div className={styles['grid-body__scroll']}>
+          <TimeHeader slots={slots} />
           {byVenue.map(([venue, entries]) => (
             <VenueRow
               key={venue}
@@ -85,8 +78,6 @@ export function GridBody({ labelWidth = LABEL_WIDTH, compact = false }: GridBody
               entries={entries}
               slots={slots}
               gridStartMin={startMin}
-              labelWidth={labelWidth}
-              compact={compact}
             />
           ))}
         </div>

@@ -4,11 +4,7 @@ import { useNow } from '../../lib/useNow';
 import segmentedStyles from '../ui/SegmentedControl.module.css';
 import styles from './TopBar.module.css';
 
-type TopBarProps = {
-  compact?: boolean;
-};
-
-export function TopBar({ compact = false }: TopBarProps) {
+export function TopBar() {
   const { state, dispatch, shows } = useApp();
   const now = useNow();
   const onNow = onNowCount(shows, now);
@@ -25,18 +21,21 @@ export function TopBar({ compact = false }: TopBarProps) {
   const nextView = state.viewMode === 'grid' ? 'cards' : 'grid';
 
   return (
-    <div data-testid="topbar" className={`${styles.topbar} ${compact ? styles['topbar--compact'] : ''}`}>
+    <div data-testid="topbar" className={styles.topbar}>
       <div className={styles['topbar__brand']}>
-        {/* "Halifax" drops first (mobile tree) so the view toggle + My Fringe
-            still fit on one line; "Planner" drops next (CSS, under 520px)
-            for phones too narrow for even "Fringe Planner". */}
+        {/* "Halifax" drops first (CSS, under 700px) so the view toggle + My
+            Fringe still fit on one line; "Planner" drops next (CSS, under
+            520px) for phones too narrow for even "Fringe Planner". Both
+            words stay in the DOM at every width - jsdom always sees the full
+            text, CSS alone decides what's visible. */}
         <span data-testid="topbar-wordmark" className={styles['topbar__wordmark']}>
-          {compact ? 'Fringe' : 'Halifax Fringe'}
+          <span className={styles['topbar__wordmark-prefix']}>Halifax </span>
+          Fringe
           <span className={styles['topbar__wordmark-planner']}> Planner</span>
         </span>
       </div>
       <div className={styles['topbar__right']}>
-        {!compact && onNow > 0 && (
+        {onNow > 0 && (
           <span className={styles['topbar__onnow']}>
             <span className={styles['topbar__onnow-dot']} />
             ON NOW: {onNow} SHOW{onNow === 1 ? '' : 'S'}

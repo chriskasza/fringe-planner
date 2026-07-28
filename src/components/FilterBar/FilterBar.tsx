@@ -14,11 +14,9 @@ import dropdownStyles from '../ui/Dropdown.module.css';
 
 type FilterBarProps = {
   view: 'grid' | 'cards';
-  visibleCount?: number;
-  countLabel?: string; // e.g. "SHOWN" - omit to render without a summary
 };
 
-export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
+export function FilterBar({ view }: FilterBarProps) {
   const {
     state,
     dispatch,
@@ -351,14 +349,6 @@ export function FilterBar({ view, visibleCount, countLabel }: FilterBarProps) {
       <button type="button" className={styles['filter-bar__reset']} onClick={resetAll} data-overflow-reserved>
         RESET ALL
       </button>
-
-      {countLabel && (
-        <div className={styles['filter-bar__right']} data-overflow-reserved>
-          <span className={styles['filter-bar__summary']}>
-            {visibleCount} {countLabel}
-          </span>
-        </div>
-      )}
     </div>
   );
 }

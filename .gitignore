@@ -8,6 +8,9 @@ node_modules
 dist
 dist-ssr
 *.local
+
+# Playwright viewport pass output (npm run test:visual)
+e2e/output
 .vscode/*
 !.vscode/extensions.json
 .idea

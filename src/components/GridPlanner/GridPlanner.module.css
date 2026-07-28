@@ -1,34 +1,6 @@
 /* The app is a fixed-viewport shell (see #root in global.css) - everything
    down to .grid-body__scroll just passes its full height along so that
    final element is the only thing that actually scrolls vertically. */
-.grid-planner-responsive {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.grid-planner-responsive__desktop {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-}
-
-.grid-planner-responsive__mobile {
-  display: none;
-}
-
-@media (max-width: 700px) {
-  .grid-planner-responsive__desktop {
-    display: none;
-  }
-  .grid-planner-responsive__mobile {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-  }
-}
-
 .grid-planner {
   flex: 1;
   min-height: 0;
@@ -38,9 +10,7 @@
   border-radius: var(--r-frame);
   overflow: hidden;
   box-shadow: var(--shadow-frame);
-  max-width: 1500px;
   width: 100%;
-  margin: 0 auto;
 }
 
 .grid-planner__content {
@@ -51,18 +21,24 @@
 }
 
 .grid-body {
+  /* The sticky venue-label column's width, with the 26px leading gutter
+     folded directly in (150px label + 26px inset). The gutter can't just be
+     padding on the scroll container: padding doesn't clip content, so a
+     scrolled block would still visually render into that space, uncovered,
+     since the sticky label itself only starts at the padding edge. Making
+     the label's own box (and its sticky background) span the full 176px -
+     with the venue name text inset by its own internal padding - means
+     there's no gap left for anything to show through. Narrower below
+     700px: no address line at that width, so the venue name gets a 3-line
+     clamp instead and needs less width; gutter shrinks to 14px to match the
+     tighter mobile spacing scale. */
+  --grid-label-width: 176px;
   flex: 1;
   display: flex;
   flex-direction: column;
   padding-top: 22px;
   min-width: 0;
   min-height: 0;
-}
-
-/* Mobile: tighter than the desktop default (see GridPlannerMobile, which
-   renders this same GridBody with compact set). */
-.grid-body--compact {
-  padding-top: 14px;
 }
 
 .grid-body__heading {
@@ -74,27 +50,19 @@
   flex-wrap: wrap;
 }
 
-.grid-body__heading--compact {
-  padding: 0 14px 10px;
-}
-
 /* This is the only element that scrolls, in either direction - the heading
    above stays put, and .time-header stays pinned to its top edge (below) as
    venue rows scroll past underneath it. Right padding gives a trailing
    gutter after the last column; there's deliberately no left padding here -
-   see LABEL_WIDTH in gridLayout.ts for why that gutter has to live inside
-   the sticky label's own box instead (padding on a scroll container doesn't
-   clip content, so a scrolled block would render right into an
-   unsticky-covered left gutter). */
+   see .grid-body's --grid-label-width comment for why that gutter has to
+   live inside the sticky label's own box instead (padding on a scroll
+   container doesn't clip content, so a scrolled block would render right
+   into an unsticky-covered left gutter). */
 .grid-body__scroll {
   flex: 1;
   overflow: auto;
   padding: 0 26px 0 0;
   min-height: 0;
-}
-
-.grid-body__scroll--compact {
-  padding: 0 14px 0 0;
 }
 
 .grid-body__day-title {
@@ -105,10 +73,6 @@
   text-transform: uppercase;
 }
 
-.grid-body__day-title--compact {
-  font-size: 18px;
-}
-
 .grid-body__legend {
   display: flex;
   align-items: center;
@@ -116,11 +80,6 @@
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--text-2);
-}
-
-.grid-body__legend--compact {
-  gap: 10px;
-  font-size: 10px;
 }
 
 /* No room for the legend text on a narrow phone - the states are still
@@ -164,10 +123,10 @@
 .time-header,
 .venue-row {
   display: grid;
-  /* Explicit pixel width AND grid-template-columns set inline per instance
-     (label width varies - narrower on mobile, see LABEL_WIDTH/
-     MOBILE_LABEL_WIDTH in gridLayout.ts) - not `1fr`/`auto`, which can only
-     size within whatever space this block box's container already gives it. */
+  /* Explicit width AND grid-template-columns set inline per instance, both
+     referencing the --grid-label-width custom property (see .grid-body) -
+     not `1fr`/`auto`, which can only size within whatever space this block
+     box's container already gives it. */
   /* `isolation: isolate` gives this row its own stacking context, so the
      sticky label's z-index is only ever compared against this row's own
      track/blocks - no ambiguity from sibling rows or ancestor context. */
@@ -236,11 +195,6 @@
   box-shadow: 4px 0 6px -4px rgba(0, 0, 0, 0.4);
 }
 
-/* Mobile: narrower column (MOBILE_LABEL_WIDTH), tighter gutter to match. */
-.venue-row__label--compact {
-  padding: 0 8px 0 14px;
-}
-
 .venue-row__name {
   font-family: var(--font-body);
   font-weight: 700;
@@ -248,21 +202,47 @@
   color: var(--cream);
 }
 
-/* Mobile: no room for the address line, so the name gets the space instead -
-   clamped to 3 lines with an ellipsis rather than overflowing the row. */
-.venue-row__name--compact {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  overflow: hidden;
-  line-height: 1.25;
-}
-
 .venue-row__address {
   font-family: var(--font-mono);
   font-size: 10px;
   color: var(--text-faint);
+}
+
+/* Narrower viewport: tighter spacing throughout, and no room for the venue
+   address line, so the name gets the space instead - clamped to 3 lines with
+   an ellipsis rather than overflowing the row. */
+@media (max-width: 700px) {
+  .grid-body {
+    --grid-label-width: 112px;
+    padding-top: 14px;
+  }
+  .grid-body__heading {
+    padding: 0 14px 10px;
+  }
+  .grid-body__scroll {
+    padding: 0 14px 0 0;
+  }
+  .grid-body__day-title {
+    font-size: 18px;
+  }
+  .grid-body__legend {
+    gap: 10px;
+    font-size: 10px;
+  }
+  .venue-row__label {
+    padding: 0 8px 0 14px;
+  }
+  .venue-row__name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+    line-height: 1.25;
+  }
+  .venue-row__address {
+    display: none;
+  }
 }
 
 .grid-block {

@@ -7,9 +7,9 @@ import { FiltersOverflowModal, MoreFiltersButton } from './FiltersOverflowModal'
 // directly rather than through the real FilterBar - whether More… is
 // present at all in a given layout is a width-driven decision jsdom can't
 // make (see the "no More… button when nothing needs to collapse" test in
-// GridPlannerMobile.test.tsx and the Playwright pass in CLAUDE.md), but once
-// it exists, clicking it and interacting with the modal it opens has nothing
-// to do with layout.
+// GridPlanner.test.tsx and the Playwright pass in CLAUDE.md), but once it
+// exists, clicking it and interacting with the modal it opens has nothing to
+// do with layout.
 describe('FiltersOverflowModal', () => {
   function renderModal() {
     return render(

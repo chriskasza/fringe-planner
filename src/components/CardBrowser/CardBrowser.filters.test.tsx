@@ -2,7 +2,7 @@ import { render, fireEvent, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import App from '../../App';
 import { shows } from '../../lib/loadData';
-import { desktopEl, switchToCards, switchToGridFrom } from '../../test/appTestUtils';
+import { switchToCards, switchToGridFrom } from '../../test/appTestUtils';
 
 describe('Day / Time filters gate which shows are browsable', () => {
   // Idempotent - the Day button toggles, and openMenu persists across a
@@ -15,9 +15,6 @@ describe('Day / Time filters gate which shows are browsable', () => {
     return within(browser.getByRole('dialog', { name: 'Day' }));
   }
 
-  // Both desktop and mobile trees render simultaneously (CSS media query
-  // picks which is visible). The desktop tree has `.card-browser`; the
-  // mobile tree has `.card-browser-mobile` — scope to desktop.
   const cardBrowserEl = () => document.querySelector('[data-testid="card-browser"]') as HTMLElement;
   const cardCount = () => cardBrowserEl().querySelectorAll('[data-testid="show-card"]').length;
 
@@ -93,7 +90,7 @@ describe('Day / Time filters gate which shows are browsable', () => {
 
     // Go to the grid and click a third day's tab.
     switchToGridFrom(document.querySelector('[data-testid="card-browser"]') as HTMLElement);
-    const sep5Tab = Array.from(desktopEl().querySelectorAll('[data-testid="day-strip-tab"]')).find(
+    const sep5Tab = Array.from(document.querySelectorAll('[data-testid="day-strip-tab"]')).find(
       (el) => el.textContent?.includes('SAT') && el.textContent?.includes('5'),
     ) as HTMLElement;
     fireEvent.click(sep5Tab);

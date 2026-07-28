@@ -1,24 +1,9 @@
-import { fireEvent, within } from '@testing-library/react';
+import { fireEvent, screen, within } from '@testing-library/react';
 
-// The mobile Grid Planner reuses the same components as desktop (shared
-// wordmark, grid blocks, badges, etc.), both rendered at once and toggled
-// via a CSS media query - so tests about desktop-specific behavior need to
-// scope their queries to the desktop tree, not the whole document.
-export function desktopEl(): HTMLElement {
-  return document.querySelector('[data-testid="grid-planner-desktop"]') as HTMLElement;
-}
-
-export function desktop() {
-  return within(desktopEl());
-}
-
-export function mobileEl(): HTMLElement {
-  return document.querySelector('[data-testid="grid-planner-mobile"]') as HTMLElement;
-}
-
-export function mobile() {
-  return within(mobileEl());
-}
+// GridPlanner and CardBrowser each render exactly one tree now (desktop and
+// mobile were merged; CSS media queries alone repaint the same DOM). App.tsx
+// itself still mounts only one of GridPlanner/CardBrowser at a time based on
+// view mode, so a plain `screen`/`document` query is unambiguous.
 
 // The top bar toggle is a flip button, not a segmented control: it always
 // shows the CURRENT view and switches to the other one when clicked - so
@@ -26,7 +11,7 @@ export function mobile() {
 // TopBar.tsx). Named for what it does, not for the button text it happens to
 // click, since that text is the opposite of the view you're headed to.
 export function switchToCards() {
-  fireEvent.click(desktop().getByRole('button', { name: 'Grid' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Grid' }));
 }
 
 export function switchToGridFrom(scope: HTMLElement) {

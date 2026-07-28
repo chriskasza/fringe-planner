@@ -7,10 +7,6 @@
   border-bottom: 1px solid var(--line);
 }
 
-.topbar--compact {
-  padding: 14px 18px;
-}
-
 .topbar__brand {
   display: flex;
   flex-direction: column;
@@ -24,31 +20,10 @@
   color: var(--cream);
 }
 
-.topbar--compact .topbar__wordmark {
-  font-size: 17px;
-}
-
-.topbar--compact .topbar__myfringe {
-  padding: 7px 13px;
-  font-size: 12px;
-}
-
-/* Below the mobile tree's own compact wordmark, "Planner" no longer fits
-   alongside the view toggle and My Fringe on one line - drop to "Fringe". */
-@media (max-width: 520px) {
-  .topbar--compact .topbar__wordmark-planner {
-    display: none;
-  }
-}
-
 .topbar__right {
   display: flex;
   align-items: center;
   gap: 14px;
-}
-
-.topbar--compact .topbar__right {
-  gap: 8px;
 }
 
 .topbar__onnow {
@@ -106,4 +81,41 @@
   color: var(--gold);
   font-family: var(--font-mono);
   font-size: 11px;
+}
+
+/* Below 700px (the old mobile-tree threshold), shrink to match what the
+   mobile tree's compact treatment used to do: tighter padding, smaller
+   wordmark, "Halifax " and the ON NOW badge dropped so the view toggle + My
+   Fringe still fit on one line. Must come after every base rule above with
+   matching specificity (plain single-class selectors), since CSS Modules
+   gives every class here the same specificity - later source order is what
+   makes these overrides win, not being inside a media query. */
+@media (max-width: 700px) {
+  .topbar {
+    padding: 14px 18px;
+  }
+  .topbar__wordmark {
+    font-size: 17px;
+  }
+  .topbar__myfringe {
+    padding: 7px 13px;
+    font-size: 12px;
+  }
+  .topbar__right {
+    gap: 8px;
+  }
+  .topbar__wordmark-prefix {
+    display: none;
+  }
+  .topbar__onnow {
+    display: none;
+  }
+}
+
+/* Narrower still, "Planner" no longer fits alongside the view toggle and My
+   Fringe on one line - drop to just "Fringe". */
+@media (max-width: 520px) {
+  .topbar__wordmark-planner {
+    display: none;
+  }
 }

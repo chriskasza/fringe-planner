@@ -1,46 +1,44 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import App from '../../App';
-import { desktopEl, desktop } from '../../test/appTestUtils';
-import { LABEL_WIDTH } from './gridLayout';
 
 describe('App (Grid Planner)', () => {
   it('renders without throwing and shows the wordmark', () => {
     render(<App />);
-    expect(desktopEl().querySelector('[data-testid="topbar-wordmark"]')?.textContent).toBe('Halifax Fringe Planner');
+    expect(document.querySelector('[data-testid="topbar-wordmark"]')?.textContent).toBe('Halifax Fringe Planner');
   });
 
   it('renders a day strip with 11 festival days', () => {
     render(<App />);
-    expect(desktopEl().querySelectorAll('[data-testid="day-strip-tab"]').length).toBe(11);
+    expect(document.querySelectorAll('[data-testid="day-strip-tab"]').length).toBe(11);
   });
 
   it('renders grid blocks for the selected day and toggling a pick updates the My Fringe counter', () => {
     render(<App />);
-    const badgeBefore = desktop().getByText('0');
+    const badgeBefore = screen.getByText('0');
     expect(badgeBefore).toBeInTheDocument();
 
-    const blocks = desktopEl().querySelectorAll('[data-testid="grid-block"]');
+    const blocks = document.querySelectorAll('[data-testid="grid-block"]');
     expect(blocks.length).toBeGreaterThan(0);
 
     fireEvent.click(blocks[0]);
 
     // Badge should now read 1
-    expect(desktop().getByText('1')).toBeInTheDocument();
+    expect(screen.getByText('1')).toBeInTheDocument();
   });
 
   it('opens the detail panel when the info button is clicked, without also toggling the pick', () => {
     render(<App />);
-    const infoButtons = desktop().getAllByRole('button', { name: /Details for/ });
+    const infoButtons = screen.getAllByRole('button', { name: /Details for/ });
     expect(infoButtons.length).toBeGreaterThan(0);
 
     fireEvent.click(infoButtons[0]);
 
     expect(document.querySelector('[data-testid="detail-panel"]')).toBeInTheDocument();
     // stopPropagation means the pick count should still be 0
-    expect(desktop().getByText('0')).toBeInTheDocument();
+    expect(screen.getByText('0')).toBeInTheDocument();
   });
 
   it('positions a 3:30pm show under the 3:30pm column, not shifted a slot late', () => {
@@ -50,7 +48,7 @@ describe('App (Grid Planner)', () => {
     // (see next test) - Sep 3's earliest active performance is 14:00 (840 min):
     // left = (930-840)/30 * 140 + 4 = 424px, width = (60/30) * 140 - 8 = 272px.
     render(<App />);
-    const blocks = desktop()
+    const blocks = screen
       .getAllByTitle('APPLES! as told by an expert')
       .map((el) => el.closest('[data-testid="grid-block"]') as HTMLElement);
     const block = blocks.find((b) => b.textContent?.includes('3:30 PM'));
@@ -67,7 +65,7 @@ describe('App (Grid Planner)', () => {
     // first cell. Pixel-based left/width handles any start time:
     // left = (1185-840)/30 * 140 + 4 = 1614px.
     render(<App />);
-    const blocks = desktop()
+    const blocks = screen
       .getAllByTitle(/Jackson Elementary/)
       .map((el) => el.closest('[data-testid="grid-block"]'))
       .filter((el): el is HTMLElement => el !== null);
@@ -80,7 +78,7 @@ describe('App (Grid Planner)', () => {
     // axis was computed once across every day in the festival (10:30am-10:30pm),
     // wasting most of the grid on hours nothing runs on any given night.
     render(<App />);
-    const headerLabels = Array.from(desktopEl().querySelectorAll('[data-testid="time-header-label"]')).map(
+    const headerLabels = Array.from(document.querySelectorAll('[data-testid="time-header-label"]')).map(
       (el) => el.textContent,
     );
     expect(headerLabels[0]).toBe('2:00 PM');
@@ -95,20 +93,20 @@ describe('App (Grid Planner)', () => {
     // 'Craig in Conversation with God' 20:00-20:45 (20:00-20:15).
     render(<App />);
 
-    const sep6Tab = Array.from(desktopEl().querySelectorAll('[data-testid="day-strip-tab"]')).find(
+    const sep6Tab = Array.from(document.querySelectorAll('[data-testid="day-strip-tab"]')).find(
       (el) => el.textContent?.includes('SUN') && el.textContent?.includes('6'),
     ) as HTMLElement;
     expect(sep6Tab).toBeDefined();
     fireEvent.click(sep6Tab);
 
-    const normBlocks = desktop()
+    const normBlocks = screen
       .getAllByTitle('‘NÔRM(Ə)L')
       .map((el) => el.closest('[data-testid="grid-block"]') as HTMLElement);
     const normBlock = normBlocks.find((b) => b.textContent?.includes('7:30 PM'));
     expect(normBlock).toBeDefined();
     fireEvent.click(normBlock!);
 
-    const craigBlocks = desktop()
+    const craigBlocks = screen
       .getAllByTitle('Craig in Conversation with God')
       .map((el) => el.closest('[data-testid="grid-block"]') as HTMLElement);
     const craigBlock = craigBlocks.find((b) => b.textContent?.includes('8:00 PM'));
@@ -127,11 +125,11 @@ describe('App (Grid Planner)', () => {
     // shows don't visually overlap.
     render(<App />);
 
-    const peakTwins = desktop()
+    const peakTwins = screen
       .getAllByTitle('Peak Twins')
       .map((el) => el.closest('[data-testid="grid-block"]'))
       .filter((el): el is HTMLElement => el !== null);
-    const puttPutt = desktop()
+    const puttPutt = screen
       .getAllByTitle('Putt Putt Punishment')
       .map((el) => el.closest('[data-testid="grid-block"]'))
       .filter((el): el is HTMLElement => el !== null);
@@ -149,14 +147,15 @@ describe('App (Grid Planner)', () => {
     // Regression test: padding on .grid-body__scroll doesn't clip content, so
     // a block scrolled to that position rendered visibly to the left of the
     // sticky venue label, in the gap the label's background didn't cover.
-    // The rendered grid-template-columns (label width + 1fr) must match
-    // LABEL_WIDTH on desktop, and the scroll container must have no left
-    // padding of its own.
+    // The rendered grid-template-columns (label width + 1fr) must reference
+    // --grid-label-width (see GridPlanner.module.css), and the scroll
+    // container must have no left padding of its own. The actual resolved
+    // pixel width at each viewport is a layout concern jsdom can't see - see
+    // the Playwright viewport pass for that.
     render(<App />);
-    expect(LABEL_WIDTH).toBe(176);
 
-    const timeHeader = desktopEl().querySelector('[data-testid="time-header"]') as HTMLElement;
-    expect(timeHeader.style.gridTemplateColumns).toBe(`${LABEL_WIDTH}px 1fr`);
+    const timeHeader = document.querySelector('[data-testid="time-header"]') as HTMLElement;
+    expect(timeHeader.style.gridTemplateColumns).toBe('var(--grid-label-width) 1fr');
 
     const css = readFileSync(
       resolve(process.cwd(), 'src/components/GridPlanner/GridPlanner.module.css'),
@@ -167,12 +166,12 @@ describe('App (Grid Planner)', () => {
 
   it('sizes the time header and every venue row to the same explicit width, so borders span the full scrollable grid', () => {
     render(<App />);
-    const timeHeader = desktopEl().querySelector('[data-testid="time-header"]') as HTMLElement;
-    const venueRows = Array.from(desktopEl().querySelectorAll('[data-testid="venue-row"]')) as HTMLElement[];
+    const timeHeader = document.querySelector('[data-testid="time-header"]') as HTMLElement;
+    const venueRows = Array.from(document.querySelectorAll('[data-testid="venue-row"]')) as HTMLElement[];
     expect(venueRows.length).toBeGreaterThan(0);
 
     const headerWidth = timeHeader.style.width;
-    expect(headerWidth).toMatch(/^\d+px$/);
+    expect(headerWidth).toMatch(/^calc\(var\(--grid-label-width\) \+ \d+px\)$/);
     for (const row of venueRows) {
       expect(row.style.width).toBe(headerWidth);
     }
@@ -192,5 +191,27 @@ describe('App (Grid Planner)', () => {
     const globalCss = readFileSync(resolve(process.cwd(), 'src/styles/global.css'), 'utf8');
     expect(globalCss).toMatch(/html,\s*\n?\s*body,\s*\n?\s*#root\s*{[^}]*height:\s*100%/);
     expect(globalCss).toMatch(/body\s*{[^}]*overflow:\s*hidden/);
+  });
+
+  // jsdom has no layout engine (offsetWidth/clientWidth are always 0), so
+  // useOverflowFilters can never measure a real overflow here - it falls
+  // back to "everything fits", which is also exactly the state that should
+  // make More… disappear entirely. The reverse (More… appearing once real
+  // content actually overflows a real viewport) is a layout behavior and
+  // belongs to the Playwright pass instead (see CLAUDE.md).
+  it('renders every filter inline with no More… button when nothing needs to collapse', () => {
+    render(<App />);
+    expect(screen.queryByRole('button', { name: /^More/ })).not.toBeInTheDocument();
+    for (const label of ['Venue', 'Shows', 'Time', 'Day', 'Age & content', 'Content']) {
+      expect(screen.getByRole('button', { name: new RegExp(`^${label}`) })).toBeInTheDocument();
+    }
+  });
+
+  it('hides the grid legend on narrow phones (under ~520px)', () => {
+    const css = readFileSync(
+      resolve(process.cwd(), 'src/components/GridPlanner/GridPlanner.module.css'),
+      'utf8',
+    );
+    expect(css).toMatch(/@media \(max-width:\s*520px\)\s*{\s*\.grid-body__legend\s*{\s*display:\s*none;/);
   });
 });

@@ -2,12 +2,15 @@ import { formatTime } from '../../lib/dates';
 import { SLOT_WIDTH, trackWidth } from './gridLayout';
 import styles from './GridPlanner.module.css';
 
-export function TimeHeader({ slots, labelWidth }: { slots: number[]; labelWidth: number }) {
+export function TimeHeader({ slots }: { slots: number[] }) {
   return (
     <div
       data-testid="time-header"
       className={styles['time-header']}
-      style={{ width: labelWidth + trackWidth(slots.length), gridTemplateColumns: `${labelWidth}px 1fr` }}
+      style={{
+        width: `calc(var(--grid-label-width) + ${trackWidth(slots.length)}px)`,
+        gridTemplateColumns: 'var(--grid-label-width) 1fr',
+      }}
     >
       <div className={styles['time-header__spacer']} />
       <div

@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
+    "test:visual": "node e2e/viewport-check.mjs",
     "scrape": "node scripts/scrape.mjs",
     "scrape:meta": "node scripts/scrape_meta.mjs"
   },

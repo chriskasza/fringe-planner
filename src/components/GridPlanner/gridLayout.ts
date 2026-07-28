@@ -7,21 +7,6 @@ import type { DayKey, Show } from '../../lib/types';
 // each column readable.
 export const SLOT_WIDTH = 140;
 
-// The sticky venue-label column's width, with the 26px leading gutter folded
-// directly in (150px label + 26px inset). The gutter can't just be padding
-// on the scroll container: padding doesn't clip content, so a scrolled block
-// would still visually render into that space, uncovered, since the sticky
-// label itself only starts at the padding edge. Making the label's own box
-// (and its sticky background) span the full 176px - with the venue name
-// text inset by its own internal padding - means there's no gap left for
-// anything to show through.
-export const LABEL_WIDTH = 176;
-
-// Mobile's narrower venue column: no address line, so the venue name gets a
-// 3-line clamp instead, and needs less width than the desktop version. Gutter
-// shrinks to 14px to match the tighter mobile spacing scale.
-export const MOBILE_LABEL_WIDTH = 112;
-
 // On the current day a performance that has already finished isn't useful
 // browsing real estate, so it drops off the grid. "Finished", not "started":
 // a show that's running right now is exactly what the ON NOW pill is pointing

@@ -1,7 +1,6 @@
-import { render, fireEvent, within } from '@testing-library/react';
+import { render, fireEvent, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import App from '../../App';
-import { desktopEl, desktop } from '../../test/appTestUtils';
 
 // Comfortably past the 250ms debounce persistence.ts writes the URL on.
 const DEBOUNCE_SETTLE_MS = 400;
@@ -10,7 +9,7 @@ describe('Sync Sheet', () => {
   function openSync() {
     // Accessible name includes the badge count, so match by the visible
     // text prefix to get the button regardless of the count.
-    fireEvent.click(desktop().getByRole('button', { name: /My Fringe/ }));
+    fireEvent.click(screen.getByRole('button', { name: /My Fringe/ }));
   }
 
   function syncScope() {
@@ -32,7 +31,7 @@ describe('Sync Sheet', () => {
 
   it('shows the schedule summary matching the current state', () => {
     render(<App />);
-    const blocks = desktopEl().querySelectorAll('[data-testid="grid-block"]');
+    const blocks = document.querySelectorAll('[data-testid="grid-block"]');
     fireEvent.click(blocks[0]);
     fireEvent.click(blocks[1]);
 
@@ -66,7 +65,7 @@ describe('Sync Sheet', () => {
   // sheet had just produced always answered "No valid picks found".
   it('restores the schedule from a link pasted into the restore row', () => {
     render(<App />);
-    const blocks = desktopEl().querySelectorAll('[data-testid="grid-block"]');
+    const blocks = document.querySelectorAll('[data-testid="grid-block"]');
     fireEvent.click(blocks[0]);
     fireEvent.click(blocks[1]);
 
@@ -77,8 +76,8 @@ describe('Sync Sheet', () => {
 
     // Clear the schedule, then paste the link back in.
     fireEvent.click(syncScope().getByRole('button', { name: 'Close sync' }));
-    fireEvent.click(desktopEl().querySelectorAll('[data-testid="grid-block"]')[0]);
-    fireEvent.click(desktopEl().querySelectorAll('[data-testid="grid-block"]')[1]);
+    fireEvent.click(document.querySelectorAll('[data-testid="grid-block"]')[0]);
+    fireEvent.click(document.querySelectorAll('[data-testid="grid-block"]')[1]);
     openSync();
     expect(syncScope().getByText(/^0 PERFORMANCE/)).toBeInTheDocument();
 
@@ -96,7 +95,7 @@ describe('Sync Sheet', () => {
   // schedule on screen didn't.
   it('applies the hash from a genuine Back navigation', async () => {
     render(<App />);
-    const blocks = () => desktopEl().querySelectorAll('[data-testid="grid-block"]');
+    const blocks = () => document.querySelectorAll('[data-testid="grid-block"]');
 
     fireEvent.click(blocks()[0]);
     await new Promise((r) => setTimeout(r, DEBOUNCE_SETTLE_MS));
@@ -106,14 +105,14 @@ describe('Sync Sheet', () => {
     fireEvent.click(blocks()[1]);
     await new Promise((r) => setTimeout(r, DEBOUNCE_SETTLE_MS));
     expect(window.location.hash).not.toBe(onePickHash);
-    expect(desktop().getByText('2')).toBeInTheDocument();
+    expect(screen.getByText('2')).toBeInTheDocument();
 
     // What the browser does on Back: the URL is already the earlier one by
     // the time the event fires.
     window.history.replaceState(null, '', onePickHash);
     fireEvent.popState(window);
 
-    expect(desktop().getByText('1')).toBeInTheDocument();
+    expect(screen.getByText('1')).toBeInTheDocument();
   });
 
   it('reports unusable restore input instead of silently doing nothing', () => {

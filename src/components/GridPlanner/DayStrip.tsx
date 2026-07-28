@@ -1,11 +1,11 @@
 import { useApp } from '../../state/AppContext';
 import styles from './DayStrip.module.css';
 
-export function DayStrip({ compact = false }: { compact?: boolean }) {
+export function DayStrip() {
   const { state, dispatch, days } = useApp();
 
   return (
-    <div className={`${styles['day-strip']} ${compact ? styles['day-strip--compact'] : ''}`}>
+    <div className={styles['day-strip']}>
       {days.map((d) => {
         const selected = state.gridDay === d.key;
         const dimmed = !state.daysOn[d.key];

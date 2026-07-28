@@ -17,9 +17,11 @@
   cursor: pointer;
 }
 
-.day-strip--compact .day-strip__tab {
-  padding: 10px 6px;
-  min-width: 44px;
+@media (max-width: 700px) {
+  .day-strip__tab {
+    padding: 10px 6px;
+    min-width: 44px;
+  }
 }
 
 .day-strip__tab--selected {

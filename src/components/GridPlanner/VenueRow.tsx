@@ -9,34 +9,21 @@ type VenueRowProps = {
   entries: { show: Show; perf: Show['perfs'][number] }[];
   slots: number[];
   gridStartMin: number;
-  labelWidth: number;
-  compact?: boolean;
 };
 
-export function VenueRow({
-  venue,
-  venueAddress,
-  entries,
-  slots,
-  gridStartMin,
-  labelWidth,
-  compact = false,
-}: VenueRowProps) {
+export function VenueRow({ venue, venueAddress, entries, slots, gridStartMin }: VenueRowProps) {
   return (
     <div
       data-testid="venue-row"
       className={styles['venue-row']}
-      style={{ width: labelWidth + trackWidth(slots.length), gridTemplateColumns: `${labelWidth}px 1fr` }}
+      style={{
+        width: `calc(var(--grid-label-width) + ${trackWidth(slots.length)}px)`,
+        gridTemplateColumns: 'var(--grid-label-width) 1fr',
+      }}
     >
-      <div
-        data-testid="venue-row-label"
-        data-compact={compact}
-        className={`${styles['venue-row__label']} ${compact ? styles['venue-row__label--compact'] : ''}`}
-      >
-        <span className={`${styles['venue-row__name']} ${compact ? styles['venue-row__name--compact'] : ''}`}>
-          {venue}
-        </span>
-        {!compact && venueAddress && (
+      <div data-testid="venue-row-label" className={styles['venue-row__label']}>
+        <span className={styles['venue-row__name']}>{venue}</span>
+        {venueAddress && (
           <span data-testid="venue-row-address" className={styles['venue-row__address']}>
             {venueAddress}
           </span>
