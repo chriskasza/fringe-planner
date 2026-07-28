@@ -119,6 +119,35 @@ async function main() {
 
     await screenshot(page, '1440-grid');
 
+    // --- Dropdown focus trap (Venue filter): jsdom can't verify this at all
+    // (tabbable, focus-trap's tabbable-element lookup, treats everything as
+    // hidden under jsdom - see Dropdown.test.tsx), so this is the only place
+    // Tab/Shift+Tab wraparound and Escape-to-close actually get exercised. ---
+    await page.getByRole('button', { name: /^Venue/ }).click();
+    const dialog = page.getByRole('dialog', { name: 'Venue' });
+    await dialog.waitFor();
+
+    const focusableInDialog = dialog.locator('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    const firstFocusable = focusableInDialog.first();
+    const lastFocusable = focusableInDialog.last();
+
+    await lastFocusable.focus();
+    await page.keyboard.press('Tab');
+    check(
+      'Dropdown: Tab from the last focusable element wraps to the first',
+      await firstFocusable.evaluate((el) => el === document.activeElement),
+    );
+
+    await firstFocusable.focus();
+    await page.keyboard.press('Shift+Tab');
+    check(
+      'Dropdown: Shift+Tab from the first focusable element wraps to the last',
+      await lastFocusable.evaluate((el) => el === document.activeElement),
+    );
+
+    await page.keyboard.press('Escape');
+    check('Dropdown: Escape closes the panel', !(await dialog.isVisible()));
+
     // Switch to Cards view and pick a show to exercise CardGrid + MyFringeRail.
     await page.getByRole('button', { name: 'Grid', exact: true }).click();
     await page.waitForSelector('[data-testid="card-browser"]');
