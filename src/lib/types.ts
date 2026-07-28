@@ -38,7 +38,7 @@ export type ShowMetaEntry = {
   rating: string;
   warnings: string[];
   // Only present for shows the API gives no venue for - recovered from the
-  // show page's own JSON-LD by the scraper (scripts/scrape.mjs).
+  // show page's own JSON-LD by the scraper (scraper/scrape.mjs).
   venue?: string;
 };
 

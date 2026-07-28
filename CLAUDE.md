@@ -1,15 +1,15 @@
 # Working in this repo
 
 Read `README.md` first - it documents the upstream API quirks that explain why
-`scripts/scrape.mjs` looks the way it does. The rules below are the short version.
+`scraper/scrape.mjs` looks the way it does. The rules below are the short version.
 
 ## Rules
 
 - **`src/data/show_times.json` is generated. Never hand-edit it.** Change
-  `scripts/scrape.mjs` and re-run `npm run scrape`. It holds only what the scraper can
+  `scraper/scrape.mjs` and re-run `npm run scrape`. It holds only what the scraper can
   see upstream: show IDs, titles, and performance times.
 - **`src/data/shows_meta.json` and `src/data/venues.json` are generated too**, by the
-  same `scripts/scrape.mjs` / `npm run scrape` as `show_times.json`. They hold
+  same `scraper/scrape.mjs` / `npm run scrape` as `show_times.json`. They hold
   everything the pin board and times API can't get: credits, rating, content
   warnings, and venue addresses, scraped from each show's own SimpleTix ticket page.
 - **No dependencies in either scraper.** Node built-ins only (`fetch`, `node:fs`,
