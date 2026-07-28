@@ -4,7 +4,7 @@ type IconButtonProps = {
   glyph: string;
   onClick: (e: React.MouseEvent) => void;
   ariaLabel: string;
-  variant?: 'default' | 'on-gold' | 'star-picked' | 'star-unpicked';
+  variant?: 'default' | 'on-gold';
   size?: number;
   className?: string;
 };

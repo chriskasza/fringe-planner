@@ -1,5 +1,4 @@
 import { nowInHalifax, TIME_BUCKETS } from './dates';
-import { perfInFilter } from './derived';
 import type { ClashMode, Day, DayKey, DetailTarget, MenuKey, Show, TimeBucket, TimeId, ViewMode } from './types';
 
 // Derived from TIME_BUCKETS rather than spelled out, so adding or renaming a
@@ -94,7 +93,6 @@ export function createInitialState(
 export type AppAction =
   | { type: 'TOGGLE_PICK'; timeId: TimeId }
   | { type: 'SET_PICKED'; picked: Set<TimeId> }
-  | { type: 'TOGGLE_SHOW_STAR'; show: Show }
   | { type: 'SET_DAY_ON'; day: DayKey; on: boolean }
   | { type: 'SET_ALL_DAYS'; days: DayKey[]; on: boolean }
   | { type: 'SET_TIME_BUCKET_ON'; bucket: TimeBucket; on: boolean }
@@ -142,32 +140,6 @@ export function appReducer(state: AppState, action: AppAction): AppState {
 
     case 'SET_PICKED':
       return { ...state, picked: action.picked };
-
-    case 'TOGGLE_SHOW_STAR': {
-      const { show } = action;
-      const allIds = show.perfs.filter((p) => p.status === 'active').map((p) => p.timeId);
-      const anyPicked = allIds.some((id) => state.picked.has(id));
-
-      const picked = new Set(state.picked);
-      if (anyPicked) {
-        for (const id of allIds) picked.delete(id);
-      } else {
-        // "In filter" has to mean the same thing here as it does everywhere
-        // else (perfInFilter: day *and* time-of-day bucket). Gating on daysOn
-        // alone let the star add performances the card, the time pills and
-        // the rail all treat as filtered out, so they landed in the schedule
-        // dimmed and unexplained.
-        const inFilterIds = show.perfs
-          .filter(
-            (p) => p.status === 'active' && perfInFilter(p, state.daysOn, state.timeBucketsOn),
-          )
-          .map((p) => p.timeId);
-        for (const id of inFilterIds) picked.add(id);
-      }
-      // Same add-vs-remove rule as TOGGLE_PICK: only the branch that adds
-      // picks (the !anyPicked branch above) bumps pickPulse.
-      return { ...state, picked, pickPulse: anyPicked ? state.pickPulse : state.pickPulse + 1 };
-    }
 
     case 'SET_DAY_ON':
       return { ...state, daysOn: { ...state.daysOn, [action.day]: action.on } };

@@ -59,8 +59,12 @@ describe('Day / Time filters gate which shows are browsable', () => {
     switchToCards();
 
     const browser = within(document.querySelector('[data-testid="card-browser"]') as HTMLElement);
+    // Peak Twins has exactly one performance on each of 6 days - click every
+    // day-rail cell individually since there's no bulk "add all" control.
     const card = browser.getByText('Peak Twins').closest('[data-testid="show-card"]') as HTMLElement;
-    fireEvent.click(within(card).getByRole('button', { name: /Add all of Peak Twins/ }));
+    for (const cell of within(card).getAllByRole('button', { name: /performance, available/ })) {
+      fireEvent.click(cell);
+    }
     // Picking pulses the My Fringe button rather than auto-opening the panel
     // (see TopBar.test.tsx), so open it explicitly. It's mounted at the App
     // level, not inside card-browser, so its count is asserted against the

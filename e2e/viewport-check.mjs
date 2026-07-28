@@ -174,13 +174,13 @@ async function main() {
     }
     check('1440px: no card in the grid overlaps another', !overlapFound);
 
-    // Pick every performance of the first show. Picking only pops the My
-    // Fringe badge now (see state.ts TOGGLE_SHOW_STAR and TopBar.tsx) - it
-    // no longer force-opens the panel, so open it explicitly to exercise
-    // CardGrid + MyFringePanel together.
-    const starButtons = await page.$$('[data-testid="show-card"] button[aria-label^="Add all of"]');
-    if (starButtons.length > 0) {
-      await starButtons[0].click();
+    // Pick a single performance via its day-rail cell (there's no bulk
+    // "add all" control - see state.ts and ShowCard.tsx). Picking only pops
+    // the My Fringe badge now, it no longer force-opens the panel, so open
+    // it explicitly to exercise CardGrid + MyFringePanel together.
+    const dayCells = await page.$$('[data-testid="show-card"] button[aria-label*="1 performance,"][aria-label$=", available"]');
+    if (dayCells.length > 0) {
+      await dayCells[0].click();
     }
     await page.getByRole('button', { name: /^My Fringe/ }).click();
     await page.waitForSelector('[data-testid="my-fringe-panel"]');
@@ -218,11 +218,13 @@ async function main() {
     check('620px: wordmark reads "Fringe Planner" (only Halifax dropped)', wordmarkText620 === 'Fringe Planner', wordmarkText620);
     await screenshot(page, '620-cards');
 
-    // --- 520px: legend and "Planner" hidden (also out of scope, spot-check only). ---
+    // --- 520px: "Planner" hidden (also out of scope, spot-check only). ---
     await page.setViewportSize({ width: 520, height: 900 });
     await page.getByRole('button', { name: 'Cards', exact: true }).click();
     await page.waitForSelector('[data-testid="grid-planner"]');
-    check('520px: grid legend hidden', !(await isVisible(page, '.grid-body__legend, [class*="grid-body__legend"]')));
+    // The day-title + legend header was removed entirely (the day strip
+    // already shows the selected date, and the legend was redundant).
+    check('520px: grid body header removed', !(await isVisible(page, '.grid-body__heading, [class*="grid-body__heading"]')));
     await screenshot(page, '520-grid');
 
     // --- 390px (mobile): wordmark, ON NOW hidden, narrower label, no address,

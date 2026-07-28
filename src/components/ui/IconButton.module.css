@@ -29,17 +29,3 @@
 .icon-button--on-gold:hover {
   border-color: var(--ink);
 }
-
-.icon-button--star-unpicked {
-  background: var(--star-unpicked-fill);
-  border: 1px solid var(--line-strong);
-  color: var(--text-mute);
-  font-size: 14px;
-}
-
-.icon-button--star-picked {
-  background: var(--gold);
-  border: 1px solid var(--gold);
-  color: var(--ink);
-  font-size: 14px;
-}

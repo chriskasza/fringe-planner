@@ -264,6 +264,15 @@
   border-style: dashed;
 }
 
+.sync-action-row--disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.sync-action-row--disabled:hover {
+  border-color: var(--line);
+}
+
 .sync-action-row__type {
   font-family: var(--font-mono);
   font-size: 11px;

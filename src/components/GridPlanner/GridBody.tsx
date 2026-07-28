@@ -9,15 +9,12 @@ import type { Show } from '../../lib/types';
 import styles from './GridPlanner.module.css';
 
 export function GridBody() {
-  const { state, shows, days } = useApp();
+  const { state, shows } = useApp();
   const now = useNow();
   const { startMin, slots } = useMemo(
     () => gridTimeBounds(shows, state.gridDay, now),
     [shows, state.gridDay, now],
   );
-
-  const day = days.find((d) => d.key === state.gridDay);
-  const dayLabel = day ? day.label.toUpperCase() : state.gridDay;
 
   const byVenue = useMemo(() => {
     const map = new Map<string, { show: Show; perf: Show['perfs'][number] }[]>();
@@ -46,21 +43,6 @@ export function GridBody() {
 
   return (
     <div className={styles['grid-body']}>
-      <div className={styles['grid-body__heading']}>
-        <span className={styles['grid-body__day-title']}>{dayLabel}</span>
-        <div className={styles['grid-body__legend']}>
-          <span className={styles['grid-body__legend-item']}>
-            <span className={`${styles['grid-body__swatch']} ${styles['grid-body__swatch--picked']}`} /> IN MY FRINGE
-          </span>
-          <span className={styles['grid-body__legend-item']}>
-            <span className={`${styles['grid-body__swatch']} ${styles['grid-body__swatch--overlap']}`} /> OVERLAP
-          </span>
-          <span className={`${styles['grid-body__legend-item']} ${styles['grid-body__legend-item--faint']}`}>
-            CLICK = PICK · ⓘ = DETAILS
-          </span>
-        </div>
-      </div>
-
       {byVenue.length === 0 ? (
         <div className={styles['grid-body__empty']}>
           {dayIsSpent

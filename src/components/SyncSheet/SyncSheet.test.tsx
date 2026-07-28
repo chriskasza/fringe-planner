@@ -120,6 +120,26 @@ describe('Sync Sheet', () => {
     expect(screen.getByText('1')).toBeInTheDocument();
   });
 
+  it('disables the .ics and .json export buttons until something is picked', () => {
+    // Other tests in this file pick shows and (after their debounce) persist
+    // that to the URL hash and localStorage - reset both so this test's
+    // "nothing picked" starting point holds regardless of run order.
+    window.location.hash = '';
+    window.localStorage.clear();
+
+    render(<App />);
+    openSync();
+    expect(syncScope().getByText('.ICS').closest('button')).toBeDisabled();
+    expect(syncScope().getByText('.JSON').closest('button')).toBeDisabled();
+
+    fireEvent.click(syncScope().getByRole('button', { name: 'Close sync' }));
+    fireEvent.click(document.querySelectorAll('[data-testid="grid-block"]')[0]);
+    openSync();
+
+    expect(syncScope().getByText('.ICS').closest('button')).not.toBeDisabled();
+    expect(syncScope().getByText('.JSON').closest('button')).not.toBeDisabled();
+  });
+
   it('reports unusable restore input instead of silently doing nothing', () => {
     render(<App />);
     openSync();

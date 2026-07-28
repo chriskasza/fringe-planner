@@ -206,12 +206,4 @@ describe('App (Grid Planner)', () => {
       expect(screen.getByRole('button', { name: new RegExp(`^${label}`) })).toBeInTheDocument();
     }
   });
-
-  it('hides the grid legend on narrow phones (under ~520px)', () => {
-    const css = readFileSync(
-      resolve(process.cwd(), 'src/components/GridPlanner/GridPlanner.module.css'),
-      'utf8',
-    );
-    expect(css).toMatch(/@media \(max-width:\s*520px\)\s*{\s*\.grid-body__legend\s*{\s*display:\s*none;/);
-  });
 });

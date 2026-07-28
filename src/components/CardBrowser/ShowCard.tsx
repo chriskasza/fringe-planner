@@ -15,10 +15,6 @@ export function ShowCard({ show }: { show: Show }) {
   const anyPicked = pickedPerfs.length > 0;
   const expanded = Boolean(state.expanded[show.id]);
 
-  function toggleStar() {
-    dispatch({ type: 'TOGGLE_SHOW_STAR', show });
-  }
-
   return (
     <div data-testid="show-card" className={`${styles['show-card']} ${anyPicked ? styles['show-card--picked'] : ''}`}>
       <div className={styles['show-card__image']}>
@@ -28,11 +24,11 @@ export function ShowCard({ show }: { show: Show }) {
           <span className={styles['show-card__image-label']}>[ SHOW IMAGE ]</span>
         )}
         <IconButton
-          glyph={anyPicked ? '★' : '☆'}
-          ariaLabel={anyPicked ? `Remove ${show.title} from My Fringe` : `Add all of ${show.title} to My Fringe`}
-          variant={anyPicked ? 'star-picked' : 'star-unpicked'}
+          glyph="ⓘ"
+          ariaLabel={`Details for ${show.title}`}
+          variant="default"
           size={28}
-          onClick={toggleStar}
+          onClick={() => dispatch({ type: 'SET_DETAIL', detail: { timeId: activePerfs[0].timeId } })}
           className={styles['show-card__icon']}
         />
       </div>

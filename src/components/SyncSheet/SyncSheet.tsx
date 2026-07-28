@@ -81,7 +81,8 @@ export function SyncSheet() {
           <div className={styles["sync-actions"]}>
             <button
               type="button"
-              className={styles["sync-action-row"]}
+              className={`${styles["sync-action-row"]} ${state.picked.size === 0 ? styles["sync-action-row--disabled"] : ""}`}
+              disabled={state.picked.size === 0}
               onClick={() => {
                 const ics = generateIcs(picks.map((e) => ({ show: e.show, perf: e.perf })));
                 downloadFile(ics, "halifax-fringe-2026.ics", "text/calendar;charset=utf-8");
@@ -97,7 +98,8 @@ export function SyncSheet() {
             </button>
             <button
               type="button"
-              className={styles["sync-action-row"]}
+              className={`${styles["sync-action-row"]} ${state.picked.size === 0 ? styles["sync-action-row--disabled"] : ""}`}
+              disabled={state.picked.size === 0}
               onClick={() => {
                 const json = JSON.stringify(
                   picks.map((e) => ({

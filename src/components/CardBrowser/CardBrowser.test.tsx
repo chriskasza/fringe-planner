@@ -35,24 +35,20 @@ describe('App (Card Browser)', () => {
     expect(within(browser).queryByPlaceholderText(/search/i)).not.toBeInTheDocument();
   });
 
-  it("star button toggles all of a show's in-filter performances at once", () => {
+  it('info button opens the detail panel without toggling any pick', () => {
     render(<App />);
     switchToCards();
     const browser = within(document.querySelector('[data-testid="card-browser"]') as HTMLElement);
 
-    // Peak Twins has exactly one performance on each of 6 days.
     const card = browser.getByText('Peak Twins').closest('[data-testid="show-card"]') as HTMLElement;
-    const star = within(card).getByRole('button', { name: /Add all of Peak Twins/ });
+    const infoButton = within(card).getByRole('button', { name: /Details for Peak Twins/ });
 
-    // Picking no longer auto-opens the panel (it just pulses the My Fringe
-    // button - see TopBar.test.tsx), so open it explicitly to inspect the
-    // count. The panel is mounted at the App level, not inside card-browser.
-    fireEvent.click(star);
-    fireEvent.click(screen.getByRole('button', { name: /^My Fringe/ }));
-    expect(screen.getByText('6 PICKED')).toBeInTheDocument();
+    fireEvent.click(infoButton);
 
-    fireEvent.click(within(card).getByRole('button', { name: /Remove Peak Twins/ }));
-    expect(screen.getByText('0 PICKED')).toBeInTheDocument();
+    expect(document.querySelector('[data-testid="detail-panel"]')).toBeInTheDocument();
+    // The My Fringe badge (mounted in TopBar, at the App level) shows the
+    // raw picked count at all times, so no pick was added.
+    expect(screen.getByText('0')).toBeInTheDocument();
   });
 
   it('clicking a day-rail cell with a single performance toggles it directly', () => {
@@ -113,8 +109,12 @@ describe('App (Card Browser)', () => {
     switchToCards();
     const browser = within(document.querySelector('[data-testid="card-browser"]') as HTMLElement);
 
+    // Peak Twins has exactly one performance on each of 6 days - click every
+    // day-rail cell individually since there's no bulk "add all" control.
     const card = browser.getByText('Peak Twins').closest('[data-testid="show-card"]') as HTMLElement;
-    fireEvent.click(within(card).getByRole('button', { name: /Add all of Peak Twins/ }));
+    for (const cell of within(card).getAllByRole('button', { name: /performance, available/ })) {
+      fireEvent.click(cell);
+    }
     fireEvent.click(screen.getByRole('button', { name: /^My Fringe/ }));
 
     const panel = document.querySelector('[data-testid="my-fringe-panel"]') as HTMLElement;

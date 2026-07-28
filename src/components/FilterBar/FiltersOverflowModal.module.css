@@ -17,6 +17,7 @@
   z-index: 100;
   display: flex;
   align-items: flex-end;
+  justify-content: center;
 }
 
 .filters-overflow-backdrop {
@@ -31,6 +32,7 @@
 .filters-overflow-sheet {
   position: relative;
   width: 100%;
+  max-width: 460px;
   max-height: 85vh;
   display: flex;
   flex-direction: column;
