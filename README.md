@@ -16,7 +16,7 @@ Requires Node 18+ (uses built-in `fetch`). The scrapers have no dependencies and
 
 ## Data sources
 
-Two upstream endpoints, both discovered by watching what the festival's own ticket
+Three upstream endpoints, all discovered by watching what the festival's own ticket
 widget calls:
 
 1. **Show list** - `contact.simpletix.com/Calendar/GetPinBoard?applicationId=...`
@@ -28,6 +28,10 @@ widget calls:
 
 2. **Showtimes + venue** - `api.prod.simpletix.com/embed/Event/GetMultiTimeSelectionData/{showId}`
    Requires the headers `application`, `isBoxOffice: 0`, `originType: 9`.
+
+3. **Show page** - `simpletix.com/e/{slug}-tickets-{showId}` - each show's own ticket
+   page, scraped for credits, rating, content warnings, and (via its JSON-LD) the
+   venue's address. See "Data that isn't scraped" below.
 
 ## Gotchas worth knowing before editing `scripts/scrape.mjs`
 
@@ -94,12 +98,10 @@ only ever has what the scraper can actually observe: show IDs, titles, blurbs, a
 performance times.
 
 Additional show metadata and venue addresses are scraped from each show's own SimpleTix
-page by `scripts/scrape_meta.mjs` and written to `src/data/`:
+page by `scripts/scrape.mjs` and written to `src/data/`:
 
 - **`shows_meta.json`** - one entry per `showId`: `credits`, `rating`, `warnings`.
 - **`venues.json`** - one entry per venue name: `short`, `shortAddress`, `fullAddress`.
-
-Run `npm run scrape:meta` to refresh both.
 
 The front-end's `transform.ts` joins all three files into the shape the UI renders. There
 is deliberately no genre field or genre filter anywhere in the app.
@@ -154,6 +156,5 @@ filter, and the app opens on the first day from today forward that has shows.
 
 ## Status
 
-- [x] `scripts/scrape.mjs` + `src/data/show_times.json` - 56 shows, 282 showtimes, Sep 3-13 2026
-- [x] `scripts/scrape_meta.mjs` + `shows_meta.json` / `venues.json`
+- [x] `scripts/scrape.mjs` + `src/data/show_times.json` / `shows_meta.json` / `venues.json` - 56 shows, 282 showtimes, Sep 3-13 2026
 - [x] Front-end - Grid Planner, Card Browser, Sync sheet, desktop + mobile
