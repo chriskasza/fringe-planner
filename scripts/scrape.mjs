@@ -1,14 +1,18 @@
 #!/usr/bin/env node
-// Scrapes the Halifax Fringe 2026 schedule into show_times.json.
+// Scrapes the Halifax Fringe 2026 schedule into show_times.json, plus each
+// show's credits/rating/content-warnings and venue addresses into
+// shows_meta.json and venues.json.
 //
 // Re-runnable: merges into the existing show_times.json rather than overwriting it.
 // Nothing is ever deleted -- showtimes that disappear upstream are marked
-// cancelled so the app can render them struck through.
+// cancelled so the app can render them struck through. shows_meta.json and
+// venues.json follow the same rule: a show that drops off the pin board keeps
+// its previously-scraped meta entry untouched rather than losing it.
 //
 //   node scripts/scrape.mjs
 
 import { fileURLToPath } from 'node:url';
-import { readFileSync, writeFileSync, renameSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, renameSync, existsSync, mkdirSync } from 'node:fs';
 
 const APP_ID = '1b63385b-47c1-46d8-a3ea-07a70e6f045f';
 
@@ -29,6 +33,8 @@ const PINBOARD_URL =
 const TICKETS_URL = 'https://halifaxfringe.ca/home-copy-copy-3/';
 const API_BASE = 'https://api.prod.simpletix.com/embed/Event';
 const OUT = fileURLToPath(new URL('../src/data/show_times.json', import.meta.url));
+const META_OUT = fileURLToPath(new URL('../src/data/shows_meta.json', import.meta.url));
+const VENUES_OUT = fileURLToPath(new URL('../src/data/venues.json', import.meta.url));
 
 // "Show Passes" is a bundle product, not a show.
 const SKIP_SHOW_IDS = new Set([284273]);
@@ -36,6 +42,29 @@ const SKIP_SHOW_IDS = new Set([284273]);
 const MIN_EXPECTED_SHOWS = 50;
 
 const now = new Date().toISOString();
+
+// Cosmetic abbreviations of the venues' own names, for tight grid rows. Not
+// upstream data - purely a display shorthand, kept here so it's easy to spot
+// and adjust without touching the scraper logic.
+const SHORT_NAMES = {
+  'Bus Stop Theatre': 'BUS STOP',
+  "Cruikshank's Halifax Funeral Home": 'CRUIKSHANK’S',
+  DANSpace: 'DANSPACE',
+  'Grafton Street Dinner Theatre': 'GRAFTON ST',
+  'Halifax United Church': 'UNITED CHURCH',
+  'Neptune Theatre Imperial Studio': 'NEPTUNE IMPERIAL',
+  'Neptune Theatre Scotiabank Stage': 'NEPTUNE SCOTIABANK',
+  'Neptune Theatre Windsor Studio': 'NEPTUNE WINDSOR',
+  'Outdoor Walk - Meet at Library': 'OUTDOOR WALK',
+  'Point Pleasant Park - Black Rock Beach Picnic Area': 'POINT PLEASANT PARK',
+  'Sanctuary Arts Centre': 'SANCTUARY ARTS',
+  'Stardust Bar': 'STARDUST BAR',
+  'The Art Gallery of Nova Scotia': 'AGNS',
+  'Universalist Unitarian Church of Halifax': 'UNITARIAN CHURCH',
+  'Wonderneath Art Society': 'WONDERNEATH',
+  'inesS Circus': 'INESS CIRCUS',
+  'Outdoors - Different Locations': 'OUTDOORS',
+};
 
 const ENTITIES = {
   amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ',
@@ -50,8 +79,21 @@ function decodeEntities(s) {
     .replace(/&([a-z]+);/gi, (m, name) => ENTITIES[name] ?? ENTITIES[name.toLowerCase()] ?? m);
 }
 
+// Collapses everything to one line -- used for card titles/blurbs, where
+// internal line breaks would just be noise.
 function stripTags(s) {
   return decodeEntities(s.replace(/<[^>]*>/g, ' ')).replace(/\s+/g, ' ').trim();
+}
+
+// Preserves <br>-derived newlines -- used for the multi-paragraph credits and
+// content-warnings text on a show's ticket page, where lines are meaningful.
+function stripTagsKeepingLines(s) {
+  return decodeEntities(s.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]*>/g, ' '))
+    .replace(/[ \t]+/g, ' ')
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .join('\n');
 }
 
 function slugify(title) {
@@ -199,6 +241,115 @@ async function resolveTimes(showId, data, salesEnded) {
   return { times, partial: salesEnded };
 }
 
+// --- meta (credits / rating / warnings / venue address) ---------------------
+
+// Split the description block into <p>...</p> paragraphs, stripped to plain
+// text. Labels ("Credits:", "Rating:", ...) sometimes wrap their own <strong>
+// or <span> tags inconsistently, so match on the plain text, not the markup.
+function paragraphs(html) {
+  return [...html.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi)].map((m) => stripTagsKeepingLines(m[1]));
+}
+
+// The value is either inline after the label in the same paragraph (Rating is
+// usually this way) or the entirety of the next paragraph (Credits, Content
+// Warnings are usually this way). Handle both.
+function extractLabelled(html, label) {
+  const paras = paragraphs(html);
+  const re = new RegExp(`^${label}\\s*:\\s*(.*)$`, 'i');
+
+  for (const [i, para] of paras.entries()) {
+    const m = re.exec(para);
+    if (!m) continue;
+    if (m[1].trim()) return m[1].trim();
+    return paras[i + 1]?.trim() || null;
+  }
+  return null;
+}
+
+function parseCredits(html) {
+  const raw = extractLabelled(html, 'Credits');
+  if (!raw) return [];
+  return raw.split('\n').map((s) => s.trim()).filter(Boolean);
+}
+
+// Upstream capitalisation is inconsistent - the same warning arrives as
+// "Flashing Lights", "Flashing lights" or "flashing lights" depending on who
+// filled in the listing. Lower-case it so the warning chips read uniformly.
+function parseWarnings(html) {
+  const raw = extractLabelled(html, 'Content Warnings');
+  if (!raw) return [];
+  if (/^n\/a$/i.test(raw.trim())) return [];
+  return raw
+    .split(/[\n,]/)
+    .map((s) => s.trim().toLowerCase())
+    .filter((s) => s && !/^n\/a$/i.test(s));
+}
+
+function parseRating(html) {
+  const raw = extractLabelled(html, 'Rating');
+  return raw ? raw.trim() : 'NOT RATED';
+}
+
+function extractDescriptionBlock(html) {
+  const m =
+    /<div class="left_display" id="description">([\s\S]*?)<\/div>\s*<div class="left_display">/.exec(
+      html,
+    );
+  return m ? m[1] : '';
+}
+
+function extractAddress(html) {
+  const m =
+    /"location":\{"@type":"Place","name":"((?:[^"\\]|\\.)*)","address":\{"@type":"PostalAddress"((?:[^{}]|\{[^{}]*\})*)\}/.exec(
+      html,
+    );
+  if (!m) return null;
+
+  const name = decodeEntities(JSON.parse(`"${m[1]}"`));
+  const fields = {};
+  for (const fm of m[2].matchAll(/"(\w+)":"((?:[^"\\]|\\.)*)"/g)) {
+    fields[fm[1]] = JSON.parse(`"${fm[2]}"`);
+  }
+
+  const shortParts = [fields.streetAddress, fields.addressLocality].filter(Boolean);
+  const fullParts = [
+    fields.streetAddress,
+    fields.addressLocality,
+    fields.addressRegion,
+    fields.postalCode,
+  ].filter(Boolean);
+
+  if (!shortParts.length) return { name, shortAddress: null, fullAddress: null };
+
+  return {
+    name,
+    shortAddress: shortParts.join(', '),
+    fullAddress: fullParts.length >= 3
+      ? `${fullParts.slice(0, -1).join(', ')} ${fullParts.at(-1)}`
+      : fullParts.join(', '),
+  };
+}
+
+async function fetchMeta(showId, ticketUrl, title) {
+  const res = await fetch(ticketUrl, {
+    headers: { 'User-Agent': 'Mozilla/5.0 (compatible; fringe-calendar-scraper/1.0)' },
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${ticketUrl}`);
+  const html = await res.text();
+
+  const block = extractDescriptionBlock(html);
+  if (!block) console.warn(`  WARNING: no description block found for "${title}" (${showId})`);
+
+  return {
+    meta: {
+      credits: parseCredits(block),
+      rating: parseRating(block),
+      warnings: parseWarnings(block),
+    },
+    address: extractAddress(html),
+  };
+}
+
 // --- merge -----------------------------------------------------------------
 
 const summary = { newShows: [], cancelledShows: [], newTimes: [], cancelledTimes: [], revived: [], changed: [] };
@@ -287,8 +438,22 @@ if (cards.length < MIN_EXPECTED_SHOWS) {
   fail(`only ${cards.length} shows parsed (expected >= ${MIN_EXPECTED_SHOWS}) -- the page markup probably changed`);
 }
 
+const isFirstRun = !existsSync(OUT);
+const previous = isFirstRun ? { shows: [] } : JSON.parse(readFileSync(OUT, 'utf8'));
+const prevShows = new Map((previous.shows ?? []).map((s) => [s.showId, s]));
+
+const previousMeta = existsSync(META_OUT) ? JSON.parse(readFileSync(META_OUT, 'utf8')) : {};
+const previousVenues = existsSync(VENUES_OUT) ? JSON.parse(readFileSync(VENUES_OUT, 'utf8')) : {};
+
 const scraped = [];
 const partialShows = [];
+// Meta fetched successfully *this run*, keyed by showId. Anything not in here
+// (a show cancelled off the pin board, or one whose meta-page fetch failed)
+// falls back to previousMeta below -- never dropped, never re-fetched.
+const freshMeta = {};
+const venues = { ...previousVenues };
+const failedMeta = [];
+
 for (const [i, card] of cards.entries()) {
   process.stdout.write(`  [${i + 1}/${cards.length}] ${card.title.slice(0, 50)}\r`);
   let data, salesEnded, times, partial;
@@ -316,13 +481,33 @@ for (const [i, card] of cards.entries()) {
 
   scraped.push(show);
 
+  // A failed meta-page fetch is non-fatal: this show's fresh times still get
+  // written, and its meta just falls back to previousMeta below.
+  try {
+    const { meta: showMeta, address } = await fetchMeta(show.showId, show.ticketUrl, show.title);
+
+    // A couple of shows have no venue in the API (the free roving outdoor
+    // ones), but their own page's JSON-LD still names the place. Record it
+    // so the front-end has something to show instead of a blank venue.
+    if (!show.venue && address?.name) showMeta.venue = address.name;
+    freshMeta[String(show.showId)] = showMeta;
+
+    const venueName = show.venue || (address?.name ?? '');
+    if (address && venueName) {
+      const short = SHORT_NAMES[venueName] ?? venueName.toUpperCase();
+      venues[venueName] = {
+        short,
+        shortAddress: address.shortAddress,
+        fullAddress: address.fullAddress,
+      };
+    }
+  } catch (err) {
+    failedMeta.push(`${show.title} (${show.showId}): ${err.message}`);
+  }
+
   await sleep(200);
 }
 process.stdout.write('\n');
-
-const isFirstRun = !existsSync(OUT);
-const previous = isFirstRun ? { shows: [] } : JSON.parse(readFileSync(OUT, 'utf8'));
-const prevShows = new Map((previous.shows ?? []).map((s) => [s.showId, s]));
 
 const shows = [];
 for (const s of scraped) {
@@ -343,15 +528,32 @@ const out = {
   shows,
 };
 
-const tmp = `${OUT}.tmp`;
-writeFileSync(tmp, `${JSON.stringify(out, null, 2)}\n`);
-renameSync(tmp, OUT);
+// Build the final meta object from the *merged* shows list (active +
+// carried-forward cancelled), not from `cards` / `scraped` -- otherwise a
+// show that vanished from this run's pin board would silently lose its meta
+// entry, breaking the same never-delete rule show_times.json follows.
+const meta = {};
+for (const s of shows) {
+  const id = String(s.showId);
+  if (Object.hasOwn(freshMeta, id)) meta[id] = freshMeta[id];
+  else if (previousMeta[id]) meta[id] = previousMeta[id];
+}
+
+mkdirSync(fileURLToPath(new URL('../src/data', import.meta.url)), { recursive: true });
+
+for (const [file, data] of [[OUT, out], [META_OUT, meta], [VENUES_OUT, venues]]) {
+  const tmp = `${file}.tmp`;
+  writeFileSync(tmp, `${JSON.stringify(data, null, 2)}\n`);
+  renameSync(tmp, file);
+}
 
 // --- report ----------------------------------------------------------------
 
 const timeCount = shows.reduce((n, s) => n + s.times.length, 0);
 const activeTimes = shows.reduce((n, s) => n + s.times.filter((t) => t.status === 'active').length, 0);
 console.log(`\nWrote show_times.json: ${shows.length} shows, ${timeCount} showtimes (${activeTimes} active).`);
+console.log(`Wrote shows_meta.json: ${Object.keys(meta).length} shows.`);
+console.log(`Wrote venues.json: ${Object.keys(venues).length} venues.`);
 
 const report = [
   ['new shows', summary.newShows],
@@ -371,6 +573,20 @@ if (isFirstRun) {
   for (const [label, items] of report) {
     console.log(`\n${items.length} ${label}:`);
     for (const item of items) console.log(`  - ${item}`);
+  }
+}
+
+if (failedMeta.length) {
+  console.log(`\n${failedMeta.length} show(s) failed to fetch meta (kept previous data if available):`);
+  for (const f of failedMeta) console.log(`  - ${f}`);
+}
+
+const noRating = Object.entries(meta).filter(([, m]) => m.rating === 'NOT RATED');
+if (noRating.length) {
+  console.log(`\n${noRating.length} show(s) had no parsed rating (defaulted to NOT RATED):`);
+  for (const [id] of noRating) {
+    const s = shows.find((x) => String(x.showId) === id);
+    console.log(`  - ${s?.title ?? id} (${id})`);
   }
 }
 

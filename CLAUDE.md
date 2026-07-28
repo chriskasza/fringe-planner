@@ -8,9 +8,10 @@ Read `README.md` first - it documents the upstream API quirks that explain why
 - **`src/data/show_times.json` is generated. Never hand-edit it.** Change
   `scripts/scrape.mjs` and re-run `npm run scrape`. It holds only what the scraper can
   see upstream: show IDs, titles, and performance times.
-- **`src/data/shows_meta.json` and `src/data/venues.json` are generated too**, by
-  `scripts/scrape_meta.mjs`. They hold everything `scrape.mjs` can't get: credits,
-  rating, content warnings, and venue addresses. Refresh with `npm run scrape:meta`.
+- **`src/data/shows_meta.json` and `src/data/venues.json` are generated too**, by the
+  same `scripts/scrape.mjs` / `npm run scrape` as `show_times.json`. They hold
+  everything the pin board and times API can't get: credits, rating, content
+  warnings, and venue addresses, scraped from each show's own SimpleTix ticket page.
 - **No dependencies in either scraper.** Node built-ins only (`fetch`, `node:fs`,
   `node:url`). The root `package.json` belongs to the front-end - the `scrape` scripts in
   it are just aliases, and the scrapers must keep running with nothing installed, so
