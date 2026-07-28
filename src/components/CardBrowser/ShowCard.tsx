@@ -1,5 +1,5 @@
 import { useApp } from '../../state/AppContext';
-import { perfInFilter, perfKey } from '../../lib/derived';
+import { perfInFilter } from '../../lib/derived';
 import { IconButton } from '../ui/IconButton';
 import { DayRail } from './DayRail';
 import { TimePills } from './TimePills';
@@ -10,7 +10,7 @@ export function ShowCard({ show }: { show: Show }) {
   const { state, dispatch } = useApp();
 
   const activePerfs = show.perfs.filter((p) => p.status === 'active');
-  const pickedPerfs = activePerfs.filter((p) => state.picked.has(perfKey(show.id, p.day, p.start)));
+  const pickedPerfs = activePerfs.filter((p) => state.picked.has(p.timeId));
   const outsideFilterCount = activePerfs.filter((p) => !perfInFilter(p, state.daysOn, state.timeBucketsOn)).length;
   const anyPicked = pickedPerfs.length > 0;
   const expanded = Boolean(state.expanded[show.id]);

@@ -1,5 +1,5 @@
 import { useApp } from '../../state/AppContext';
-import { perfKey, perfState } from '../../lib/derived';
+import { perfState } from '../../lib/derived';
 import { formatTime } from '../../lib/dates';
 import { blockLeft, blockWidth, BLOCK_INSET_Y_PX } from './gridLayout';
 import { IconButton } from '../ui/IconButton';
@@ -14,7 +14,7 @@ type GridBlockProps = {
 
 export function GridBlock({ show, perf, gridStartMin }: GridBlockProps) {
   const { state, dispatch, shows } = useApp();
-  const key = perfKey(show.id, perf.day, perf.start);
+  const timeId = perf.timeId;
   const pState = perfState(show, perf, state.picked, shows);
 
   const style: React.CSSProperties = {
@@ -33,13 +33,13 @@ export function GridBlock({ show, perf, gridStartMin }: GridBlockProps) {
       data-testid="grid-block"
       className={`${styles['grid-block']} ${styles[`grid-block--${pState}`]}`}
       style={style}
-      onClick={() => dispatch({ type: 'TOGGLE_PICK', key })}
+      onClick={() => dispatch({ type: 'TOGGLE_PICK', timeId })}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          dispatch({ type: 'TOGGLE_PICK', key });
+          dispatch({ type: 'TOGGLE_PICK', timeId });
         }
       }}
       aria-label={`${show.title}, ${formatTime(perf.start)}, ${perf.mins} min, ${stateLabel}`}
@@ -53,7 +53,7 @@ export function GridBlock({ show, perf, gridStartMin }: GridBlockProps) {
           ariaLabel={`Details for ${show.title}`}
           variant={pState === 'picked' || pState === 'picked-clash' ? 'on-gold' : 'default'}
           size={18}
-          onClick={() => dispatch({ type: 'SET_DETAIL', detail: { showId: show.id, perfKey: key } })}
+          onClick={() => dispatch({ type: 'SET_DETAIL', detail: { timeId } })}
         />
       </div>
       <div className={styles['grid-block__meta']}>

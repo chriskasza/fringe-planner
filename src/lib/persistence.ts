@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { perfKey } from './derived';
-import type { PerfKey, Show } from './types';
+import type { Show, TimeId } from './types';
 
 const STORAGE_KEY = 'fringe-picked';
 const DEBOUNCE_MS = 250;
@@ -20,47 +19,32 @@ function activePerfs(show: Show) {
   return show.perfs.filter((p) => p.status === 'active');
 }
 
-// timeId -> the performance it names. Active only, matching what the rest of
-// the app will actually render: a pick whose performance has since been
-// cancelled has nowhere to show up, so restoring it would put an invisible
-// entry in the schedule.
-function perfsByTimeId(shows: Show[]): Map<string, { show: Show; perf: Show['perfs'][number] }> {
-  const map = new Map<string, { show: Show; perf: Show['perfs'][number] }>();
+// Active timeIds only, matching what the rest of the app will actually
+// render: a pick whose performance has since been cancelled has nowhere to
+// show up, so restoring it would put an invisible entry in the schedule.
+function activeTimeIds(shows: Show[]): Set<TimeId> {
+  const ids = new Set<TimeId>();
   for (const show of shows) {
-    for (const perf of activePerfs(show)) map.set(String(perf.timeId), { show, perf });
+    for (const perf of activePerfs(show)) ids.add(perf.timeId);
   }
-  return map;
+  return ids;
 }
 
-export function encodePicked(picked: Set<PerfKey>, shows: Show[]): string {
-  const byId = new Map(shows.map((s) => [s.id, s]));
-  const tokens: string[] = [];
-
-  for (const key of picked) {
-    const [showId, day, startStr] = key.split('|');
-    const show = byId.get(showId);
-    if (!show) continue;
-
-    const perf = activePerfs(show).find((p) => p.day === day && p.start === Number(startStr));
-    if (!perf) continue;
-
-    tokens.push(String(perf.timeId));
-  }
-
-  return tokens.sort().join('.');
+export function encodePicked(picked: Set<TimeId>, shows: Show[]): string {
+  const valid = activeTimeIds(shows);
+  return [...picked].filter((id) => valid.has(id)).sort().join('.');
 }
 
 // Malformed or stale tokens are skipped individually rather than wiping the
 // whole schedule - a single bad token shouldn't cost the user everything else.
-export function decodePicked(encoded: string, shows: Show[]): Set<PerfKey> {
-  const byTimeId = perfsByTimeId(shows);
-  const result = new Set<PerfKey>();
+export function decodePicked(encoded: string, shows: Show[]): Set<TimeId> {
+  const valid = activeTimeIds(shows);
+  const result = new Set<TimeId>();
   if (!encoded) return result;
 
   for (const token of encoded.split('.')) {
-    const hit = byTimeId.get(token.trim());
-    if (!hit) continue;
-    result.add(perfKey(hit.show.id, hit.perf.day, hit.perf.start));
+    const t = token.trim();
+    if (valid.has(t)) result.add(t);
   }
 
   return result;
@@ -71,7 +55,7 @@ export function decodePicked(encoded: string, shows: Show[]): Set<PerfKey> {
 // Only the middle one is the on-the-wire encoding, so the other two have to
 // be recognised here rather than passed straight to decodePicked - which is
 // what made both of the sheet's advertised inputs fail.
-export function parseRestoreInput(text: string, shows: Show[]): Set<PerfKey> {
+export function parseRestoreInput(text: string, shows: Show[]): Set<TimeId> {
   const trimmed = text.trim();
   if (!trimmed) return new Set();
   if (trimmed.startsWith('[')) return decodeJsonBackup(trimmed, shows);
@@ -96,8 +80,8 @@ type BackupEntry = { timeId?: number | string; title?: string; day?: string; sta
 // The .json backup is written for humans to read (title, venue, address,
 // times), so it carries a timeId for exact restores and is matched on
 // title + day + start when reading a file written before that field existed.
-function decodeJsonBackup(text: string, shows: Show[]): Set<PerfKey> {
-  const result = new Set<PerfKey>();
+function decodeJsonBackup(text: string, shows: Show[]): Set<TimeId> {
+  const result = new Set<TimeId>();
 
   let parsed: unknown;
   try {
@@ -107,17 +91,19 @@ function decodeJsonBackup(text: string, shows: Show[]): Set<PerfKey> {
   }
   if (!Array.isArray(parsed)) return result;
 
-  const byTimeId = perfsByTimeId(shows);
+  const valid = activeTimeIds(shows);
 
   for (const raw of parsed) {
     if (!raw || typeof raw !== 'object') continue;
     const entry = raw as BackupEntry;
 
-    const hit =
-      entry.timeId !== undefined
-        ? byTimeId.get(String(entry.timeId))
-        : findByTitle(shows, entry.title, entry.day, entry.start);
-    if (hit) result.add(perfKey(hit.show.id, hit.perf.day, hit.perf.start));
+    if (entry.timeId !== undefined) {
+      const id = String(entry.timeId);
+      if (valid.has(id)) result.add(id);
+      continue;
+    }
+    const hit = findByTitle(shows, entry.title, entry.day, entry.start);
+    if (hit) result.add(hit.perf.timeId);
   }
 
   return result;
@@ -136,7 +122,7 @@ function readHashParam(): string {
   return params.get('p') ?? '';
 }
 
-export function loadInitialPicked(shows: Show[]): Set<PerfKey> {
+export function loadInitialPicked(shows: Show[]): Set<TimeId> {
   const fromUrl = readHashParam();
   if (fromUrl) return decodePicked(fromUrl, shows);
 
@@ -155,7 +141,7 @@ export function loadInitialPicked(shows: Show[]): Set<PerfKey> {
 // means picks are not undoable with Back. Any popstate that does arrive is a
 // real history traversal (or a hand-edited hash), so the URL is read back and
 // applied.
-export function usePersistence(picked: Set<PerfKey>, shows: Show[], onExternalChange: (picked: Set<PerfKey>) => void) {
+export function usePersistence(picked: Set<TimeId>, shows: Show[], onExternalChange: (picked: Set<TimeId>) => void) {
   const timer = useRef<number | undefined>(undefined);
 
   // Read inside the popstate handler without making the listener re-subscribe

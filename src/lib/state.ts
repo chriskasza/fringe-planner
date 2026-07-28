@@ -1,6 +1,6 @@
 import { nowInHalifax, TIME_BUCKETS } from './dates';
-import { perfInFilter, perfKey } from './derived';
-import type { ClashMode, Day, DayKey, DetailTarget, MenuKey, PerfKey, Show, TimeBucket, ViewMode } from './types';
+import { perfInFilter } from './derived';
+import type { ClashMode, Day, DayKey, DetailTarget, MenuKey, Show, TimeBucket, TimeId, ViewMode } from './types';
 
 // Derived from TIME_BUCKETS rather than spelled out, so adding or renaming a
 // bucket doesn't need matching edits in the initial state and the reset.
@@ -9,7 +9,7 @@ function allTimeBucketsOn(): Record<TimeBucket, boolean> {
 }
 
 export type AppState = {
-  picked: Set<PerfKey>;
+  picked: Set<TimeId>;
   daysOn: Record<DayKey, boolean>;
   timeBucketsOn: Record<TimeBucket, boolean>;
   venuesOn: Record<string, boolean>;
@@ -85,8 +85,8 @@ export function createInitialState(
 }
 
 export type AppAction =
-  | { type: 'TOGGLE_PICK'; key: PerfKey }
-  | { type: 'SET_PICKED'; picked: Set<PerfKey> }
+  | { type: 'TOGGLE_PICK'; timeId: TimeId }
+  | { type: 'SET_PICKED'; picked: Set<TimeId> }
   | { type: 'TOGGLE_SHOW_STAR'; show: Show }
   | { type: 'SET_DAY_ON'; day: DayKey; on: boolean }
   | { type: 'SET_ALL_DAYS'; days: DayKey[]; on: boolean }
@@ -111,43 +111,41 @@ export type AppAction =
   | { type: 'SET_SYNC_OPEN'; open: boolean }
   | { type: 'RESET_ALL_FILTERS'; days: DayKey[]; venues: string[]; ratings: string[]; warnings: string[] };
 
-function toggleSet(set: Set<PerfKey>, key: PerfKey): Set<PerfKey> {
+function toggleSet(set: Set<TimeId>, timeId: TimeId): Set<TimeId> {
   const next = new Set(set);
-  if (next.has(key)) next.delete(key);
-  else next.add(key);
+  if (next.has(timeId)) next.delete(timeId);
+  else next.add(timeId);
   return next;
 }
 
 export function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
     case 'TOGGLE_PICK':
-      return { ...state, picked: toggleSet(state.picked, action.key) };
+      return { ...state, picked: toggleSet(state.picked, action.timeId) };
 
     case 'SET_PICKED':
       return { ...state, picked: action.picked };
 
     case 'TOGGLE_SHOW_STAR': {
       const { show } = action;
-      const allKeys = show.perfs
-        .filter((p) => p.status === 'active')
-        .map((p) => perfKey(show.id, p.day, p.start));
-      const anyPicked = allKeys.some((k) => state.picked.has(k));
+      const allIds = show.perfs.filter((p) => p.status === 'active').map((p) => p.timeId);
+      const anyPicked = allIds.some((id) => state.picked.has(id));
 
       const picked = new Set(state.picked);
       if (anyPicked) {
-        for (const k of allKeys) picked.delete(k);
+        for (const id of allIds) picked.delete(id);
       } else {
         // "In filter" has to mean the same thing here as it does everywhere
         // else (perfInFilter: day *and* time-of-day bucket). Gating on daysOn
         // alone let the star add performances the card, the time pills and
         // the rail all treat as filtered out, so they landed in the schedule
         // dimmed and unexplained.
-        const inFilterKeys = show.perfs
+        const inFilterIds = show.perfs
           .filter(
             (p) => p.status === 'active' && perfInFilter(p, state.daysOn, state.timeBucketsOn),
           )
-          .map((p) => perfKey(show.id, p.day, p.start));
-        for (const k of inFilterKeys) picked.add(k);
+          .map((p) => p.timeId);
+        for (const id of inFilterIds) picked.add(id);
       }
       return { ...state, picked };
     }

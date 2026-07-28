@@ -26,7 +26,7 @@ function show(overrides: Partial<Show> = {}): Show {
 // transform.ts encodes a performance that runs past midnight as end += 1440,
 // so `end` can legitimately exceed a day.
 function perf(start: number, end: number, day = '2026-09-11'): Perf {
-  return { timeId: 1, showId: '284247', day, start, end, mins: end - start, status: 'active' };
+  return { timeId: '1', showId: '284247', day, start, end, mins: end - start, status: 'active' };
 }
 
 function fieldsOf(ics: string, name: string): string[] {

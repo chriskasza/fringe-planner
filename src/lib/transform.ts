@@ -16,7 +16,7 @@ function transformPerf(showId: string, raw: ShowTimesFile['shows'][number]['time
   if (endStamp.date !== startStamp.date) end += 1440; // crosses midnight, rare but keep ordering sane
 
   return {
-    timeId: raw.timeId,
+    timeId: String(raw.timeId),
     showId,
     day: startStamp.date,
     start,

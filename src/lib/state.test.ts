@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { appReducer, createInitialState, type AppState } from './state';
-import { perfInFilter, perfKey } from './derived';
+import { perfInFilter } from './derived';
 import type { Day, Perf, Show } from './types';
 
 const DAYS: Day[] = [
@@ -36,7 +36,7 @@ function initial(): AppState {
   return createInitialState(DAYS, [SHOW], { date: '2026-07-26', minutes: 720 });
 }
 
-const key = (day: string, start: number) => perfKey('1', day, start);
+const key = (day: string, start: number) => `${day}-${start}`;
 
 describe('TOGGLE_SHOW_STAR', () => {
   it('picks every active performance when nothing is filtered out', () => {
@@ -74,9 +74,9 @@ describe('TOGGLE_SHOW_STAR', () => {
   it('only ever picks performances the rest of the UI agrees are in filter', () => {
     const off = appReducer(initial(), { type: 'SET_TIME_BUCKET_ON', bucket: 'night', on: false });
     const s = appReducer(off, { type: 'TOGGLE_SHOW_STAR', show: SHOW });
-    for (const k of s.picked) {
-      const [, day, start] = k.split('|');
-      expect(perfInFilter({ day, start: Number(start) }, s.daysOn, s.timeBucketsOn)).toBe(true);
+    for (const timeId of s.picked) {
+      const perf = SHOW.perfs.find((p) => p.timeId === timeId)!;
+      expect(perfInFilter(perf, s.daysOn, s.timeBucketsOn)).toBe(true);
     }
   });
 });
