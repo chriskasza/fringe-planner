@@ -108,10 +108,11 @@ export function visible(show: Show, state: VisibilityState, shows: Show[]): bool
   if (state.excluded[show.id]) return false;
   if (state.venuesOn[show.venue] === false) return false;
   if (state.ratingsOn[show.rating] === false) return false;
-  // Unlike venue/rating (one value per show), warnings is a list - a show
-  // carrying any switched-off warning drops out. Shows with no warnings are
-  // never affected by this filter.
-  if (show.warnings.some((w) => state.warningsOn[w] === false)) return false;
+  // Unlike venue/rating (one value per show), warningTags is a list - a show
+  // carrying any switched-off tag drops out. Shows with no warnings are
+  // never affected by this filter. Filters on the condensed category tags,
+  // not the raw `warnings` text - see ShowMetaEntry.
+  if (show.warningTags.some((w) => state.warningsOn[w] === false)) return false;
 
   // Day/Time gate what you're *browsing*: a show with nothing playing in the
   // selected days and times has nothing to offer, so it drops out entirely

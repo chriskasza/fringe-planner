@@ -25,6 +25,7 @@ const SHOW: Show = {
   credits: [],
   rating: 'PG',
   warnings: ['flashing lights'],
+  warningTags: ['flashing lights'],
   mins: 60,
   salesEnded: false,
   timesIncomplete: false,

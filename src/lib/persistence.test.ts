@@ -20,6 +20,7 @@ function showWith(perfs: Perf[], id = '284247'): Show {
     credits: [],
     rating: 'PG',
     warnings: [],
+    warningTags: [],
     mins: 60,
     salesEnded: false,
     timesIncomplete: false,

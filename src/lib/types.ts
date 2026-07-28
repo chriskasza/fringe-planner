@@ -36,7 +36,13 @@ export type ShowTimesFile = {
 export type ShowMetaEntry = {
   credits: string[];
   rating: string;
+  // Unedited, as the creator typed it into their SimpleTix listing (split on
+  // commas/newlines and lower-cased - see meta.mjs). For display only; never
+  // filter on this, it's dozens of near-duplicate freeform phrases.
   warnings: string[];
+  // The above, collapsed onto a short fixed category list (meta.mjs's
+  // WARNING_CATEGORIES) - this is what the Content Warning filter uses.
+  warningTags: string[];
   // Only present for shows the API gives no venue for - recovered from the
   // show page's own JSON-LD by the scraper (scraper/scrape.mjs).
   venue?: string;
@@ -91,7 +97,8 @@ export type Show = {
   venueAddress: string | null;
   credits: string[];
   rating: string;
-  warnings: string[];
+  warnings: string[]; // raw, unedited - display only, see ShowMetaEntry
+  warningTags: string[]; // condensed categories - what the filter uses
   mins: number; // typical performance length, for card display
   salesEnded: boolean;
   timesIncomplete: boolean;

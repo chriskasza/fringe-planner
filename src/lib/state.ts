@@ -52,7 +52,7 @@ export function createInitialState(
   for (const r of new Set(shows.map((s) => s.rating))) ratingsOn[r] = true;
 
   const warningsOn: Record<string, boolean> = {};
-  for (const w of new Set(shows.flatMap((s) => s.warnings))) warningsOn[w] = true;
+  for (const w of new Set(shows.flatMap((s) => s.warningTags))) warningsOn[w] = true;
 
   // The landing day has to agree with `daysOn` above: opening on the first
   // day of the festival while that day is filtered out puts the user on a

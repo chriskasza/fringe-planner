@@ -17,6 +17,7 @@ function show(perfs: [start: number, end: number][], day = DAY, status: Perf['st
     credits: [],
     rating: 'PG',
     warnings: [],
+    warningTags: [],
     mins: 60,
     salesEnded: false,
     timesIncomplete: false,

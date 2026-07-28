@@ -11,6 +11,9 @@
     "rating": "16+",
     "warnings": [
       "flashing lights"
+    ],
+    "warningTags": [
+      "Flashing Lights"
     ]
   },
   "282934": {
@@ -18,7 +21,8 @@
       "Writer/Performer - Dwayne Morgan"
     ],
     "rating": "12+",
-    "warnings": []
+    "warnings": [],
+    "warningTags": []
   },
   "282941": {
     "credits": [
@@ -35,6 +39,10 @@
     "warnings": [
       "flashing lights",
       "swearing"
+    ],
+    "warningTags": [
+      "Coarse Language",
+      "Flashing Lights"
     ]
   },
   "282971": {
@@ -49,6 +57,11 @@
       "swearing",
       "sexually explicit content",
       "grief and loss"
+    ],
+    "warningTags": [
+      "Coarse Language",
+      "Death & Grief",
+      "Sexual Content"
     ]
   },
   "282975": {
@@ -65,6 +78,12 @@
       "weapons",
       "injuries",
       "bombs"
+    ],
+    "warningTags": [
+      "Coarse Language",
+      "Death & Grief",
+      "Violence",
+      "War & Atrocity"
     ]
   },
   "284033": {
@@ -74,7 +93,8 @@
     "rating": "16+",
     "warnings": [
       "sections of this show feature a white woman discussing decolonization"
-    ]
+    ],
+    "warningTags": []
   },
   "284035": {
     "credits": [
@@ -84,6 +104,10 @@
     "warnings": [
       "swearing",
       "audience interaction"
+    ],
+    "warningTags": [
+      "Audience Interaction",
+      "Coarse Language"
     ]
   },
   "284039": {
@@ -93,6 +117,9 @@
     "rating": "14+",
     "warnings": [
       "swearing"
+    ],
+    "warningTags": [
+      "Coarse Language"
     ]
   },
   "284042": {
@@ -102,6 +129,9 @@
     "rating": "All",
     "warnings": [
       "flashing lights"
+    ],
+    "warningTags": [
+      "Flashing Lights"
     ]
   },
   "284046": {
@@ -111,6 +141,9 @@
     "rating": "8+",
     "warnings": [
       "audience interaction"
+    ],
+    "warningTags": [
+      "Audience Interaction"
     ]
   },
   "284050": {
@@ -124,6 +157,11 @@
       "discussions of mental health",
       "suicide",
       "apples"
+    ],
+    "warningTags": [
+      "Audience Interaction",
+      "Coarse Language",
+      "Mental Health & Suicide"
     ]
   },
   "284052": {
@@ -133,6 +171,9 @@
     "rating": "12+",
     "warnings": [
       "flashing lights"
+    ],
+    "warningTags": [
+      "Flashing Lights"
     ]
   },
   "284054": {
@@ -145,6 +186,12 @@
       "implied violence",
       "gun and explosion sounds",
       "references to drug use and smoking"
+    ],
+    "warningTags": [
+      "Coarse Language",
+      "Loud Sounds",
+      "Substance Use",
+      "Violence"
     ]
   },
   "284055": {
@@ -155,7 +202,8 @@
     "rating": "All",
     "warnings": [
       "existentialism"
-    ]
+    ],
+    "warningTags": []
   },
   "284058": {
     "credits": [
@@ -167,6 +215,11 @@
     "warnings": [
       "audience interaction",
       "mentions of mental illness and sexual themes"
+    ],
+    "warningTags": [
+      "Audience Interaction",
+      "Mental Health & Suicide",
+      "Sexual Content"
     ]
   },
   "284063": {
@@ -176,7 +229,8 @@
       "Starring - Christy Sanford, Betty Leonardi, Kristi White, Sarah Vanderende, and Jet Wolfe"
     ],
     "rating": "All",
-    "warnings": []
+    "warnings": [],
+    "warningTags": []
   },
   "284065": {
     "credits": [
@@ -185,6 +239,9 @@
     "rating": "18+",
     "warnings": [
       "swearing and depictions of cheating/adultery"
+    ],
+    "warningTags": [
+      "Coarse Language"
     ]
   },
   "284067": {
@@ -196,6 +253,10 @@
     "warnings": [
       "swearing",
       "sexual content"
+    ],
+    "warningTags": [
+      "Coarse Language",
+      "Sexual Content"
     ]
   },
   "284071": {
@@ -210,6 +271,13 @@
       "discussions of death",
       "war",
       "sex"
+    ],
+    "warningTags": [
+      "Audience Interaction",
+      "Coarse Language",
+      "Death & Grief",
+      "Sexual Content",
+      "War & Atrocity"
     ]
   },
   "284075": {
@@ -222,6 +290,11 @@
       "weapon (fake/foam)",
       "mention of death",
       "mild vulgarity"
+    ],
+    "warningTags": [
+      "Coarse Language",
+      "Death & Grief",
+      "Violence"
     ]
   },
   "284078": {
@@ -231,6 +304,9 @@
     "rating": "18+",
     "warnings": [
       "audience interaction"
+    ],
+    "warningTags": [
+      "Audience Interaction"
     ]
   },
   "284082": {
@@ -240,6 +316,7 @@
     ],
     "rating": "All",
     "warnings": [],
+    "warningTags": [],
     "venue": "Outdoors - Different Locations"
   },
   "284087": {
@@ -251,6 +328,10 @@
     "warnings": [
       "mention of suicide",
       "cartoon violence"
+    ],
+    "warningTags": [
+      "Mental Health & Suicide",
+      "Violence"
     ]
   },
   "284088": {
@@ -261,6 +342,10 @@
     "warnings": [
       "audience interaction",
       "swearing"
+    ],
+    "warningTags": [
+      "Audience Interaction",
+      "Coarse Language"
     ]
   },
   "284092": {
@@ -269,7 +354,8 @@
       "Director - Jane Morris"
     ],
     "rating": "14+",
-    "warnings": []
+    "warnings": [],
+    "warningTags": []
   },
   "284099": {
     "credits": [
@@ -279,6 +365,10 @@
     "warnings": [
       "swearing",
       "audience interaction"
+    ],
+    "warningTags": [
+      "Audience Interaction",
+      "Coarse Language"
     ]
   },
   "284105": {
@@ -289,6 +379,10 @@
     "warnings": [
       "swearing",
       "sexual references"
+    ],
+    "warningTags": [
+      "Coarse Language",
+      "Sexual Content"
     ]
   },
   "284106": {
@@ -301,6 +395,11 @@
       "brief mention of death",
       "atomic bombs",
       "and ww2"
+    ],
+    "warningTags": [
+      "Audience Interaction",
+      "Death & Grief",
+      "War & Atrocity"
     ]
   },
   "284222": {
@@ -318,6 +417,14 @@
       "death",
       "substance abuse",
       "and war. depiction of mental health."
+    ],
+    "warningTags": [
+      "Death & Grief",
+      "Mental Health & Suicide",
+      "Sexual Content",
+      "Substance Use",
+      "Violence",
+      "War & Atrocity"
     ]
   },
   "284223": {
@@ -327,6 +434,10 @@
     "rating": "16+",
     "warnings": [
       "swearing and sexual language"
+    ],
+    "warningTags": [
+      "Coarse Language",
+      "Sexual Content"
     ]
   },
   "284224": {
@@ -338,6 +449,10 @@
       "audience interaction",
       "swearing",
       "mature themes"
+    ],
+    "warningTags": [
+      "Audience Interaction",
+      "Coarse Language"
     ]
   },
   "284225": {
@@ -347,6 +462,9 @@
     "rating": "14+",
     "warnings": [
       "swearing"
+    ],
+    "warningTags": [
+      "Coarse Language"
     ]
   },
   "284226": {
@@ -357,6 +475,10 @@
     "warnings": [
       "audience interaction",
       "swearing"
+    ],
+    "warningTags": [
+      "Audience Interaction",
+      "Coarse Language"
     ]
   },
   "284227": {
@@ -370,6 +492,12 @@
       "flashing lights",
       "cannabis is mentioned",
       "mortality is discussed."
+    ],
+    "warningTags": [
+      "Audience Interaction",
+      "Death & Grief",
+      "Flashing Lights",
+      "Substance Use"
     ]
   },
   "284228": {
@@ -385,6 +513,11 @@
       "swearing",
       "loud rumbling sounds (earthquake and frothing water)",
       "brief sounds of gunfire (no visuals)"
+    ],
+    "warningTags": [
+      "Coarse Language",
+      "Loud Sounds",
+      "Violence"
     ]
   },
   "284231": {
@@ -398,6 +531,10 @@
     "warnings": [
       "flashing lights",
       "loud sinister music near end"
+    ],
+    "warningTags": [
+      "Flashing Lights",
+      "Loud Sounds"
     ]
   },
   "284234": {
@@ -416,6 +553,14 @@
       "abuse",
       "substance abuse",
       "murder"
+    ],
+    "warningTags": [
+      "Abuse",
+      "Coarse Language",
+      "Death & Grief",
+      "Flashing Lights",
+      "Substance Use",
+      "Violence"
     ]
   },
   "284235": {
@@ -425,6 +570,9 @@
     "rating": "14+",
     "warnings": [
       "swearing"
+    ],
+    "warningTags": [
+      "Coarse Language"
     ]
   },
   "284237": {
@@ -435,6 +583,9 @@
     "rating": "8+",
     "warnings": [
       "audience interaction"
+    ],
+    "warningTags": [
+      "Audience Interaction"
     ]
   },
   "284238": {
@@ -448,6 +599,13 @@
       "drug use",
       "self-punishment",
       "sexual references"
+    ],
+    "warningTags": [
+      "Abuse",
+      "Audience Interaction",
+      "Sexual Content",
+      "Substance Use",
+      "Violence"
     ]
   },
   "284239": {
@@ -458,6 +616,10 @@
     "warnings": [
       "audience interaction",
       "swearing"
+    ],
+    "warningTags": [
+      "Audience Interaction",
+      "Coarse Language"
     ]
   },
   "284240": {
@@ -467,6 +629,9 @@
     "rating": "14+",
     "warnings": [
       "swearing"
+    ],
+    "warningTags": [
+      "Coarse Language"
     ]
   },
   "284243": {
@@ -484,6 +649,9 @@
     "rating": "16+",
     "warnings": [
       "swearing"
+    ],
+    "warningTags": [
+      "Coarse Language"
     ]
   },
   "284244": {
@@ -498,6 +666,12 @@
       "swearing",
       "sexual content",
       "violence"
+    ],
+    "warningTags": [
+      "Audience Interaction",
+      "Coarse Language",
+      "Sexual Content",
+      "Violence"
     ]
   },
   "284245": {
@@ -514,6 +688,12 @@
       "flashing lights",
       "swearing",
       "graphic depictions of death"
+    ],
+    "warningTags": [
+      "Coarse Language",
+      "Death & Grief",
+      "Flashing Lights",
+      "Violence"
     ]
   },
   "284246": {
@@ -524,6 +704,10 @@
     "warnings": [
       "audience interaction",
       "swearing"
+    ],
+    "warningTags": [
+      "Audience Interaction",
+      "Coarse Language"
     ]
   },
   "284247": {
@@ -538,6 +722,10 @@
       "strong language",
       "historic bureaucracy",
       "violence"
+    ],
+    "warningTags": [
+      "Coarse Language",
+      "Violence"
     ]
   },
   "284249": {
@@ -547,6 +735,9 @@
     "rating": "8+",
     "warnings": [
       "several scary (ghost) stories are told within the play"
+    ],
+    "warningTags": [
+      "Paranormal / Horror Themes"
     ]
   },
   "284250": {
@@ -559,6 +750,11 @@
       "violence",
       "colonialism",
       "adult language"
+    ],
+    "warningTags": [
+      "Coarse Language",
+      "Violence",
+      "War & Atrocity"
     ]
   },
   "284251": {
@@ -574,6 +770,11 @@
       "and depression)",
       "description of suicidal attempt",
       "talk of death"
+    ],
+    "warningTags": [
+      "Coarse Language",
+      "Death & Grief",
+      "Mental Health & Suicide"
     ]
   },
   "284253": {
@@ -582,7 +783,8 @@
       "Developed with and Directed by Jessica Lynn Johnson"
     ],
     "rating": "16+",
-    "warnings": []
+    "warnings": [],
+    "warningTags": []
   },
   "284255": {
     "credits": [
@@ -598,6 +800,13 @@
       "coarse language",
       "loud sounds",
       "discussion about death"
+    ],
+    "warningTags": [
+      "Coarse Language",
+      "Death & Grief",
+      "Flashing Lights",
+      "Loud Sounds",
+      "Violence"
     ]
   },
   "284257": {
@@ -615,6 +824,11 @@
       "discussion of sexual assault",
       "abuse",
       "and general sexual content"
+    ],
+    "warningTags": [
+      "Abuse",
+      "Coarse Language",
+      "Sexual Content"
     ]
   },
   "284258": {
@@ -625,6 +839,10 @@
     "warnings": [
       "audience interaction",
       "paranormal theme"
+    ],
+    "warningTags": [
+      "Audience Interaction",
+      "Paranormal / Horror Themes"
     ]
   },
   "284260": {
@@ -636,6 +854,11 @@
       "audience interaction",
       "flashing lights",
       "swearing"
+    ],
+    "warningTags": [
+      "Audience Interaction",
+      "Coarse Language",
+      "Flashing Lights"
     ]
   },
   "284262": {
@@ -645,6 +868,9 @@
     "rating": "12+",
     "warnings": [
       "audience interaction"
+    ],
+    "warningTags": [
+      "Audience Interaction"
     ]
   }
 }

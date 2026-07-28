@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { visible } from './derived';
 import type { Show } from './types';
 
-function show(warnings: string[]): Show {
+function show(warningTags: string[]): Show {
   return {
     id: '1',
     title: 'APPLES!',
@@ -14,7 +14,8 @@ function show(warnings: string[]): Show {
     venueAddress: null,
     credits: [],
     rating: 'PG',
-    warnings,
+    warnings: warningTags,
+    warningTags,
     mins: 60,
     salesEnded: false,
     timesIncomplete: false,

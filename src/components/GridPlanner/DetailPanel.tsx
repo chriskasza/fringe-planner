@@ -65,12 +65,15 @@ export function DetailPanel() {
         <p className={styles['detail-panel__blurb']}>{show.blurb}</p>
 
         {show.warnings.length > 0 && (
-          <div className={styles['detail-panel__warnings']}>
-            {show.warnings.map((w) => (
-              <span key={w} className={styles['detail-panel__warning-chip']}>
-                {w}
-              </span>
-            ))}
+          <div>
+            <div className={styles['detail-panel__warnings-label']}>CONTENT WARNING</div>
+            <div className={styles['detail-panel__warnings']}>
+              {show.warnings.map((w) => (
+                <span key={w} className={styles['detail-panel__warning-chip']}>
+                  {w}
+                </span>
+              ))}
+            </div>
           </div>
         )}
 

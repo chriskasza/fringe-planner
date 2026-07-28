@@ -59,6 +59,7 @@ function transformShow(
     credits: showMeta?.credits ?? [],
     rating: showMeta?.rating ?? 'NOT RATED',
     warnings: showMeta?.warnings ?? [],
+    warningTags: showMeta?.warningTags ?? [],
     mins: firstActive?.mins ?? 0,
     salesEnded: raw.salesEnded ?? false,
     timesIncomplete: raw.timesIncomplete ?? false,
