@@ -15,7 +15,7 @@ export function MyFringeRail() {
   }
 
   const orderedDayKeys = days.map((d) => d.key).filter((k) => byDay.has(k));
-  const totalOverlaps = entries.filter((e) => overlapping(e.key, state.picked, shows)).length;
+  const totalOverlaps = entries.filter((e) => overlapping(e.timeId, state.picked, shows)).length;
 
   return (
     <div data-testid="my-fringe-rail" className={styles['my-fringe-rail']}>
@@ -31,7 +31,7 @@ export function MyFringeRail() {
         {orderedDayKeys.map((dayKey) => {
           const dayEntries = [...(byDay.get(dayKey) ?? [])].sort((a, b) => a.perf.start - b.perf.start);
           const day = days.find((d) => d.key === dayKey);
-          const dayOverlaps = dayEntries.filter((e) => overlapping(e.key, state.picked, shows)).length;
+          const dayOverlaps = dayEntries.filter((e) => overlapping(e.timeId, state.picked, shows)).length;
 
           return (
             <div className={styles['my-fringe-rail__group']} key={dayKey}>
@@ -44,11 +44,11 @@ export function MyFringeRail() {
                 </span>
               </div>
               {dayEntries.map((entry) => {
-                const isOverlap = overlapping(entry.key, state.picked, shows);
+                const isOverlap = overlapping(entry.timeId, state.picked, shows);
                 const isOutsideFilter = !perfInFilter(entry.perf, state.daysOn, state.timeBucketsOn);
                 return (
                   <div
-                    key={entry.key}
+                    key={entry.timeId}
                     className={`${styles['my-fringe-rail__row']} ${isOverlap ? styles['my-fringe-rail__row--overlap'] : ''} ${isOutsideFilter ? styles['my-fringe-rail__row--outside'] : ''}`}
                   >
                     <span className={styles['my-fringe-rail__time']}>{formatTime(entry.perf.start)}</span>
@@ -62,7 +62,7 @@ export function MyFringeRail() {
                     <button
                       type="button"
                       className={styles['my-fringe-rail__remove']}
-                      onClick={() => dispatch({ type: 'TOGGLE_PICK', key: entry.key })}
+                      onClick={() => dispatch({ type: 'TOGGLE_PICK', timeId: entry.timeId })}
                       aria-label={`Remove ${entry.show.title} from My Fringe`}
                     >
                       ✕

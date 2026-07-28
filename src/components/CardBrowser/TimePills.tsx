@@ -1,5 +1,5 @@
 import { useApp } from '../../state/AppContext';
-import { perfInFilter, perfKey, perfState } from '../../lib/derived';
+import { perfInFilter, perfState } from '../../lib/derived';
 import { formatTime } from '../../lib/dates';
 import { Pill } from '../ui/Pill';
 import type { Show } from '../../lib/types';
@@ -17,16 +17,16 @@ export function TimePills({ show }: { show: Show }) {
   return (
     <div className={styles['time-pills']}>
       {perfs.map((p) => {
-        const key = perfKey(show.id, p.day, p.start);
+        const timeId = p.timeId;
         const pState = perfState(show, p, state.picked, shows);
         const day = days.find((d) => d.key === p.day);
         const dayLabel = day ? `${day.dow} ${day.dateNum}` : p.day;
 
         return (
           <Pill
-            key={key}
+            key={timeId}
             state={pState}
-            onClick={() => dispatch({ type: 'TOGGLE_PICK', key })}
+            onClick={() => dispatch({ type: 'TOGGLE_PICK', timeId })}
             ariaLabel={`${dayLabel} · ${formatTime(p.start)}, ${pState.replace('-', ' ')}`}
           >
             {dayLabel} · {formatTime(p.start)}

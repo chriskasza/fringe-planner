@@ -4,7 +4,7 @@ import { useApp } from "../../state/AppContext";
 import { pickedList } from "../../lib/derived";
 import { encodePicked, parseRestoreInput } from "../../lib/persistence";
 import { generateIcs, downloadFile } from "../../lib/ics";
-import type { PerfKey } from "../../lib/types";
+import type { TimeId } from "../../lib/types";
 import styles from "./SyncSheet.module.css";
 
 export function SyncSheet() {
@@ -196,7 +196,7 @@ function QrBlock({ url }: { url: string }) {
   return <canvas ref={canvasRef} className={styles["sync-qr"]} width={136} height={136} />;
 }
 
-function RestoreRow({ onRestore }: { onRestore: (picked: Set<PerfKey>) => void }) {
+function RestoreRow({ onRestore }: { onRestore: (picked: Set<TimeId>) => void }) {
   const { shows } = useApp();
   const [message, setMessage] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);

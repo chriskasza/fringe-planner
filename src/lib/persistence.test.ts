@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { decodePicked, encodePicked, parseRestoreInput } from './persistence';
-import { perfKey } from './derived';
 import { shows as realShows } from './loadData';
-import type { Perf, PerfKey, Show } from './types';
+import type { Perf, Show, TimeId } from './types';
 
 function perf(timeId: number | string, day: string, start: number, status: Perf['status'] = 'active'): Perf {
   return { timeId: String(timeId), showId: '284247', day, start, end: start + 60, mins: 60, status };
@@ -28,12 +27,12 @@ function showWith(perfs: Perf[], id = '284247'): Show {
   };
 }
 
-const keysOf = (set: Set<PerfKey>) => [...set].sort();
+const keysOf = (set: Set<TimeId>) => [...set].sort();
 
 describe('encodePicked / decodePicked', () => {
   it('round-trips a set of picks', () => {
     const show = showWith([perf(101, '2026-09-03', 840), perf(102, '2026-09-03', 1020), perf(103, '2026-09-04', 1170)]);
-    const picked = new Set([perfKey('284247', '2026-09-03', 840), perfKey('284247', '2026-09-04', 1170)]);
+    const picked = new Set(['101', '103']);
 
     const encoded = encodePicked(picked, [show]);
     expect(encoded).toBe('101.103');
@@ -42,8 +41,8 @@ describe('encodePicked / decodePicked', () => {
 
   it('is order-independent, so the same schedule always produces the same link', () => {
     const show = showWith([perf(101, '2026-09-03', 840), perf(102, '2026-09-03', 1020)]);
-    const a = new Set([perfKey('284247', '2026-09-03', 840), perfKey('284247', '2026-09-03', 1020)]);
-    const b = new Set([perfKey('284247', '2026-09-03', 1020), perfKey('284247', '2026-09-03', 840)]);
+    const a = new Set(['101', '102']);
+    const b = new Set(['102', '101']);
     expect(encodePicked(a, [show])).toBe(encodePicked(b, [show]));
   });
 
@@ -58,7 +57,7 @@ describe('encodePicked / decodePicked', () => {
       perf(103, '2026-09-04', 1170),
       perf(104, '2026-09-05', 1170),
     ]);
-    const picked = new Set([perfKey('284247', '2026-09-05', 1170)]);
+    const picked = new Set(['104']);
     const encoded = encodePicked(picked, [before]);
 
     const after = showWith([
@@ -72,26 +71,23 @@ describe('encodePicked / decodePicked', () => {
 
   it('survives a performance being rescheduled to a different time', () => {
     const before = showWith([perf(101, '2026-09-03', 840), perf(102, '2026-09-03', 1020)]);
-    const encoded = encodePicked(new Set([perfKey('284247', '2026-09-03', 1020)]), [before]);
+    const encoded = encodePicked(new Set(['102']), [before]);
 
     const after = showWith([perf(101, '2026-09-03', 840), perf(102, '2026-09-03', 1140)]);
-    expect(keysOf(decodePicked(encoded, [after]))).toEqual([perfKey('284247', '2026-09-03', 1140)]);
+    expect(keysOf(decodePicked(encoded, [after]))).toEqual(['102']);
   });
 
   it('drops a pick whose performance has been cancelled outright', () => {
     const before = showWith([perf(101, '2026-09-03', 840), perf(102, '2026-09-03', 1020)]);
-    const encoded = encodePicked(
-      new Set([perfKey('284247', '2026-09-03', 840), perfKey('284247', '2026-09-03', 1020)]),
-      [before],
-    );
+    const encoded = encodePicked(new Set(['101', '102']), [before]);
 
     const after = showWith([perf(101, '2026-09-03', 840), perf(102, '2026-09-03', 1020, 'cancelled')]);
-    expect(keysOf(decodePicked(encoded, [after]))).toEqual([perfKey('284247', '2026-09-03', 840)]);
+    expect(keysOf(decodePicked(encoded, [after]))).toEqual(['101']);
   });
 
   it('handles the synthetic string timeIds the scraper mints for some shows', () => {
     const show = showWith([perf('s284082-2026-09-04T17:45', '2026-09-04', 1065)], '284082');
-    const picked = new Set([perfKey('284082', '2026-09-04', 1065)]);
+    const picked = new Set(['s284082-2026-09-04T17:45']);
     const encoded = encodePicked(picked, [show]);
     expect(encoded).toBe('s284082-2026-09-04T17:45');
     expect(encodeURIComponent(encoded)).toBe(encoded.replace(/:/g, '%3A')); // fragment-safe apart from ':'
@@ -100,29 +96,27 @@ describe('encodePicked / decodePicked', () => {
 
   it('skips junk tokens individually instead of losing the whole schedule', () => {
     const show = showWith([perf(101, '2026-09-03', 840), perf(102, '2026-09-03', 1020)]);
-    expect(keysOf(decodePicked('101.nonsense.999999.102', [show]))).toEqual(
-      keysOf(new Set([perfKey('284247', '2026-09-03', 840), perfKey('284247', '2026-09-03', 1020)])),
-    );
+    expect(keysOf(decodePicked('101.nonsense.999999.102', [show]))).toEqual(keysOf(new Set(['101', '102'])));
     expect(decodePicked('', [show]).size).toBe(0);
     expect(decodePicked('....', [show]).size).toBe(0);
   });
 
   it('skips picks for shows that are no longer in the data', () => {
     const show = showWith([perf(101, '2026-09-03', 840)]);
-    const picked = new Set([perfKey('999999', '2026-09-03', 840)]);
+    const picked = new Set(['999999']);
     expect(encodePicked(picked, [show])).toBe('');
   });
 
   it('round-trips against the real festival data', () => {
     // timeIds are unique festival-wide, which is what lets a token carry no
     // show id; if a re-scrape ever breaks that, this fails loudly.
-    const ids = realShows.flatMap((s) => s.perfs.map((p) => String(p.timeId)));
+    const ids = realShows.flatMap((s) => s.perfs.map((p) => p.timeId));
     expect(new Set(ids).size).toBe(ids.length);
 
     const picked = new Set(
       realShows.slice(0, 12).map((s) => {
         const p = s.perfs.find((x) => x.status === 'active') ?? s.perfs[0];
-        return perfKey(s.id, p.day, p.start);
+        return p.timeId;
       }),
     );
     expect(keysOf(decodePicked(encodePicked(picked, realShows), realShows))).toEqual(keysOf(picked));
@@ -135,7 +129,7 @@ describe('encodePicked / decodePicked', () => {
 // picks found in that link or file."
 describe('parseRestoreInput', () => {
   const show = showWith([perf(101, '2026-09-03', 840), perf(102, '2026-09-03', 1020)]);
-  const both = [perfKey('284247', '2026-09-03', 840), perfKey('284247', '2026-09-03', 1020)].sort();
+  const both = ['101', '102'].sort();
 
   it('accepts a pasted schedule link', () => {
     expect(keysOf(parseRestoreInput('https://example.test/fringe/#p=101.102', [show]))).toEqual(both);
@@ -145,7 +139,7 @@ describe('parseRestoreInput', () => {
     const synthetic = showWith([perf('s284082-2026-09-04T17:45', '2026-09-04', 1065)], '284082');
     expect(
       keysOf(parseRestoreInput('  https://example.test/#p=s284082-2026-09-04T17%3A45\n', [synthetic])),
-    ).toEqual([perfKey('284082', '2026-09-04', 1065)]);
+    ).toEqual(['s284082-2026-09-04T17:45']);
     expect(keysOf(parseRestoreInput('https://example.test/?p=101#p=101.102', [show]))).toEqual(both);
   });
 
@@ -163,7 +157,7 @@ describe('parseRestoreInput', () => {
 
   it('falls back to title + day + start for a backup written without timeIds', () => {
     const backup = JSON.stringify([{ title: 'A Show', day: '2026-09-03', start: 1020 }]);
-    expect(keysOf(parseRestoreInput(backup, [show]))).toEqual([perfKey('284247', '2026-09-03', 1020)]);
+    expect(keysOf(parseRestoreInput(backup, [show]))).toEqual(['102']);
   });
 
   it('returns nothing for empty, malformed, or unrecognised input', () => {
@@ -176,7 +170,7 @@ describe('parseRestoreInput', () => {
   });
 
   it('round-trips a share link built the way the Sync sheet builds it', () => {
-    const picked = new Set([perfKey('284247', '2026-09-03', 1020)]);
+    const picked = new Set(['102']);
     const link = `https://example.test/fringe/#p=${encodePicked(picked, [show])}`;
     expect(keysOf(parseRestoreInput(link, [show]))).toEqual(keysOf(picked));
   });

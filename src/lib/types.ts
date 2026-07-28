@@ -98,9 +98,6 @@ export type Show = {
   perfs: Perf[]; // active and cancelled, sorted by day then start
 };
 
-// `${showId}|${day}|${start}` - the unit the user picks, never the show.
-export type PerfKey = string;
-
 export type ClashMode = 'show' | 'hide';
 
 export type ViewMode = 'grid' | 'cards';
@@ -116,7 +113,7 @@ export type TimeBucket = 'matinee' | 'evening' | 'night';
 // openMenu slot as the others.
 export type MenuKey = 'day' | 'time' | 'venue' | 'age' | 'content' | 'clash' | 'shows' | 'all' | null;
 
-// Which show and which specific performance opened the detail panel - the
-// panel's TIME/VENUE/LENGTH fields describe this one performance, and every
-// other active performance of the show lists in "Other performances".
-export type DetailTarget = { showId: string; perfKey: PerfKey };
+// Which specific performance opened the detail panel - the panel's
+// TIME/VENUE/LENGTH fields describe this one performance, and every other
+// active performance of its show lists in "Other performances".
+export type DetailTarget = { timeId: TimeId };

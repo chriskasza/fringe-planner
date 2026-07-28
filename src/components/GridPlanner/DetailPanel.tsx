@@ -1,5 +1,5 @@
 import { useApp } from '../../state/AppContext';
-import { parsePerfKey, perfKey, perfState } from '../../lib/derived';
+import { perfIndex, perfState } from '../../lib/derived';
 import { formatTime } from '../../lib/dates';
 import styles from './DetailPanel.module.css';
 
@@ -14,18 +14,15 @@ export function DetailPanel() {
   const { state, dispatch, shows, days } = useApp();
   if (!state.detail) return null;
 
-  const show = shows.find((s) => s.id === state.detail!.showId);
-  if (!show) return null;
-
-  const { day: primaryDay, start: primaryStart } = parsePerfKey(state.detail.perfKey);
-  const primaryPerf = show.perfs.find((p) => p.day === primaryDay && p.start === primaryStart);
-  if (!primaryPerf) return null;
+  const hit = perfIndex(shows).get(state.detail.timeId);
+  if (!hit) return null;
+  const { show, perf: primaryPerf } = hit;
 
   const dayLabel = days.find((d) => d.key === primaryPerf.day)?.label ?? primaryPerf.day;
   const pState = perfState(show, primaryPerf, state.picked, shows);
   const isPicked = pState === 'picked' || pState === 'picked-clash';
 
-  const otherPerfs = show.perfs.filter((p) => p.status === 'active' && !(p.day === primaryDay && p.start === primaryStart));
+  const otherPerfs = show.perfs.filter((p) => p.status === 'active' && p.timeId !== primaryPerf.timeId);
 
   return (
     <div data-testid="detail-panel" className={styles['detail-panel']}>
@@ -77,15 +74,15 @@ export function DetailPanel() {
           <div className={styles['detail-panel__others']}>
             <div className={styles['detail-panel__others-label']}>OTHER PERFORMANCES</div>
             {otherPerfs.map((p) => {
-              const key = perfKey(show.id, p.day, p.start);
+              const timeId = p.timeId;
               const s = perfState(show, p, state.picked, shows);
               const label = days.find((d) => d.key === p.day)?.label ?? p.day;
               return (
                 <button
-                  key={key}
+                  key={timeId}
                   type="button"
                   className={styles['detail-panel__other-row']}
-                  onClick={() => dispatch({ type: 'TOGGLE_PICK', key })}
+                  onClick={() => dispatch({ type: 'TOGGLE_PICK', timeId })}
                 >
                   <span>
                     {label} · {formatTime(p.start)}
@@ -103,7 +100,7 @@ export function DetailPanel() {
           <button
             type="button"
             className={`${styles['detail-panel__primary']} ${isPicked ? styles['detail-panel__primary--remove'] : ''}`}
-            onClick={() => dispatch({ type: 'TOGGLE_PICK', key: state.detail!.perfKey })}
+            onClick={() => dispatch({ type: 'TOGGLE_PICK', timeId: primaryPerf.timeId })}
           >
             {isPicked ? '✓ In My Fringe — remove' : '★ Add to My Fringe'}
           </button>
