@@ -212,7 +212,7 @@ function extractAddress(html) {
 
 export async function fetchMeta(showId, ticketUrl, title) {
   const res = await fetch(ticketUrl, {
-    headers: { 'User-Agent': 'Mozilla/5.0 (compatible; fringe-calendar-scraper/1.0)' },
+    headers: { 'User-Agent': 'Mozilla/5.0 (compatible; fringe-planner-scraper/1.0)' },
   });
   if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${ticketUrl}`);
   const html = await res.text();
