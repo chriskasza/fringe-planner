@@ -26,6 +26,14 @@
   background: var(--img-placeholder);
 }
 
+.detail-panel__image-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .detail-panel__image-label {
   position: absolute;
   left: 12px;

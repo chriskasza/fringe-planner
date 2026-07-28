@@ -22,7 +22,11 @@ export function ShowCard({ show }: { show: Show }) {
   return (
     <div data-testid="show-card" className={`${styles['show-card']} ${anyPicked ? styles['show-card--picked'] : ''}`}>
       <div className={styles['show-card__image']}>
-        <span className={styles['show-card__image-label']}>[ SHOW IMAGE ]</span>
+        {show.poster ? (
+          <img src={show.poster} alt="" loading="lazy" className={styles['show-card__image-img']} />
+        ) : (
+          <span className={styles['show-card__image-label']}>[ SHOW IMAGE ]</span>
+        )}
         <IconButton
           glyph={anyPicked ? '★' : '☆'}
           ariaLabel={anyPicked ? `Remove ${show.title} from My Fringe` : `Add all of ${show.title} to My Fringe`}

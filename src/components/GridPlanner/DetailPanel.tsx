@@ -27,7 +27,11 @@ export function DetailPanel() {
   return (
     <div data-testid="detail-panel" className={styles['detail-panel']}>
       <div className={styles['detail-panel__image']}>
-        <span className={styles['detail-panel__image-label']}>[ SHOW IMAGE ]</span>
+        {show.poster ? (
+          <img src={show.poster} alt="" loading="lazy" className={styles['detail-panel__image-img']} />
+        ) : (
+          <span className={styles['detail-panel__image-label']}>[ SHOW IMAGE ]</span>
+        )}
         <button
           type="button"
           className={styles['detail-panel__close']}
