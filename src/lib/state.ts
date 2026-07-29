@@ -1,5 +1,5 @@
 import { nowInHalifax, TIME_BUCKETS } from './dates';
-import type { ClashMode, Day, DayKey, DetailTarget, MenuKey, Show, TimeBucket, TimeId, ViewMode } from './types';
+import type { ClashMode, Day, DayKey, DetailTarget, MenuKey, Show, SortMode, TimeBucket, TimeId, ViewMode } from './types';
 
 // Derived from TIME_BUCKETS rather than spelled out, so adding or renaming a
 // bucket doesn't need matching edits in the initial state and the reset.
@@ -18,6 +18,7 @@ export type AppState = {
   clash: ClashMode;
   query: string;
   viewMode: ViewMode;
+  sort: SortMode;
   gridDay: DayKey;
   openMenu: { grid: MenuKey; cards: MenuKey };
   expanded: Record<string, boolean>; // showId -> time list expanded
@@ -80,6 +81,7 @@ export function createInitialState(
     // screen) once Card Browser is fully built - 'grid' for now since it's
     // the only complete view.
     viewMode: 'grid',
+    sort: 'random',
     gridDay: gridDay.key,
     openMenu: { grid: null, cards: null },
     expanded: {},
@@ -108,6 +110,7 @@ export type AppAction =
   | { type: 'SET_CLASH'; mode: ClashMode }
   | { type: 'SET_QUERY'; query: string }
   | { type: 'SET_VIEW'; view: ViewMode }
+  | { type: 'SET_SORT'; sort: SortMode }
   | { type: 'SET_GRID_DAY'; day: DayKey }
   | { type: 'SET_OPEN_MENU'; view: 'grid' | 'cards'; menu: MenuKey }
   | { type: 'CLOSE_MENUS' }
@@ -203,6 +206,9 @@ export function appReducer(state: AppState, action: AppAction): AppState {
 
     case 'SET_VIEW':
       return { ...state, viewMode: action.view };
+
+    case 'SET_SORT':
+      return { ...state, sort: action.sort };
 
     // Additive, not exclusive: switching the grid to a day makes sure that
     // day is switched on (so the grid can never render blank because its own

@@ -109,6 +109,10 @@ export type ClashMode = 'show' | 'hide';
 
 export type ViewMode = 'grid' | 'cards';
 
+// Card Browser sort order. Named 'soonest' rather than 'time' so it doesn't
+// read like the Time-of-day filter's MenuKey.
+export type SortMode = 'random' | 'title' | 'soonest';
+
 // Time-of-day buckets for the Time filter (the handoff styles the button but
 // leaves the panel's contents unspecified). Boundaries are fitted to the real
 // 2026 showtimes, which cluster into daytime / early-evening / night:
@@ -118,7 +122,7 @@ export type TimeBucket = 'matinee' | 'evening' | 'night';
 // 'all' is the overflow filters modal (every filter stacked in one sheet,
 // rather than a single inline dropdown) - stored in the same per-view
 // openMenu slot as the others.
-export type MenuKey = 'day' | 'time' | 'venue' | 'age' | 'content' | 'clash' | 'shows' | 'all' | null;
+export type MenuKey = 'day' | 'time' | 'venue' | 'age' | 'content' | 'clash' | 'shows' | 'sort' | 'all' | null;
 
 // Which specific performance opened the detail panel - the panel's
 // TIME/VENUE/LENGTH fields describe this one performance, and every other
