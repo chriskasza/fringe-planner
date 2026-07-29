@@ -19,7 +19,7 @@ function toLocalDate(day: DayKey, minutes: number): Date {
 // (not UTC, since we only know the wall clock), a LOCATION pulled from the
 // show's venue address, and a description linking back to the ticket page.
 export function generateIcs(picks: { show: Show; perf: Show['perfs'][number] }[]): string {
-  const cal = ical({ prodId: '-//Halifax Fringe Show Selector//EN', method: ICalCalendarMethod.PUBLISH });
+  const cal = ical({ prodId: '-//Halifax Fringe Planner//EN', method: ICalCalendarMethod.PUBLISH });
 
   for (const { show, perf } of picks) {
     if (perf.status !== 'active') continue;
