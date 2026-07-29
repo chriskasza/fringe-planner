@@ -13,10 +13,10 @@ import { MoreFiltersButton } from './FiltersOverflowModal';
 import styles from './FilterBar.module.css';
 import dropdownStyles from '../ui/Dropdown.module.css';
 
-const SORT_OPTIONS: { value: SortMode; label: string }[] = [
-  { value: 'random', label: 'RANDOM' },
-  { value: 'title', label: 'A–Z' },
-  { value: 'soonest', label: 'SOONEST' },
+const SORT_OPTIONS: { value: SortMode; label: string; short: string }[] = [
+  { value: 'random', label: 'Random', short: 'RANDOM' },
+  { value: 'title', label: 'A–Z', short: 'A–Z' },
+  { value: 'soonest', label: 'Soonest', short: 'SOONEST' },
 ];
 
 type FilterBarProps = {
@@ -369,7 +369,7 @@ export function FilterBar({ view }: FilterBarProps) {
         <div className={styles['filter-bar__item']} data-overflow-reserved>
           <FilterButton
             label="Sort"
-            value={SORT_OPTIONS.find((o) => o.value === state.sort)!.label}
+            value={SORT_OPTIONS.find((o) => o.value === state.sort)!.short}
             active={state.sort !== 'random'}
             onClick={() => toggleMenu('sort')}
           />

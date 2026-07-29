@@ -39,7 +39,7 @@ export function ShowCard({ show }: { show: Show }) {
       <div className={styles['show-card__body']}>
         <h3 className={styles['show-card__title']}>{show.title}</h3>
         <div className={styles['show-card__credits']}>
-          {show.credits[0] ?? 'Independent artist'} · {show.mins} MIN
+          {show.credits[0] ?? 'Independent artist'} · {show.mins} min
         </div>
         <div className={styles['show-card__venue']}>{show.venueShort}</div>
         <div className={styles['show-card__rating']}>{show.rating}</div>

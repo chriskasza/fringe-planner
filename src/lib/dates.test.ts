@@ -40,9 +40,9 @@ describe('time-of-day buckets', () => {
 
   it('labels each bucket with its own boundary so the filter needs no legend', () => {
     expect(TIME_BUCKETS.map((b) => b.label)).toEqual([
-      'MATINEE · BEFORE 5PM',
-      'EVENING · 5–8PM',
-      'NIGHT · 8PM ON',
+      'Matinee · before 5pm',
+      'Evening · 5–8pm',
+      'Night · 8pm on',
     ]);
   });
 });

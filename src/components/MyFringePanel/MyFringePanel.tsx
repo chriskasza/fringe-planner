@@ -47,7 +47,7 @@ export function MyFringePanel() {
           return (
             <div className={styles['my-fringe-panel__group']} key={dayKey}>
               <div className={styles['my-fringe-panel__group-header']}>
-                <span className={styles['my-fringe-panel__day-label']}>{day?.label.toUpperCase() ?? dayKey}</span>
+                <span className={styles['my-fringe-panel__day-label']}>{day?.label ?? dayKey}</span>
                 {dayOverlaps > 0 && (
                   <span className={`${styles['my-fringe-panel__badge']} ${styles['my-fringe-panel__badge--overlap']}`}>
                     {dayOverlaps} OVERLAP

@@ -12,12 +12,12 @@
   background: var(--ink-raised);
 }
 
-.checkbox-row--dimmed {
-  opacity: 0.85;
-}
-
 .checkbox-row--dimmed .checkbox-row__label {
   color: var(--text-mute);
+}
+
+.checkbox-row--dimmed .checkbox-row__box {
+  border-color: var(--line-faint);
 }
 
 .checkbox-row__input {

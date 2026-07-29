@@ -24,7 +24,7 @@
   position: absolute;
   inset: 0;
   border: none;
-  background: rgba(0, 0, 0, 0.6);
+  background: var(--scrim);
   padding: 0;
   cursor: pointer;
 }

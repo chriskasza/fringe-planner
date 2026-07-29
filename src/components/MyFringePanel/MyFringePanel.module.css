@@ -136,7 +136,8 @@
 }
 
 .my-fringe-panel__row--outside {
-  opacity: 0.8;
+  background: var(--ink-sunken);
+  color: var(--text-faint);
 }
 
 .my-fringe-panel__time {
@@ -155,7 +156,7 @@
 
 .my-fringe-panel__row-title {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -186,7 +187,7 @@
 .my-fringe-panel__row-tickets {
   font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--ink);
   text-decoration: none;
 }
@@ -201,7 +202,7 @@
   border: none;
   font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 400;
+  font-weight: var(--font-weight-regular);
   color: var(--ink);
   cursor: pointer;
   padding: 0;
