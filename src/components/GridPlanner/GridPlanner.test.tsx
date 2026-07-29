@@ -231,7 +231,7 @@ describe('App (Grid Planner)', () => {
   it('renders every filter inline with no More… button when nothing needs to collapse', () => {
     render(<App />);
     expect(screen.queryByRole('button', { name: /^More/ })).not.toBeInTheDocument();
-    for (const label of ['Venue', 'Shows', 'Time', 'Day', 'Age & content', 'Content']) {
+    for (const label of ['Venue', 'Shows', 'Time', 'Day', 'Age', 'Content']) {
       expect(screen.getByRole('button', { name: new RegExp(`^${label}`) })).toBeInTheDocument();
     }
   });

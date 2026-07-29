@@ -51,7 +51,17 @@ export function Dropdown({ open, title, width, onClose, children }: DropdownProp
     });
     trap.activate();
     return () => {
-      trap.deactivate();
+      // A plain trap.deactivate() here would re-fire onDeactivate even when
+      // this cleanup runs because React itself closed this dropdown (e.g. a
+      // different filter just opened) - that stray onClose lands a tick
+      // after the new dropdown already opened and closes it right back.
+      // Overriding onDeactivate to a no-op for just this call suppresses
+      // that (focus-trap only skips the call for null/undefined, not falsy
+      // values in general, so `false` here would throw - it has to be a
+      // function). Escape-to-close still works: it's handled by
+      // escapeDeactivates internally calling the trap's own deactivate()
+      // with no override, which keeps the configured onDeactivate.
+      trap.deactivate({ onDeactivate: () => {} });
     };
   }, [open]);
 

@@ -5,7 +5,7 @@ import { FilterButton } from '../ui/FilterButton';
 import { Dropdown } from '../ui/Dropdown';
 import { CheckboxRow } from '../ui/CheckboxRow';
 import { SegmentedControl } from '../ui/SegmentedControl';
-import { summarizeCount, summarizeLabelled, summarizeSelected } from './filterSummary';
+import { ratingOptionLabel, summarizeCount, summarizeLabelled, summarizeSelected } from './filterSummary';
 import { useFilterOptions } from './useFilterOptions';
 import { useOverflowFilters } from './useOverflowFilters';
 import { MoreFiltersButton } from './FiltersOverflowModal';
@@ -112,8 +112,15 @@ export function FilterBar({ view }: FilterBarProps) {
                   key={s.id}
                   className={`${styles['filter-bar__show-row']} ${state.excluded[s.id] ? styles['filter-bar__show-row--off'] : ''}`}
                 >
+                  <span
+                    className={`${styles['filter-bar__show-checkbox']} ${!state.excluded[s.id] ? styles['filter-bar__show-checkbox--checked'] : ''}`}
+                    aria-hidden="true"
+                  >
+                    {!state.excluded[s.id] ? '✓' : ''}
+                  </span>
                   <input
                     type="checkbox"
+                    className={styles['filter-bar__show-checkbox-input']}
                     checked={!state.excluded[s.id]}
                     onChange={() => dispatch({ type: 'SET_EXCLUDED', showId: s.id, excluded: !state.excluded[s.id] })}
                   />
@@ -217,17 +224,17 @@ export function FilterBar({ view }: FilterBarProps) {
       render: () => (
         <>
           <FilterButton
-            label="Age & content"
+            label="Age"
             value={summarizeCount(state.ratingsOn, ratingKeys)}
             active={ratingKeys.some((k) => !state.ratingsOn[k])}
             onClick={() => toggleMenu('age')}
           />
-          <Dropdown open={openMenu === 'age'} title="Age & content" width={220} onClose={() => dispatch({ type: 'CLOSE_MENUS' })}>
+          <Dropdown open={openMenu === 'age'} title="Age" width={220} onClose={() => dispatch({ type: 'CLOSE_MENUS' })}>
             <div className={dropdownStyles['dropdown__list']} style={{ maxHeight: 224, overflowY: 'auto' }}>
               {ratings.map(([rating, count]) => (
                 <CheckboxRow
                   key={rating}
-                  label={rating}
+                  label={ratingOptionLabel(rating)}
                   count={count}
                   checked={state.ratingsOn[rating]}
                   onChange={() => dispatch({ type: 'SET_RATING_ON', rating, on: !state.ratingsOn[rating] })}
@@ -299,28 +306,29 @@ export function FilterBar({ view }: FilterBarProps) {
 
   const { containerRef, itemRef, visibleCount: inlineCount } = useOverflowFilters(items.length);
 
-  // Outside-click closes this bar's own dropdowns. Two things it must not do:
+  // Outside-click closes this bar's own dropdowns. Scoped to "not inside the
+  // open dropdown's own panel" (every Dropdown renders role="dialog", and
+  // only one can be open app-wide) rather than "outside the whole bar" -
+  // the bar container includes empty background between filter items, which
+  // otherwise never counted as outside and left a dropdown open forever.
+  // Two things this must not do:
   //
   // - run when nothing is open, which dispatched CLOSE_MENUS on every click
   //   anywhere in the app and re-rendered both view trees for nothing;
   // - touch the overflow modal ('all'). Desktop and mobile are both always
   //   mounted and switched by CSS alone, so this listener is live at phone
-  //   widths too - and the modal renders outside this container, so every
-  //   tap inside it counted as an outside click and unmounted the modal
-  //   during mousedown, before the tap could reach the control under it. The
-  //   modal closes itself via its backdrop, close button and Escape.
+  //   widths too - the modal closes itself via its backdrop, close button
+  //   and Escape.
   useEffect(() => {
     if (!openMenu || openMenu === 'all') return;
 
     function onMouseDown(e: MouseEvent) {
-      if (!containerRef.current) return;
-      if (!containerRef.current.contains(e.target as Node)) {
-        dispatch({ type: 'CLOSE_MENUS' });
-      }
+      if ((e.target as Element).closest?.('[role="dialog"]')) return;
+      dispatch({ type: 'CLOSE_MENUS' });
     }
     document.addEventListener('mousedown', onMouseDown, true);
     return () => document.removeEventListener('mousedown', onMouseDown, true);
-  }, [containerRef, dispatch, openMenu]);
+  }, [dispatch, openMenu]);
 
   return (
     <div className={styles['filter-bar']} ref={containerRef}>

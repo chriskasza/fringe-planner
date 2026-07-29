@@ -4,7 +4,7 @@
 // One grammar for every filter: `ALL n` / `NONE` / `n OF m`. Day and Time
 // additionally name the single selection when there is exactly one, because
 // their labels are short enough to read inline ("FRI 4 SEP", "EVENING");
-// Venue, Age & content and Shows always stay numeric, since a single venue
+// Venue, Age and Shows always stay numeric, since a single venue
 // or rating name would stretch the bar.
 export function summarizeSelected(selected: number, total: number): string {
   if (selected === total) return `ALL ${total}`;
@@ -56,6 +56,14 @@ export function activeFilterCount(args: {
 }
 
 const RATING_ORDER = ['All', '5+', '8+', '12+', '14+', '16+', '18+', 'NOT RATED'];
+
+// Display-only: the raw "All" rating value (matched above and everywhere
+// show.rating is rendered elsewhere) reads as ambiguous right next to a
+// filter button's own "ALL n" all-selected summary text - this disambiguates
+// just the checkbox option label, not the underlying data.
+export function ratingOptionLabel(rating: string): string {
+  return rating === 'All' ? 'All ages' : rating;
+}
 
 export function sortRatings(ratings: string[]): string[] {
   return [...ratings].sort((a, b) => {

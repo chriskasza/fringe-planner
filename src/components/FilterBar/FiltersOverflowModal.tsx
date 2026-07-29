@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { TIME_BUCKETS } from '../../lib/dates';
 import { CheckboxRow } from '../ui/CheckboxRow';
 import { SegmentedControl } from '../ui/SegmentedControl';
-import { activeFilterCount, summarizeCount, summarizeLabelled, summarizeSelected } from './filterSummary';
+import { activeFilterCount, ratingOptionLabel, summarizeCount, summarizeLabelled, summarizeSelected } from './filterSummary';
 import { useFilterOptions } from './useFilterOptions';
 import styles from './FiltersOverflowModal.module.css';
 // Reuses FilterBar's show-row/typeahead styling and Dropdown's list/footer/
@@ -154,8 +154,15 @@ export function FiltersOverflowModal({ view }: FiltersOverflowModalProps) {
                   key={s.id}
                   className={`${filterBarStyles['filter-bar__show-row']} ${state.excluded[s.id] ? filterBarStyles['filter-bar__show-row--off'] : ''}`}
                 >
+                  <span
+                    className={`${filterBarStyles['filter-bar__show-checkbox']} ${!state.excluded[s.id] ? filterBarStyles['filter-bar__show-checkbox--checked'] : ''}`}
+                    aria-hidden="true"
+                  >
+                    {!state.excluded[s.id] ? '✓' : ''}
+                  </span>
                   <input
                     type="checkbox"
+                    className={filterBarStyles['filter-bar__show-checkbox-input']}
                     checked={!state.excluded[s.id]}
                     onChange={() => dispatch({ type: 'SET_EXCLUDED', showId: s.id, excluded: !state.excluded[s.id] })}
                   />
@@ -242,7 +249,7 @@ export function FiltersOverflowModal({ view }: FiltersOverflowModalProps) {
 
           <section className={styles['filters-overflow-section']}>
             <div className={styles['filters-overflow-section__header']}>
-              <span className={styles['filters-overflow-section__label']}>Age &amp; content</span>
+              <span className={styles['filters-overflow-section__label']}>Age</span>
               <span className={styles['filters-overflow-section__value']}>
                 {summarizeCount(state.ratingsOn, ratingKeys)}
               </span>
@@ -251,7 +258,7 @@ export function FiltersOverflowModal({ view }: FiltersOverflowModalProps) {
               {ratings.map(([rating, count]) => (
                 <CheckboxRow
                   key={rating}
-                  label={rating}
+                  label={ratingOptionLabel(rating)}
                   count={count}
                   checked={state.ratingsOn[rating]}
                   onChange={() => dispatch({ type: 'SET_RATING_ON', rating, on: !state.ratingsOn[rating] })}
