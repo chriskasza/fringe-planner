@@ -177,7 +177,21 @@
   }
 }
 
+/* Position-only: left/width/top/bottom come from GridBlock's inline `style`
+   (see gridLayout.ts). Stays a plain, non-interactive div so the pick surface
+   and the details icon below can be real, unnested sibling buttons - a
+   `role="button"` div wrapping a `<button>` is a nested-interactive a11y
+   violation (axe's nested-interactive rule), which this structure used to
+   trip. */
 .grid-block {
+  position: absolute;
+}
+
+/* The visible, clickable block surface. A real <button> so Enter/Space
+   activation is native - no manual onKeyDown needed. */
+.grid-block__surface {
+  width: 100%;
+  height: 100%;
   padding: 8px 9px;
   border-radius: var(--r-block);
   min-width: 0;
@@ -186,31 +200,34 @@
   flex-direction: column;
   gap: 4px;
   overflow: hidden;
+  font: inherit;
+  color: inherit;
+  text-align: left;
 }
 
-.grid-block:hover {
+.grid-block__surface:hover {
   filter: brightness(1.08);
 }
 
-.grid-block--free {
+.grid-block__surface--free {
   background: var(--ink-raised);
   border: 1px solid var(--line);
 }
 
-.grid-block--clash {
+.grid-block__surface--clash {
   background: var(--ink-raised);
   border: 1px solid var(--coral-border);
   border-left-width: 3px;
   border-left-color: var(--coral);
 }
 
-.grid-block--picked {
+.grid-block__surface--picked {
   background: var(--gold);
   border: 1px solid var(--gold);
   color: var(--ink);
 }
 
-.grid-block--picked-clash {
+.grid-block__surface--picked-clash {
   background: var(--gold);
   border: 1px solid var(--coral);
   border-left-width: 6px;
@@ -220,8 +237,20 @@
 .grid-block__top {
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
   gap: 6px;
+  /* Reserve room for .grid-block__icon, which overlays this corner as a
+     sibling rather than sitting in this flex row. */
+  padding-right: 24px;
+}
+
+/* Sibling of .grid-block__surface, not a descendant - overlaid in the same
+   corner the icon used to occupy inside the row above. Painted on top of the
+   surface for free: later same-stacking-context siblings paint over earlier
+   ones without needing z-index. */
+.grid-block__icon {
+  position: absolute;
+  top: 8px;
+  right: 9px;
 }
 
 .grid-block__title {

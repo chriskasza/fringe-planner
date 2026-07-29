@@ -22,10 +22,7 @@ export function IconButton({
       type="button"
       className={`${styles['icon-button']} ${styles[`icon-button--${variant}`]} ${className}`}
       style={{ width: size, height: size }}
-      onClick={(e) => {
-        e.stopPropagation();
-        onClick(e);
-      }}
+      onClick={onClick}
       aria-label={ariaLabel}
     >
       {glyph}

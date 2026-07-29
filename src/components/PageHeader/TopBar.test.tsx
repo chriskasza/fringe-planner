@@ -5,7 +5,7 @@ import App from '../../App';
 describe('TopBar My Fringe button', () => {
   it('does not open the panel when a pick is added - only the badge pop cues it', () => {
     render(<App />);
-    fireEvent.click(document.querySelectorAll('[data-testid="grid-block"]')[0]);
+    fireEvent.click(document.querySelectorAll('[data-testid="grid-block-pick"]')[0]);
     expect(document.querySelector('[data-testid="my-fringe-panel"]')).not.toBeInTheDocument();
   });
 
@@ -38,7 +38,7 @@ describe('TopBar My Fringe badge pop', () => {
 
   it('is applied once a pick has been added', () => {
     render(<App />);
-    fireEvent.click(document.querySelectorAll('[data-testid="grid-block"]')[0]);
+    fireEvent.click(document.querySelectorAll('[data-testid="grid-block-pick"]')[0]);
     expect(screen.getByTestId('topbar-myfringe-badge').className).toMatch(/badge--pop/);
   });
 });

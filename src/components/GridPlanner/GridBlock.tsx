@@ -29,38 +29,31 @@ export function GridBlock({ show, perf, gridStartMin }: GridBlockProps) {
     pState === 'picked' || pState === 'picked-clash' ? 'Picked' : pState === 'clash' ? 'Overlaps' : 'Available';
 
   return (
-    <div
-      data-testid="grid-block"
-      className={`${styles['grid-block']} ${styles[`grid-block--${pState}`]}`}
-      style={style}
-      onClick={() => dispatch({ type: 'TOGGLE_PICK', timeId })}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          dispatch({ type: 'TOGGLE_PICK', timeId });
-        }
-      }}
-      aria-label={`${show.title}, ${formatTime(perf.start)}, ${perf.mins} min, ${stateLabel}`}
-    >
-      <div className={styles['grid-block__top']}>
-        <span className={styles['grid-block__title']} title={show.title}>
-          {show.title}
-        </span>
-        <IconButton
-          glyph="ⓘ"
-          ariaLabel={`Details for ${show.title}`}
-          variant={pState === 'picked' || pState === 'picked-clash' ? 'on-gold' : 'default'}
-          size={18}
-          onClick={() =>
-            dispatch({ type: 'SET_DETAIL', detail: state.detail?.timeId === timeId ? null : { timeId } })
-          }
-        />
-      </div>
-      <div className={styles['grid-block__meta']}>
-        {formatTime(perf.start)} · {perf.mins} MIN
-      </div>
+    <div data-testid="grid-block" className={styles['grid-block']} style={style}>
+      <button
+        type="button"
+        data-testid="grid-block-pick"
+        className={`${styles['grid-block__surface']} ${styles[`grid-block__surface--${pState}`]}`}
+        onClick={() => dispatch({ type: 'TOGGLE_PICK', timeId })}
+        aria-label={`${show.title}, ${formatTime(perf.start)}, ${perf.mins} min, ${stateLabel}`}
+      >
+        <div className={styles['grid-block__top']}>
+          <span className={styles['grid-block__title']} title={show.title}>
+            {show.title}
+          </span>
+        </div>
+        <div className={styles['grid-block__meta']}>
+          {formatTime(perf.start)} · {perf.mins} MIN
+        </div>
+      </button>
+      <IconButton
+        glyph="ⓘ"
+        ariaLabel={`Details for ${show.title}`}
+        variant={pState === 'picked' || pState === 'picked-clash' ? 'on-gold' : 'default'}
+        size={18}
+        className={styles['grid-block__icon']}
+        onClick={() => dispatch({ type: 'SET_DETAIL', detail: state.detail?.timeId === timeId ? null : { timeId } })}
+      />
     </div>
   );
 }

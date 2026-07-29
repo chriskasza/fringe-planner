@@ -20,7 +20,7 @@ describe('App (Grid Planner)', () => {
     const badgeBefore = screen.getByText('0');
     expect(badgeBefore).toBeInTheDocument();
 
-    const blocks = document.querySelectorAll('[data-testid="grid-block"]');
+    const blocks = document.querySelectorAll('[data-testid="grid-block-pick"]');
     expect(blocks.length).toBeGreaterThan(0);
 
     fireEvent.click(blocks[0]);
@@ -131,7 +131,7 @@ describe('App (Grid Planner)', () => {
       .map((el) => el.closest('[data-testid="grid-block"]') as HTMLElement);
     const normBlock = normBlocks.find((b) => b.textContent?.includes('7:30 PM'));
     expect(normBlock).toBeDefined();
-    fireEvent.click(normBlock!);
+    fireEvent.click(normBlock!.querySelector('[data-testid="grid-block-pick"]')!);
 
     const craigBlocks = screen
       .getAllByTitle('Craig in Conversation with God')
@@ -140,7 +140,9 @@ describe('App (Grid Planner)', () => {
     expect(craigBlock).toBeDefined();
     // The aria-label already encodes clash state ("...Overlaps"), so assert
     // on the accessible name rather than the (now CSS-Modules-hashed) class.
-    expect(craigBlock!.getAttribute('aria-label')).toContain('Overlaps');
+    expect(craigBlock!.querySelector('[data-testid="grid-block-pick"]')!.getAttribute('aria-label')).toContain(
+      'Overlaps',
+    );
   });
 
   it("sizes a block's width proportionally to its actual duration, not a fixed minimum", () => {
