@@ -145,10 +145,13 @@ its share link and QR code from the same string.
 ### Filters persist to localStorage, not the URL
 
 Day/venue/rating/content-warning/time toggles, the Shows search exclusion list, clash
-mode, and the search query survive a reload via `src/lib/filterPersistence.ts`, on the
-same 250ms debounce as picks but written to `localStorage` only (`fringe-filters`) - no
-hash, no `history.replaceState`, no `popstate` listener, since there's no share-link case
-to support.
+mode, the search query, and the Card Browser's sort order survive a reload via
+`src/lib/filterPersistence.ts`, on the same 250ms debounce as picks but written to
+`localStorage` only (`fringe-filters`) - no hash, no `history.replaceState`, no
+`popstate` listener, since there's no share-link case to support. Sort isn't really a
+filter - it doesn't narrow what's browsable, and Reset All deliberately leaves it alone
+(see `src/lib/state.ts`) - but it's stored alongside clash/query anyway, as the same kind
+of personal, non-shareable display preference.
 
 - **Only the delta from default is stored** - the off keys for the opt-out maps
   (`daysOn`/`timeBucketsOn`/`venuesOn`/`ratingsOn`/`warningsOn`, which default all-on) and
