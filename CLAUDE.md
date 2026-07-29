@@ -62,6 +62,18 @@ Read `README.md` first - it documents the upstream API quirks that explain why
     target - once the FilterBar became a single component rendered at every width,
     that bump made Venue/Shows/Grid/Cards visibly taller than their neighbors in the
     same row, which read as broken rather than deliberate.)
+- **Don't dim de-emphasized text with `opacity`.** The muted text tokens in
+  `src/styles/tokens.css` (`--text-faint`, `--text-mute`, ...) are tuned to just clear
+  WCAG AA (4.5:1) against the four dark background tokens directly. Wrapping one of
+  them in a whole-element `opacity` - as `DayRail`, `CheckboxRow`, `FilterBar`,
+  `SyncSheet`, and `MyFringePanel` each separately did, to signal a dimmed/disabled/
+  outside-filter row - blends both the text and its background toward whatever's
+  behind the element, which silently drops the *effective* contrast well below the
+  token's own passing value (as low as 2.5:1 in one case, on a token that's 5:1+ on
+  paper). An accessibility scanner catches this; `npm test`/`tsc`/lint don't, since
+  the raw color values never change. If a row needs to look de-emphasized, change its
+  `color` (there's usually already a token for it, e.g. `--text-mute`) instead of
+  reducing the whole element's opacity.
 - **No genre field.** Genre data isn't available on the festival website or in the PDF
   guide. Don't invent one - the front-end has no genre filter or genre-coded accents.
 - **Don't commit the festival PDF** (it's gitignored - 32MB).
