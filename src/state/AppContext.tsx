@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useReducer, type Dispatch, type ReactNode } from 'react';
+import { loadInitialFilters, useFilterPersistence } from '../lib/filterPersistence';
 import { days, shows } from '../lib/loadData';
 import { loadInitialPicked, usePersistence } from '../lib/persistence';
 import { appReducer, createInitialState, type AppAction, type AppState } from '../lib/state';
@@ -14,7 +15,8 @@ const AppContext = createContext<AppContextValue | null>(null);
 
 function init(): AppState {
   const initial = createInitialState(days, shows);
-  return { ...initial, picked: loadInitialPicked(shows) };
+  const filters = loadInitialFilters(initial, shows);
+  return { ...initial, ...filters, picked: loadInitialPicked(shows) };
 }
 
 export function AppProvider({ children }: { children: ReactNode }) {
@@ -25,6 +27,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   usePersistence(state.picked, shows, onExternalChange);
+  useFilterPersistence(state);
 
   return (
     <AppContext.Provider value={{ state, dispatch, shows, days }}>{children}</AppContext.Provider>

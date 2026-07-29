@@ -139,7 +139,36 @@ its share link and QR code from the same string.
   picks use `replaceState` only, so they don't fill the history stack.
 - The Sync sheet's restore box accepts a full schedule link, a bare token string, or the
   `.json` backup it writes. The backup carries `timeId` per pick for exact restores.
-- Filter state is deliberately not in the URL. Only picks are.
+- Filter state is deliberately not in the URL - only picks are, so a shared schedule link
+  never forces the app's own filter view onto whoever opens it.
+
+### Filters persist to localStorage, not the URL
+
+Day/venue/rating/content-warning/time toggles, the Shows search exclusion list, clash
+mode, and the search query survive a reload via `src/lib/filterPersistence.ts`, on the
+same 250ms debounce as picks but written to `localStorage` only (`fringe-filters`) - no
+hash, no `history.replaceState`, no `popstate` listener, since there's no share-link case
+to support.
+
+- **Only the delta from default is stored** - the off keys for the opt-out maps
+  (`daysOn`/`timeBucketsOn`/`venuesOn`/`ratingsOn`/`warningsOn`, which default all-on) and
+  the excluded ids for `excluded` (which defaults all-off) - not every key, mirroring how
+  picks store just the picked set rather than every performance.
+- **A saved blob is merged onto a freshly computed default, never substituted for it.**
+  `decodeFilters` takes the just-computed `createInitialState` result and only flips keys
+  it has an explicit saved entry for; a key with no entry keeps whatever that fresh
+  computation already decided. This is what lets `daysOn`'s date-dependent default (days
+  before today start off) apply correctly to a day that wasn't in the saved blob at all,
+  and what makes a brand-new venue/rating/warning from a re-scrape default to visible
+  instead of silently hidden.
+- Stale keys (a venue/rating/warning/day/showId no longer in the current data) are
+  dropped individually, same as a junk `timeId` token in a picks link - one bad entry
+  doesn't cost the rest of the restore.
+- **Known gap**: because only off-keys are stored, explicitly re-enabling an
+  already-past day won't round-trip - the next load's fresh default is `false` for that
+  day either way, so there's no saved marker to distinguish "turned back on" from "never
+  touched." Narrow enough (re-viewing an already-past day) that it's accepted rather than
+  fixed with bidirectional deltas.
 
 ### Time is always Halifax wall-clock
 
