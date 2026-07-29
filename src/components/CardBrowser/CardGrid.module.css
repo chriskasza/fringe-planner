@@ -1,9 +1,10 @@
 .card-grid {
+  --card-max-width: 320px;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-max-width), 1fr));
   gap: 18px;
   padding: 22px 26px 28px;
   align-items: start;
