@@ -17,7 +17,6 @@ export function MyFringePanel() {
   }
 
   const orderedDayKeys = days.map((d) => d.key).filter((k) => byDay.has(k));
-  const totalOverlaps = entries.filter((e) => overlapping(e.timeId, state.picked, shows)).length;
 
   return (
     <div data-testid="my-fringe-panel" className={styles['my-fringe-panel']}>
@@ -63,22 +62,34 @@ export function MyFringePanel() {
                     key={entry.timeId}
                     className={`${styles['my-fringe-panel__row']} ${isOverlap ? styles['my-fringe-panel__row--overlap'] : ''} ${isOutsideFilter ? styles['my-fringe-panel__row--outside'] : ''}`}
                   >
-                    <span className={styles['my-fringe-panel__time']}>{formatTime(entry.perf.start)}</span>
-                    <span className={styles['my-fringe-panel__info']}>
-                      <span className={styles['my-fringe-panel__row-title']}>{entry.show.title}</span>
-                      <span className={styles['my-fringe-panel__row-venue']}>{entry.show.venueShort}</span>
-                      {isOutsideFilter && (
-                        <span className={styles['my-fringe-panel__outside-tag']}>OUTSIDE DATE FILTER</span>
-                      )}
-                    </span>
-                    <button
-                      type="button"
-                      className={styles['my-fringe-panel__remove']}
-                      onClick={() => dispatch({ type: 'TOGGLE_PICK', timeId: entry.timeId })}
-                      aria-label={`Remove ${entry.show.title} from My Fringe`}
-                    >
-                      ✕
-                    </button>
+                    <div className={styles['my-fringe-panel__row-main']}>
+                      <span className={styles['my-fringe-panel__time']}>{formatTime(entry.perf.start)}</span>
+                      <span className={styles['my-fringe-panel__info']}>
+                        <span className={styles['my-fringe-panel__row-title']}>{entry.show.title}</span>
+                        <span className={styles['my-fringe-panel__row-venue']}>{entry.show.venueShort}</span>
+                        {isOutsideFilter && (
+                          <span className={styles['my-fringe-panel__outside-tag']}>OUTSIDE DATE FILTER</span>
+                        )}
+                      </span>
+                    </div>
+                    <div className={styles['my-fringe-panel__row-actions']}>
+                      <a
+                        className={styles['my-fringe-panel__row-tickets']}
+                        href={entry.show.ticketUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Get tickets ↗
+                      </a>
+                      <button
+                        type="button"
+                        className={styles['my-fringe-panel__remove']}
+                        onClick={() => dispatch({ type: 'TOGGLE_PICK', timeId: entry.timeId })}
+                        aria-label={`Remove ${entry.show.title} from My Fringe`}
+                      >
+                        Remove ✕
+                      </button>
+                    </div>
                   </div>
                 );
               })}
@@ -88,9 +99,6 @@ export function MyFringePanel() {
       </div>
 
       <div className={styles['my-fringe-panel__footer']}>
-        <button type="button" className={styles['my-fringe-panel__tickets']}>
-          Get tickets · {state.picked.size}
-        </button>
         <button
           type="button"
           className={styles['my-fringe-panel__sync']}
@@ -98,9 +106,6 @@ export function MyFringePanel() {
         >
           SYNC TO ANOTHER DEVICE ↗
         </button>
-        <div className={styles['my-fringe-panel__overlap-summary']}>
-          {totalOverlaps > 0 ? `${totalOverlaps} PERFORMANCE${totalOverlaps > 1 ? 'S' : ''} OVERLAP` : 'NO OVERLAPS'}
-        </div>
       </div>
     </div>
   );

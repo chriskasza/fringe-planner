@@ -116,12 +116,18 @@
 
 .my-fringe-panel__row {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  gap: 6px;
   background: var(--gold);
   color: var(--ink);
   border-radius: var(--r-button);
   padding: 10px 12px;
+}
+
+.my-fringe-panel__row-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .my-fringe-panel__row--overlap {
@@ -170,15 +176,39 @@
   margin-top: 2px;
 }
 
+.my-fringe-panel__row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.my-fringe-panel__row-tickets {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.my-fringe-panel__row-tickets:hover {
+  text-decoration: underline;
+}
+
 .my-fringe-panel__remove {
   flex: none;
   background: none;
   border: none;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
   color: var(--ink);
-  opacity: 0.6;
-  font-size: 13px;
   cursor: pointer;
-  padding: 4px;
+  padding: 0;
+}
+
+.my-fringe-panel__remove:hover {
+  text-decoration: underline;
 }
 
 .my-fringe-panel__footer {
@@ -187,19 +217,6 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.my-fringe-panel__tickets {
-  padding: 12px;
-  border-radius: var(--r-button);
-  border: none;
-  background: var(--gold);
-  color: var(--ink);
-  font-weight: 700;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  cursor: pointer;
 }
 
 .my-fringe-panel__sync {
@@ -212,11 +229,4 @@
   font-size: 10px;
   letter-spacing: 0.04em;
   cursor: pointer;
-}
-
-.my-fringe-panel__overlap-summary {
-  text-align: center;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--text-faint);
 }
