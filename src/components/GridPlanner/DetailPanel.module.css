@@ -174,7 +174,7 @@
 }
 
 .detail-panel__other-status--clash {
-  color: var(--coral);
+  color: var(--coral-text);
 }
 
 .detail-panel__footer {

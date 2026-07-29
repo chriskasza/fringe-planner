@@ -31,7 +31,7 @@
 .day-rail__cell--none {
   background: transparent;
   border: 1px dashed var(--line-soft);
-  color: var(--text-ghost);
+  color: var(--text-faint);
   cursor: default;
 }
 
@@ -45,7 +45,6 @@
   background: var(--ink-sunken);
   border: 1px dashed var(--line-faint);
   color: var(--text-faint);
-  opacity: 0.75;
 }
 
 .day-rail__cell--clash {

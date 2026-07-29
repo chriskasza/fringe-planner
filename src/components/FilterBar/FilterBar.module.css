@@ -110,7 +110,7 @@
 }
 
 .filter-bar__show-row--off {
-  opacity: 0.55;
+  opacity: 0.85;
 }
 
 .filter-bar__show-row--off .filter-bar__show-title {

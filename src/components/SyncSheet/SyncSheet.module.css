@@ -265,7 +265,6 @@
 }
 
 .sync-action-row--disabled {
-  opacity: 0.55;
   cursor: not-allowed;
 }
 

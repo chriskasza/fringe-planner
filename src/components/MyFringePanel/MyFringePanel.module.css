@@ -111,7 +111,7 @@
 }
 
 .my-fringe-panel__badge--overlap {
-  color: var(--coral);
+  color: var(--coral-text);
 }
 
 .my-fringe-panel__row {
@@ -130,7 +130,7 @@
 }
 
 .my-fringe-panel__row--outside {
-  opacity: 0.62;
+  opacity: 0.8;
 }
 
 .my-fringe-panel__time {
