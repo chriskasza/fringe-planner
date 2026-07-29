@@ -74,6 +74,18 @@ Read `README.md` first - it documents the upstream API quirks that explain why
   the raw color values never change. If a row needs to look de-emphasized, change its
   `color` (there's usually already a token for it, e.g. `--text-mute`) instead of
   reducing the whole element's opacity.
+- **Never nest a real interactive element inside another interactive element**,
+  including a `role="button"`/`tabIndex` div standing in for one. `GridBlock` used to
+  be a `role="button"` div (the pick-toggle) wrapping a real `<button>` (the "ⓘ"
+  details `IconButton`) - a nested-interactive violation that also needed a
+  `stopPropagation()` workaround in `IconButton` just to stop one click from firing
+  both actions. Fixed by making them DOM siblings instead: an inert positioning `<div>`
+  containing a real `<button>` for the primary action and the secondary control (here,
+  `IconButton`) overlaid via CSS `position: absolute` in the same visual spot, never as
+  a descendant. `GridBlock.tsx`/`GridPlanner.module.css`'s `.grid-block__icon` is the
+  pattern to copy for any future "card with a corner action button." Same blind spot as
+  the opacity note above: `tsc`/`npm test`/lint don't catch this, only an accessibility
+  scanner (or the browser's own accessibility tree inspector) does.
 - **No genre field.** Genre data isn't available on the festival website or in the PDF
   guide. Don't invent one - the front-end has no genre filter or genre-coded accents.
 - **Don't commit the festival PDF** (it's gitignored - 32MB).
