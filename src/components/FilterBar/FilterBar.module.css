@@ -109,12 +109,12 @@
   background: var(--ink-raised);
 }
 
-.filter-bar__show-row--off {
-  opacity: 0.85;
-}
-
 .filter-bar__show-row--off .filter-bar__show-title {
   color: var(--text-mute);
+}
+
+.filter-bar__show-row--off .filter-bar__show-checkbox {
+  border-color: var(--line-faint);
 }
 
 .filter-bar__show-checkbox-input {

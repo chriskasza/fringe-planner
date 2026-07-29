@@ -11,7 +11,7 @@ const cardTitles = () =>
 // The Sort control is a FilterButton + Dropdown like Venue/Day/etc, but
 // single-select: picking an option (a RadioRow) closes the menu itself
 // rather than leaving it open for further toggling.
-function chooseSort(label: 'RANDOM' | 'A–Z' | 'SOONEST') {
+function chooseSort(label: 'Random' | 'A–Z' | 'Soonest') {
   const browser = within(cardBrowserEl());
   fireEvent.click(browser.getByRole('button', { name: /^Sort/ }));
   fireEvent.click(within(browser.getByRole('dialog', { name: 'Sort' })).getByRole('menuitemradio', { name: label }));
@@ -52,11 +52,11 @@ describe('Card Browser sort', () => {
     expect(cardTitles()).toEqual(expected);
   });
 
-  it('SOONEST puts the show with the earliest upcoming performance first', () => {
+  it('Soonest puts the show with the earliest upcoming performance first', () => {
     render(<App />);
     switchToCards();
 
-    chooseSort('SOONEST');
+    chooseSort('Soonest');
 
     // The Defenestration of Prague's earliest active performance (Sep 3,
     // 2:00 PM) is the earliest in the whole dataset; APPLES! as told by an
@@ -71,7 +71,7 @@ describe('Card Browser sort', () => {
     switchToCards();
     const browser = within(cardBrowserEl());
 
-    chooseSort('SOONEST');
+    chooseSort('Soonest');
     fireEvent.click(browser.getByRole('button', { name: 'RESET ALL' }));
 
     expect(cardTitles()[0]).toBe('The Defenestration of Prague');

@@ -4,6 +4,7 @@
   --ink: #0e2a26;
   --ink-raised: #10322d;
   --ink-sunken: #0b211e;
+  --ink-hover: #14403a;
 
   /* Colors — borders */
   --line: #1e4a44;
@@ -32,12 +33,14 @@
   --gold-fill-active: rgba(198, 169, 59, 0.14);
   --gold-fill-note: rgba(198, 169, 59, 0.08);
   --gold-border-note: rgba(198, 169, 59, 0.35);
+  --gold-border: rgba(198, 169, 59, 0.5);
   --coral-fill: rgba(228, 87, 78, 0.1);
   --coral-border: rgba(228, 87, 78, 0.6);
   --coral-border-soft: rgba(228, 87, 78, 0.65);
   --coral-text: #efa39d;
   --info-border-on-gold: rgba(14, 42, 38, 0.4);
   --live-border: rgba(53, 214, 180, 0.5);
+  --scrim: rgba(0, 0, 0, 0.6);
 
   /* Image placeholder */
   --img-placeholder: repeating-linear-gradient(
@@ -50,6 +53,9 @@
   --font-display: 'Archivo Black', sans-serif;
   --font-body: 'Archivo', system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 
   /* Radii */
   --r-tag: 3px;
@@ -75,4 +81,5 @@
   /* Shadows */
   --shadow-frame: 0 30px 70px rgba(0, 0, 0, 0.45);
   --shadow-dropdown: 0 22px 50px rgba(0, 0, 0, 0.55);
+  --shadow-sticky: 4px 0 6px -4px rgba(0, 0, 0, 0.4);
 }

@@ -90,9 +90,9 @@ export function buildFestivalDays(counts: Record<DayKey, number>): Day[] {
 // picked, since the bar must not grow with the selection. See the TimeBucket
 // comment for why these three and where the cut-offs come from.
 export const TIME_BUCKETS: { key: TimeBucket; label: string; short: string }[] = [
-  { key: 'matinee', label: 'MATINEE · BEFORE 5PM', short: 'MATINEE' },
-  { key: 'evening', label: 'EVENING · 5–8PM', short: 'EVENING' },
-  { key: 'night', label: 'NIGHT · 8PM ON', short: 'NIGHT' },
+  { key: 'matinee', label: 'Matinee · before 5pm', short: 'MATINEE' },
+  { key: 'evening', label: 'Evening · 5–8pm', short: 'EVENING' },
+  { key: 'night', label: 'Night · 8pm on', short: 'NIGHT' },
 ];
 
 export function timeBucket(minutes: number): TimeBucket {

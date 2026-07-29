@@ -43,7 +43,7 @@ export function GridBlock({ show, perf, gridStartMin }: GridBlockProps) {
           </span>
         </div>
         <div className={styles['grid-block__meta']}>
-          {formatTime(perf.start)} · {perf.mins} MIN
+          {formatTime(perf.start)} · {perf.mins} min
         </div>
       </button>
       <IconButton

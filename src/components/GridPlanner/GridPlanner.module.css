@@ -134,12 +134,12 @@
      sticky box itself so its opaque background actually covers that space
      during a horizontal scroll (see .grid-body__scroll comment). */
   padding: 0 10px 0 26px;
-  box-shadow: 4px 0 6px -4px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-sticky);
 }
 
 .venue-row__name {
   font-family: var(--font-body);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   font-size: 13px;
   color: var(--cream);
 }
@@ -255,7 +255,7 @@
 
 .grid-block__title {
   font-family: var(--font-body);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   font-size: 12.5px;
   line-height: 1.25;
   overflow-wrap: anywhere;
@@ -277,6 +277,14 @@
   font-size: 9.5px;
   line-height: 1.3;
   letter-spacing: 0.02em;
-  opacity: 0.85;
   flex: none;
+}
+
+/* Dims the meta line a shade below the title, same as the opacity it
+   replaces - scoped to the free/clash surfaces (which inherit --cream) since
+   the picked surfaces already set color: var(--ink) for contrast against the
+   gold background, and there's no muted-on-gold token to dim that further. */
+.grid-block__surface--free .grid-block__meta,
+.grid-block__surface--clash .grid-block__meta {
+  color: var(--text-2);
 }
