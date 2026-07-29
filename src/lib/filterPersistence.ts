@@ -1,13 +1,17 @@
 import { useEffect, useRef } from 'react';
 import type { AppState } from './state';
-import type { ClashMode, DayKey, Show, TimeBucket } from './types';
+import type { ClashMode, DayKey, Show, SortMode, TimeBucket } from './types';
 
 const STORAGE_KEY = 'fringe-filters';
 const DEBOUNCE_MS = 250;
 
+// Sort isn't a filter - it doesn't narrow what's browsable, and Reset All
+// deliberately leaves it alone (see state.ts) - but it's the same kind of
+// personal, non-shareable display preference as clash/query, so it rides
+// along on the same localStorage blob rather than getting a second one.
 export type FilterState = Pick<
   AppState,
-  'daysOn' | 'timeBucketsOn' | 'venuesOn' | 'ratingsOn' | 'warningsOn' | 'excluded' | 'clash' | 'query'
+  'daysOn' | 'timeBucketsOn' | 'venuesOn' | 'ratingsOn' | 'warningsOn' | 'excluded' | 'clash' | 'query' | 'sort'
 >;
 
 // daysOn/timeBucketsOn/venuesOn/ratingsOn/warningsOn are opt-out (default
@@ -24,6 +28,7 @@ type PersistedFilters = {
   excluded?: string[]; // showIds
   clash?: ClashMode;
   query?: string;
+  sort?: SortMode;
 };
 
 function offKeys(map: Record<string, boolean>): string[] {
@@ -45,6 +50,7 @@ export function encodeFilters(filters: FilterState): string {
       .sort(),
     clash: filters.clash,
     query: filters.query,
+    sort: filters.sort,
   };
   return JSON.stringify(persisted);
 }
@@ -104,6 +110,8 @@ export function decodeFilters(saved: string, fresh: FilterState, shows: Show[]):
     excluded,
     clash: parsed.clash === 'show' || parsed.clash === 'hide' ? parsed.clash : fresh.clash,
     query: typeof parsed.query === 'string' ? parsed.query : fresh.query,
+    sort:
+      parsed.sort === 'random' || parsed.sort === 'title' || parsed.sort === 'soonest' ? parsed.sort : fresh.sort,
   };
 }
 
@@ -125,7 +133,7 @@ export function loadInitialFilters(fresh: FilterState, shows: Show[]): FilterSta
 // SET_GRID_DAY or TOGGLE_EXPANDED) - depending on the object would restart
 // the debounce on every state change, not just a filter change.
 export function useFilterPersistence(filters: FilterState): void {
-  const { daysOn, timeBucketsOn, venuesOn, ratingsOn, warningsOn, excluded, clash, query } = filters;
+  const { daysOn, timeBucketsOn, venuesOn, ratingsOn, warningsOn, excluded, clash, query, sort } = filters;
   const timer = useRef<number | undefined>(undefined);
 
   useEffect(() => {
@@ -135,7 +143,7 @@ export function useFilterPersistence(filters: FilterState): void {
       try {
         window.localStorage.setItem(
           STORAGE_KEY,
-          encodeFilters({ daysOn, timeBucketsOn, venuesOn, ratingsOn, warningsOn, excluded, clash, query }),
+          encodeFilters({ daysOn, timeBucketsOn, venuesOn, ratingsOn, warningsOn, excluded, clash, query, sort }),
         );
       } catch {
         // ignore storage failures
@@ -143,5 +151,5 @@ export function useFilterPersistence(filters: FilterState): void {
     }, DEBOUNCE_MS);
 
     return () => window.clearTimeout(timer.current);
-  }, [daysOn, timeBucketsOn, venuesOn, ratingsOn, warningsOn, excluded, clash, query]);
+  }, [daysOn, timeBucketsOn, venuesOn, ratingsOn, warningsOn, excluded, clash, query, sort]);
 }

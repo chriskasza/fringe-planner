@@ -56,8 +56,8 @@ function fresh(shows: Show[] = baseShows(), days: Day[] = DAYS): FilterState {
 // createInitialState returns a full AppState; decodeFilters only returns the
 // filter slice, so comparisons need to narrow to that same slice.
 function filterSlice(state: FilterState): FilterState {
-  const { daysOn, timeBucketsOn, venuesOn, ratingsOn, warningsOn, excluded, clash, query } = state;
-  return { daysOn, timeBucketsOn, venuesOn, ratingsOn, warningsOn, excluded, clash, query };
+  const { daysOn, timeBucketsOn, venuesOn, ratingsOn, warningsOn, excluded, clash, query, sort } = state;
+  return { daysOn, timeBucketsOn, venuesOn, ratingsOn, warningsOn, excluded, clash, query, sort };
 }
 
 describe('encodeFilters / decodeFilters', () => {
@@ -74,6 +74,7 @@ describe('encodeFilters / decodeFilters', () => {
       excluded: { '1': true },
       clash: 'hide',
       query: 'comedy',
+      sort: 'soonest',
     };
 
     const encoded = encodeFilters(flipped);
@@ -88,6 +89,7 @@ describe('encodeFilters / decodeFilters', () => {
       excluded: ['1'],
       clash: 'hide',
       query: 'comedy',
+      sort: 'soonest',
     });
 
     expect(decodeFilters(encoded, state, shows)).toEqual(filterSlice(flipped));
@@ -175,12 +177,23 @@ describe('encodeFilters / decodeFilters', () => {
       excluded: [1, null, {}, '1'],
       clash: 'bogus',
       query: 42,
+      sort: 'bogus',
     });
     const result = decodeFilters(badShape, state, shows);
     expect(result.daysOn).toEqual(state.daysOn); // bad daysOff falls back
     expect(result.excluded).toEqual({ '1': true }); // non-strings dropped, valid one kept
     expect(result.clash).toBe(state.clash); // bogus clash falls back
     expect(result.query).toBe(state.query); // non-string query falls back
+    expect(result.sort).toBe(state.sort); // bogus sort falls back
+  });
+
+  it('round-trips each valid sort mode', () => {
+    const shows = baseShows();
+    const state = fresh(shows);
+    for (const sort of ['random', 'title', 'soonest'] as const) {
+      const encoded = encodeFilters({ ...state, sort });
+      expect(decodeFilters(encoded, state, shows).sort).toBe(sort);
+    }
   });
 
   it('round-trips against the real festival data', () => {

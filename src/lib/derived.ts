@@ -148,6 +148,28 @@ export function clashModeLabel(mode: ClashMode): string {
   return mode.toUpperCase();
 }
 
+// Earliest active perf that hasn't ended yet, for the Cards view "soonest"
+// sort. perfs is already day+start sorted (transform.ts), so .find() is
+// enough - no re-sort needed.
+export function nextActivePerf(show: Show, now: { date: DayKey; minutes: number }): Perf | undefined {
+  return show.perfs.find(
+    (p) => p.status === 'active' && (p.day > now.date || (p.day === now.date && p.end > now.minutes)),
+  );
+}
+
+// A show already in progress (start < now <= end) still counts as upcoming -
+// same "in progress" window onNowCount uses - so it sorts near the top
+// instead of falling out of order. A show with nothing left to come sorts
+// after every show that does, tie-broken alphabetically like both do.
+export function compareShowsBySoonest(a: Show, b: Show, now: { date: DayKey; minutes: number }): number {
+  const pa = nextActivePerf(a, now);
+  const pb = nextActivePerf(b, now);
+  if (pa && pb) return pa.day.localeCompare(pb.day) || pa.start - pb.start || a.title.localeCompare(b.title);
+  if (pa) return -1;
+  if (pb) return 1;
+  return a.title.localeCompare(b.title);
+}
+
 // Shows currently in progress, for the top bar's "ON NOW" pill. `now` is
 // passed in rather than read here, so the caller's clock (useNow) is what
 // decides when this recounts - reading it internally froze the pill at

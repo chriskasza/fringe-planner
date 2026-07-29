@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { TIME_BUCKETS } from '../../lib/dates';
-import type { MenuKey } from '../../lib/types';
+import type { MenuKey, SortMode } from '../../lib/types';
 import { FilterButton } from '../ui/FilterButton';
 import { Dropdown } from '../ui/Dropdown';
 import { CheckboxRow } from '../ui/CheckboxRow';
+import { RadioRow } from '../ui/RadioRow';
 import { SegmentedControl } from '../ui/SegmentedControl';
 import { ratingOptionLabel, summarizeCount, summarizeLabelled, summarizeSelected } from './filterSummary';
 import { useFilterOptions } from './useFilterOptions';
@@ -11,6 +12,12 @@ import { useOverflowFilters } from './useOverflowFilters';
 import { MoreFiltersButton } from './FiltersOverflowModal';
 import styles from './FilterBar.module.css';
 import dropdownStyles from '../ui/Dropdown.module.css';
+
+const SORT_OPTIONS: { value: SortMode; label: string }[] = [
+  { value: 'random', label: 'RANDOM' },
+  { value: 'title', label: 'A–Z' },
+  { value: 'soonest', label: 'SOONEST' },
+];
 
 type FilterBarProps = {
   view: 'grid' | 'cards';
@@ -357,6 +364,32 @@ export function FilterBar({ view }: FilterBarProps) {
       <button type="button" className={styles['filter-bar__reset']} onClick={resetAll} data-overflow-reserved>
         RESET ALL
       </button>
+
+      {view === 'cards' && (
+        <div className={styles['filter-bar__item']} data-overflow-reserved>
+          <FilterButton
+            label="Sort"
+            value={SORT_OPTIONS.find((o) => o.value === state.sort)!.label}
+            active={state.sort !== 'random'}
+            onClick={() => toggleMenu('sort')}
+          />
+          <Dropdown open={openMenu === 'sort'} title="Sort" width={160} onClose={() => dispatch({ type: 'CLOSE_MENUS' })}>
+            <div className={dropdownStyles['dropdown__list']} role="menu">
+              {SORT_OPTIONS.map((o) => (
+                <RadioRow
+                  key={o.value}
+                  label={o.label}
+                  selected={state.sort === o.value}
+                  onSelect={() => {
+                    dispatch({ type: 'SET_SORT', sort: o.value });
+                    dispatch({ type: 'CLOSE_MENUS' });
+                  }}
+                />
+              ))}
+            </div>
+          </Dropdown>
+        </div>
+      )}
     </div>
   );
 }
