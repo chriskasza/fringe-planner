@@ -33,6 +33,50 @@ describe('FiltersOverflowModal', () => {
     }
   });
 
+  it('starts every section collapsed, with each expandable independently', () => {
+    renderModal();
+    fireEvent.click(screen.getByRole('button', { name: /^More/ }));
+
+    const overlay = document.querySelector('[data-testid="filters-overflow-overlay"]') as HTMLElement;
+    const dayHeader = within(overlay).getByRole('button', { name: /Day/ });
+    const venueHeader = within(overlay).getByRole('button', { name: /Venue/ });
+    expect(dayHeader).toHaveAttribute('aria-expanded', 'false');
+    expect(venueHeader).toHaveAttribute('aria-expanded', 'false');
+    expect(within(overlay).queryByText('Fri 4 Sep')).not.toBeInTheDocument();
+
+    fireEvent.click(dayHeader);
+    expect(dayHeader).toHaveAttribute('aria-expanded', 'true');
+    expect(within(overlay).getByText('Fri 4 Sep')).toBeInTheDocument();
+    // Opening Day doesn't touch Venue's own state.
+    expect(venueHeader).toHaveAttribute('aria-expanded', 'false');
+
+    fireEvent.click(venueHeader);
+    expect(venueHeader).toHaveAttribute('aria-expanded', 'true');
+    // Both stay open at once.
+    expect(dayHeader).toHaveAttribute('aria-expanded', 'true');
+    expect(within(overlay).getByText('Fri 4 Sep')).toBeInTheDocument();
+
+    fireEvent.click(dayHeader);
+    expect(dayHeader).toHaveAttribute('aria-expanded', 'false');
+    expect(within(overlay).queryByText('Fri 4 Sep')).not.toBeInTheDocument();
+  });
+
+  it('resets to fully collapsed each time it is reopened', () => {
+    renderModal();
+    fireEvent.click(screen.getByRole('button', { name: /^More/ }));
+    const overlay = () => document.querySelector('[data-testid="filters-overflow-overlay"]') as HTMLElement;
+
+    fireEvent.click(within(overlay()).getByRole('button', { name: /Day/ }));
+    expect(within(overlay()).getByText('Fri 4 Sep')).toBeInTheDocument();
+
+    fireEvent.click(document.querySelector('[data-testid="filters-overflow-backdrop"]')!);
+    expect(document.querySelector('[data-testid="filters-overflow-overlay"]')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /^More/ }));
+    expect(within(overlay()).getByRole('button', { name: /Day/ })).toHaveAttribute('aria-expanded', 'false');
+    expect(within(overlay()).queryByText('Fri 4 Sep')).not.toBeInTheDocument();
+  });
+
   it('stays open when a control inside it is tapped, and toggles that control', () => {
     // Real taps dispatch mousedown before click; FilterBar's own outside-click
     // listener (live at every width, since desktop and mobile are both always
@@ -42,6 +86,7 @@ describe('FiltersOverflowModal', () => {
     fireEvent.click(screen.getByRole('button', { name: /^More/ }));
 
     const overlay = () => document.querySelector('[data-testid="filters-overflow-overlay"]') as HTMLElement;
+    fireEvent.click(within(overlay()).getByRole('button', { name: /Day/ }));
     const dayRow = within(overlay()).getByText('Fri 4 Sep').closest('label') as HTMLElement;
     const checkbox = within(dayRow).getByRole('checkbox');
     expect(checkbox).toBeChecked();
