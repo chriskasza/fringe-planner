@@ -93,8 +93,13 @@
 .filters-overflow-section__header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
+  gap: 8px;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
 }
 
 .filters-overflow-section__label {
@@ -106,9 +111,22 @@
 }
 
 .filters-overflow-section__value {
+  flex: 1;
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--text-mute);
+  text-align: right;
+}
+
+.filters-overflow-section__chevron {
+  margin-left: auto;
+  font-size: 9px;
+  color: var(--text-mute);
+  line-height: 1;
+}
+
+.filters-overflow-section__body {
+  margin-top: 10px;
 }
 
 .filters-overflow-section__list {
