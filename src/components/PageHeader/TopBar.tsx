@@ -1,13 +1,9 @@
 import { useApp } from '../../state/AppContext';
-import { onNowCount } from '../../lib/derived';
-import { useNow } from '../../lib/useNow';
 import segmentedStyles from '../ui/SegmentedControl.module.css';
 import styles from './TopBar.module.css';
 
 export function TopBar() {
-  const { state, dispatch, shows } = useApp();
-  const now = useNow();
-  const onNow = onNowCount(shows, now);
+  const { state, dispatch } = useApp();
 
   // A switch, not a real segmented control (SegmentedControl sets state to
   // whichever option was clicked - see its use for Overlaps below). Both
@@ -35,12 +31,6 @@ export function TopBar() {
         </span>
       </div>
       <div className={styles['topbar__right']}>
-        {onNow > 0 && (
-          <span className={styles['topbar__onnow']}>
-            <span className={styles['topbar__onnow-dot']} />
-            ON NOW: {onNow} SHOW{onNow === 1 ? '' : 'S'}
-          </span>
-        )}
         <div className={segmentedStyles.segmented}>
           <div className={segmentedStyles['segmented__options']}>
             <button

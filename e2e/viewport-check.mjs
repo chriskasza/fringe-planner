@@ -84,13 +84,13 @@ async function main() {
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    // --- Desktop width (1440px): wordmark, ON NOW badge, label width, venue
+    // --- Desktop width (1440px): wordmark, label width, venue
     // address, no line-clamp, no max-width cap on either view. ---
     await page.setViewportSize({ width: 1440, height: 900 });
 
     // Mock the clock into a real on-now window (show 284247's Sep 3
-    // 14:00-15:00 performance at Grafton Street Dinner Theatre, ADT/UTC-3)
-    // so the ON NOW badge actually renders - today's real date has no
+    // 14:00-15:00 performance at Grafton Street Dinner Theatre, 
+    // ADT/UTC-3) - today's real date has no
     // festival show running, so this is the only way to exercise it.
     await page.clock.install({ time: new Date('2026-09-03T17:15:00Z') });
 
@@ -99,8 +99,6 @@ async function main() {
 
     const wordmarkText1440 = await page.$eval('[data-testid="topbar-wordmark"]', (el) => el.innerText.trim());
     check('1440px: wordmark reads "Halifax Fringe Planner"', wordmarkText1440 === 'Halifax Fringe Planner', wordmarkText1440);
-
-    check('1440px: ON NOW badge visible', await isVisible(page, '[data-testid="topbar"] >> text=ON NOW'));
 
     const labelWidth1440 = await computed(page, '[data-testid="time-header"]', '--grid-label-width');
     check('1440px: --grid-label-width resolves to 176px', labelWidth1440.trim() === '176px', labelWidth1440);
@@ -227,8 +225,7 @@ async function main() {
     check('520px: grid body header removed', !(await isVisible(page, '.grid-body__heading, [class*="grid-body__heading"]')));
     await screenshot(page, '520-grid');
 
-    // --- 390px (mobile): wordmark, ON NOW hidden, narrower label, no address,
-    // 3-line clamp. ---
+    // --- 390px (mobile): wordmark, narrower label, no address, 3-line clamp. ---
     await page.setViewportSize({ width: 390, height: 844 });
     await page.waitForSelector('[data-testid="topbar-wordmark"]');
 
@@ -238,8 +235,6 @@ async function main() {
     // plus the pre-existing 520px rule dropping "Planner").
     const wordmarkText390 = await page.$eval('[data-testid="topbar-wordmark"]', (el) => el.innerText.trim());
     check('390px: wordmark reads "Fringe" (Halifax and Planner both dropped)', wordmarkText390 === 'Fringe', wordmarkText390);
-
-    check('390px: ON NOW badge hidden despite onNow>0', !(await isVisible(page, '[data-testid="topbar"] >> text=ON NOW')));
 
     const labelWidth390 = await computed(page, '[data-testid="time-header"]', '--grid-label-width');
     check('390px: --grid-label-width resolves to 112px', labelWidth390.trim() === '112px', labelWidth390);

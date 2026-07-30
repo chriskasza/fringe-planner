@@ -7,9 +7,9 @@ import { nowInHalifax } from './dates';
 const TICK_MS = 60_000;
 
 // Halifax wall-clock "now" as React state. Reading nowInHalifax() directly
-// during render leaves whatever it returned at mount frozen on screen - the
-// "ON NOW" pill and the current day's grid axis both silently went stale
-// while the page sat open, and neither could list it as a dependency because
+// during render leaves whatever it returned at mount frozen on 
+// screen - the current day's grid axis silently went stale
+// while the page sat open, and could not list it as a dependency because
 // it isn't one.
 export function useNow(): { date: string; minutes: number } {
   const [now, setNow] = useState(nowInHalifax);

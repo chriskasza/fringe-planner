@@ -157,8 +157,8 @@ export function nextActivePerf(show: Show, now: { date: DayKey; minutes: number 
   );
 }
 
-// A show already in progress (start < now <= end) still counts as upcoming -
-// same "in progress" window onNowCount uses - so it sorts near the top
+// A show already in progress (start < now <= end) still counts as upcoming,
+// so it sorts near the top
 // instead of falling out of order. A show with nothing left to come sorts
 // after every show that does, tie-broken alphabetically like both do.
 export function compareShowsBySoonest(a: Show, b: Show, now: { date: DayKey; minutes: number }): number {
@@ -168,20 +168,4 @@ export function compareShowsBySoonest(a: Show, b: Show, now: { date: DayKey; min
   if (pa) return -1;
   if (pb) return 1;
   return a.title.localeCompare(b.title);
-}
-
-// Shows currently in progress, for the top bar's "ON NOW" pill. `now` is
-// passed in rather than read here, so the caller's clock (useNow) is what
-// decides when this recounts - reading it internally froze the pill at
-// whatever it said when the page was opened.
-export function onNowCount(shows: Show[], now: { date: DayKey; minutes: number }): number {
-  let count = 0;
-  for (const show of shows) {
-    for (const p of show.perfs) {
-      if (p.status === 'active' && p.day === now.date && p.start <= now.minutes && now.minutes < p.end) {
-        count++;
-      }
-    }
-  }
-  return count;
 }

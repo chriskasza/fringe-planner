@@ -179,8 +179,8 @@ The same rule as the scraper, on the front-end side: timestamps in `show_times.j
 naive local strings, so nothing parses them with `new Date()`. `src/lib/dates.ts` owns
 the arithmetic (`splitNaiveTimestamp`, `addDays`, `dayKeysBetween`, `nowInHalifax`), and
 components read "now" from the `useNow` hook rather than calling `nowInHalifax()` during
-render - a value read during render has no way to update, and both the ON NOW pill and
-the current day's grid axis silently froze at page-open time when they did that.
+render - a value read during render has no way to update, and the current day's grid 
+axis silently froze at page-open time when they did that.
 
 On today's date, performances that have already **finished** drop off the grid; one
 that's still running keeps its block. Days before today start deselected in the Day

@@ -37,7 +37,7 @@ Read `README.md` first - it documents the upstream API quirks that explain why
   width.** `PageHeader`, `CardBrowser`, and `GridPlanner` used to each duplicate into an
   `X`/`XMobile` pair, both mounted and switched by a `display:none` media query - that's
   gone. There's one `<CardBrowser>`, one `<GridPlanner>`; viewport-dependent differences
-  (sticky label column width, spacing, wordmark truncation, the ON NOW badge) are CSS
+  (sticky label column width, spacing, wordmark truncation) are CSS
   custom properties and `@media` blocks on the same selectors, never a JS prop or a
   second component. `DetailPanel` is the pattern to copy for anything new - one
   component, CSS alone flips it from a side panel to a full-screen overlay.
@@ -122,9 +122,8 @@ Two habits that have caught real bugs here:
   passes while the feature is unusable.
 - **jsdom does no layout, so vitest cannot see a layout bug.** The two worst defects this
   app has had - every card overlapping the one below it, and the rail footer painting
-  over the picks - were both invisible to a green suite, and so was a real CSS source-order
-  bug in the desktop/mobile merge (see above) that silently kept the ON NOW badge visible
-  under 700px. Run `npm run test:visual` (`e2e/viewport-check.mjs`, a plain script against
+  over the picks - were both invisible to a green suite. Run `npm run test:visual` 
+  (`e2e/viewport-check.mjs`, a plain script against
   the `playwright` devDependency - no test runner installed): it renders the real app at
   1440 / 1000 / 620 / 520 / 390, hit-tests the live DOM and computed styles, and screenshots
   along the way, rather than reading CSS and reasoning about it. Any change to grid, flex,

@@ -9,8 +9,7 @@ export const SLOT_WIDTH = 140;
 
 // On the current day a performance that has already finished isn't useful
 // browsing real estate, so it drops off the grid. "Finished", not "started":
-// a show that's running right now is exactly what the ON NOW pill is pointing
-// at, and it keeps its block until it ends.
+// a show that's running right now keeps its block until it ends.
 //
 // This is the single rule the axis and the blocks both go through. Clipping
 // only the axis (as this used to) left the blocks in place: a 14:00
