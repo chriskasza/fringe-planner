@@ -1,5 +1,5 @@
 {
-  "scrapedAt": "2026-07-28T15:11:20.338Z",
+  "scrapedAt": "2026-07-29T23:57:56.394Z",
   "timezone": "America/Halifax",
   "source": "https://halifaxfringe.ca/home-copy-copy-3/",
   "shows": [
@@ -72,14 +72,14 @@
       "title": "A Life in 60 Minutes",
       "blurb": "A Life In 60 Minutes is a one-man spoken word theatre performance by Dwayne Morgan, exploring fatherhood, immigrant family life, aging parents, and growing up Black — told with humour, honesty, and unforgettable poetry.",
       "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-15-2026-165716-89171.jpg",
-      "venue": "The Art Gallery of Nova Scotia",
+      "venue": "Art Gallery of Nova Scotia",
       "ticketUrl": "https://www.simpletix.com/e/a-life-in-60-minutes-tickets-282934",
       "times": [
         {
           "timeId": 1514900,
           "start": "2026-09-03T18:30",
           "end": "2026-09-03T19:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -87,7 +87,7 @@
           "timeId": 1514901,
           "start": "2026-09-04T17:00",
           "end": "2026-09-04T18:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -95,7 +95,7 @@
           "timeId": 1514902,
           "start": "2026-09-05T15:30",
           "end": "2026-09-05T16:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -103,7 +103,7 @@
           "timeId": 1514903,
           "start": "2026-09-06T14:00",
           "end": "2026-09-06T15:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -111,7 +111,7 @@
           "timeId": 1514904,
           "start": "2026-09-08T20:00",
           "end": "2026-09-08T21:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -119,7 +119,7 @@
           "timeId": 1514905,
           "start": "2026-09-09T17:00",
           "end": "2026-09-09T18:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -127,7 +127,7 @@
           "timeId": 1514907,
           "start": "2026-09-11T20:00",
           "end": "2026-09-11T21:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -135,7 +135,7 @@
           "timeId": 1514908,
           "start": "2026-09-12T21:30",
           "end": "2026-09-12T22:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -143,7 +143,7 @@
           "timeId": 1514909,
           "start": "2026-09-13T18:30",
           "end": "2026-09-13T19:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         }
@@ -704,14 +704,14 @@
       "title": "chronology of a genocide",
       "blurb": "chronology of a genocide is a poetry reading, chronologically bearing witness to the escalation of the genocide in Gaza, Palestine since October 2023.",
       "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/06-03-2026-144232-7048.jpg",
-      "venue": "The Art Gallery of Nova Scotia",
+      "venue": "Art Gallery of Nova Scotia",
       "ticketUrl": "https://www.simpletix.com/e/chronology-of-a-genocide-tickets-282975",
       "times": [
         {
           "timeId": 1515012,
           "start": "2026-09-03T20:00",
           "end": "2026-09-03T21:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -719,7 +719,7 @@
           "timeId": 1515013,
           "start": "2026-09-04T18:30",
           "end": "2026-09-04T19:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -727,7 +727,7 @@
           "timeId": 1515014,
           "start": "2026-09-05T20:00",
           "end": "2026-09-05T21:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -735,7 +735,7 @@
           "timeId": 1515015,
           "start": "2026-09-09T21:30",
           "end": "2026-09-09T22:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -743,7 +743,7 @@
           "timeId": 1515016,
           "start": "2026-09-12T18:30",
           "end": "2026-09-12T19:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -751,7 +751,7 @@
           "timeId": 1515017,
           "start": "2026-09-13T15:30",
           "end": "2026-09-13T16:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         }
@@ -1394,14 +1394,14 @@
       "title": "LUMBER",
       "blurb": "Join Jack around the fire as he tells his story of finding community in unlikely places and connecting with his home and heritage in an unconventional way.",
       "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-28-2026-051708-2519.jpg",
-      "venue": "The Art Gallery of Nova Scotia",
+      "venue": "Art Gallery of Nova Scotia",
       "ticketUrl": "https://www.simpletix.com/e/lumber-tickets-274060",
       "times": [
         {
           "timeId": 1461403,
           "start": "2026-09-03T21:30",
           "end": "2026-09-03T22:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -1409,7 +1409,7 @@
           "timeId": 1512534,
           "start": "2026-09-04T20:00",
           "end": "2026-09-04T21:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -1417,7 +1417,7 @@
           "timeId": 1512535,
           "start": "2026-09-05T18:30",
           "end": "2026-09-05T19:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -1425,7 +1425,7 @@
           "timeId": 1514072,
           "start": "2026-09-06T15:30",
           "end": "2026-09-06T16:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -1433,7 +1433,7 @@
           "timeId": 1514073,
           "start": "2026-09-08T17:00",
           "end": "2026-09-08T18:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -1441,7 +1441,7 @@
           "timeId": 1514074,
           "start": "2026-09-09T20:00",
           "end": "2026-09-09T21:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -1449,7 +1449,7 @@
           "timeId": 1514075,
           "start": "2026-09-10T21:30",
           "end": "2026-09-10T22:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -1457,7 +1457,7 @@
           "timeId": 1514076,
           "start": "2026-09-11T17:00",
           "end": "2026-09-11T18:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -1465,7 +1465,7 @@
           "timeId": 1514077,
           "start": "2026-09-12T14:00",
           "end": "2026-09-12T15:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         }
@@ -1722,14 +1722,14 @@
       "title": "On Guard For Thee",
       "blurb": "The country is nearing its end. The four horsemen of the apocalypse appear, looking nothing like you'd expect. Final Snowfall Theatre Collective presents \"On Guard for Thee\", an original script by Kian Diab.",
       "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/06-13-2026-010608-4341.jpg",
-      "venue": "The Art Gallery of Nova Scotia",
+      "venue": "Art Gallery of Nova Scotia",
       "ticketUrl": "https://www.simpletix.com/e/on-guard-for-thee-tickets-282941",
       "times": [
         {
           "timeId": 1514927,
           "start": "2026-09-04T21:30",
           "end": "2026-09-04T22:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -1737,7 +1737,7 @@
           "timeId": 1514928,
           "start": "2026-09-05T14:00",
           "end": "2026-09-05T15:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -1745,7 +1745,7 @@
           "timeId": 1514929,
           "start": "2026-09-06T20:00",
           "end": "2026-09-06T21:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -1753,7 +1753,7 @@
           "timeId": 1514930,
           "start": "2026-09-08T21:30",
           "end": "2026-09-08T22:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -1761,7 +1761,7 @@
           "timeId": 1514931,
           "start": "2026-09-10T17:00",
           "end": "2026-09-10T18:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -1769,7 +1769,7 @@
           "timeId": 1514932,
           "start": "2026-09-13T17:00",
           "end": "2026-09-13T18:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         }
@@ -2106,14 +2106,14 @@
       "title": "So... What ELSE About Love?",
       "blurb": "Three friends, Kelin, Carrie and Phil, hitting midlife, navigate the realities of 21st century living, recognizing that their salvation may lie in the joy and spirit of resistance they find in making art together.",
       "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/06-01-2026-181034-9287.jpg",
-      "venue": "The Art Gallery of Nova Scotia",
+      "venue": "Art Gallery of Nova Scotia",
       "ticketUrl": "https://www.simpletix.com/e/so-what-else-about-love-tickets-282971",
       "times": [
         {
           "timeId": 1515005,
           "start": "2026-09-03T17:00",
           "end": "2026-09-03T18:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -2121,7 +2121,7 @@
           "timeId": 1515006,
           "start": "2026-09-05T21:30",
           "end": "2026-09-05T22:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -2129,7 +2129,7 @@
           "timeId": 1515007,
           "start": "2026-09-06T18:30",
           "end": "2026-09-06T19:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -2137,7 +2137,7 @@
           "timeId": 1515008,
           "start": "2026-09-10T20:00",
           "end": "2026-09-10T21:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -2145,7 +2145,7 @@
           "timeId": 1515009,
           "start": "2026-09-12T17:00",
           "end": "2026-09-12T18:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -2153,7 +2153,7 @@
           "timeId": 1515010,
           "start": "2026-09-13T14:00",
           "end": "2026-09-13T15:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         }
@@ -2173,7 +2173,7 @@
           "timeId": 1525894,
           "start": "2026-09-03T20:00",
           "end": "2026-09-03T21:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -2181,7 +2181,7 @@
           "timeId": 1525895,
           "start": "2026-09-05T12:30",
           "end": "2026-09-05T13:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -2189,7 +2189,7 @@
           "timeId": 1525896,
           "start": "2026-09-06T21:30",
           "end": "2026-09-06T22:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -2197,7 +2197,7 @@
           "timeId": 1525897,
           "start": "2026-09-08T20:00",
           "end": "2026-09-08T21:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -2205,7 +2205,7 @@
           "timeId": 1525898,
           "start": "2026-09-09T21:30",
           "end": "2026-09-09T22:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -2213,7 +2213,7 @@
           "timeId": 1525899,
           "start": "2026-09-10T17:00",
           "end": "2026-09-10T18:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -2221,7 +2221,7 @@
           "timeId": 1525900,
           "start": "2026-09-11T20:00",
           "end": "2026-09-11T21:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -2229,7 +2229,7 @@
           "timeId": 1525901,
           "start": "2026-09-12T12:30",
           "end": "2026-09-12T13:30",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
@@ -2237,7 +2237,7 @@
           "timeId": 1525902,
           "start": "2026-09-13T14:00",
           "end": "2026-09-13T15:00",
-          "venue": "The Art Gallery of Nova Scotia",
+          "venue": "Art Gallery of Nova Scotia",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         }

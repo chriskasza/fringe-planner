@@ -14,7 +14,7 @@
 import { fileURLToPath } from 'node:url';
 import { readFileSync, writeFileSync, renameSync, existsSync, mkdirSync } from 'node:fs';
 
-import { sleep, fail, slugify, byStart } from './lib/util.mjs';
+import { sleep, fail, slugify, byStart, stripLeadingThe } from './lib/util.mjs';
 import { scrapeCards, fetchShowData, resolveTimes } from './lib/simpletix.mjs';
 import { fetchMeta } from './lib/meta.mjs';
 import { createSummary, mergeShow } from './lib/merge.mjs';
@@ -32,23 +32,23 @@ const now = new Date().toISOString();
 // upstream data - purely a display shorthand, kept here so it's easy to spot
 // and adjust without touching the scraper logic.
 const SHORT_NAMES = {
-  'Bus Stop Theatre': 'BUS STOP',
-  "Cruikshank's Halifax Funeral Home": 'CRUIKSHANK’S',
-  DANSpace: 'DANSPACE',
-  'Grafton Street Dinner Theatre': 'GRAFTON ST',
-  'Halifax United Church': 'UNITED CHURCH',
-  'Neptune Theatre Imperial Studio': 'NEPTUNE IMPERIAL',
-  'Neptune Theatre Scotiabank Stage': 'NEPTUNE SCOTIABANK',
-  'Neptune Theatre Windsor Studio': 'NEPTUNE WINDSOR',
-  'Outdoor Walk - Meet at Library': 'OUTDOOR WALK',
-  'Point Pleasant Park - Black Rock Beach Picnic Area': 'POINT PLEASANT PARK',
-  'Sanctuary Arts Centre': 'SANCTUARY ARTS',
-  'Stardust Bar': 'STARDUST BAR',
-  'The Art Gallery of Nova Scotia': 'AGNS',
-  'Universalist Unitarian Church of Halifax': 'UNITARIAN CHURCH',
-  'Wonderneath Art Society': 'WONDERNEATH',
-  'inesS Circus': 'INESS CIRCUS',
-  'Outdoors - Different Locations': 'OUTDOORS',
+  'Art Gallery of Nova Scotia': 'AGNS',
+  'Bus Stop Theatre': 'Bus Stop',
+  "Cruikshank's Halifax Funeral Home": "Cruikshank's",
+  'DANSpace': 'DANSpace',
+  'Grafton Street Dinner Theatre': 'Grafton Theatre',
+  'Halifax United Church': 'United Church',
+  'inesS Circus': 'inesS',
+  'Neptune Theatre Imperial Studio': 'Neptune Imperial',
+  'Neptune Theatre Scotiabank Stage': 'Neptune Scotiabank',
+  'Neptune Theatre Windsor Studio': 'Neptune Windsor',
+  'Outdoor Walk - Meet at Library': 'Outdoor Walk',
+  'Outdoors - Different Locations': 'Outdoors',
+  'Point Pleasant Park - Black Rock Beach Picnic Area': 'Point Pleasant',
+  'Sanctuary Arts Centre': 'Sanctuary Arts',
+  'Stardust Bar': 'Stardust',
+  'Universalist Unitarian Church of Halifax': 'Unitarian Church',
+  'Wonderneath Art Society': 'Wonderneath',
 };
 
 // --- main --------------------------------------------------------------
@@ -94,7 +94,7 @@ for (const [i, card] of cards.entries()) {
     title: card.title || data.showTitle || '',
     blurb: card.blurb,
     poster: card.poster || data.imageUrl || '',
-    venue: data.venueTitle ?? '',
+    venue: stripLeadingThe(data.venueTitle),
     ticketUrl: `https://www.simpletix.com/e/${slugify(card.title || data.showTitle)}-tickets-${card.showId}`,
     times: times.sort(byStart),
   };

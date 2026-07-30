@@ -2,7 +2,7 @@
 // warnings, and (via its JSON-LD) the venue's address -- none of which the
 // pin board or embed API expose. See simpletix.mjs for those.
 
-import { decodeEntities, stripTagsKeepingLines } from './util.mjs';
+import { decodeEntities, stripLeadingThe, stripTagsKeepingLines } from './util.mjs';
 
 // Split the description block into <p>...</p> paragraphs, stripped to plain
 // text. Labels ("Credits:", "Rating:", ...) sometimes wrap their own <strong>
@@ -185,7 +185,7 @@ function extractAddress(html) {
     );
   if (!m) return null;
 
-  const name = decodeEntities(JSON.parse(`"${m[1]}"`));
+  const name = stripLeadingThe(decodeEntities(JSON.parse(`"${m[1]}"`)));
   const fields = {};
   for (const fm of m[2].matchAll(/"(\w+)":"((?:[^"\\]|\\.)*)"/g)) {
     fields[fm[1]] = JSON.parse(`"${fm[2]}"`);

@@ -31,6 +31,13 @@ export function stripTagsKeepingLines(s) {
     .join('\n');
 }
 
+// Venue names come back from upstream as e.g. "The Art Gallery of Nova
+// Scotia" -- drop the leading article so it matches the SHORT_NAMES lookup
+// in scrape.mjs and reads consistently everywhere the venue name is shown.
+export function stripLeadingThe(s) {
+  return (s ?? '').replace(/^the\s+/i, '');
+}
+
 export function slugify(title) {
   return decodeEntities(title)
     .toLowerCase()

@@ -2,7 +2,7 @@
 // list (cards) and each show's times/venue data. The show's own ticket page
 // (credits/rating/warnings/address) is scraped separately -- see meta.mjs.
 
-import { fail, localStamp, stripTags } from './util.mjs';
+import { fail, localStamp, stripLeadingThe, stripTags } from './util.mjs';
 
 const APP_ID = '1b63385b-47c1-46d8-a3ea-07a70e6f045f';
 
@@ -98,7 +98,7 @@ async function fetchDateWise(showId) {
 const syntheticId = (showId, start) => `s${showId}-${start}`;
 
 export async function resolveTimes(showId, data, salesEnded) {
-  const venue = data.venueTitle ?? '';
+  const venue = stripLeadingThe(data.venueTitle);
 
   // Normal case: a real eventTimes array with real timeIds.
   if (data.eventTimes?.length) {
@@ -107,7 +107,7 @@ export async function resolveTimes(showId, data, salesEnded) {
         timeId: t.timeId,
         start: localStamp(t.dateStart),
         end: localStamp(t.dateEnd),
-        venue: t.venueTitle || venue,
+        venue: stripLeadingThe(t.venueTitle) || venue,
       })),
       partial: false,
     };

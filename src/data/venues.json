@@ -1,87 +1,87 @@
 {
   "Universalist Unitarian Church of Halifax": {
-    "short": "UNITARIAN CHURCH",
+    "short": "Unitarian Church",
     "shortAddress": "5500 Inglis Street, Halifax",
     "fullAddress": "5500 Inglis Street, Halifax, Nova Scotia B3H 1J8"
   },
   "Neptune Theatre Imperial Studio": {
-    "short": "NEPTUNE IMPERIAL",
+    "short": "Neptune Imperial",
     "shortAddress": "1593 Argyle Street, Halifax",
     "fullAddress": "1593 Argyle Street, Halifax, Nova Scotia B3J 2B2"
   },
-  "The Art Gallery of Nova Scotia": {
-    "short": "AGNS",
-    "shortAddress": "1728 Bedford Row, Halifax",
-    "fullAddress": "1728 Bedford Row, Halifax, Nova Scotia B3J 1V9"
-  },
   "Bus Stop Theatre": {
-    "short": "BUS STOP",
+    "short": "Bus Stop",
     "shortAddress": "2203 Gottingen Street, Halifax",
     "fullAddress": "2203 Gottingen Street, Halifax, Nova Scotia B3K 3B5"
   },
   "Neptune Theatre Scotiabank Stage": {
-    "short": "NEPTUNE SCOTIABANK",
+    "short": "Neptune Scotiabank",
     "shortAddress": "1593 Argyle Street, Halifax",
     "fullAddress": "1593 Argyle Street, Halifax, Nova Scotia B3J 2B2"
   },
   "Point Pleasant Park - Black Rock Beach Picnic Area": {
-    "short": "POINT PLEASANT PARK",
+    "short": "Point Pleasant",
     "shortAddress": "5480 Point Pleasant Drive, Halifax",
     "fullAddress": "5480 Point Pleasant Drive, Halifax, Nova Scotia B3H 0B4"
   },
   "Grafton Street Dinner Theatre": {
-    "short": "GRAFTON ST",
+    "short": "Grafton Theatre",
     "shortAddress": "1741 Grafton Street, Halifax",
     "fullAddress": "1741 Grafton Street, Halifax, Nova Scotia B3J 2C6"
   },
   "inesS Circus": {
-    "short": "INESS CIRCUS",
+    "short": "inesS",
     "shortAddress": "1800 Argyle Street, Halifax",
     "fullAddress": "1800 Argyle Street, Halifax, Nova Scotia B3J 3N8"
   },
   "Stardust Bar": {
-    "short": "STARDUST BAR",
+    "short": "Stardust",
     "shortAddress": "1688 Barrington Street, Halifax",
     "fullAddress": "1688 Barrington Street, Halifax, Nova Scotia B3J 2A2"
   },
   "Outdoor Walk - Meet at Library": {
-    "short": "OUTDOOR WALK",
+    "short": "Outdoor Walk",
     "shortAddress": "5440 Spring Garden Road, Halifax",
     "fullAddress": "5440 Spring Garden Road, Halifax, Nova Scotia B3J 1E9"
   },
   "DANSpace": {
-    "short": "DANSPACE",
+    "short": "DANSpace",
     "shortAddress": "1800 Argyle Street, Halifax",
     "fullAddress": "1800 Argyle Street, Halifax, Nova Scotia B3J 3N8"
   },
   "Neptune Theatre Windsor Studio": {
-    "short": "NEPTUNE WINDSOR",
+    "short": "Neptune Windsor",
     "shortAddress": "1593 Argyle Street, Halifax",
     "fullAddress": "1593 Argyle Street, Halifax, Nova Scotia B3J 2B2"
   },
   "Cruikshank's Halifax Funeral Home": {
-    "short": "CRUIKSHANK’S",
+    "short": "Cruikshank's",
     "shortAddress": "2666 Windsor Street, Halifax",
     "fullAddress": "2666 Windsor Street, Halifax, Nova Scotia B3K 5C9"
   },
   "Halifax United Church": {
-    "short": "UNITED CHURCH",
+    "short": "United Church",
     "shortAddress": "6036 Coburg Road, Halifax",
     "fullAddress": "6036 Coburg Road, Halifax, Nova Scotia B3H 1Y9"
   },
   "Wonderneath Art Society": {
-    "short": "WONDERNEATH",
+    "short": "Wonderneath",
     "shortAddress": "2482 Maynard Street, Halifax",
     "fullAddress": "2482 Maynard Street, Halifax, Nova Scotia B3K 1K4"
   },
   "Sanctuary Arts Centre": {
-    "short": "SANCTUARY ARTS",
+    "short": "Sanctuary Arts",
     "shortAddress": "100 Ochterloney Street, Dartmouth",
     "fullAddress": "100 Ochterloney Street, Dartmouth, Nova Scotia B2Y 0G2"
   },
   "Outdoors - Different Locations": {
-    "short": "OUTDOORS",
+    "short": "Outdoors",
     "shortAddress": "Halifax",
     "fullAddress": "Halifax, Nova Scotia"
+  },
+  "Art Gallery of Nova Scotia": {
+    "short": "AGNS",
+    "shortAddress": "1728 Bedford Row, Halifax",
+    "fullAddress": "1728 Bedford Row, Halifax, Nova Scotia B3J 1V9"
   }
 }
