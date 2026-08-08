@@ -14,8 +14,8 @@
 import { fileURLToPath } from 'node:url';
 import { readFileSync, writeFileSync, renameSync, existsSync, mkdirSync } from 'node:fs';
 
-import { sleep, fail, slugify, byStart, stripLeadingThe } from './lib/util.mjs';
-import { scrapeCards, fetchShowData, resolveTimes } from './lib/simpletix.mjs';
+import { sleep, fail, slugify, byStart, stripLeadingThe, isCancelledTitle } from './lib/util.mjs';
+import { scrapeCards, fetchShowData, resolveTimes, syntheticId } from './lib/simpletix.mjs';
 import { fetchMeta } from './lib/meta.mjs';
 import { createSummary, mergeShow } from './lib/merge.mjs';
 
@@ -90,19 +90,64 @@ const partialShows = [];
 const freshMeta = {};
 const venues = { ...previousVenues };
 const failedMeta = [];
+const pageTimeWarnings = [];
+
+// Fills gaps in the date-wise fallback from the show page's JSON-LD. Only ever
+// *adds* -- a slot the API knows and the page doesn't is kept, so this can't
+// mass-cancel anything.
+//
+// The guard is the point. halifaxStamp converts a genuine UTC timestamp, while
+// everything else upstream is naive local wall time (see util.mjs); getting
+// that backwards would shift every added slot by three hours and look
+// plausible. So before trusting the conversion, require the page's times to be
+// a superset of the ones the API already gave us. If they aren't, the two
+// sources disagree about more than completeness -- warn and add nothing.
+function mergePageTimes(times, pageTimes, showId, venue) {
+  if (!pageTimes.length) return { times, warning: null };
+
+  const pageStarts = new Set(pageTimes.map((t) => t.start));
+  const missing = times.filter((t) => !pageStarts.has(t.start));
+  if (missing.length) {
+    return {
+      times,
+      warning: `page times disagree with the API for ${showId} (API has ${missing
+        .map((t) => t.start)
+        .join(', ')}, page doesn't) -- ignoring the page`,
+    };
+  }
+
+  const known = new Set(times.map((t) => t.start));
+  const added = pageTimes
+    .filter((t) => !known.has(t.start))
+    .map((t) => ({ timeId: syntheticId(showId, t.start), start: t.start, end: t.end, venue }));
+
+  return { times: [...times, ...added], warning: null };
+}
 
 for (const [i, card] of cards.entries()) {
   process.stdout.write(`  [${i + 1}/${cards.length}] ${card.title.slice(0, 50)}\r`);
-  let data, salesEnded, times, partial;
+  // A cancelled show has no performances, so don't ask resolveTimes for any.
+  // Cancellation always coincides with the API dropping `eventTimes`, which
+  // sends resolveTimes down its date-wise fallback -- and that path mints
+  // fresh synthetic `s{showId}-{start}` ids for slots that no longer exist,
+  // which the merge then writes out as brand-new *active* showtimes. Emitting
+  // nothing instead lets the merge cancel every known time, which is the truth.
+  const cancelled = isCancelledTitle(card.title);
+  let data, salesEnded, times = [], partial = false;
   try {
     ({ data, salesEnded } = await fetchShowData(card.showId));
-    ({ times, partial } = await resolveTimes(card.showId, data, salesEnded));
+    if (!cancelled) ({ times, partial } = await resolveTimes(card.showId, data, salesEnded));
   } catch (err) {
     fail(`showtimes for "${card.title}" (${card.showId}): ${err.message}`);
   }
 
-  if (!times.length) fail(`"${card.title}" (${card.showId}) returned no showtimes`);
-  if (partial) partialShows.push(`${card.title} (${card.showId})`);
+  if (!cancelled && !times.length) fail(`"${card.title}" (${card.showId}) returned no showtimes`);
+
+  // No `eventTimes` means resolveTimes took the date-wise fallback, which is
+  // the only path that can under-report. That's when the page's JSON-LD is
+  // worth consulting -- see mergePageTimes below, applied once the meta fetch
+  // has the page in hand.
+  const usedFallback = !cancelled && !data.eventTimes?.length;
 
   const show = {
     showId: card.showId,
@@ -113,15 +158,29 @@ for (const [i, card] of cards.entries()) {
     ticketUrl: `https://www.simpletix.com/e/${slugify(card.title || data.showTitle)}-tickets-${card.showId}`,
     times: times.sort(byStart),
   };
+  if (cancelled) show.cancelled = true;
   if (salesEnded) show.salesEnded = true;
-  if (partial) show.timesIncomplete = true;
 
   scraped.push(show);
 
   // A failed meta-page fetch is non-fatal: this show's fresh times still get
   // written, and its meta just falls back to previousMeta below.
   try {
-    const { meta: showMeta, address } = await fetchMeta(show.showId, show.ticketUrl, show.title);
+    const { meta: showMeta, address, pageTimes } = await fetchMeta(show.showId, show.ticketUrl, show.title);
+
+    // The page is already fetched here, so fill any fallback gap from its
+    // JSON-LD rather than requesting the same HTML a second time.
+    if (usedFallback && pageTimes.length) {
+      const merged = mergePageTimes(show.times, pageTimes, show.showId, show.venue);
+      if (merged.warning) {
+        pageTimeWarnings.push(`${show.title} (${show.showId}): ${merged.warning}`);
+      } else {
+        show.times = merged.times.sort(byStart);
+        // A second, independent source now agrees on the full list, so the
+        // API's incompleteness is no longer something to warn about.
+        partial = false;
+      }
+    }
 
     // A couple of shows have no venue in the API (the free roving outdoor
     // ones), but their own page's JSON-LD still names the place. Record it
@@ -142,6 +201,12 @@ for (const [i, card] of cards.entries()) {
     }
   } catch (err) {
     failedMeta.push(`${show.title} (${show.showId}): ${err.message}`);
+  }
+
+  // Decided after the meta fetch, since a page that filled the gap clears it.
+  if (partial) {
+    show.timesIncomplete = true;
+    partialShows.push(`${card.title} (${card.showId})`);
   }
 
   await sleep(200);
@@ -204,7 +269,7 @@ const report = [
 ].filter(([, items]) => items.length);
 
 if (isFirstRun) {
-  // Everything is "new" on a first run; listing all 282 lines is just noise.
+  // Everything is "new" on a first run; listing all 289 lines is just noise.
   console.log('Initial scrape -- no previous show_times.json to compare against.');
 } else if (!report.length) {
   console.log('No changes since the last run.');
@@ -218,6 +283,12 @@ if (isFirstRun) {
 if (failedMeta.length) {
   console.log(`\n${failedMeta.length} show(s) failed to fetch meta (kept previous data if available):`);
   for (const f of failedMeta) console.log(`  - ${f}`);
+}
+
+if (pageTimeWarnings.length) {
+  console.log(`\nWARNING -- ${pageTimeWarnings.length} show(s) whose page times contradict the API:`);
+  for (const w of pageTimeWarnings) console.log(`  - ${w}`);
+  console.log('  Nothing was added from the page. Check whether the JSON-LD timezone changed.');
 }
 
 const noRating = Object.entries(meta).filter(([, m]) => m.rating === 'NOT RATED');

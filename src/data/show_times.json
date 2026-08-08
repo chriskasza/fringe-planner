@@ -1,5 +1,5 @@
 {
-  "scrapedAt": "2026-08-08T18:52:58.525Z",
+  "scrapedAt": "2026-08-08T19:57:51.442Z",
   "timezone": "America/Halifax",
   "source": "https://halifaxfringe.ca/home-copy-copy-3/",
   "shows": [
@@ -589,8 +589,9 @@
           "start": "2026-09-11T18:30",
           "end": "2026-09-11T19:30",
           "venue": "",
-          "status": "active",
-          "firstSeen": "2026-08-08T18:46:26.953Z"
+          "status": "cancelled",
+          "firstSeen": "2026-08-08T18:46:26.953Z",
+          "cancelledAt": "2026-08-08T19:31:23.319Z"
         },
         {
           "timeId": 1522016,
@@ -606,8 +607,9 @@
           "start": "2026-09-12T21:30",
           "end": "2026-09-12T22:30",
           "venue": "",
-          "status": "active",
-          "firstSeen": "2026-08-08T18:46:26.953Z"
+          "status": "cancelled",
+          "firstSeen": "2026-08-08T18:46:26.953Z",
+          "cancelledAt": "2026-08-08T19:31:23.319Z"
         },
         {
           "timeId": 1522017,
@@ -623,14 +625,15 @@
           "start": "2026-09-13T20:00",
           "end": "2026-09-13T21:00",
           "venue": "",
-          "status": "active",
-          "firstSeen": "2026-08-08T18:46:26.953Z"
+          "status": "cancelled",
+          "firstSeen": "2026-08-08T18:46:26.953Z",
+          "cancelledAt": "2026-08-08T19:31:23.319Z"
         }
       ],
       "status": "active",
       "firstSeen": "2026-07-26T12:52:44.451Z",
       "salesEnded": true,
-      "timesIncomplete": true
+      "cancelled": true
     },
     {
       "showId": 284222,
@@ -654,8 +657,9 @@
           "start": "2026-09-04T21:30",
           "end": "2026-09-04T22:15",
           "venue": "",
-          "status": "active",
-          "firstSeen": "2026-08-08T18:46:26.953Z"
+          "status": "cancelled",
+          "firstSeen": "2026-08-08T18:46:26.953Z",
+          "cancelledAt": "2026-08-08T19:31:23.319Z"
         },
         {
           "timeId": 1525821,
@@ -671,8 +675,9 @@
           "start": "2026-09-05T20:00",
           "end": "2026-09-05T20:45",
           "venue": "",
-          "status": "active",
-          "firstSeen": "2026-08-08T18:46:26.953Z"
+          "status": "cancelled",
+          "firstSeen": "2026-08-08T18:46:26.953Z",
+          "cancelledAt": "2026-08-08T19:31:23.319Z"
         },
         {
           "timeId": 1525822,
@@ -688,14 +693,15 @@
           "start": "2026-09-06T18:30",
           "end": "2026-09-06T19:15",
           "venue": "",
-          "status": "active",
-          "firstSeen": "2026-08-08T18:46:26.953Z"
+          "status": "cancelled",
+          "firstSeen": "2026-08-08T18:46:26.953Z",
+          "cancelledAt": "2026-08-08T19:31:23.319Z"
         }
       ],
       "status": "active",
       "firstSeen": "2026-07-26T12:52:44.451Z",
       "salesEnded": true,
-      "timesIncomplete": true
+      "cancelled": true
     },
     {
       "showId": 284065,
@@ -1026,6 +1032,14 @@
           "firstSeen": "2026-07-26T12:52:44.451Z"
         },
         {
+          "timeId": "s284082-2026-09-04T19:00",
+          "start": "2026-09-04T19:00",
+          "end": "2026-09-04T19:30",
+          "venue": "",
+          "status": "active",
+          "firstSeen": "2026-08-08T19:56:58.720Z"
+        },
+        {
           "timeId": "s284082-2026-09-04T20:40",
           "start": "2026-09-04T20:40",
           "end": "2026-09-04T21:10",
@@ -1035,7 +1049,6 @@
         }
       ],
       "salesEnded": true,
-      "timesIncomplete": true,
       "status": "active",
       "firstSeen": "2026-07-26T12:52:44.451Z"
     },

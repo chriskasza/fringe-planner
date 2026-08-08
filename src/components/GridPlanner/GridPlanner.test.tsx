@@ -3,11 +3,30 @@ import { resolve } from 'node:path';
 import { render, fireEvent, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import App from '../../App';
+import { shows } from '../../lib/loadData';
 
 describe('App (Grid Planner)', () => {
   it('renders without throwing and shows the wordmark', () => {
     render(<App />);
     expect(document.querySelector('[data-testid="topbar-wordmark"]')?.textContent).toBe('Halifax Fringe Planner');
+  });
+
+  // A cancelled show keeps its entry in the Cards browser for posterity, but
+  // there is nothing to plan around it, so it must never place a block. Its
+  // showtimes are all `cancelled`, which GridBody and gridTimeBounds already
+  // filter on - this pins that they keep doing so.
+  it('never places a block for a cancelled show, on any day', () => {
+    render(<App />);
+
+    const cancelled = shows.filter((s) => s.cancelled);
+    expect(cancelled.length).toBeGreaterThan(0);
+
+    for (const tab of Array.from(document.querySelectorAll('[data-testid="day-strip-tab"]'))) {
+      fireEvent.click(tab as HTMLElement);
+      for (const show of cancelled) {
+        expect(screen.queryAllByTitle(show.title)).toEqual([]);
+      }
+    }
   });
 
   it('renders a day strip with 11 festival days', () => {

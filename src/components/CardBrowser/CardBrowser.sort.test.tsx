@@ -48,8 +48,31 @@ describe('Card Browser sort', () => {
     chooseSort('A–Z');
 
     expect(browser.queryByRole('dialog', { name: 'Sort' })).not.toBeInTheDocument();
-    const expected = [...shows.map((s) => s.title)].sort((a, b) => a.localeCompare(b));
+    // Cancelled shows sort to the bottom under every mode - there's nothing to
+    // plan around them - so A-Z means A-Z within each of the two groups.
+    const expected = [...shows]
+      .sort((a, b) => a.title.localeCompare(b.title))
+      .sort((a, b) => Number(a.cancelled) - Number(b.cancelled))
+      .map((s) => s.title);
     expect(cardTitles()).toEqual(expected);
+  });
+
+  it('sinks cancelled shows to the bottom of an A–Z sort', () => {
+    render(<App />);
+    switchToCards();
+
+    chooseSort('A–Z');
+
+    const titles = cardTitles();
+    const cancelled = shows.filter((s) => s.cancelled).map((s) => s.title);
+    expect(cancelled.length).toBeGreaterThan(0);
+    expect(titles.slice(-cancelled.length).every((t) => cancelled.includes(t as string))).toBe(true);
+    // ...and on title alone they'd land well above the bottom, so the
+    // partition is doing real work rather than agreeing with A–Z by accident.
+    const byTitle = [...titles].sort((a, b) => (a as string).localeCompare(b as string));
+    for (const t of cancelled) {
+      expect(byTitle.indexOf(t)).toBeLessThan(titles.indexOf(t));
+    }
   });
 
   it('Soonest puts the show with the earliest upcoming performance first', () => {

@@ -24,6 +24,7 @@ function showWith(perfs: Perf[], id = '284247'): Show {
     warnings: [],
     warningTags: [],
     mins: 60,
+    cancelled: false,
     salesEnded: false,
     timesIncomplete: false,
     perfs: perfs.map((p) => ({ ...p, showId: id })),
@@ -116,11 +117,14 @@ describe('encodePicked / decodePicked', () => {
     const ids = realShows.flatMap((s) => s.perfs.map((p) => p.timeId));
     expect(new Set(ids).size).toBe(ids.length);
 
+    // Only shows that still have an active performance: encodePicked/decodePicked
+    // deliberately drop cancelled timeIds, so a cancelled show would never
+    // survive the round trip - that behaviour has its own test above.
     const picked = new Set(
-      realShows.slice(0, 12).map((s) => {
-        const p = s.perfs.find((x) => x.status === 'active') ?? s.perfs[0];
-        return p.timeId;
-      }),
+      realShows
+        .flatMap((s) => s.perfs.find((x) => x.status === 'active') ?? [])
+        .slice(0, 12)
+        .map((p) => p.timeId),
     );
     expect(keysOf(decodePicked(encodePicked(picked, realShows), realShows))).toEqual(keysOf(picked));
   });

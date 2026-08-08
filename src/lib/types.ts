@@ -22,6 +22,12 @@ export type RawShow = {
   times: RawTime[];
   status: 'active' | 'cancelled';
   firstSeen: string;
+  // Cancelled by the artist upstream (the pin board prefixes such a title with
+  // "CANCELLED:"). Distinct from `status`, which only says whether the show is
+  // still listed at all: a cancelled show stays on the pin board, keeps its
+  // page, and keeps `status: 'active'`, but every entry in `times` is
+  // cancelled and no new one is ever scraped.
+  cancelled?: boolean;
   salesEnded?: boolean;
   timesIncomplete?: boolean;
 };
@@ -116,6 +122,10 @@ export type Show = {
   warnings: string[]; // raw, unedited - display only, see ShowMetaEntry
   warningTags: string[]; // condensed categories - what the filter uses
   mins: number; // typical performance length, for card display
+  // See RawShow.cancelled. Implies every entry in `perfs` is cancelled, so the
+  // show never reaches the Grid and its card shows no times - but it stays in
+  // the Cards browser and the Shows filter for posterity.
+  cancelled: boolean;
   salesEnded: boolean;
   timesIncomplete: boolean;
   perfs: Perf[]; // active and cancelled, sorted by day then start

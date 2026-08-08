@@ -19,6 +19,7 @@ function show(warningTags: string[], overrides: Partial<Show> = {}): Show {
     warnings: warningTags,
     warningTags,
     mins: 60,
+    cancelled: false,
     salesEnded: false,
     timesIncomplete: false,
     perfs: [{ timeId: '1', showId: '1', day: '2026-09-03', start: 930, end: 990, mins: 60, status: 'active' }],
@@ -62,6 +63,43 @@ describe('visible() content warnings gate', () => {
   it('hides a show if only one of its several warnings is switched off', () => {
     const state = { ...BASE_STATE, warningsOn: { 'flashing lights': true, haze: false } };
     expect(visible(show(['flashing lights', 'haze']), state, [])).toBe(false);
+  });
+});
+
+// A cancelled show has no active perfs and no dates worth matching, so the
+// day/time gate can never pass for it. It's kept listed for posterity, but the
+// filters that describe the show itself still apply.
+describe('visible() cancelled shows', () => {
+  const cancelledShow = (overrides: Partial<Show> = {}) =>
+    show([], {
+      cancelled: true,
+      perfs: [{ timeId: '1', showId: '1', day: '2026-09-03', start: 930, end: 990, mins: 60, status: 'cancelled' }],
+      ...overrides,
+    });
+  const warningsOn = { 'flashing lights': true };
+
+  it('stays visible when the day filter excludes its only date', () => {
+    const state = { ...BASE_STATE, warningsOn, daysOn: { '2026-09-03': false } };
+    expect(visible(cancelledShow(), state, [])).toBe(true);
+    // Same show, not cancelled: the day gate rejects it, so the case is real.
+    expect(visible(show([]), state, [])).toBe(false);
+  });
+
+  it('stays visible when every time bucket is switched off', () => {
+    const state = {
+      ...BASE_STATE,
+      warningsOn,
+      timeBucketsOn: { matinee: false, evening: false, night: false },
+    };
+    expect(visible(cancelledShow(), state, [])).toBe(true);
+  });
+
+  it('still respects venue, rating, warnings and the Shows exclusion list', () => {
+    const base = { ...BASE_STATE, warningsOn };
+    expect(visible(cancelledShow(), { ...base, venuesOn: { 'The Bus Stop Theatre': false } }, [])).toBe(false);
+    expect(visible(cancelledShow(), { ...base, ratingsOn: { PG: false } }, [])).toBe(false);
+    expect(visible(cancelledShow({ warningTags: ['flashing lights'] }), { ...base, warningsOn: { 'flashing lights': false } }, [])).toBe(false);
+    expect(visible(cancelledShow(), { ...base, excluded: { '1': true } }, [])).toBe(false);
   });
 });
 

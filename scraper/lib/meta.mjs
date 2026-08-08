@@ -2,7 +2,7 @@
 // warnings, and (via its JSON-LD) the venue's address -- none of which the
 // pin board or embed API expose. See simpletix.mjs for those.
 
-import { decodeEntities, stripLeadingThe, stripTagsKeepingLines } from './util.mjs';
+import { decodeEntities, halifaxStamp, stripLeadingThe, stripTagsKeepingLines } from './util.mjs';
 
 // Split the description block into <p>...</p> paragraphs, stripped to plain
 // text. Labels ("Credits:", "Rating:", ...) sometimes wrap their own <strong>
@@ -226,6 +226,36 @@ function extractAddress(html) {
   };
 }
 
+// Every performance the page's JSON-LD knows about, as naive Halifax stamps.
+// Only worth reading when the embed API's `eventTimes` came back empty: for
+// "Game of drones" the API lists two of the three slots its own page does, and
+// this block is the only machine-readable source for the missing one. Best
+// effort - a page whose JSON-LD won't parse just yields nothing, and the caller
+// keeps whatever the API gave it.
+export function extractEventTimes(html) {
+  const block = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/.exec(html);
+  if (!block) return [];
+
+  let parsed;
+  try {
+    parsed = JSON.parse(block[1].trim());
+  } catch {
+    return [];
+  }
+
+  const events = (Array.isArray(parsed) ? parsed : [parsed]).filter((e) => e?.['@type'] === 'Event');
+  const times = [];
+  for (const e of events) {
+    if (!e.startDate) continue;
+    try {
+      times.push({ start: halifaxStamp(e.startDate), end: halifaxStamp(e.endDate ?? e.startDate) });
+    } catch {
+      return []; // one bad timestamp makes the whole block untrustworthy
+    }
+  }
+  return times;
+}
+
 export async function fetchMeta(showId, ticketUrl, title) {
   const res = await fetch(ticketUrl, {
     headers: { 'User-Agent': 'Mozilla/5.0 (compatible; fringe-planner-scraper/1.0)' },
@@ -247,5 +277,6 @@ export async function fetchMeta(showId, ticketUrl, title) {
       warningTags: categorizeWarnings(warnings, title),
     },
     address: extractAddress(html),
+    pageTimes: extractEventTimes(html),
   };
 }

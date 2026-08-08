@@ -29,6 +29,11 @@ export function DetailPanel() {
 
   const otherPerfs = show.perfs.filter((p) => p.status === 'active' && p.timeId !== primaryPerf.timeId);
 
+  // Every perf of a cancelled show is cancelled, so the panel can only have
+  // opened on a cancelled one. `otherPerfs` is already empty in that case;
+  // what's left is to stop the panel offering the defunct slot as a pick.
+  const cancelled = show.cancelled || primaryPerf.status !== 'active';
+
   // The blurb is the pin board's 256-character teaser; the description is the
   // untruncated version off the show's own page. Only offer the toggle when
   // there's something to expand into.
@@ -72,7 +77,7 @@ export function DetailPanel() {
         <div className={styles['detail-panel__spec']}>
           <span className={styles['detail-panel__spec-key']}>TIME</span>
           <span className={styles['detail-panel__spec-value']}>
-            {dayLabel} · {formatTime(primaryPerf.start)}–{formatTime(primaryPerf.end)}
+            {cancelled ? 'CANCELLED' : `${dayLabel} · ${formatTime(primaryPerf.start)}–${formatTime(primaryPerf.end)}`}
           </span>
           <span className={styles['detail-panel__spec-key']}>VENUE</span>
           <span className={styles['detail-panel__spec-value']}>
@@ -141,13 +146,15 @@ export function DetailPanel() {
         )}
 
         <div className={styles['detail-panel__footer']}>
-          <button
-            type="button"
-            className={`${styles['detail-panel__primary']} ${isPicked ? styles['detail-panel__primary--remove'] : ''}`}
-            onClick={() => dispatch({ type: 'TOGGLE_PICK', timeId: primaryPerf.timeId })}
-          >
-            {isPicked ? '✓ In My Fringe — remove' : '★ Add to My Fringe'}
-          </button>
+          {!cancelled && (
+            <button
+              type="button"
+              className={`${styles['detail-panel__primary']} ${isPicked ? styles['detail-panel__primary--remove'] : ''}`}
+              onClick={() => dispatch({ type: 'TOGGLE_PICK', timeId: primaryPerf.timeId })}
+            >
+              {isPicked ? '✓ In My Fringe — remove' : '★ Add to My Fringe'}
+            </button>
+          )}
           <a className={styles['detail-panel__tickets']} href={show.ticketUrl} target="_blank" rel="noreferrer">
             Tickets
           </a>

@@ -55,15 +55,53 @@ showtime shifts by three hours.
 Showtimes recovered from the last two cases have no upstream `timeId`, so the scraper
 synthesises one as `s{showId}-{start}`.
 
-**One show's data is knowingly incomplete.** *Game of drones* is a free outdoor roving
-event; its SimpleTix page lists three performances but the API only knows of two. It is
-flagged `timesIncomplete: true` and the scraper prints a warning rather than silently
-under-reporting. Its `venue` is empty upstream too (the page says "Outdoors - Different
-Locations").
+**When `eventTimes` is empty, the show page's JSON-LD fills the gaps.** The date-wise
+fallback is the only path that can under-report: *Game of drones* is a free outdoor
+roving event, and the API listed two of the three performances its own page does. So
+whenever `eventTimes` comes back empty, the scraper reads every `Event` out of the page's
+`ld+json` block (already fetched for the meta pass, so no extra request) and adds any
+slot the API missed. It only ever *adds* - a slot the API knows and the page doesn't is
+kept.
 
-`salesEnded` and `timesIncomplete` describe the show's *current* upstream state, so
-unlike everything else in the file they are cleared when a show recovers - sales
-reopening, or the API returning a full `eventTimes` again. Everything else the merge
+**That JSON-LD is the one upstream timestamp that means what it says.**
+`2026-09-04T20:45:00+00:00` really is 20:45 UTC, i.e. 17:45 in Halifax - the exact
+opposite of the embed API's `dateStart`. `halifaxStamp` converts it and `localStamp`
+must never be pointed at it (or vice versa); each would shift the other's times by three
+hours and look entirely plausible. Because that mistake is so easy to make and so quiet,
+the merge is guarded: the page's times must be a **superset** of the ones the API already
+gave, or the scraper warns and adds nothing. A three-hour shift fails that check on every
+show rather than corrupting the data.
+
+*Game of drones* still has an empty `venue` upstream (the page says "Outdoors - Different
+Locations"), and its three slots are each at a different location - something only its
+description prose records.
+
+**A cancelled show is marked only in its title.** When an artist cancels, the festival
+prefixes the pin board title - `CANCELLED: All Below` - and rewrites the blurb, but
+nothing else changes: the show keeps its card, its ticket page still lists its old
+showtimes, and the embed API keeps answering. So the title prefix is the only signal
+worth trusting, and `isCancelledTitle` in `scraper/lib/util.mjs` is what reads it.
+
+A cancellation also always coincides with sales ending, which drops `eventTimes` and
+sends the show down the synthetic-`timeId` path above. That combination is a trap: the
+synthesised ids don't match the real ones, so the merge cancels the three genuine
+showtimes and writes three *new, active* ones for slots that no longer exist. The scraper
+therefore skips `resolveTimes` entirely for a cancelled show and emits no times at all,
+which lets the merge cancel everything it knows about - the truth. The show is flagged
+`cancelled: true`; its `status` stays `active`, since that field only tracks whether
+upstream still lists the show.
+
+The front-end keeps a cancelled show in the Cards browser and the Shows filter for
+posterity. With no active performances it has no dates to match, so `visible()`
+(`src/lib/derived.ts`) lets it skip the Day/Time filters while Venue, Rating, Content
+Warnings, the Shows exclusion list and search still apply. It sorts last, its card shows
+`CANCELLED · NO PERFORMANCES` in place of the day rail and time pills, its detail panel
+reads `CANCELLED` for TIME and offers no pick button, and it never reaches the Grid.
+
+`cancelled`, `salesEnded` and `timesIncomplete` describe the show's *current* upstream state, so
+unlike everything else in the file they are cleared when a show recovers - the
+`CANCELLED:` prefix coming off the title, sales reopening, or the API returning a full
+`eventTimes` again. Everything else the merge
 touches is history and is kept.
 
 **Ticket URLs only need the ID.** `simpletix.com/e/{slug}-tickets-{showId}` resolves on
@@ -87,7 +125,8 @@ URL* below), which is what makes them survive a cancellation upstream.
 
 The scraper writes via a temp file and rename, and aborts without writing if the pin
 board yields fewer than 50 shows or any show returns no showtimes - a partial scrape
-would otherwise mass-cancel real showtimes.
+would otherwise mass-cancel real showtimes. A show marked `CANCELLED:` upstream is exempt
+from the second guard: zero showtimes is the correct answer for it, not a failure.
 
 Don't hand-edit `src/data/show_times.json`; change `scraper/scrape.mjs` and re-run it. See
 `CLAUDE.md` for the full set of working rules.
@@ -135,7 +174,7 @@ its share link and QR code from the same string.
 - **Tokens are `timeId`s**, dot-separated - not the spec's base-36 show id + letter.
   That scheme encoded a performance's *position* in the show's active list, so a single
   cancellation upstream shifted every later pick onto the wrong showtime, silently. The
-  festival's own `timeId`s are unique across all 282 performances, so a token needs no
+  festival's own `timeId`s are unique across all 277 active performances, so a token needs no
   show prefix. Links are a little longer and stay well inside QR limits.
 - **`popstate` is not guarded by an "I wrote this" flag**, as the spec called for.
   `replaceState` never fires `popstate`, so such a flag is only ever cleared by the first
@@ -194,5 +233,5 @@ filter, and the app opens on the first day from today forward that has shows.
 
 ## Status
 
-- [x] `scraper/scrape.mjs` + `src/data/show_times.json` / `shows_meta.json` / `venues.json` - 56 shows, 282 showtimes, Sep 3-13 2026
+- [x] `scraper/scrape.mjs` + `src/data/show_times.json` / `shows_meta.json` / `venues.json` - 56 shows, 289 showtimes (277 active), Sep 3-13 2026
 - [x] Front-end - Grid Planner, Card Browser, Sync sheet, desktop + mobile

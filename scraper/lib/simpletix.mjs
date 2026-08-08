@@ -95,7 +95,7 @@ async function fetchDateWise(showId) {
 
 // Synthetic key for showtimes the API gives us without a timeId. Stable across runs
 // as long as the start time doesn't move, which is all the app's starring needs.
-const syntheticId = (showId, start) => `s${showId}-${start}`;
+export const syntheticId = (showId, start) => `s${showId}-${start}`;
 
 export async function resolveTimes(showId, data, salesEnded) {
   const venue = stripLeadingThe(data.venueTitle);

@@ -27,6 +27,12 @@ export function CardGrid() {
       visibleShows.sort((a, b) => randomWeight.get(a.id)! - randomWeight.get(b.id)!);
   }
 
+  // Cancelled shows are kept listed for posterity, but they have nothing to
+  // plan around, so they belong at the bottom under every sort. Array#sort is
+  // stable, so this partitions them off without disturbing the order the
+  // switch above chose within each group.
+  visibleShows.sort((a, b) => Number(a.cancelled) - Number(b.cancelled));
+
   return (
     <div className={styles['card-grid']}>
       {visibleShows.length === 0 && (

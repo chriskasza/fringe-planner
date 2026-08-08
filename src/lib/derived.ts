@@ -114,6 +114,14 @@ export function visible(show: Show, state: VisibilityState, shows: Show[]): bool
   // not the raw `warnings` text - see ShowMetaEntry.
   if (show.warningTags.some((w) => state.warningsOn[w] === false)) return false;
 
+  // A cancelled show has no active performances and so no dates to match, which
+  // means the day/time gate below would reject it under every filter setting.
+  // It does still have a venue, a rating and warnings, and those filters above
+  // have already had their say. Keep it visible so the entry survives for
+  // posterity; CardGrid sorts it last. Returning here also skips the clash
+  // check, which is right - nothing active can't clash with anything.
+  if (show.cancelled) return true;
+
   // Day/Time gate what you're *browsing*: a show with nothing playing in the
   // selected days and times has nothing to offer, so it drops out entirely
   // (and deselecting every day shows nothing, rather than everything). This

@@ -30,7 +30,7 @@ describe('time-of-day buckets', () => {
     }
 
     const total = counts.matinee + counts.evening + counts.night;
-    expect(total).toBe(282);
+    expect(total).toBe(277);
     // No bucket should be a rounding error or swallow everything.
     for (const key of TIME_BUCKETS.map((b) => b.key)) {
       expect(counts[key] / total).toBeGreaterThan(0.15);

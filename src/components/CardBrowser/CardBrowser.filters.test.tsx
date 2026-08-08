@@ -18,7 +18,12 @@ describe('Day / Time filters gate which shows are browsable', () => {
   const cardBrowserEl = () => document.querySelector('[data-testid="card-browser"]') as HTMLElement;
   const cardCount = () => cardBrowserEl().querySelectorAll('[data-testid="show-card"]').length;
 
-  it('shows no cards at all when every day is deselected', () => {
+  // Cancelled shows have no active performances and so no date to match. They
+  // deliberately skip the Day/Time gate (see visible()) and stay listed for
+  // posterity, so every count below is "the shows that play, plus these".
+  const cancelledCount = shows.filter((s) => s.cancelled).length;
+
+  it('leaves only the cancelled shows when every day is deselected', () => {
     // Reported bug: clearing the day filter left every card on screen,
     // because visible() only consulted excluded/venue/rating/clash and never
     // the day or time filter - so Day and Time had no effect on the grid.
@@ -28,12 +33,13 @@ describe('Day / Time filters gate which shows are browsable', () => {
 
     fireEvent.click(openDayMenu().getByRole('button', { name: /Clear/ }));
 
-    expect(cardCount()).toBe(0);
-    expect(
-      within(document.querySelector('[data-testid="card-browser"]') as HTMLElement).getByText(
-        /No shows match the current filters/,
-      ),
-    ).toBeInTheDocument();
+    // Everything that plays is gone; only the date-less cancelled entries remain.
+    expect(cancelledCount).toBeGreaterThan(0);
+    expect(cardCount()).toBe(cancelledCount);
+    const remaining = Array.from(cardBrowserEl().querySelectorAll('[data-testid="show-card"] h3')).map(
+      (el) => el.textContent,
+    );
+    expect(remaining.every((t) => shows.find((s) => s.title === t)?.cancelled)).toBe(true);
   });
 
   it('narrows cards to only shows playing on the selected day', () => {
@@ -44,9 +50,9 @@ describe('Day / Time filters gate which shows are browsable', () => {
     fireEvent.click(openDayMenu().getByRole('button', { name: /Clear/ }));
     fireEvent.click(openDayMenu().getByText('Thu 3 Sep'));
 
-    const expected = shows.filter((s) =>
-      s.perfs.some((p) => p.status === 'active' && p.day === '2026-09-03'),
-    ).length;
+    const expected =
+      shows.filter((s) => s.perfs.some((p) => p.status === 'active' && p.day === '2026-09-03')).length +
+      cancelledCount;
 
     expect(expected).toBeGreaterThan(0);
     expect(expected).toBeLessThan(shows.length); // otherwise the test proves nothing
@@ -74,8 +80,8 @@ describe('Day / Time filters gate which shows are browsable', () => {
 
     fireEvent.click(openDayMenu().getByRole('button', { name: /Clear/ }));
 
-    // No cards browsable, but the schedule is untouched.
-    expect(cardCount()).toBe(0);
+    // Nothing playable left browsable, but the schedule is untouched.
+    expect(cardCount()).toBe(cancelledCount);
     const panel = within(document.querySelector('[data-testid="my-fringe-panel"]') as HTMLElement);
     expect(panel.getByText('6 PICKED')).toBeInTheDocument();
     expect(screen.getAllByText('OUTSIDE DATE FILTER').length).toBe(6);

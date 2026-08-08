@@ -29,6 +29,7 @@ const SHOW: Show = {
   warnings: ['flashing lights'],
   warningTags: ['flashing lights'],
   mins: 60,
+  cancelled: false,
   salesEnded: false,
   timesIncomplete: false,
   perfs: [perf('2026-09-03', 15 * 60 + 30), perf('2026-09-03', 20 * 60 + 30), perf('2026-09-04', 19 * 60)],

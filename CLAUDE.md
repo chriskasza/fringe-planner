@@ -19,6 +19,17 @@ Read `README.md` first - it documents the upstream API quirks that explain why
   `node:url`). The root `package.json` belongs to the front-end - the `scrape` scripts in
   it are just aliases, and the scrapers must keep running with nothing installed, so
   don't reach for a library from them.
+- **The show page's JSON-LD is the one exception to the timestamp rule below, and it
+  needs its guard.** When the embed API returns no `eventTimes`, the scraper fills gaps
+  from the page's `ld+json` (`extractEventTimes` in `meta.mjs`) - that's how *Game of
+  drones* gets its third performance, which the API doesn't list. Unlike everything else
+  upstream, those `startDate`s are honest UTC (`2026-09-04T20:45:00+00:00` = 17:45
+  Halifax), so `halifaxStamp` converts them and `localStamp` must never touch them; the
+  two are three hours apart and both look plausible. `mergePageTimes` (`scrape.mjs`)
+  therefore refuses to add anything unless the page's times are a **superset** of the
+  API's, which turns that mistake into a warning instead of silently wrong showtimes.
+  If you change either function, verify by breaking it on purpose: swapping in
+  `localStamp` must make the scrape warn about all three fallback shows and add nothing.
 - **Never pass an API `dateStart` to `new Date()`.** It carries a trailing `Z` but holds
   Halifax local wall time. Strip the `Z` and keep timestamps as naive local strings
   (`2026-09-03T14:00`). This is the single easiest way to silently break every showtime
@@ -31,6 +42,23 @@ Read `README.md` first - it documents the upstream API quirks that explain why
 - **The scraper merges; it must never delete.** Showtimes that vanish upstream get
   `status: "cancelled"`, not removal - a starred pick disappearing without a trace is the
   specific failure this design exists to prevent.
+- **A show the artist cancelled emits zero showtimes - never synthetic ones.** Upstream
+  marks a cancellation only by prefixing the pin board title (`CANCELLED: All Below`);
+  the card, the ticket page and the embed API all carry on as before.
+  `isCancelledTitle` (`scraper/lib/util.mjs`) reads that prefix and `scrape.mjs` then
+  skips `resolveTimes` entirely, emitting `times: []` so the merge cancels everything it
+  already knows. Don't "fix" that by letting `resolveTimes` run: cancellation always
+  coincides with sales ending, which drops `eventTimes` and sends the show down the
+  date-wise fallback, and that path mints fresh `s{showId}-{start}` ids for the defunct
+  slots - which the merge writes out as brand-new **active** showtimes that then render
+  in the Grid as bookable. That's the exact bug this rule exists to prevent; it shipped
+  once. Such a show carries `cancelled: true` while its `status` stays `active`, because
+  `status` only tracks whether upstream still lists the show at all. Front-end side: the
+  show stays in the Cards browser and the Shows filter for posterity, so `visible()`
+  (`src/lib/derived.ts`) returns early for it - having no active perfs, it has no dates,
+  and the Day/Time gate could never pass - while Venue/Rating/Warnings/exclusion/search
+  still apply. `CardGrid` sorts it last, `ShowCard` drops the day rail, times toggle and
+  pills, and `DetailPanel` shows `CANCELLED` for TIME with no pick button.
 - **`timeId` is the stable key for UI state.** Don't renumber, reassign, or derive it from
   array position. Saved and shared schedules are encoded as `timeId`s
   (`src/lib/persistence.ts`) precisely so a cancellation upstream can't shift a pick onto
@@ -113,7 +141,7 @@ Read `README.md` first - it documents the upstream API quirks that explain why
 
 Verify with a real run, not by reasoning about the diff:
 
-1. `npm run scrape` - expect 56 shows / 288 showtimes (282 active), exit 0. The active
+1. `npm run scrape` - expect 56 shows / 289 showtimes (277 active), exit 0. The active
    count is the stable one; the total grows whenever upstream cancels and re-issues a
    performance, since cancelled entries are kept forever.
 2. Run it twice. The second run must print "No changes since the last run" and leave

@@ -1,6 +1,7 @@
 import { render, fireEvent, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import App from '../../App';
+import { shows } from '../../lib/loadData';
 import { switchToCards, switchToGridFrom } from '../../test/appTestUtils';
 
 describe('App (Card Browser)', () => {
@@ -145,5 +146,49 @@ describe('App (Card Browser)', () => {
 
     fireEvent.click(panelScope.getAllByRole('button', { name: /Remove Peak Twins/ })[0]);
     expect(panelScope.getByText('5 PICKED')).toBeInTheDocument();
+  });
+});
+
+// A show the artist cancelled keeps its card - the entry survives for
+// posterity - but it has no performances left, so every control that would
+// offer one has to go. The scraper marks these off the "CANCELLED:" title
+// prefix upstream puts on the pin board; see scraper/lib/util.mjs.
+describe('Card Browser cancelled shows', () => {
+  const cancelledShow = () => {
+    const show = shows.find((s) => s.cancelled);
+    if (!show) throw new Error('no cancelled show in the scraped data');
+    return show;
+  };
+
+  it('renders the card with no day rail, no times toggle and no time pills', () => {
+    render(<App />);
+    switchToCards();
+    const show = cancelledShow();
+
+    const card = screen.getByText(show.title).closest('[data-testid="show-card"]') as HTMLElement;
+    const scope = within(card);
+
+    expect(scope.getByText('CANCELLED · NO PERFORMANCES')).toBeInTheDocument();
+    expect(scope.queryByRole('button', { name: /SHOW TIMES/ })).not.toBeInTheDocument();
+    expect(scope.queryAllByRole('button', { name: /performance, available/ })).toEqual([]);
+    // A normal card has all three, so the absences above mean something.
+    const playing = screen.getByText('Peak Twins').closest('[data-testid="show-card"]') as HTMLElement;
+    expect(within(playing).getByRole('button', { name: /SHOW TIMES/ })).toBeInTheDocument();
+  });
+
+  it('opens a detail panel with no showtime and nothing to add to My Fringe', () => {
+    render(<App />);
+    switchToCards();
+    const show = cancelledShow();
+
+    const card = screen.getByText(show.title).closest('[data-testid="show-card"]') as HTMLElement;
+    fireEvent.click(within(card).getByRole('button', { name: `Details for ${show.title}` }));
+
+    const panel = within(document.querySelector('[data-testid="detail-panel"]') as HTMLElement);
+    expect(panel.getByText('CANCELLED')).toBeInTheDocument();
+    expect(panel.queryByText('OTHER PERFORMANCES')).not.toBeInTheDocument();
+    expect(panel.queryByRole('button', { name: /My Fringe/ })).not.toBeInTheDocument();
+    // The show's page is still up, so the ticket link stays.
+    expect(panel.getByRole('link', { name: 'Tickets' })).toBeInTheDocument();
   });
 });

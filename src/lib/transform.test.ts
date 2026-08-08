@@ -62,3 +62,37 @@ describe('transform - description', () => {
     expect(transformWith({}).description).toEqual([]);
   });
 });
+
+// A cancelled show stays on the pin board, so its `status` is still 'active'
+// (that field only tracks whether upstream still lists it). What marks it is
+// the `cancelled` flag, and every one of its times is cancelled - which is why
+// `mins` has to survive off a cancelled perf.
+describe('transform - cancelled shows', () => {
+  const cancelledFile: ShowTimesFile = {
+    ...showTimes,
+    shows: [
+      {
+        ...showTimes.shows[0],
+        cancelled: true,
+        times: showTimes.shows[0].times.map((t) => ({ ...t, status: 'cancelled' as const })),
+      },
+    ],
+  };
+  const meta: ShowsMetaFile = { '1': { credits: [], rating: 'PG', warnings: [], warningTags: [] } };
+
+  it('keeps the show, flags it, and leaves it with no active performances', () => {
+    const show = transform(cancelledFile, meta, venues).shows[0];
+    expect(show.cancelled).toBe(true);
+    expect(show.perfs.every((p) => p.status === 'cancelled')).toBe(true);
+    expect(show.mins).toBe(60); // read off the cancelled perf, not zeroed
+  });
+
+  it('defaults the flag to false for a show the scraper never marked', () => {
+    expect(transform(showTimes, meta, venues).shows[0].cancelled).toBe(false);
+  });
+
+  it('leaves its cancelled performances out of the per-day counts', () => {
+    expect(transform(cancelledFile, meta, venues).days.find((d) => d.key === '2026-09-03')?.count).toBe(0);
+    expect(transform(showTimes, meta, venues).days.find((d) => d.key === '2026-09-03')?.count).toBe(1);
+  });
+});
