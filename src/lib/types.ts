@@ -52,6 +52,12 @@ export type ShowsMetaFile = Record<string, ShowMetaEntry>;
 
 export type VenueMetaEntry = {
   short: string;
+  // Mobile-safe variant of `short`: every space-separated token is 8
+  // characters or fewer, so it can never overflow the narrow (66px) mobile
+  // grid label column, whether wrapped or not. Optional - falls back to
+  // `short` (see transform.ts) so a venue added by a re-scrape without this
+  // field still renders, just without the mobile-specific abbreviation.
+  shortMobile?: string;
   shortAddress: string | null;
   fullAddress: string | null;
 };
@@ -94,6 +100,9 @@ export type Show = {
   ticketUrl: string;
   venue: string;
   venueShort: string;
+  // See VenueMetaEntry.shortMobile - the mobile grid label column renders
+  // this instead of venueShort below 700px.
+  venueShortMobile: string;
   venueAddress: string | null;
   credits: string[];
   rating: string;

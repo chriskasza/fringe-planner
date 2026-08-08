@@ -11,6 +11,7 @@ function show(overrides: Partial<Show> = {}): Show {
     ticketUrl: 'https://example.test/tickets',
     venue: 'The Bus Stop Theatre',
     venueShort: 'BUS STOP',
+    venueShortMobile: 'BUS STOP',
     venueAddress: '2203 Gottingen St',
     credits: [],
     rating: 'PG',

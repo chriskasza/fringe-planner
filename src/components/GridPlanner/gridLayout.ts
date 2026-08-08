@@ -7,6 +7,20 @@ import type { DayKey, Show } from '../../lib/types';
 // each column readable.
 export const SLOT_WIDTH = 140;
 
+// Below 700px, 140px puts less than two half-hour slots on a 375px screen -
+// less than a single performance, so two concurrent shows in different
+// venues can never be seen at once, which is the whole reason this grid (as
+// opposed to a flat list) exists. 88px fits ~4 slots (a 1h45m window) in the
+// same space and still leaves a 30-min block (blockWidth(30) = 80px) readable.
+export const SLOT_WIDTH_NARROW = 88;
+
+// Threaded through explicitly (see blockLeft/blockWidth/trackWidth below)
+// rather than read from this module at import time, so callers can vary it
+// per viewport without a second copy of the number living in CSS too.
+export function slotWidth(isNarrow: boolean): number {
+  return isNarrow ? SLOT_WIDTH_NARROW : SLOT_WIDTH;
+}
+
 // On the current day a performance that has already finished isn't useful
 // browsing real estate, so it drops off the grid. "Finished", not "started":
 // a show that's running right now keeps its block until it ends.
@@ -66,8 +80,8 @@ export function gridTimeBounds(
 const BLOCK_GAP_X = 4;
 const BLOCK_INSET_Y = 8;
 
-export function blockLeft(start: number, gridStartMin: number): number {
-  return ((start - gridStartMin) / 30) * SLOT_WIDTH + BLOCK_GAP_X;
+export function blockLeft(start: number, gridStartMin: number, slotWidthPx: number = SLOT_WIDTH): number {
+  return ((start - gridStartMin) / 30) * slotWidthPx + BLOCK_GAP_X;
 }
 
 // Width is exactly proportional to duration, with no artificial minimum -
@@ -77,8 +91,8 @@ export function blockLeft(start: number, gridStartMin: number): number {
 // false overlap with whatever starts when the short show actually ends. The
 // shortest real performance is 30 min, which is still comfortably wide (132px
 // at the current SLOT_WIDTH), so there's no readability need for a floor.
-export function blockWidth(mins: number): number {
-  return (mins / 30) * SLOT_WIDTH - BLOCK_GAP_X * 2;
+export function blockWidth(mins: number, slotWidthPx: number = SLOT_WIDTH): number {
+  return (mins / 30) * slotWidthPx - BLOCK_GAP_X * 2;
 }
 
 export const BLOCK_INSET_Y_PX = BLOCK_INSET_Y;
@@ -87,6 +101,6 @@ export const BLOCK_INSET_Y_PX = BLOCK_INSET_Y;
 // width (not `1fr`/`auto`) so the row's own box - and its border - actually
 // spans the full scrollable content instead of staying capped at whatever
 // width was available in the (unscrolled) viewport.
-export function trackWidth(slotCount: number): number {
-  return slotCount * SLOT_WIDTH;
+export function trackWidth(slotCount: number, slotWidthPx: number = SLOT_WIDTH): number {
+  return slotCount * slotWidthPx;
 }

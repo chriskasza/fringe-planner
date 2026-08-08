@@ -2,7 +2,8 @@ import { useMemo } from 'react';
 import { useApp } from '../../state/AppContext';
 import { visible } from '../../lib/derived';
 import { useNow } from '../../lib/useNow';
-import { gridTimeBounds, isPastPerf } from './gridLayout';
+import { useIsNarrow } from '../../lib/useIsNarrow';
+import { gridTimeBounds, isPastPerf, slotWidth } from './gridLayout';
 import { TimeHeader } from './TimeHeader';
 import { VenueRow } from './VenueRow';
 import type { Show } from '../../lib/types';
@@ -11,6 +12,8 @@ import styles from './GridPlanner.module.css';
 export function GridBody() {
   const { state, shows } = useApp();
   const now = useNow();
+  const isNarrow = useIsNarrow();
+  const slotWidthPx = slotWidth(isNarrow);
   const { startMin, slots } = useMemo(
     () => gridTimeBounds(shows, state.gridDay, now),
     [shows, state.gridDay, now],
@@ -51,7 +54,7 @@ export function GridBody() {
         </div>
       ) : (
         <div className={styles['grid-body__scroll']}>
-          <TimeHeader slots={slots} />
+          <TimeHeader slots={slots} slotWidthPx={slotWidthPx} />
           {byVenue.map(([venue, entries]) => (
             <VenueRow
               key={venue}
@@ -60,6 +63,7 @@ export function GridBody() {
               entries={entries}
               slots={slots}
               gridStartMin={startMin}
+              slotWidthPx={slotWidthPx}
             />
           ))}
         </div>

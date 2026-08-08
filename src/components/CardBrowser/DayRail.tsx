@@ -12,7 +12,7 @@ export function DayRail({ show, onExpand }: DayRailProps) {
   const { state, dispatch, shows, days } = useApp();
 
   return (
-    <div className={styles['day-rail']}>
+    <div className={styles['day-rail']} style={{ '--day-count': days.length } as React.CSSProperties}>
       {days.map((d) => {
         const { cellState, count } = dayRailCellState(show, d.key, state, shows);
 

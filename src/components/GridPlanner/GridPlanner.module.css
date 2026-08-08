@@ -117,6 +117,10 @@
   border-bottom: 1px solid var(--line-soft);
 }
 
+.venue-row__name-mobile {
+  display: none;
+}
+
 .venue-row__label,
 .time-header__spacer {
   position: sticky;
@@ -150,56 +154,87 @@
   color: var(--text-faint);
 }
 
-/* Narrower viewport: tighter spacing throughout, and no room for the venue
-   address line, so the name gets the space instead - clamped to 3 lines with
-   an ellipsis rather than overflowing the row. */
+/* Narrower viewport: tighter spacing throughout, and the short-form venue
+   label (venueShortMobile) instead of the full name, reclaiming most of the
+   column width the full name's 3-line clamp used to need - the address line
+   already goes away at this width, so the mobile label carries the venue on
+   its own. See VenueMetaEntry.shortMobile / Show.venueShortMobile (types.ts)
+   for why the short form can't just be `short` clamped smaller: several
+   venues' `short` values contain a single unbreakable token wider than this
+   column, which would either overflow onto the time track or break mid-word. */
 @media (max-width: 700px) {
   .grid-body {
-    --grid-label-width: 112px;
+    /* 12px left / 6px right padding on .venue-row__label -> 48px content
+       box. */
+    --grid-label-width: 66px;
     padding-top: 14px;
   }
   .grid-body__scroll {
     padding: 0 14px 0 0;
   }
   .venue-row__label {
-    padding: 0 8px 0 14px;
+    padding: 0 6px 0 12px;
+    box-sizing: border-box;
   }
   .venue-row__name {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    overflow: hidden;
-    line-height: 1.25;
+    display: none;
+  }
+  .venue-row__name-mobile {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.03em;
+    line-height: 1.35;
+    color: var(--cream);
+    /* Belt and braces: shortMobile is curated so no token in venues.json
+       ever needs this, but a future venue added without a shortMobile entry
+       (falling back to `short`, or even the raw venue name) must still never
+       be able to paint over the time track, regardless of the data. */
+    overflow-wrap: anywhere;
+    hyphens: auto;
   }
   .venue-row__address {
     display: none;
+  }
+  /* 74px = 62px block (8px top/bottom inset) - 14px wrapper padding (7px
+     top/bottom on .grid-block__sticky) = 48px content box, against 45px
+     needed for a 2-line title + gap + meta line. Below this, the title (a
+     flex child in a fixed-height wrapper - see .grid-block__title's
+     `flex: none; min-height: 2.5em`) shrinks below its own 2-line content
+     and -webkit-line-clamp renders line 2 as a strip of cut glyphs instead
+     of the row growing to fit. */
+  .venue-row {
+    min-height: 74px;
   }
 }
 
 /* Position-only: left/width/top/bottom come from GridBlock's inline `style`
    (see gridLayout.ts). Stays a plain, non-interactive div so the pick surface
-   and the details icon below can be real, unnested sibling buttons - a
+   and the details icon below can be real, unnested sibling elements - a
    `role="button"` div wrapping a `<button>` is a nested-interactive a11y
    violation (axe's nested-interactive rule), which this structure used to
-   trip. */
+   trip. `overflow: visible` (not the default here) matters again for a
+   second reason now: .grid-block__sticky below needs this box to stay part
+   of .venue-row__track's scrolling context for its `position: sticky` to
+   have any effect at all - a block that clips its own overflow becomes its
+   own scrollport, and sticky positioning inside one is completely inert. */
 .grid-block {
   position: absolute;
+  overflow: visible;
 }
 
-/* The visible, clickable block surface. A real <button> so Enter/Space
-   activation is native - no manual onKeyDown needed. */
+/* The full-size pick target. A real <button> so Enter/Space activation is
+   native - no manual onKeyDown needed. Carries no visible content of its own
+   (see GridBlock.tsx) - .grid-block__sticky, a DOM sibling, paints the title/
+   meta/icon on top of it, with `pointer-events: none` everywhere except the
+   icon so a click anywhere else on that visible text still lands here. */
 .grid-block__surface {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  padding: 8px 9px;
   border-radius: var(--r-block);
-  min-width: 0;
   cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  overflow: hidden;
   font: inherit;
   color: inherit;
   text-align: left;
@@ -234,30 +269,55 @@
   color: var(--ink);
 }
 
-.grid-block__top {
+/* The one sticky group: icon, title and meta line travel together so a block
+   scrolled partly off the left keeps showing all three at the scrollport's
+   left edge, not just whichever happened to still be in view. 150px is a
+   design constant, not the block's own width - sticky travel equals
+   blockWidth - groupWidth, so sizing this to the block's own width (e.g.
+   max-content) would leave ~0 travel and the pin would do nothing.
+   `max-width: 100%` caps it on blocks narrower than 150px (fully in view,
+   nothing to travel). `pointer-events: none` lets clicks on the title/meta
+   text fall through to .grid-block__surface underneath; .grid-block__icon
+   below opts back in so it stays independently clickable. Known limit:
+   travel is bounded by blockWidth - 150, so a block scrolled off by more
+   than that eventually loses its label - acceptable, since by then the
+   block itself is nearly gone. */
+.grid-block__sticky {
+  position: sticky;
+  left: 0;
+  width: 150px;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 7px 9px;
   display: flex;
   align-items: flex-start;
-  gap: 6px;
-  /* Reserve room for .grid-block__icon, which overlays this corner as a
-     sibling rather than sitting in this flex row. */
-  padding-right: 24px;
+  gap: 7px;
+  pointer-events: none;
+  color: var(--cream);
 }
 
-/* Sibling of .grid-block__surface, not a descendant - overlaid in the same
-   corner the icon used to occupy inside the row above. Painted on top of the
-   surface for free: later same-stacking-context siblings paint over earlier
-   ones without needing z-index. */
+.grid-block__sticky--picked,
+.grid-block__sticky--picked-clash {
+  color: var(--ink);
+}
+
 .grid-block__icon {
-  position: absolute;
-  top: 8px;
-  right: 9px;
+  pointer-events: auto;
+}
+
+.grid-block__body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
 }
 
 .grid-block__title {
   font-family: var(--font-body);
   font-weight: var(--font-weight-bold);
-  font-size: 12.5px;
+  font-size: 12px;
   line-height: 1.25;
+  color: inherit;
   overflow-wrap: anywhere;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -268,23 +328,28 @@
   /* Reserve space for 2 lines always (not just cap at 2) - otherwise a
      one-line title collapses to its own height, and the meta line below
      ends up sitting at a different distance from the block's bottom edge
-     depending on whether the title happened to wrap. */
+     depending on whether the title happened to wrap. Also (see CLAUDE.md)
+     what keeps a short mobile row from clamping line 2 into a strip of cut
+     glyphs instead of the row simply growing to fit. */
+  flex: none;
   min-height: 2.5em;
 }
 
 .grid-block__meta {
   font-family: var(--font-mono);
-  font-size: 9.5px;
+  font-size: 9px;
   line-height: 1.3;
   letter-spacing: 0.02em;
+  white-space: nowrap;
   flex: none;
+  /* Dims the meta line a shade below the title, same as the opacity it
+     replaces - the picked surfaces override this back to `inherit` (var(--ink)
+     via .grid-block__sticky--picked above) since there's no muted-on-gold
+     token to dim that further. */
+  color: var(--text-2);
 }
 
-/* Dims the meta line a shade below the title, same as the opacity it
-   replaces - scoped to the free/clash surfaces (which inherit --cream) since
-   the picked surfaces already set color: var(--ink) for contrast against the
-   gold background, and there's no muted-on-gold token to dim that further. */
-.grid-block__surface--free .grid-block__meta,
-.grid-block__surface--clash .grid-block__meta {
-  color: var(--text-2);
+.grid-block__sticky--picked .grid-block__meta,
+.grid-block__sticky--picked-clash .grid-block__meta {
+  color: inherit;
 }

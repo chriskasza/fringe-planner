@@ -54,9 +54,15 @@ Read `README.md` first - it documents the upstream API quirks that explain why
   the Playwright pass below is what caught it, not vitest.
   Three breakpoints, each meaning something different:
   - `1100px` - card grid drops 3 columns to 2.
-  - `700px` - the compact breakpoint: sticky label column narrows, "Halifax " drops
-    from the wordmark, spacing tightens throughout, and `DetailPanel`/`MyFringePanel`
-    both switch from a static side panel to a full-screen overlay.
+  - `700px` - the compact breakpoint: sticky label column narrows to 66px and swaps to
+    the short-form venue label (`Show.venueShortMobile`, see `VenueMetaEntry.shortMobile`
+    in `types.ts`/`venues.json` - not just `venueShort` clamped smaller, since several
+    venues' `short` values contain a single unbreakable token too wide for 66px), the
+    grid's per-slot pixel width drops from 140px to 88px (`gridLayout.ts`'s
+    `slotWidth`/`useIsNarrow` - this one can't be CSS-only, since blocks are positioned
+    with pixel math, not grid columns), "Halifax " drops from the wordmark, spacing
+    tightens throughout, and `DetailPanel`/`MyFringePanel` both switch from a static
+    side panel to a full-screen overlay.
   - `520px` - phone tweaks: "Planner" drops from the wordmark too, leaving just
     "Fringe". (No longer bumps FilterButton/SegmentedControl padding for a 44px touch
     target - once the FilterBar became a single component rendered at every width,
@@ -80,12 +86,19 @@ Read `README.md` first - it documents the upstream API quirks that explain why
   details `IconButton`) - a nested-interactive violation that also needed a
   `stopPropagation()` workaround in `IconButton` just to stop one click from firing
   both actions. Fixed by making them DOM siblings instead: an inert positioning `<div>`
-  containing a real `<button>` for the primary action and the secondary control (here,
-  `IconButton`) overlaid via CSS `position: absolute` in the same visual spot, never as
-  a descendant. `GridBlock.tsx`/`GridPlanner.module.css`'s `.grid-block__icon` is the
-  pattern to copy for any future "card with a corner action button." Same blind spot as
-  the opacity note above: `tsc`/`npm test`/lint don't catch this, only an accessibility
-  scanner (or the browser's own accessibility tree inspector) does.
+  (`.grid-block`, `overflow: visible`) containing a real `<button>` for the primary
+  action (`.grid-block__surface`, full-size, no visible content of its own) and a
+  second sibling (`.grid-block__sticky`) that paints the icon, title and meta line on
+  top of it. The sticky group sets `pointer-events: none` on itself so a click on the
+  visible title/meta text falls straight through to the surface button underneath;
+  `IconButton` opts back in with `pointer-events: auto`, which is what makes it
+  independently clickable without ever being the surface button's descendant, and
+  without needing a `stopPropagation()` workaround. `GridBlock.tsx` /
+  `GridPlanner.module.css`'s `.grid-block__sticky`/`.grid-block__icon` is the pattern
+  to copy for any future "card with a corner (or pinned) action button" that also
+  needs to keep working while its surface scrolls. Same blind spot as the opacity note
+  above: `tsc`/`npm test`/lint don't catch this, only an accessibility scanner (or the
+  browser's own accessibility tree inspector) does.
 - **No genre field.** Genre data isn't available on the festival website or in the PDF
   guide. Don't invent one - the front-end has no genre filter or genre-coded accents.
 - **Don't commit the festival PDF** (it's gitignored - 32MB).
