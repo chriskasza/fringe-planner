@@ -22,12 +22,14 @@
   --text-3: #b6ccc8;
   --text-mute: #7fa39d;
   --text-faint: #7e9e9a;
+  /* Dimmer than --text-faint - for content that should read as unavailable
+     rather than merely de-emphasized (e.g. a day-rail cell with no
+     performance), so it doesn't compete visually with real data at a glance. */
+  --text-ghost: #4e7a74;
 
   /* Colors — status accents (no genre coding; cyan/coral are state-only) */
   --cyan: #35d6b4;
-  --purple: #7b4bc9;
   --coral: #e4574e;
-  --green: #8fbf4c;
 
   /* Translucent variants */
   --gold-fill-active: rgba(198, 169, 59, 0.14);

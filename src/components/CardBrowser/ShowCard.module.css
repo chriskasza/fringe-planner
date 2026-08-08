@@ -13,7 +13,9 @@
 
 .show-card__image {
   position: relative;
-  height: 104px;
+  /* Real poster art is portrait; 104px used to take a full-width band from
+     the crop's vertical middle, which usually cut off the title lettering. */
+  height: 150px;
   background: var(--img-placeholder);
   border-bottom: 1px solid var(--line);
   padding: 10px;
@@ -25,6 +27,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top;
 }
 
 .show-card__image-label {
@@ -91,6 +94,7 @@
 }
 
 .show-card__toggle-times {
+  position: relative;
   align-self: flex-start;
   background: none;
   border: none;
@@ -100,4 +104,17 @@
   font-size: 9.5px;
   padding: 0;
   cursor: pointer;
+}
+
+/* The only way to reveal a card's time-pill list, but its visual box (text +
+   1px underline) is only ~12px tall - well under the 44px touch-target
+   minimum. Pads the tappable area invisibly, same as IconButton/the panel
+   close buttons, rather than growing the visible text/underline. Safe here
+   (unlike .pill below): this button sits alone in .show-card__footer's
+   column with no interactive neighbor close enough for the expanded area to
+   overlap. */
+.show-card__toggle-times::after {
+  content: '';
+  position: absolute;
+  inset: -16px;
 }

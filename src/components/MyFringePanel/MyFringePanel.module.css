@@ -59,6 +59,7 @@
 }
 
 .my-fringe-panel__close {
+  position: relative;
   width: 30px;
   height: 30px;
   flex: none;
@@ -68,6 +69,14 @@
   color: var(--text-2);
   font-size: 15px;
   cursor: pointer;
+}
+
+/* Pads the tappable area to the 44px touch-target minimum (7px each side)
+   without growing the visible 30px circle. */
+.my-fringe-panel__close::after {
+  content: '';
+  position: absolute;
+  inset: -7px;
 }
 
 .my-fringe-panel__body {
@@ -170,7 +179,10 @@
 .my-fringe-panel__outside-tag {
   font-family: var(--font-mono);
   font-size: 9px;
-  border: 1px dashed var(--ink);
+  /* Not --ink: .my-fringe-panel__row--outside sets this row's background to
+     --ink-sunken, a single step off --ink, so that border was nearly
+     invisible on exactly the rows it exists to explain. */
+  border: 1px dashed var(--line-strong);
   border-radius: var(--r-pill);
   padding: 1px 6px;
   align-self: flex-start;

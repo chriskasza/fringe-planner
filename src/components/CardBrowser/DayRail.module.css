@@ -1,6 +1,9 @@
 .day-rail {
   display: grid;
-  grid-template-columns: repeat(11, minmax(0, 1fr));
+  /* --day-count is set inline from days.length (see DayRail.tsx) - a
+     hardcoded 11 silently breaks this rail if a re-scrape ever changes the
+     festival's length. */
+  grid-template-columns: repeat(var(--day-count), minmax(0, 1fr));
   gap: 3px;
 }
 
@@ -30,7 +33,10 @@
 .day-rail__cell--none {
   background: transparent;
   border: 1px dashed var(--line-soft);
-  color: var(--text-faint);
+  /* Distinctly dimmer than --text-faint (the meta-text token) - "no
+     performance" needs to read as unavailable at a glance, not merely
+     de-emphasized, since the rail's whole job is at-a-glance availability. */
+  color: var(--text-ghost);
   cursor: default;
 }
 
@@ -63,4 +69,13 @@
   border: 1px solid var(--coral);
   border-left-width: 4px;
   color: var(--ink);
+}
+
+/* 30px is under the 44px touch-target minimum, on the primary mobile picking
+   action. Raises cell height only - width stays governed by the
+   `--day-count`-wide grid above. */
+@media (max-width: 700px) {
+  .day-rail__cell {
+    height: 44px;
+  }
 }

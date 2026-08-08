@@ -1,6 +1,7 @@
 {
   "Universalist Unitarian Church of Halifax": {
     "short": "UNITARIAN CHURCH",
+    "shortMobile": "UNITARN CHURCH",
     "shortAddress": "5500 Inglis Street, Halifax",
     "fullAddress": "5500 Inglis Street, Halifax, Nova Scotia B3H 1J8"
   },
@@ -21,6 +22,7 @@
   },
   "Neptune Theatre Scotiabank Stage": {
     "short": "NEPTUNE SCOTIABANK",
+    "shortMobile": "NEPTUNE SCOTIA",
     "shortAddress": "1593 Argyle Street, Halifax",
     "fullAddress": "1593 Argyle Street, Halifax, Nova Scotia B3J 2B2"
   },
@@ -61,6 +63,7 @@
   },
   "Cruikshank's Halifax Funeral Home": {
     "short": "CRUIKSHANK’S",
+    "shortMobile": "CRUIK’S",
     "shortAddress": "2666 Windsor Street, Halifax",
     "fullAddress": "2666 Windsor Street, Halifax, Nova Scotia B3K 5C9"
   },
@@ -71,11 +74,13 @@
   },
   "Wonderneath Art Society": {
     "short": "WONDERNEATH",
+    "shortMobile": "WONDER",
     "shortAddress": "2482 Maynard Street, Halifax",
     "fullAddress": "2482 Maynard Street, Halifax, Nova Scotia B3K 1K4"
   },
   "Sanctuary Arts Centre": {
     "short": "SANCTUARY ARTS",
+    "shortMobile": "SANCTRY ARTS",
     "shortAddress": "100 Ochterloney Street, Dartmouth",
     "fullAddress": "100 Ochterloney Street, Dartmouth, Nova Scotia B2Y 0G2"
   },

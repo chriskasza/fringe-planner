@@ -55,6 +55,7 @@ function transformShow(
     ticketUrl: raw.ticketUrl,
     venue,
     venueShort: resolvedVenueMeta?.short ?? venue.toUpperCase(),
+    venueShortMobile: resolvedVenueMeta?.shortMobile ?? resolvedVenueMeta?.short ?? venue.toUpperCase(),
     venueAddress: resolvedVenueMeta?.shortAddress ?? null,
     credits: showMeta?.credits ?? [],
     rating: showMeta?.rating ?? 'NOT RATED',

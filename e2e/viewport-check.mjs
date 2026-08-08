@@ -227,8 +227,8 @@ async function main() {
     check('520px: grid body header removed', !(await isVisible(page, '.grid-body__heading, [class*="grid-body__heading"]')));
     await screenshot(page, '520-grid');
 
-    // --- 390px (mobile): wordmark, ON NOW hidden, narrower label, no address,
-    // 3-line clamp. ---
+    // --- 390px (mobile): wordmark, ON NOW hidden, narrower label using the
+    // short mobile venue form. ---
     await page.setViewportSize({ width: 390, height: 844 });
     await page.waitForSelector('[data-testid="topbar-wordmark"]');
 
@@ -242,12 +242,34 @@ async function main() {
     check('390px: ON NOW badge hidden despite onNow>0', !(await isVisible(page, '[data-testid="topbar"] >> text=ON NOW')));
 
     const labelWidth390 = await computed(page, '[data-testid="time-header"]', '--grid-label-width');
-    check('390px: --grid-label-width resolves to 112px', labelWidth390.trim() === '112px', labelWidth390);
+    check('390px: --grid-label-width resolves to 66px', labelWidth390.trim() === '66px', labelWidth390);
 
     check('390px: venue-row-address hidden', !(await isVisible(page, '[data-testid="venue-row-address"]')));
 
-    const nameClamp390 = await lineClamp(page, '[data-testid="venue-row-label"] span');
-    check('390px: venue-row__name computed line-clamp is 3', nameClamp390 === '3', nameClamp390);
+    // The full venue name span is still in the DOM (CSS alone decides which
+    // one renders - see VenueRow.tsx/GridPlanner.module.css), just hidden;
+    // the mobile short-form span takes over instead.
+    check('390px: venue-row__name (full) hidden at mobile', !(await isVisible(page, '[data-testid="venue-row-label"] .venue-row__name, [data-testid="venue-row-label"] [class*="venue-row__name"]:not([class*="mobile"])')));
+
+    // Acceptance: venue labels never paint over the time track, for any
+    // venue currently in venues.json - not just the five identified as
+    // offending in the design review. Checks every rendered row's label
+    // against where the track (the first grid column boundary) starts.
+    const overlaps390 = await page.$$eval(
+      '[data-testid="venue-row"]',
+      (rows) =>
+        rows
+          .map((row) => {
+            const label = row.querySelector('[data-testid="venue-row-label"]');
+            const track = row.querySelector('[class*="venue-row__track"]');
+            if (!label || !track) return null;
+            const labelRect = label.getBoundingClientRect();
+            const trackRect = track.getBoundingClientRect();
+            return labelRect.right > trackRect.left + 0.5 ? label.textContent : null;
+          })
+          .filter(Boolean),
+    );
+    check('390px: no venue label paints over the time track', overlaps390.length === 0, overlaps390.join(', '));
 
     await screenshot(page, '390-grid');
 

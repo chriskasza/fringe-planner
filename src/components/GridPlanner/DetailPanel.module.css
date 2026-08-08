@@ -57,6 +57,14 @@
   cursor: pointer;
 }
 
+/* Pads the tappable area to the 44px touch-target minimum (7px each side)
+   without growing the visible 30px circle. */
+.detail-panel__close::after {
+  content: '';
+  position: absolute;
+  inset: -7px;
+}
+
 .detail-panel__body {
   flex: 1;
   min-height: 0;

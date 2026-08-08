@@ -1,4 +1,7 @@
 .filters-overflow-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 9px 14px;
   border-radius: var(--r-button);
   background: var(--ink-sunken);
@@ -9,6 +12,32 @@
   letter-spacing: 0.04em;
   white-space: nowrap;
   cursor: pointer;
+}
+
+/* Same active treatment as FilterButton.module.css's .filter-button--active -
+   a filter collapsed into More… should read as "on" the same way one left
+   inline does. */
+.filters-overflow-trigger--active {
+  background: var(--gold-fill-active);
+  border: 1px solid var(--gold);
+  color: var(--cream);
+}
+
+/* Same gold-pill treatment as the My Fringe count badge (TopBar.module.css's
+   .topbar__badge, inverted gold/ink) - More… previously signalled "filters
+   are active" with count text alone and no color change. */
+.filters-overflow-trigger__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 5px;
+  border-radius: var(--r-pill);
+  background: var(--gold);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 10px;
 }
 
 .filters-overflow-overlay {

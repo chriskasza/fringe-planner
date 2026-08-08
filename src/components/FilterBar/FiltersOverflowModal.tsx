@@ -42,10 +42,11 @@ export function MoreFiltersButton({ view }: FiltersOverflowModalProps) {
   return (
     <button
       type="button"
-      className={styles['filters-overflow-trigger']}
+      className={`${styles['filters-overflow-trigger']} ${count > 0 ? styles['filters-overflow-trigger--active'] : ''}`}
       onClick={() => dispatch({ type: 'SET_OPEN_MENU', view, menu: 'all' })}
     >
-      More…{count > 0 ? ` (${count})` : ''}
+      More…
+      {count > 0 && <span className={styles['filters-overflow-trigger__badge']}>{count}</span>}
     </button>
   );
 }

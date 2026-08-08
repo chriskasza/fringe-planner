@@ -21,6 +21,7 @@ const SHOW: Show = {
   ticketUrl: '',
   venue: 'The Bus Stop Theatre',
   venueShort: 'BUS STOP',
+  venueShortMobile: 'BUS STOP',
   venueAddress: null,
   credits: [],
   rating: 'PG',

@@ -16,6 +16,7 @@ function showWith(perfs: Perf[], id = '284247'): Show {
     ticketUrl: '',
     venue: 'The Bus Stop Theatre',
     venueShort: 'BUS STOP',
+    venueShortMobile: 'BUS STOP',
     venueAddress: null,
     credits: [],
     rating: 'PG',
