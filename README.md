@@ -30,8 +30,10 @@ widget calls:
    Requires the headers `application`, `isBoxOffice: 0`, `originType: 9`.
 
 3. **Show page** - `simpletix.com/e/{slug}-tickets-{showId}` - each show's own ticket
-   page, scraped for credits, rating, content warnings, and (via its JSON-LD) the
-   venue's address. See "Data that isn't scraped" below.
+   page, scraped for the full description, credits, rating, content warnings, and (via
+   its JSON-LD) the venue's address. The pin board's own blurb is truncated to 256
+   characters upstream, so the untruncated write-up only exists here. See "Data that
+   isn't scraped" below.
 
 ## Gotchas worth knowing before editing `scraper/scrape.mjs`
 
@@ -100,8 +102,12 @@ performance times.
 Additional show metadata and venue addresses are scraped from each show's own SimpleTix
 page by `scraper/scrape.mjs` and written to `src/data/`:
 
-- **`shows_meta.json`** - one entry per `showId`: `credits`, `rating`, `warnings`.
-- **`venues.json`** - one entry per venue name: `short`, `shortAddress`, `fullAddress`.
+- **`shows_meta.json`** - one entry per `showId`: `description` (the full write-up, one
+  entry per paragraph - everything before the first `Credits:`/`Rating:`/`Content
+  Warnings:` paragraph on the page), `credits`, `rating`, `warnings`.
+- **`venues.json`** - one entry per venue name: `short`, `shortAddress`, `fullAddress`,
+  plus a curated `shortMobile` for the venues whose `short` is too wide for the 66px
+  mobile label column.
 
 The front-end's `transform.ts` joins all three files into the shape the UI renders. There
 is deliberately no genre field or genre filter anywhere in the app.

@@ -9,6 +9,7 @@ function show(perfs: [start: number, end: number][], day = DAY, status: Perf['st
     id: '1',
     title: 'A Show',
     blurb: '',
+    description: [],
     poster: '',
     ticketUrl: '',
     venue: 'The Bus Stop Theatre',

@@ -34,6 +34,12 @@ export type ShowTimesFile = {
 };
 
 export type ShowMetaEntry = {
+  // The show's full write-up off its own ticket page, one entry per paragraph
+  // (everything before the first labelled paragraph - see meta.mjs). Unlike
+  // RawShow.blurb, which the pin board truncates to 256 characters, this is
+  // the whole thing. Optional: a meta entry carried forward from a scrape
+  // that predates this field won't have it.
+  description?: string[];
   credits: string[];
   rating: string;
   // Unedited, as the creator typed it into their SimpleTix listing (split on
@@ -95,7 +101,8 @@ export type Perf = {
 export type Show = {
   id: string;
   title: string;
-  blurb: string;
+  blurb: string; // truncated teaser from the pin board, 256 chars max
+  description: string[]; // full write-up, one entry per paragraph; may be empty
   poster: string;
   ticketUrl: string;
   venue: string;

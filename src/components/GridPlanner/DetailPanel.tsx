@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useApp } from '../../state/AppContext';
 import { perfIndex, perfState } from '../../lib/derived';
 import { formatTime } from '../../lib/dates';
@@ -12,6 +13,10 @@ const STATUS_LABEL: Record<string, string> = {
 
 export function DetailPanel() {
   const { state, dispatch, shows, days } = useApp();
+  // Which show's description is expanded, rather than a plain boolean: the
+  // panel stays mounted between openings, so a boolean would leave the next
+  // show opening pre-expanded (and would need a reset effect to avoid it).
+  const [expandedFor, setExpandedFor] = useState<string | null>(null);
   if (!state.detail) return null;
 
   const hit = perfIndex(shows).get(state.detail.timeId);
@@ -23,6 +28,24 @@ export function DetailPanel() {
   const isPicked = pState === 'picked' || pState === 'picked-clash';
 
   const otherPerfs = show.perfs.filter((p) => p.status === 'active' && p.timeId !== primaryPerf.timeId);
+
+  // The blurb is the pin board's 256-character teaser; the description is the
+  // untruncated version off the show's own page. Only offer the toggle when
+  // there's something to expand into.
+  const expandable = show.description.length > 0;
+  const expanded = expandable && expandedFor === show.id;
+  const descriptionId = `detail-description-${show.id}`;
+  const toggle = (
+    <button
+      type="button"
+      className={styles['detail-panel__more']}
+      onClick={() => setExpandedFor(expanded ? null : show.id)}
+      aria-expanded={expanded}
+      aria-controls={expanded ? descriptionId : undefined}
+    >
+      {expanded ? 'LESS ▲' : '… MORE ▼'}
+    </button>
+  );
 
   return (
     <div data-testid="detail-panel" className={styles['detail-panel']}>
@@ -62,7 +85,21 @@ export function DetailPanel() {
           <span className={styles['detail-panel__spec-value']}>{show.rating}</span>
         </div>
 
-        <p className={styles['detail-panel__blurb']}>{show.blurb}</p>
+        {expanded ? (
+          <div id={descriptionId} className={styles['detail-panel__description']}>
+            {show.description.map((paragraph, i) => (
+              <p key={i} className={styles['detail-panel__blurb']}>
+                {paragraph}
+                {i === show.description.length - 1 && <> {toggle}</>}
+              </p>
+            ))}
+          </div>
+        ) : (
+          <p className={styles['detail-panel__blurb']}>
+            {show.blurb}
+            {expandable && <> {toggle}</>}
+          </p>
+        )}
 
         {show.warnings.length > 0 && (
           <div>

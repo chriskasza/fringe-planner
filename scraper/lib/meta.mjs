@@ -11,6 +11,9 @@ function paragraphs(html) {
   return [...html.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi)].map((m) => stripTagsKeepingLines(m[1]));
 }
 
+const LABELS = ['Credits', 'Rating', 'Content Warnings'];
+const ANY_LABEL = new RegExp(`^(${LABELS.join('|')})\\s*:`, 'i');
+
 // The value is either inline after the label in the same paragraph (Rating is
 // usually this way) or the entirety of the next paragraph (Credits, Content
 // Warnings are usually this way). Handle both.
@@ -170,6 +173,19 @@ function parseRating(html) {
   return raw ? raw.trim() : 'NOT RATED';
 }
 
+// The show's own prose, one entry per paragraph. Everything upstream puts
+// before the first labelled paragraph is description; everything from
+// "Credits:" on is either a label, a label's value, or a trailing note
+// ("Mask Mandatory Performance: ...") that the front end shows elsewhere or
+// not at all. A page with no labels at all keeps every paragraph rather than
+// silently losing its prose.
+function parseDescription(html) {
+  const paras = paragraphs(html);
+  const firstLabel = paras.findIndex((p) => ANY_LABEL.test(p));
+  const prose = firstLabel === -1 ? paras : paras.slice(0, firstLabel);
+  return prose.map((p) => p.trim()).filter(Boolean);
+}
+
 function extractDescriptionBlock(html) {
   const m =
     /<div class="left_display" id="description">([\s\S]*?)<\/div>\s*<div class="left_display">/.exec(
@@ -224,6 +240,7 @@ export async function fetchMeta(showId, ticketUrl, title) {
 
   return {
     meta: {
+      description: parseDescription(block),
       credits: parseCredits(block),
       rating: parseRating(block),
       warnings,

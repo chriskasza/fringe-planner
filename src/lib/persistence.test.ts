@@ -12,6 +12,7 @@ function showWith(perfs: Perf[], id = '284247'): Show {
     id,
     title: 'A Show',
     blurb: '',
+    description: [],
     poster: '',
     ticketUrl: '',
     venue: 'The Bus Stop Theatre',

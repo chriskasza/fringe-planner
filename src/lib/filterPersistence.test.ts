@@ -17,6 +17,7 @@ function showWith(
     id,
     title: 'A Show',
     blurb: '',
+    description: [],
     poster: '',
     ticketUrl: '',
     venue: 'The Bus Stop Theatre',

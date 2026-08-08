@@ -10,8 +10,11 @@ Read `README.md` first - it documents the upstream API quirks that explain why
   see upstream: show IDs, titles, and performance times.
 - **`src/data/shows_meta.json` and `src/data/venues.json` are generated too**, by the
   same `scraper/scrape.mjs` / `npm run scrape` as `show_times.json`. They hold
-  everything the pin board and times API can't get: credits, rating, content
-  warnings, and venue addresses, scraped from each show's own SimpleTix ticket page.
+  everything the pin board and times API can't get: the full description, credits,
+  rating, content warnings, and venue addresses, scraped from each show's own SimpleTix
+  ticket page. `show_times.json`'s `blurb` is the pin board's 256-character teaser;
+  `shows_meta.json`'s `description` is the untruncated version, and `DetailPanel`
+  expands from one to the other.
 - **No dependencies in either scraper.** Node built-ins only (`fetch`, `node:fs`,
   `node:url`). The root `package.json` belongs to the front-end - the `scrape` scripts in
   it are just aliases, and the scrapers must keep running with nothing installed, so
@@ -57,7 +60,10 @@ Read `README.md` first - it documents the upstream API quirks that explain why
   - `700px` - the compact breakpoint: sticky label column narrows to 66px and swaps to
     the short-form venue label (`Show.venueShortMobile`, see `VenueMetaEntry.shortMobile`
     in `types.ts`/`venues.json` - not just `venueShort` clamped smaller, since several
-    venues' `short` values contain a single unbreakable token too wide for 66px), the
+    venues' `short` values contain a single unbreakable token too wide for 66px; the
+    curated values live in `scrape.mjs`'s `SHORT_MOBILE_NAMES`, next to `SHORT_NAMES`,
+    because the scraper rewrites each `venues.json` entry wholesale and would otherwise
+    delete a value that existed only in the generated file), the
     grid's per-slot pixel width drops from 140px to 88px (`gridLayout.ts`'s
     `slotWidth`/`useIsNarrow` - this one can't be CSS-only, since blocks are positioned
     with pixel math, not grid columns), "Halifax " drops from the wordmark, spacing
@@ -107,7 +113,9 @@ Read `README.md` first - it documents the upstream API quirks that explain why
 
 Verify with a real run, not by reasoning about the diff:
 
-1. `npm run scrape` - expect 56 shows / 282 showtimes, exit 0.
+1. `npm run scrape` - expect 56 shows / 288 showtimes (282 active), exit 0. The active
+   count is the stable one; the total grows whenever upstream cancels and re-issues a
+   performance, since cancelled entries are kept forever.
 2. Run it twice. The second run must print "No changes since the last run" and leave
    `src/data/show_times.json` byte-identical apart from `scrapedAt`. Churn on a clean re-run means
    the merge keying is broken.

@@ -7,6 +7,7 @@ function show(overrides: Partial<Show> = {}): Show {
     id: '284247',
     title: 'A Show',
     blurb: '',
+    description: [],
     poster: '',
     ticketUrl: 'https://example.test/tickets',
     venue: 'The Bus Stop Theatre',

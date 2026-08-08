@@ -51,6 +51,21 @@ const SHORT_NAMES = {
   'Wonderneath Art Society': 'Wonderneath',
 };
 
+// Narrower still, for the 66px mobile label column (see CLAUDE.md's 700px
+// breakpoint): every space-separated token here is 8 characters or fewer, so
+// it can't overflow whether it wraps or not. Only the venues whose SHORT_NAMES
+// value contains a token too wide need an entry; the rest fall back to `short`
+// in transform.ts. Lives here rather than only in the generated venues.json
+// because this scraper rewrites each venue entry wholesale -- a curated value
+// that exists only in the output file is deleted by the next run.
+const SHORT_MOBILE_NAMES = {
+  "Cruikshank's Halifax Funeral Home": "Cruik's",
+  'Neptune Theatre Scotiabank Stage': 'Neptune Scotia',
+  'Sanctuary Arts Centre': 'Sanctry Arts',
+  'Universalist Unitarian Church of Halifax': 'Unitarn Church',
+  'Wonderneath Art Society': 'Wonder',
+};
+
 // --- main --------------------------------------------------------------
 
 const cards = await scrapeCards();
@@ -117,8 +132,10 @@ for (const [i, card] of cards.entries()) {
     const venueName = show.venue || (address?.name ?? '');
     if (address && venueName) {
       const short = SHORT_NAMES[venueName] ?? venueName.toUpperCase();
+      const shortMobile = SHORT_MOBILE_NAMES[venueName];
       venues[venueName] = {
         short,
+        ...(shortMobile ? { shortMobile } : {}),
         shortAddress: address.shortAddress,
         fullAddress: address.fullAddress,
       };
@@ -207,6 +224,15 @@ const noRating = Object.entries(meta).filter(([, m]) => m.rating === 'NOT RATED'
 if (noRating.length) {
   console.log(`\n${noRating.length} show(s) had no parsed rating (defaulted to NOT RATED):`);
   for (const [id] of noRating) {
+    const s = shows.find((x) => String(x.showId) === id);
+    console.log(`  - ${s?.title ?? id} (${id})`);
+  }
+}
+
+const noDescription = Object.entries(meta).filter(([, m]) => !m.description?.length);
+if (noDescription.length) {
+  console.log(`\n${noDescription.length} show(s) had no parsed description:`);
+  for (const [id] of noDescription) {
     const s = shows.find((x) => String(x.showId) === id);
     console.log(`  - ${s?.title ?? id} (${id})`);
   }

@@ -1,5 +1,5 @@
 {
-  "scrapedAt": "2026-07-29T23:57:56.394Z",
+  "scrapedAt": "2026-08-08T18:52:58.525Z",
   "timezone": "America/Halifax",
   "source": "https://halifaxfringe.ca/home-copy-copy-3/",
   "shows": [
@@ -276,42 +276,6 @@
           "start": "2026-09-12T21:30",
           "end": "2026-09-12T22:30",
           "venue": "Neptune Theatre Scotiabank Stage",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
-        }
-      ],
-      "status": "active",
-      "firstSeen": "2026-07-26T12:52:44.451Z"
-    },
-    {
-      "showId": 284052,
-      "title": "All Below",
-      "blurb": "All Below is a multimedia devised two-person theatreperformance that exists in a pocket universe between clown,cosmic horror, and 19th century poetry. Also, there are puppets.Drawing inspiration from Carlo Rovelli’s book on quantum physics, The Order of Ti",
-      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-04-2026-235858-7865.jpg",
-      "venue": "Neptune Theatre Imperial Studio",
-      "ticketUrl": "https://www.simpletix.com/e/all-below-tickets-284052",
-      "times": [
-        {
-          "timeId": 1522015,
-          "start": "2026-09-11T18:30",
-          "end": "2026-09-11T19:30",
-          "venue": "Neptune Theatre Imperial Studio",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
-        },
-        {
-          "timeId": 1522016,
-          "start": "2026-09-12T21:30",
-          "end": "2026-09-12T22:30",
-          "venue": "Neptune Theatre Imperial Studio",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
-        },
-        {
-          "timeId": 1522017,
-          "start": "2026-09-13T20:00",
-          "end": "2026-09-13T21:00",
-          "venue": "Neptune Theatre Imperial Studio",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         }
@@ -602,6 +566,136 @@
       ],
       "status": "active",
       "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 284052,
+      "title": "CANCELLED: All Below",
+      "blurb": "This show has been cancelled by the artist.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-04-2026-235858-7865.jpg",
+      "venue": "",
+      "ticketUrl": "https://www.simpletix.com/e/cancelled-all-below-tickets-284052",
+      "times": [
+        {
+          "timeId": 1522015,
+          "start": "2026-09-11T18:30",
+          "end": "2026-09-11T19:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-08T18:46:26.953Z"
+        },
+        {
+          "timeId": "s284052-2026-09-11T18:30",
+          "start": "2026-09-11T18:30",
+          "end": "2026-09-11T19:30",
+          "venue": "",
+          "status": "active",
+          "firstSeen": "2026-08-08T18:46:26.953Z"
+        },
+        {
+          "timeId": 1522016,
+          "start": "2026-09-12T21:30",
+          "end": "2026-09-12T22:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-08T18:46:26.953Z"
+        },
+        {
+          "timeId": "s284052-2026-09-12T21:30",
+          "start": "2026-09-12T21:30",
+          "end": "2026-09-12T22:30",
+          "venue": "",
+          "status": "active",
+          "firstSeen": "2026-08-08T18:46:26.953Z"
+        },
+        {
+          "timeId": 1522017,
+          "start": "2026-09-13T20:00",
+          "end": "2026-09-13T21:00",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-08T18:46:26.953Z"
+        },
+        {
+          "timeId": "s284052-2026-09-13T20:00",
+          "start": "2026-09-13T20:00",
+          "end": "2026-09-13T21:00",
+          "venue": "",
+          "status": "active",
+          "firstSeen": "2026-08-08T18:46:26.953Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z",
+      "salesEnded": true,
+      "timesIncomplete": true
+    },
+    {
+      "showId": 284222,
+      "title": "CANCELLED: Le Début des Yeux // Everything is Sparkle Sparkle",
+      "blurb": "This show has been cancelled by the artist.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/LedebutdesyeuxEverythingisSparkleSparkle.jpg",
+      "venue": "",
+      "ticketUrl": "https://www.simpletix.com/e/cancelled-le-d-but-des-yeux-everything-is-sparkle-sparkle-tickets-284222",
+      "times": [
+        {
+          "timeId": 1525820,
+          "start": "2026-09-04T21:30",
+          "end": "2026-09-04T22:15",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-08T18:46:26.953Z"
+        },
+        {
+          "timeId": "s284222-2026-09-04T21:30",
+          "start": "2026-09-04T21:30",
+          "end": "2026-09-04T22:15",
+          "venue": "",
+          "status": "active",
+          "firstSeen": "2026-08-08T18:46:26.953Z"
+        },
+        {
+          "timeId": 1525821,
+          "start": "2026-09-05T20:00",
+          "end": "2026-09-05T20:45",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-08T18:46:26.953Z"
+        },
+        {
+          "timeId": "s284222-2026-09-05T20:00",
+          "start": "2026-09-05T20:00",
+          "end": "2026-09-05T20:45",
+          "venue": "",
+          "status": "active",
+          "firstSeen": "2026-08-08T18:46:26.953Z"
+        },
+        {
+          "timeId": 1525822,
+          "start": "2026-09-06T18:30",
+          "end": "2026-09-06T19:15",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-08T18:46:26.953Z"
+        },
+        {
+          "timeId": "s284222-2026-09-06T18:30",
+          "start": "2026-09-06T18:30",
+          "end": "2026-09-06T19:15",
+          "venue": "",
+          "status": "active",
+          "firstSeen": "2026-08-08T18:46:26.953Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z",
+      "salesEnded": true,
+      "timesIncomplete": true
     },
     {
       "showId": 284065,
@@ -1250,42 +1344,6 @@
           "start": "2026-09-06T20:00",
           "end": "2026-09-06T21:00",
           "venue": "Neptune Theatre Scotiabank Stage",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
-        }
-      ],
-      "status": "active",
-      "firstSeen": "2026-07-26T12:52:44.451Z"
-    },
-    {
-      "showId": 284222,
-      "title": "Le Début des Yeux // Everything is Sparkle Sparkle",
-      "blurb": "Everything is SPARKLE SPARKLE — Still dressed in their wedding gowns, Glamour Magique is overtaken by a flood of absurd slogans. Between shaky morals and broken rituals, their bodies stagger, caught in a spiral of flesh; a dance is born.",
-      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/LedebutdesyeuxEverythingisSparkleSparkle.jpg",
-      "venue": "Neptune Theatre Imperial Studio",
-      "ticketUrl": "https://www.simpletix.com/e/le-d-but-des-yeux-everything-is-sparkle-sparkle-tickets-284222",
-      "times": [
-        {
-          "timeId": 1525820,
-          "start": "2026-09-04T21:30",
-          "end": "2026-09-04T22:15",
-          "venue": "Neptune Theatre Imperial Studio",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
-        },
-        {
-          "timeId": 1525821,
-          "start": "2026-09-05T20:00",
-          "end": "2026-09-05T20:45",
-          "venue": "Neptune Theatre Imperial Studio",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
-        },
-        {
-          "timeId": 1525822,
-          "start": "2026-09-06T18:30",
-          "end": "2026-09-06T19:15",
-          "venue": "Neptune Theatre Imperial Studio",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         }
@@ -2797,7 +2855,7 @@
       "showId": 284258,
       "title": "Things That Go Bump",
       "blurb": "Enter the parlour of a forgotten age, where the veil between worlds grows thin. If the spirits are willing, your mysterious hostess will share strange phenomena, unsettling revelations, and moments that challenge your senses.",
-      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/02-25-2026-144334-6774.jpg",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/ThingsthatgoBump750x472px.png",
       "venue": "Neptune Theatre Windsor Studio",
       "ticketUrl": "https://www.simpletix.com/e/things-that-go-bump-tickets-284258",
       "times": [

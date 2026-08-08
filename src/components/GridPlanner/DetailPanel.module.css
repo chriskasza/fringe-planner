@@ -118,6 +118,28 @@
   text-wrap: pretty;
 }
 
+/* The expanded description is several paragraphs; the body's own flex gap
+   only spaces the wrapper, so space the paragraphs inside it here. */
+.detail-panel__description {
+  display: grid;
+  gap: 10px;
+}
+
+/* Sits inline at the end of the blurb / last description paragraph. Muted via
+   `color` alone - never `opacity`, which would drag the token's contrast under
+   AA (see CLAUDE.md). */
+.detail-panel__more {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
 .detail-panel__warnings {
   display: flex;
   flex-wrap: wrap;

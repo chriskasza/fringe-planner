@@ -7,6 +7,7 @@ function show(warningTags: string[], overrides: Partial<Show> = {}): Show {
     id: '1',
     title: 'APPLES!',
     blurb: '',
+    description: [],
     poster: '',
     ticketUrl: '',
     venue: 'The Bus Stop Theatre',

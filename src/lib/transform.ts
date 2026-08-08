@@ -51,6 +51,7 @@ function transformShow(
     id,
     title: raw.title,
     blurb: raw.blurb,
+    description: showMeta?.description ?? [],
     poster: raw.poster,
     ticketUrl: raw.ticketUrl,
     venue,
