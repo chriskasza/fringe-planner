@@ -1,5 +1,5 @@
 {
-  "scrapedAt": "2026-08-08T19:57:51.442Z",
+  "scrapedAt": "2026-08-31T10:42:36.185Z",
   "timezone": "America/Halifax",
   "source": "https://halifaxfringe.ca/home-copy-copy-3/",
   "shows": [
@@ -7,7 +7,7 @@
       "showId": 284033,
       "title": "‘NÔRM(Ə)L",
       "blurb": "After a pandemic sweeps the planet, a woman grapples with grief, rage, and loss as a mysterious illness disintegrates her reality.",
-      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-27-2026-162205-3054.jpg",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/GIMPIMAGEEDITORf3048722-b968-4854-82a8-1ecc01b4f2cb.jpg",
       "venue": "Universalist Unitarian Church of Halifax",
       "ticketUrl": "https://www.simpletix.com/e/n-rm-l-tickets-284033",
       "times": [
@@ -188,46 +188,10 @@
       "firstSeen": "2026-07-26T12:52:44.451Z"
     },
     {
-      "showId": 284042,
-      "title": "Abagenzi b’Ingoma",
-      "blurb": "Experience the vibrant rhythms of East Africa with our dynamic team of traditional drummers. Dressed in authentic cultural attire and performing powerful, energetic drum beats, we celebrate the rich heritage of our homeland through music and movement. Our",
-      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/02-23-2026-194147-1627.jpg",
-      "venue": "Neptune Theatre Scotiabank Stage",
-      "ticketUrl": "https://www.simpletix.com/e/abagenzi-bingoma-tickets-284042",
-      "times": [
-        {
-          "timeId": 1521989,
-          "start": "2026-09-04T20:00",
-          "end": "2026-09-04T21:00",
-          "venue": "Neptune Theatre Scotiabank Stage",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
-        },
-        {
-          "timeId": 1521990,
-          "start": "2026-09-05T21:30",
-          "end": "2026-09-05T22:30",
-          "venue": "Neptune Theatre Scotiabank Stage",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
-        },
-        {
-          "timeId": 1521991,
-          "start": "2026-09-06T14:00",
-          "end": "2026-09-06T15:00",
-          "venue": "Neptune Theatre Scotiabank Stage",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
-        }
-      ],
-      "status": "active",
-      "firstSeen": "2026-07-26T12:52:44.451Z"
-    },
-    {
       "showId": 284046,
       "title": "Actual Wizard TONIGHT",
       "blurb": "As seen on Penn & Teller: Fool Us, and winner of the Audience Choice Best of the Fest Award at the 2025 Halifax Fringe. Actual Wizard and Halifax Magician Vincenzo Ravina returns to Neptune Theatre with his seventh weird magic show: Actual Wizard TONIGHT",
-      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-26-2026-143308-8963.jpg",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/actualwizardtonightrectangular.png",
       "venue": "Neptune Theatre Scotiabank Stage",
       "ticketUrl": "https://www.simpletix.com/e/actual-wizard-tonight-tickets-284046",
       "times": [
@@ -323,7 +287,7 @@
       "showId": 284055,
       "title": "Ape Play",
       "blurb": "Diane is an ape who thinks she’s above it all. Living in the forests of Indonesia, she toils at her typewriter, desperate to create a work of art that’ll cement her legacy in a human library!",
-      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-25-2026-150857-2525.jpg",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/apeplayhorizontal.jpg",
       "venue": "Point Pleasant Park - Black Rock Beach Picnic Area",
       "ticketUrl": "https://www.simpletix.com/e/ape-play-tickets-284055",
       "times": [
@@ -459,7 +423,7 @@
       "showId": 284058,
       "title": "Becoming Psychic",
       "blurb": "A skeptic begins having psychic experiences and is forced to confront a terrifying possibility: she might be losing her mind. Becoming Psychic is a darkly funny solo show about doubt, belief, and the cultural line between insight and insanity.",
-      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-02-2026-164219-7041.jpg",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/BECOMINGPSYCHIC-3.png",
       "venue": "Neptune Theatre Imperial Studio",
       "ticketUrl": "https://www.simpletix.com/e/becoming-psychic-tickets-284058",
       "times": [
@@ -568,6 +532,47 @@
       "firstSeen": "2026-07-26T12:52:44.451Z"
     },
     {
+      "showId": 284042,
+      "title": "CANCELLED: Abagenzi b’Ingoma",
+      "blurb": "This show has been cancelled by the artist.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/02-23-2026-194147-1627.jpg",
+      "venue": "",
+      "ticketUrl": "https://www.simpletix.com/e/cancelled-abagenzi-bingoma-tickets-284042",
+      "times": [
+        {
+          "timeId": 1521989,
+          "start": "2026-09-04T20:00",
+          "end": "2026-09-04T21:00",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-31T10:42:36.185Z"
+        },
+        {
+          "timeId": 1521990,
+          "start": "2026-09-05T21:30",
+          "end": "2026-09-05T22:30",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-31T10:42:36.185Z"
+        },
+        {
+          "timeId": 1521991,
+          "start": "2026-09-06T14:00",
+          "end": "2026-09-06T15:00",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-31T10:42:36.185Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z",
+      "cancelled": true,
+      "salesEnded": true
+    },
+    {
       "showId": 284052,
       "title": "CANCELLED: All Below",
       "blurb": "This show has been cancelled by the artist.",
@@ -634,6 +639,47 @@
       "firstSeen": "2026-07-26T12:52:44.451Z",
       "salesEnded": true,
       "cancelled": true
+    },
+    {
+      "showId": 284067,
+      "title": "CANCELLED: Cecily Cardew Deserves Better",
+      "blurb": "This show has been cancelled by the artist.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-28-2026-175217-9166.jpg",
+      "venue": "",
+      "ticketUrl": "https://www.simpletix.com/e/cancelled-cecily-cardew-deserves-better-tickets-284067",
+      "times": [
+        {
+          "timeId": 1522093,
+          "start": "2026-09-09T18:30",
+          "end": "2026-09-09T19:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-31T10:42:36.185Z"
+        },
+        {
+          "timeId": 1522094,
+          "start": "2026-09-11T21:30",
+          "end": "2026-09-11T22:30",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-31T10:42:36.185Z"
+        },
+        {
+          "timeId": 1522095,
+          "start": "2026-09-13T14:00",
+          "end": "2026-09-13T15:00",
+          "venue": "Neptune Theatre Imperial Studio",
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-31T10:42:36.185Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z",
+      "cancelled": true,
+      "salesEnded": true
     },
     {
       "showId": 284222,
@@ -704,6 +750,74 @@
       "cancelled": true
     },
     {
+      "showId": 284225,
+      "title": "CANCELLED: Making It!",
+      "blurb": "This show has been cancelled by the artist.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/REALHalifaxprogram.png",
+      "venue": "",
+      "ticketUrl": "https://www.simpletix.com/e/cancelled-making-it-tickets-284225",
+      "times": [
+        {
+          "timeId": 1525832,
+          "start": "2026-09-03T18:30",
+          "end": "2026-09-03T19:30",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-31T10:42:36.185Z"
+        },
+        {
+          "timeId": 1525833,
+          "start": "2026-09-04T21:30",
+          "end": "2026-09-04T22:30",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-31T10:42:36.185Z"
+        },
+        {
+          "timeId": 1525834,
+          "start": "2026-09-05T17:00",
+          "end": "2026-09-05T18:00",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-31T10:42:36.185Z"
+        },
+        {
+          "timeId": 1525835,
+          "start": "2026-09-06T14:00",
+          "end": "2026-09-06T15:00",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-31T10:42:36.185Z"
+        },
+        {
+          "timeId": 1525836,
+          "start": "2026-09-06T18:30",
+          "end": "2026-09-06T19:30",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-31T10:42:36.185Z"
+        },
+        {
+          "timeId": 1525837,
+          "start": "2026-09-08T21:30",
+          "end": "2026-09-08T22:30",
+          "venue": "Neptune Theatre Windsor Studio",
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-31T10:42:36.185Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-07-26T12:52:44.451Z",
+      "cancelled": true,
+      "salesEnded": true
+    },
+    {
       "showId": 284065,
       "title": "Carrison: The Totally True and Unapologetic Real Story of Harrison Ford and Carrie Fisher’s Love Affair",
       "blurb": "In 1976, while filming Star Wars, two actors began an affair. One was Harrison Ford, the scoundrel with a wife and kids back home, the other was Carrie Fisher, a princess who was born into stardom. This parody of real events follows their relationship whil",
@@ -756,42 +870,6 @@
           "start": "2026-09-13T11:00",
           "end": "2026-09-13T12:00",
           "venue": "Bus Stop Theatre",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
-        }
-      ],
-      "status": "active",
-      "firstSeen": "2026-07-26T12:52:44.451Z"
-    },
-    {
-      "showId": 284067,
-      "title": "Cecily Cardew Deserves Better",
-      "blurb": "Freshly eighteen, hopeless romantic Cecily Cardew has fallen in love with an older man while also simultaniously being desperately in love with her best friend and parental guardian’s girlfriend, Gwendolen. What could possibly go wrong? Cecily Cardew Deser",
-      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-28-2026-175217-9166.jpg",
-      "venue": "Neptune Theatre Imperial Studio",
-      "ticketUrl": "https://www.simpletix.com/e/cecily-cardew-deserves-better-tickets-284067",
-      "times": [
-        {
-          "timeId": 1522093,
-          "start": "2026-09-09T18:30",
-          "end": "2026-09-09T19:30",
-          "venue": "Neptune Theatre Imperial Studio",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
-        },
-        {
-          "timeId": 1522094,
-          "start": "2026-09-11T21:30",
-          "end": "2026-09-11T22:30",
-          "venue": "Neptune Theatre Imperial Studio",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
-        },
-        {
-          "timeId": 1522095,
-          "start": "2026-09-13T14:00",
-          "end": "2026-09-13T15:00",
-          "venue": "Neptune Theatre Imperial Studio",
           "status": "active",
           "firstSeen": "2026-07-26T12:52:44.451Z"
         }
@@ -1368,7 +1446,7 @@
       "showId": 284223,
       "title": "Loony Lundi",
       "blurb": "River and their mother can’t seem to understand each other. But thanks to an unconventional therapy — maybe they can. This is a fast-paced comedy about queer adulthood, the sacrifices of parenting, and the fine line between trying and actually getting it.",
-      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/06-07-2026-151531-2401.jpg",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/Loony-Lundi-Halifax-Fringe-950x472px.png",
       "venue": "DANSpace",
       "ticketUrl": "https://www.simpletix.com/e/loony-lundi-tickets-284223",
       "times": [
@@ -1545,66 +1623,6 @@
       "firstSeen": "2026-07-26T12:52:44.451Z"
     },
     {
-      "showId": 284225,
-      "title": "Making It!",
-      "blurb": "Success. The Oxford Dictionary calls it, “The accomplishment of an aim or purpose.” Taylor Swift calls it, “Doing what I love, being happy, and making good money.” Megan calls it, “Using all the broccoli up in the fridge before it goes bad.”",
-      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-17-2026-013810-2465.jpg",
-      "venue": "Neptune Theatre Windsor Studio",
-      "ticketUrl": "https://www.simpletix.com/e/making-it-tickets-284225",
-      "times": [
-        {
-          "timeId": 1525832,
-          "start": "2026-09-03T18:30",
-          "end": "2026-09-03T19:30",
-          "venue": "Neptune Theatre Windsor Studio",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
-        },
-        {
-          "timeId": 1525833,
-          "start": "2026-09-04T21:30",
-          "end": "2026-09-04T22:30",
-          "venue": "Neptune Theatre Windsor Studio",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
-        },
-        {
-          "timeId": 1525834,
-          "start": "2026-09-05T17:00",
-          "end": "2026-09-05T18:00",
-          "venue": "Neptune Theatre Windsor Studio",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
-        },
-        {
-          "timeId": 1525835,
-          "start": "2026-09-06T14:00",
-          "end": "2026-09-06T15:00",
-          "venue": "Neptune Theatre Windsor Studio",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
-        },
-        {
-          "timeId": 1525836,
-          "start": "2026-09-06T18:30",
-          "end": "2026-09-06T19:30",
-          "venue": "Neptune Theatre Windsor Studio",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
-        },
-        {
-          "timeId": 1525837,
-          "start": "2026-09-08T21:30",
-          "end": "2026-09-08T22:30",
-          "venue": "Neptune Theatre Windsor Studio",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
-        }
-      ],
-      "status": "active",
-      "firstSeen": "2026-07-26T12:52:44.451Z"
-    },
-    {
       "showId": 284226,
       "title": "Men Love Horsies: The Musical",
       "blurb": "Just a man singing songs about horses. Men Love Horsies: The Musical won Best In Fringe, Critic’s Pick, and Best In Series at the Hamilton Fringe Festival and was selected to showcase at The San Francisco Sketchfest and Toronto Sketchfest.",
@@ -1712,7 +1730,7 @@
       "showId": 284228,
       "title": "Nova Scotia Business Inc.: a decolonial satire",
       "blurb": "When two hikers somehow wander 75 years forward in time on their way home, they’re shocked to find a dystopian future Halifax where everything — and nothing — has changed. But when they stumble into a secret underground community of artists and land defend",
-      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/04-02-2026-224301-1831.jpg",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/FINALticketpageposter.png",
       "venue": "Halifax United Church",
       "ticketUrl": "https://www.simpletix.com/e/nova-scotia-business-inc-a-decolonial-satire-tickets-284228",
       "times": [
@@ -1997,8 +2015,9 @@
           "start": "2026-09-05T11:00",
           "end": "2026-09-05T12:00",
           "venue": "Bus Stop Theatre",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-31T10:42:36.185Z"
         },
         {
           "timeId": 1525875,
@@ -2013,8 +2032,9 @@
           "start": "2026-09-08T18:30",
           "end": "2026-09-08T19:30",
           "venue": "Bus Stop Theatre",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-31T10:42:36.185Z"
         },
         {
           "timeId": 1525877,
