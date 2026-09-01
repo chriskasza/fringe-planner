@@ -5,6 +5,17 @@ import { describe, expect, it } from 'vitest';
 import App from '../../App';
 import { shows } from '../../lib/loadData';
 
+// The day strip opens on the first upcoming day that has shows, which is now
+// Sep 2 (the free Halifax Fringe Sampler). Tests that assert against a
+// particular day's data have to pick that day rather than assume the default.
+function selectDay(dow: string, dateNum: number) {
+  const tab = Array.from(document.querySelectorAll('[data-testid="day-strip-tab"]')).find(
+    (el) => el.textContent?.includes(dow) && el.textContent?.includes(String(dateNum)),
+  ) as HTMLElement;
+  expect(tab).toBeDefined();
+  fireEvent.click(tab);
+}
+
 describe('App (Grid Planner)', () => {
   it('renders without throwing and shows the wordmark', () => {
     render(<App />);
@@ -29,9 +40,9 @@ describe('App (Grid Planner)', () => {
     }
   });
 
-  it('renders a day strip with 11 festival days', () => {
+  it('renders a day strip with 12 festival days', () => {
     render(<App />);
-    expect(document.querySelectorAll('[data-testid="day-strip-tab"]').length).toBe(11);
+    expect(document.querySelectorAll('[data-testid="day-strip-tab"]').length).toBe(12);
   });
 
   it('renders grid blocks for the selected day and toggling a pick updates the My Fringe counter', () => {
@@ -94,6 +105,7 @@ describe('App (Grid Planner)', () => {
     // (see next test) - Sep 3's earliest active performance is 14:00 (840 min):
     // left = (930-840)/30 * 140 + 4 = 424px, width = (60/30) * 140 - 8 = 272px.
     render(<App />);
+    selectDay('THU', 3);
     const blocks = screen
       .getAllByTitle('APPLES! as told by an expert')
       .map((el) => el.closest('[data-testid="grid-block"]') as HTMLElement);
@@ -111,6 +123,7 @@ describe('App (Grid Planner)', () => {
     // first cell. Pixel-based left/width handles any start time:
     // left = (1185-840)/30 * 140 + 4 = 1614px.
     render(<App />);
+    selectDay('THU', 3);
     const blocks = screen
       .getAllByTitle(/Jackson Elementary/)
       .map((el) => el.closest('[data-testid="grid-block"]'))
@@ -124,6 +137,7 @@ describe('App (Grid Planner)', () => {
     // axis was computed once across every day in the festival (10:30am-10:30pm),
     // wasting most of the grid on hours nothing runs on any given night.
     render(<App />);
+    selectDay('THU', 3);
     const headerLabels = Array.from(document.querySelectorAll('[data-testid="time-header-label"]')).map(
       (el) => el.textContent,
     );
@@ -139,11 +153,7 @@ describe('App (Grid Planner)', () => {
     // 'Craig in Conversation with God' 20:00-20:45 (20:00-20:15).
     render(<App />);
 
-    const sep6Tab = Array.from(document.querySelectorAll('[data-testid="day-strip-tab"]')).find(
-      (el) => el.textContent?.includes('SUN') && el.textContent?.includes('6'),
-    ) as HTMLElement;
-    expect(sep6Tab).toBeDefined();
-    fireEvent.click(sep6Tab);
+    selectDay('SUN', 6);
 
     const normBlocks = screen
       .getAllByTitle('‘NÔRM(Ə)L')
@@ -172,6 +182,7 @@ describe('App (Grid Planner)', () => {
     // clash. Width must scale with duration so adjacent-but-not-overlapping
     // shows don't visually overlap.
     render(<App />);
+    selectDay('THU', 3);
 
     const peakTwins = screen
       .getAllByTitle('Peak Twins')

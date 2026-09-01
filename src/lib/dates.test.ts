@@ -30,7 +30,7 @@ describe('time-of-day buckets', () => {
     }
 
     const total = counts.matinee + counts.evening + counts.night;
-    expect(total).toBe(277);
+    expect(total).toBe(268);
     // No bucket should be a rounding error or swallow everything.
     for (const key of TIME_BUCKETS.map((b) => b.key)) {
       expect(counts[key] / total).toBeGreaterThan(0.15);
@@ -50,7 +50,7 @@ describe('time-of-day buckets', () => {
 describe('festival day keys', () => {
   it('covers the 2026 festival inclusively', () => {
     const keys = festivalDayKeys();
-    expect(keys.length).toBe(11);
+    expect(keys.length).toBe(12);
     expect(keys[0]).toBe(FESTIVAL_FIRST_DAY);
     expect(keys[keys.length - 1]).toBe(FESTIVAL_LAST_DAY);
   });

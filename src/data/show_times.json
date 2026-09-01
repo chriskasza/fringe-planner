@@ -1,5 +1,5 @@
 {
-  "scrapedAt": "2026-08-31T10:42:36.185Z",
+  "scrapedAt": "2026-08-31T23:28:35.498Z",
   "timezone": "America/Halifax",
   "source": "https://halifaxfringe.ca/home-copy-copy-3/",
   "shows": [
@@ -1098,37 +1098,84 @@
       "title": "Game of drones... Drummers Are Coming",
       "blurb": "Hear massed bagpipes, driving snares, and booming bass as classic pipe tunes meet pop-culture swagger in a tight, pulse- raising set by the Edmonton Police Service.",
       "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/03-03-2026-232457-7330.jpg",
-      "venue": "",
+      "venue": "Outdoors - Different Locations",
       "ticketUrl": "https://www.simpletix.com/e/game-of-drones-drummers-are-coming-tickets-284082",
       "times": [
+        {
+          "timeId": 1522123,
+          "start": "2026-09-04T17:45",
+          "end": "2026-09-04T18:15",
+          "venue": "Outdoors - Different Locations",
+          "status": "active",
+          "firstSeen": "2026-08-31T22:54:45.552Z"
+        },
         {
           "timeId": "s284082-2026-09-04T17:45",
           "start": "2026-09-04T17:45",
           "end": "2026-09-04T18:15",
           "venue": "",
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-31T22:54:45.552Z"
+        },
+        {
+          "timeId": 1522124,
+          "start": "2026-09-04T19:00",
+          "end": "2026-09-04T19:30",
+          "venue": "Outdoors - Different Locations",
           "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
+          "firstSeen": "2026-08-31T22:54:45.552Z"
         },
         {
           "timeId": "s284082-2026-09-04T19:00",
           "start": "2026-09-04T19:00",
           "end": "2026-09-04T19:30",
           "venue": "",
+          "status": "cancelled",
+          "firstSeen": "2026-08-08T19:56:58.720Z",
+          "cancelledAt": "2026-08-31T22:54:45.552Z"
+        },
+        {
+          "timeId": 1522125,
+          "start": "2026-09-04T20:40",
+          "end": "2026-09-04T21:10",
+          "venue": "Outdoors - Different Locations",
           "status": "active",
-          "firstSeen": "2026-08-08T19:56:58.720Z"
+          "firstSeen": "2026-08-31T22:54:45.552Z"
         },
         {
           "timeId": "s284082-2026-09-04T20:40",
           "start": "2026-09-04T20:40",
           "end": "2026-09-04T21:10",
           "venue": "",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-31T22:54:45.552Z"
         }
       ],
-      "salesEnded": true,
       "status": "active",
       "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 291461,
+      "title": "Halifax Fringe Sampler",
+      "blurb": "FIRST COME, FIRST SERVE. Start with the HALIFAX FRINGE SAMPLER! On September 2, Fringe artists take over the Neptune Scotiabank Stage and get ONE MINUTE to show you what they’ve got! Comedy? Theatre? Dance? Circus? We've got it all!",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/78675807716769557511017188242445463544247275n.jpg",
+      "venue": "Neptune Theatre Scotiabank Stage",
+      "ticketUrl": "https://www.simpletix.com/e/free-halifax-fringe-sampler-no-tickets-required-just-show-up-tickets-291461",
+      "times": [
+        {
+          "timeId": "s291461-2026-09-02T19:00",
+          "start": "2026-09-02T19:00",
+          "end": "2026-09-02T22:00",
+          "venue": "Neptune Theatre Scotiabank Stage",
+          "status": "active",
+          "firstSeen": "2026-08-31T22:54:45.552Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-08-31T22:54:45.552Z",
+      "freeAdmission": true
     },
     {
       "showId": 284087,
@@ -1407,6 +1454,35 @@
       "firstSeen": "2026-07-26T12:52:44.451Z"
     },
     {
+      "showId": 291453,
+      "title": "Kids Fringe",
+      "blurb": "Join us for two FREE afternoons of family-friendly performances and activities at Paul O'Regan Hall, Halifax Central Library, on Sunday, September 6 and Sunday, September 13, from 1:00–5:00 PM.",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/639238033983743973KidsFringe-onepage-AUG17.png",
+      "venue": "Halifax Central Library",
+      "ticketUrl": "https://www.simpletix.com/e/free-kids-fringe-no-tickets-required-just-show-up-tickets-291453",
+      "times": [
+        {
+          "timeId": 1578277,
+          "start": "2026-09-06T13:00",
+          "end": "2026-09-06T17:00",
+          "venue": "Halifax Central Library",
+          "status": "active",
+          "firstSeen": "2026-08-31T22:54:45.552Z"
+        },
+        {
+          "timeId": 1578278,
+          "start": "2026-09-13T13:00",
+          "end": "2026-09-13T17:00",
+          "venue": "Halifax Central Library",
+          "status": "active",
+          "firstSeen": "2026-08-31T22:54:45.552Z"
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-08-31T22:54:45.552Z",
+      "freeAdmission": true
+    },
+    {
       "showId": 284106,
       "title": "Kimiko",
       "blurb": "What happens to a community when thousands are imprisoned because of their race? Kimiko explores this question through a powerful blend of circus, storytelling, and traditional Japanese arts. This award-winning performance traces the generational impact of",
@@ -1441,6 +1517,83 @@
       ],
       "status": "active",
       "firstSeen": "2026-07-26T12:52:44.451Z"
+    },
+    {
+      "showId": 291457,
+      "title": "Late Night Cabaret",
+      "blurb": "FRINGE AFTER DARK! Join us at Stardust Bar + Kitchen for four nights of surprise performances, comedy, and DJs. New hosts and artists presenting every night! September 3rd, 4th, 10th, and 11th from 11:00 PM to 1:00 AM!",
+      "poster": "https://cdn.simpletix.com/1b63385b-47c1-46d8-a3ea-07a70e6f045f/shows/380/6392380328419605517902092161679987834131843951649373017249981n.png",
+      "venue": "Stardust Bar",
+      "ticketUrl": "https://www.simpletix.com/e/free-late-night-cabaret-no-tickets-required-just-show-up-tickets-291457",
+      "times": [
+        {
+          "timeId": 1578285,
+          "start": "2026-09-03T23:00",
+          "end": "2026-09-04T01:00",
+          "venue": "Stardust Bar",
+          "status": "active",
+          "firstSeen": "2026-08-31T22:54:45.552Z",
+          "changes": [
+            {
+              "at": "2026-08-31T23:18:50.364Z",
+              "field": "end",
+              "from": "2026-09-04T23:00",
+              "to": "2026-09-04T01:00"
+            }
+          ]
+        },
+        {
+          "timeId": 1578286,
+          "start": "2026-09-04T23:00",
+          "end": "2026-09-05T01:00",
+          "venue": "Stardust Bar",
+          "status": "active",
+          "firstSeen": "2026-08-31T22:54:45.552Z",
+          "changes": [
+            {
+              "at": "2026-08-31T23:18:50.364Z",
+              "field": "end",
+              "from": "2026-09-05T23:00",
+              "to": "2026-09-05T01:00"
+            }
+          ]
+        },
+        {
+          "timeId": 1578287,
+          "start": "2026-09-10T23:00",
+          "end": "2026-09-11T01:00",
+          "venue": "Stardust Bar",
+          "status": "active",
+          "firstSeen": "2026-08-31T22:54:45.552Z",
+          "changes": [
+            {
+              "at": "2026-08-31T23:18:50.364Z",
+              "field": "end",
+              "from": "2026-09-11T23:00",
+              "to": "2026-09-11T01:00"
+            }
+          ]
+        },
+        {
+          "timeId": 1578288,
+          "start": "2026-09-11T23:00",
+          "end": "2026-09-12T01:00",
+          "venue": "Stardust Bar",
+          "status": "active",
+          "firstSeen": "2026-08-31T22:54:45.552Z",
+          "changes": [
+            {
+              "at": "2026-08-31T23:18:50.364Z",
+              "field": "end",
+              "from": "2026-09-12T23:00",
+              "to": "2026-09-12T01:00"
+            }
+          ]
+        }
+      ],
+      "status": "active",
+      "firstSeen": "2026-08-31T22:54:45.552Z",
+      "freeAdmission": true
     },
     {
       "showId": 284223,
@@ -2409,8 +2562,9 @@
           "start": "2026-09-05T20:00",
           "end": "2026-09-05T21:00",
           "venue": "DANSpace",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-31T22:54:45.552Z"
         },
         {
           "timeId": 1525910,
@@ -2609,8 +2763,9 @@
           "start": "2026-09-05T15:00",
           "end": "2026-09-05T16:00",
           "venue": "Sanctuary Arts Centre",
-          "status": "active",
-          "firstSeen": "2026-07-26T12:52:44.451Z"
+          "status": "cancelled",
+          "firstSeen": "2026-07-26T12:52:44.451Z",
+          "cancelledAt": "2026-08-31T22:54:45.552Z"
         },
         {
           "timeId": 1525929,

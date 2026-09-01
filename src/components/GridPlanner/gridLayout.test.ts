@@ -22,6 +22,7 @@ function show(perfs: [start: number, end: number][], day = DAY, status: Perf['st
     warningTags: [],
     mins: 60,
     cancelled: false,
+    freeAdmission: false,
     salesEnded: false,
     timesIncomplete: false,
     perfs: perfs.map(([start, end], i) => ({

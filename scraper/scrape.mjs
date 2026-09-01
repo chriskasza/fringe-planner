@@ -14,7 +14,17 @@
 import { fileURLToPath } from 'node:url';
 import { readFileSync, writeFileSync, renameSync, existsSync, mkdirSync } from 'node:fs';
 
-import { sleep, fail, slugify, byStart, stripLeadingThe, isCancelledTitle } from './lib/util.mjs';
+import {
+  sleep,
+  fail,
+  slugify,
+  byStart,
+  stripLeadingThe,
+  isCancelledTitle,
+  cleanShowTitle,
+  addMinutes,
+  durationMinutes,
+} from './lib/util.mjs';
 import { scrapeCards, fetchShowData, resolveTimes, syntheticId } from './lib/simpletix.mjs';
 import { fetchMeta } from './lib/meta.mjs';
 import { createSummary, mergeShow } from './lib/merge.mjs';
@@ -37,6 +47,7 @@ const SHORT_NAMES = {
   "Cruikshank's Halifax Funeral Home": "Cruikshank's",
   'DANSpace': 'DANSpace',
   'Grafton Street Dinner Theatre': 'Grafton Theatre',
+  'Halifax Central Library': 'Central Library',
   'Halifax United Church': 'United Church',
   'inesS Circus': 'inesS',
   'Neptune Theatre Imperial Studio': 'Neptune Imperial',
@@ -60,11 +71,34 @@ const SHORT_NAMES = {
 // that exists only in the output file is deleted by the next run.
 const SHORT_MOBILE_NAMES = {
   "Cruikshank's Halifax Funeral Home": "Cruik's",
+  'Halifax Central Library': 'Central Lib',
   'Neptune Theatre Scotiabank Stage': 'Neptune Scotia',
   'Sanctuary Arts Centre': 'Sanctry Arts',
   'Universalist Unitarian Church of Halifax': 'Unitarn Church',
   'Wonderneath Art Society': 'Wonder',
 };
+
+// Upstream occasionally reports an end time that is plainly wrong, and a
+// showtime's duration is load-bearing in the grid: blocks are positioned by
+// pixel math off it, so one bad value stretches a whole day's axis and paints a
+// block across every other show on it. There is no second source to fall back
+// on -- the real length only exists as prose in the show's own blurb -- so the
+// correction is curated here, next to SHORT_NAMES and for the same reason (the
+// scraper rewrites the generated files wholesale, so a value that lived only in
+// show_times.json would be deleted by the next run). Minutes, keyed by showId.
+const DURATION_OVERRIDES = {
+  // SimpleTix has dateEnd = dateStart + exactly 24h on all four nights
+  // ("2026-09-03T23:00:00Z" -> "2026-09-04T23:00:00Z"); the show's own blurb
+  // says "September 3rd, 4th, 10th, and 11th from 11:00 PM to 1:00 AM".
+  // Verified against the embed API on 2026-08-31.
+  291457: 120, // FREE - Late Night Cabaret
+};
+
+// The longest legitimate slot in this festival is the Kids Fringe drop-in
+// (4h); everything that is actually a *performance* is 90 minutes or less.
+// Past this, assume the upstream end time is wrong and say so, rather than
+// quietly emitting a showtime that wrecks the day's grid.
+const MAX_PLAUSIBLE_MINUTES = 360;
 
 // --- main --------------------------------------------------------------
 
@@ -91,6 +125,7 @@ const freshMeta = {};
 const venues = { ...previousVenues };
 const failedMeta = [];
 const pageTimeWarnings = [];
+const implausibleTimes = [];
 
 // Fills gaps in the date-wise fallback from the show page's JSON-LD. Only ever
 // *adds* -- a slot the API knows and the page doesn't is kept, so this can't
@@ -149,9 +184,15 @@ for (const [i, card] of cards.entries()) {
   // has the page in hand.
   const usedFallback = !cancelled && !data.eventTimes?.length;
 
+  // Strips the "FREE - ... (No Tickets Required, Just Show Up!)" decoration the
+  // festival's own free events carry, which is the only place upstream records
+  // that they're free. slugify below still gets the *raw* title -- the
+  // SimpleTix URL contains the full decoration.
+  const { title, freeAdmission } = cleanShowTitle(card.title || data.showTitle || '');
+
   const show = {
     showId: card.showId,
-    title: card.title || data.showTitle || '',
+    title,
     blurb: card.blurb,
     poster: card.poster || data.imageUrl || '',
     venue: stripLeadingThe(data.venueTitle),
@@ -159,6 +200,7 @@ for (const [i, card] of cards.entries()) {
     times: times.sort(byStart),
   };
   if (cancelled) show.cancelled = true;
+  if (freeAdmission) show.freeAdmission = true;
   if (salesEnded) show.salesEnded = true;
 
   scraped.push(show);
@@ -201,6 +243,21 @@ for (const [i, card] of cards.entries()) {
     }
   } catch (err) {
     failedMeta.push(`${show.title} (${show.showId}): ${err.message}`);
+  }
+
+  // After the page merge, so a fallback slot recovered from the JSON-LD is
+  // corrected too. Only `end` moves -- never `timeId`, so an override can't
+  // cancel-and-re-add a showtime and orphan someone's pick.
+  const overrideMins = DURATION_OVERRIDES[show.showId];
+  if (overrideMins) {
+    show.times = show.times.map((t) => ({ ...t, end: addMinutes(t.start, overrideMins) }));
+  }
+
+  for (const t of show.times) {
+    const mins = durationMinutes(t.start, t.end);
+    if (mins > MAX_PLAUSIBLE_MINUTES) {
+      implausibleTimes.push(`${show.title} (${show.showId}): ${t.start} to ${t.end} -- ${mins} min`);
+    }
   }
 
   // Decided after the meta fetch, since a page that filled the gap clears it.
@@ -289,6 +346,17 @@ if (pageTimeWarnings.length) {
   console.log(`\nWARNING -- ${pageTimeWarnings.length} show(s) whose page times contradict the API:`);
   for (const w of pageTimeWarnings) console.log(`  - ${w}`);
   console.log('  Nothing was added from the page. Check whether the JSON-LD timezone changed.');
+}
+
+if (implausibleTimes.length) {
+  console.log(
+    `\nWARNING -- ${implausibleTimes.length} showtime(s) longer than ${MAX_PLAUSIBLE_MINUTES} min:`,
+  );
+  for (const t of implausibleTimes) console.log(`  - ${t}`);
+  console.log(
+    '  Upstream end times are probably wrong. Check the show\'s blurb for the real',
+  );
+  console.log('  length and add it to DURATION_OVERRIDES -- a block this wide breaks the grid.');
 }
 
 const noRating = Object.entries(meta).filter(([, m]) => m.rating === 'NOT RATED');

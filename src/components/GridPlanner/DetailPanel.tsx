@@ -88,6 +88,12 @@ export function DetailPanel() {
           <span className={styles['detail-panel__spec-value']}>{primaryPerf.mins} min</span>
           <span className={styles['detail-panel__spec-key']}>RATING</span>
           <span className={styles['detail-panel__spec-value']}>{show.rating}</span>
+          {show.freeAdmission && (
+            <>
+              <span className={styles['detail-panel__spec-key']}>ADMISSION</span>
+              <span className={styles['detail-panel__spec-value']}>FREE — no tickets required</span>
+            </>
+          )}
         </div>
 
         {expanded ? (
@@ -155,8 +161,11 @@ export function DetailPanel() {
               {isPicked ? '✓ In My Fringe — remove' : '★ Add to My Fringe'}
             </button>
           )}
+          {/* These shows need no ticket, so the link is the event page, not a
+              call to action -- labelling it "Tickets" contradicts the spec row
+              above it. */}
           <a className={styles['detail-panel__tickets']} href={show.ticketUrl} target="_blank" rel="noreferrer">
-            Tickets
+            {show.freeAdmission ? 'Event page' : 'Tickets'}
           </a>
         </div>
       </div>

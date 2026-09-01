@@ -55,11 +55,44 @@ export function localStamp(s) {
   return `${m[1]}T${m[2]}`;
 }
 
+// Naive-local arithmetic on a "2026-09-03T23:00" stamp, rolling the date over
+// at midnight (the Late Night Cabaret runs 23:00-01:00). The Date is built from
+// parsed *integers*, never from the string, and read back with UTC getters, so
+// no timezone is ever consulted -- see the timestamp rule in CLAUDE.md.
+export function addMinutes(stamp, mins) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(stamp ?? '');
+  if (!m) throw new Error(`unparseable timestamp: ${stamp}`);
+  const [, y, mo, d, hh, mm] = m.map(Number);
+  const t = new Date(Date.UTC(y, mo - 1, d, hh, mm + mins));
+  const pad = (n) => String(n).padStart(2, '0');
+  return (
+    `${t.getUTCFullYear()}-${pad(t.getUTCMonth() + 1)}-${pad(t.getUTCDate())}` +
+    `T${pad(t.getUTCHours())}:${pad(t.getUTCMinutes())}`
+  );
+}
+
 // Upstream marks a cancelled show by prefixing its pin board title ("CANCELLED:
 // All Below"). That prefix is the only explicit signal it gives: the embed API
 // keeps answering, and the show's own ticket page still lists its now-defunct
 // showtimes. See scrape.mjs for why a match means we emit no times at all.
 export const isCancelledTitle = (title) => /^\s*CANCELLED\s*[:–—-]/i.test(title ?? '');
+
+// The festival's own free events are marked only by their pin board title, the
+// same way a cancellation is: "FREE - Late Night Cabaret (No Tickets Required,
+// Just Show Up!)". Nothing else upstream -- not the embed API, not the ticket
+// page's JSON-LD offers block -- distinguishes them from a ticketed show. Strip
+// the decoration down to a usable title and keep the fact as a flag.
+//
+// The separator is required, so an ordinary title that merely begins with the
+// word ("Free Fall") is left alone.
+const FREE_PREFIX = /^\s*FREE\s*[:–—-]\s*/i;
+const NO_TICKETS_SUFFIX = /\s*\(\s*No Tickets Required[^)]*\)\s*$/i;
+
+export function cleanShowTitle(title) {
+  const raw = title ?? '';
+  const stripped = raw.replace(FREE_PREFIX, '').replace(NO_TICKETS_SUFFIX, '').trim();
+  return { title: stripped || raw, freeAdmission: stripped !== raw.trim() };
+}
 
 // The show page's JSON-LD is the ONE upstream timestamp that means what it
 // says: "2026-09-04T20:45:00+00:00" really is 20:45 UTC, i.e. 17:45 in Halifax.
@@ -81,6 +114,17 @@ export function halifaxStamp(iso) {
   const p = {};
   for (const part of HALIFAX_PARTS.formatToParts(d)) p[part.type] = part.value;
   return `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}`;
+}
+
+// Minutes between two naive local stamps, spanning midnight correctly.
+export function durationMinutes(start, end) {
+  const at = (stamp) => {
+    const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(stamp ?? '');
+    if (!m) throw new Error(`unparseable timestamp: ${stamp}`);
+    const [, y, mo, d, hh, mm] = m.map(Number);
+    return Date.UTC(y, mo - 1, d, hh, mm);
+  };
+  return (at(end) - at(start)) / 60000;
 }
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

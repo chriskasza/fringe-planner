@@ -29,7 +29,9 @@ describe('Day / Time filters gate which shows are browsable', () => {
     // the day or time filter - so Day and Time had no effect on the grid.
     render(<App />);
     switchToCards();
-    expect(cardCount()).toBe(56);
+    // Derived, not pinned: this is just "everything is on screen to start",
+    // and a hard-coded total goes stale on every re-scrape.
+    expect(cardCount()).toBe(shows.length);
 
     fireEvent.click(openDayMenu().getByRole('button', { name: /Clear/ }));
 

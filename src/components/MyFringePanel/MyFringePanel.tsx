@@ -79,7 +79,7 @@ export function MyFringePanel() {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        Get tickets ↗
+                        {entry.show.freeAdmission ? 'Details ↗' : 'Get tickets ↗'}
                       </a>
                       <button
                         type="button"

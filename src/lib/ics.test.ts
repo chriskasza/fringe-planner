@@ -20,6 +20,7 @@ function show(overrides: Partial<Show> = {}): Show {
     warningTags: [],
     mins: 60,
     cancelled: false,
+    freeAdmission: false,
     salesEnded: false,
     timesIncomplete: false,
     perfs: [],

@@ -81,12 +81,12 @@ describe('Card Browser sort', () => {
 
     chooseSort('Soonest');
 
-    // The Defenestration of Prague's earliest active performance (Sep 3,
-    // 2:00 PM) is the earliest in the whole dataset; APPLES! as told by an
-    // expert (Sep 3, 3:30 PM) is the next-soonest.
+    // The Halifax Fringe Sampler (the free Sep 2 preview, 7:00 PM) is the
+    // earliest in the whole dataset; The Defenestration of Prague (Sep 3,
+    // 2:00 PM) is the earliest of the ticketed shows and next-soonest.
     const displayed = cardTitles();
-    expect(displayed[0]).toBe('The Defenestration of Prague');
-    expect(displayed[1]).toBe('APPLES! as told by an expert');
+    expect(displayed[0]).toBe('Halifax Fringe Sampler');
+    expect(displayed[1]).toBe('The Defenestration of Prague');
   });
 
   it('RESET ALL leaves the sort selection untouched', () => {
@@ -97,6 +97,6 @@ describe('Card Browser sort', () => {
     chooseSort('Soonest');
     fireEvent.click(browser.getByRole('button', { name: 'RESET ALL' }));
 
-    expect(cardTitles()[0]).toBe('The Defenestration of Prague');
+    expect(cardTitles()[0]).toBe('Halifax Fringe Sampler');
   });
 });

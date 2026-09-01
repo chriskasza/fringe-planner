@@ -30,6 +30,7 @@ function showWith(
     warningTags: [],
     mins: 60,
     cancelled: false,
+    freeAdmission: false,
     salesEnded: false,
     timesIncomplete: false,
     perfs: perfs.map((p) => ({ ...p, showId: id })),

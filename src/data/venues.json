@@ -88,5 +88,11 @@
     "short": "AGNS",
     "shortAddress": "1728 Bedford Row, Halifax",
     "fullAddress": "1728 Bedford Row, Halifax, Nova Scotia B3J 1V9"
+  },
+  "Halifax Central Library": {
+    "short": "Central Library",
+    "shortMobile": "Central Lib",
+    "shortAddress": "5440 Spring Garden Rd, 5440 Spring Garden Road, Halifax",
+    "fullAddress": "5440 Spring Garden Rd, 5440 Spring Garden Road, Halifax, Nova Scotia B3J 1E9"
   }
 }

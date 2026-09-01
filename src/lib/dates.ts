@@ -1,8 +1,11 @@
 import type { Day, DayKey, TimeBucket } from './types';
 
-// The festival runs Sep 3-13, 2026. No performances on Sep 7 (Labour Day), but
-// it stays in the day strip at count 0 rather than being silently omitted.
-export const FESTIVAL_FIRST_DAY = '2026-09-03';
+// Ticketed shows run Sep 3-13, 2026, but the festival's own free Sampler is on
+// Sep 2, and a day outside this window has no column in the day strip, so
+// `visible()` can never pass for it -- the show would vanish from the app
+// entirely. No performances on Sep 7 (Labour Day), but it stays in the day
+// strip at count 0 rather than being silently omitted.
+export const FESTIVAL_FIRST_DAY = '2026-09-02';
 export const FESTIVAL_LAST_DAY = '2026-09-13';
 
 // Timestamps from show_times.json are naive Halifax local time ("2026-09-06T19:30"),

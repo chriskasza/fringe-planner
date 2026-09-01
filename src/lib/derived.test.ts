@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { compareShowsBySoonest, nextActivePerf, visible } from './derived';
+import { compareShowsBySoonest, matchesQuery, nextActivePerf, visible } from './derived';
 import type { Perf, Show } from './types';
 
 function show(warningTags: string[], overrides: Partial<Show> = {}): Show {
@@ -20,6 +20,7 @@ function show(warningTags: string[], overrides: Partial<Show> = {}): Show {
     warningTags,
     mins: 60,
     cancelled: false,
+    freeAdmission: false,
     salesEnded: false,
     timesIncomplete: false,
     perfs: [{ timeId: '1', showId: '1', day: '2026-09-03', start: 930, end: 990, mins: 60, status: 'active' }],
@@ -172,5 +173,25 @@ describe('compareShowsBySoonest', () => {
     const a = show([], { title: 'Aardvark', perfs: [perf({ day: now.date, start: 480, end: 540 })] });
     const b = show([], { title: 'Zebra', perfs: [perf({ day: now.date, start: 480, end: 540 })] });
     expect(compareShowsBySoonest(a, b, now)).toBeLessThan(0);
+  });
+});
+
+describe('matchesQuery', () => {
+  // The scraper strips the "FREE - " prefix upstream puts on these titles, so
+  // the only thing left to match on is the flag.
+  it('finds a free show by the word "free" even though its title no longer says so', () => {
+    const free = show([], { title: 'Late Night Cabaret', freeAdmission: true });
+    expect(matchesQuery(free, 'free')).toBe(true);
+    expect(matchesQuery(free, 'FRE')).toBe(true);
+  });
+
+  it('does not match every show on "free"', () => {
+    expect(matchesQuery(show([]), 'free')).toBe(false);
+  });
+
+  it('still matches on title and venue', () => {
+    expect(matchesQuery(show([]), 'apples')).toBe(true);
+    expect(matchesQuery(show([]), 'bus stop')).toBe(true);
+    expect(matchesQuery(show([]), 'nothing here')).toBe(false);
   });
 });

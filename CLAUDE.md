@@ -133,6 +133,40 @@ Read `README.md` first - it documents the upstream API quirks that explain why
   needs to keep working while its surface scrolls. Same blind spot as the opacity note
   above: `tsc`/`npm test`/lint don't catch this, only an accessibility scanner (or the
   browser's own accessibility tree inspector) does.
+- **Upstream end times are sometimes plainly wrong, and duration is load-bearing.**
+  Grid blocks are positioned by pixel math off `end - start`, so one bad value stretches
+  a whole day's axis and paints a block across every other show on it. SimpleTix reports
+  `dateEnd = dateStart + exactly 24h` for all four Late Night Cabaret nights (the show's
+  own blurb says 11:00 PM to 1:00 AM), which rendered a 6720px block and a ~10,000px
+  axis on Sep 3/4/10/11. There is no second source - the real length exists only as
+  prose in the blurb - so the correction is curated in `scrape.mjs`'s
+  `DURATION_OVERRIDES`, next to `SHORT_NAMES` and for the same reason. An override moves
+  `end` only, never `timeId`, so it can't cancel-and-re-add a showtime and orphan a pick.
+  `MAX_PLAUSIBLE_MINUTES` (360) warns about anything still too long after overrides;
+  don't raise it to silence a warning, add the override.
+- **A free show is signalled only by its pin board title**, exactly like a cancellation:
+  `FREE - Late Night Cabaret (No Tickets Required, Just Show Up!)`. Nothing else upstream
+  distinguishes it - not the embed API, not the ticket page's JSON-LD `offers`.
+  `cleanShowTitle` (`scraper/lib/util.mjs`) strips the decoration into a usable title and
+  returns `freeAdmission`, which `scrape.mjs` writes as a flag. **`ticketUrl` still
+  slugifies the *raw* title** - the SimpleTix URL contains the full decoration. Front-end
+  side the flag is `Show.freeAdmission` (never `free` - `PerfState` already uses that for
+  an unclashing empty slot): `ShowCard` appends `· FREE` to the rating line,
+  `DetailPanel` adds an ADMISSION row and relabels its footer link `Event page`,
+  `MyFringePanel` says `Details ↗`, and `matchesQuery` matches "free" off the flag since
+  the word is no longer in the title.
+- **`FESTIVAL_FIRST_DAY` is Sep 2, not Sep 3.** Ticketed shows run Sep 3-13, but the
+  festival's own free Sampler is on Sep 2. A performance on a day outside
+  `festivalDayKeys()` has no column in the day strip, so `visible()` can never pass for
+  it and the show vanishes from the app entirely - it was invisible until this was
+  widened. The knock-on is that the grid lands on Sep 2, a one-show day, so any test
+  that needs a fuller day has to select one (see `selectDay` in `GridPlanner.test.tsx`).
+- **The show page's JSON-LD can be wrong for reasons that aren't timezones.** For the
+  Sampler (291461) it says `2026-09-02T23:00:00+00:00` (= 20:00 Halifax) while the API
+  *and the page's own rendered header* ("September 2, 2026 7:00 p.m.") both say 19:00.
+  `mergePageTimes`' superset guard catches it and keeps the API's time, which is right -
+  so that standing warning is expected, and its "Check whether the JSON-LD timezone
+  changed" advice doesn't apply here.
 - **No genre field.** Genre data isn't available on the festival website or in the PDF
   guide. Don't invent one - the front-end has no genre filter or genre-coded accents.
 - **Don't commit the festival PDF** (it's gitignored - 32MB).
@@ -141,7 +175,7 @@ Read `README.md` first - it documents the upstream API quirks that explain why
 
 Verify with a real run, not by reasoning about the diff:
 
-1. `npm run scrape` - expect 56 shows / 289 showtimes (277 active), exit 0. The active
+1. `npm run scrape` - expect 59 shows / 299 showtimes (268 active), exit 0. The active
    count is the stable one; the total grows whenever upstream cancels and re-issues a
    performance, since cancelled entries are kept forever.
 2. Run it twice. The second run must print "No changes since the last run" and leave
@@ -149,6 +183,13 @@ Verify with a real run, not by reasoning about the diff:
    the merge keying is broken.
 3. To exercise cancel/reschedule/revive, back `src/data/show_times.json` up, mutate the copy in
    place, re-scrape, then **restore the good file**. Don't leave test mutations committed.
+   This applies to mutating the *scraper* too: temporarily breaking `DURATION_OVERRIDES`
+   to check the plausibility warning fires writes the round-trip into each affected
+   showtime's `changes[]` history, which reverting the scraper does not undo. Restore the
+   backup and re-scrape.
+4. `scraper/lib/util.test.mjs` covers the pure helpers (`addMinutes`, `durationMinutes`,
+   `cleanShowTitle`) and runs under the front-end's `npm test` - vitest's default include
+   picks up `scraper/**`.
 
 Spot-check that survives any refactor: show `284247` has 7 showtimes, and its Sep 3
 performances are at `14:00` and `17:00`.

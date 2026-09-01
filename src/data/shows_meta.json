@@ -418,8 +418,7 @@
     ],
     "rating": "All",
     "warnings": [],
-    "warningTags": [],
-    "venue": "Outdoors - Different Locations"
+    "warningTags": []
   },
   "284087": {
     "description": [
@@ -1099,5 +1098,34 @@
     "warningTags": [
       "Audience Interaction"
     ]
+  },
+  "291453": {
+    "description": [
+      "Join us for two FREE afternoons of family-friendly performances and activities at Paul O'Regan Hall, Halifax Central Library , on Sunday, September 6 and Sunday, September 13 , from 1:00–5:00 PM ."
+    ],
+    "credits": [],
+    "rating": "NOT RATED",
+    "warnings": [],
+    "warningTags": []
+  },
+  "291457": {
+    "description": [
+      "FRINGE AFTER DARK! Join us at Stardust Bar + Kitchen for four nights of surprise performances, comedy, and DJs. New hosts and artists presenting every night! September 3rd, 4th, 10th, and 11th from 11:00 PM to 1:00 AM!"
+    ],
+    "credits": [],
+    "rating": "NOT RATED",
+    "warnings": [],
+    "warningTags": []
+  },
+  "291461": {
+    "description": [
+      "FIRST COME, FIRST SERVE. 51 SHOWS. WHERE DO YOU EVEN START?! Start with the HALIFAX FRINGE SAMPLER!",
+      "On September 2, Fringe artists take over the Neptune Scotiabank Stage and get ONE MINUTE to show you what they’ve got!",
+      "The Halifax Fringe Sampler is presented in partnership with Support4Culture."
+    ],
+    "credits": [],
+    "rating": "NOT RATED",
+    "warnings": [],
+    "warningTags": []
   }
 }

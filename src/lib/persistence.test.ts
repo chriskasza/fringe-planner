@@ -25,6 +25,7 @@ function showWith(perfs: Perf[], id = '284247'): Show {
     warningTags: [],
     mins: 60,
     cancelled: false,
+    freeAdmission: false,
     salesEnded: false,
     timesIncomplete: false,
     perfs: perfs.map((p) => ({ ...p, showId: id })),

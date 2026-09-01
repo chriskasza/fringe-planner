@@ -48,7 +48,10 @@ export function ShowCard({ show }: { show: Show }) {
           {show.credits[0] ?? 'Independent artist'} · {show.mins} min
         </div>
         <div className={styles['show-card__venue']}>{show.venueShort}</div>
-        <div className={styles['show-card__rating']}>{show.rating}</div>
+        <div className={styles['show-card__rating']}>
+          {show.rating}
+          {show.freeAdmission && ' · FREE'}
+        </div>
       </div>
 
       <div className={styles['show-card__footer']}>

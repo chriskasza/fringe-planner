@@ -148,7 +148,10 @@ export function matchesQuery(show: Show, query: string): boolean {
   return (
     show.title.toLowerCase().includes(q) ||
     show.venue.toLowerCase().includes(q) ||
-    show.venueShort.toLowerCase().includes(q)
+    show.venueShort.toLowerCase().includes(q) ||
+    // Upstream titles these "FREE - ...", and the scraper strips that off, so
+    // without this a search for "free" finds none of them.
+    (show.freeAdmission && 'free'.includes(q))
   );
 }
 

@@ -64,6 +64,7 @@ function transformShow(
     warningTags: showMeta?.warningTags ?? [],
     mins: firstActive?.mins ?? 0,
     cancelled: raw.cancelled ?? false,
+    freeAdmission: raw.freeAdmission ?? false,
     salesEnded: raw.salesEnded ?? false,
     timesIncomplete: raw.timesIncomplete ?? false,
     perfs,

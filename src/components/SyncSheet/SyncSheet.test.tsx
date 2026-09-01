@@ -6,6 +6,16 @@ import App from '../../App';
 const DEBOUNCE_SETTLE_MS = 400;
 
 describe('Sync Sheet', () => {
+  // The grid lands on Sep 2, which holds only the free Halifax Fringe Sampler.
+  // Tests that need two blocks to pick have to move to a fuller day.
+  function selectDay(dow: string, dateNum: number) {
+    const tab = Array.from(document.querySelectorAll('[data-testid="day-strip-tab"]')).find(
+      (el) => el.textContent?.includes(dow) && el.textContent?.includes(String(dateNum)),
+    ) as HTMLElement;
+    expect(tab).toBeDefined();
+    fireEvent.click(tab);
+  }
+
   function openSync() {
     // My Fringe opens the picks panel, not SyncSheet directly - the panel's
     // own "sync to another device" button is the sole remaining entry point
@@ -43,6 +53,7 @@ describe('Sync Sheet', () => {
 
   it('shows the schedule summary matching the current state', () => {
     render(<App />);
+    selectDay('THU', 3);
     const blocks = document.querySelectorAll('[data-testid="grid-block-pick"]');
     fireEvent.click(blocks[0]);
     fireEvent.click(blocks[1]);
@@ -77,6 +88,7 @@ describe('Sync Sheet', () => {
   // sheet had just produced always answered "No valid picks found".
   it('restores the schedule from a link pasted into the restore row', () => {
     render(<App />);
+    selectDay('THU', 3);
     const blocks = document.querySelectorAll('[data-testid="grid-block-pick"]');
     fireEvent.click(blocks[0]);
     fireEvent.click(blocks[1]);
@@ -107,6 +119,7 @@ describe('Sync Sheet', () => {
   // schedule on screen didn't.
   it('applies the hash from a genuine Back navigation', async () => {
     render(<App />);
+    selectDay('THU', 3);
     const blocks = () => document.querySelectorAll('[data-testid="grid-block-pick"]');
 
     fireEvent.click(blocks()[0]);
@@ -117,14 +130,14 @@ describe('Sync Sheet', () => {
     fireEvent.click(blocks()[1]);
     await new Promise((r) => setTimeout(r, DEBOUNCE_SETTLE_MS));
     expect(window.location.hash).not.toBe(onePickHash);
-    expect(screen.getByText('2')).toBeInTheDocument();
+    expect(screen.getByTestId('topbar-myfringe-badge')).toHaveTextContent('2');
 
     // What the browser does on Back: the URL is already the earlier one by
     // the time the event fires.
     window.history.replaceState(null, '', onePickHash);
     fireEvent.popState(window);
 
-    expect(screen.getByText('1')).toBeInTheDocument();
+    expect(screen.getByTestId('topbar-myfringe-badge')).toHaveTextContent('1');
   });
 
   it('disables the .ics and .json export buttons until something is picked', () => {

@@ -79,7 +79,7 @@ export function mergeShow(prev, next, now, summary) {
   // festival and keep printing the incomplete-showtimes warning. Merging is
   // about not losing history; a flag describing the show's current upstream
   // state isn't history.
-  for (const flag of ['cancelled', 'salesEnded', 'timesIncomplete']) {
+  for (const flag of ['cancelled', 'freeAdmission', 'salesEnded', 'timesIncomplete']) {
     if (!next[flag]) delete merged[flag];
   }
 

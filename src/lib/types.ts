@@ -28,6 +28,11 @@ export type RawShow = {
   // page, and keeps `status: 'active'`, but every entry in `times` is
   // cancelled and no new one is ever scraped.
   cancelled?: boolean;
+  // The festival's own free events ("FREE - Late Night Cabaret (No Tickets
+  // Required, Just Show Up!)") say so only in their pin board title, which the
+  // scraper strips into a clean `title` plus this flag. Not named `free` --
+  // PerfState already uses that for an unclashing empty slot.
+  freeAdmission?: boolean;
   salesEnded?: boolean;
   timesIncomplete?: boolean;
 };
@@ -126,6 +131,9 @@ export type Show = {
   // show never reaches the Grid and its card shows no times - but it stays in
   // the Cards browser and the Shows filter for posterity.
   cancelled: boolean;
+  // See RawShow.freeAdmission. Admission is free and no ticket is needed, so
+  // the ticket link is relabelled rather than offered as a call to action.
+  freeAdmission: boolean;
   salesEnded: boolean;
   timesIncomplete: boolean;
   perfs: Perf[]; // active and cancelled, sorted by day then start
