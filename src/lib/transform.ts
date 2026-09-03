@@ -91,13 +91,16 @@ export function transform(
     .map((s) => transformShow(s, meta, venues));
 
   const counts: Record<DayKey, number> = {};
-  // Played performances count, so a finished day keeps a non-zero count and
-  // stays on the day strip with its history on it. The landing-day rule in
-  // `createInitialState` is what stops that pulling the grid backwards - it
-  // only considers days from today forward.
+  // Active performances only - the one place on the board that still counts
+  // that way, and deliberately. `Day.count` feeds exactly one thing: the
+  // landing-day rule in `createInitialState`, which asks "is there anything
+  // left to see on this day". Counting played performances here makes a day
+  // whose whole programme is over still look non-empty, so the app opens on a
+  // spent day instead of skipping to the next one with something to come -
+  // the opposite of what the grid is scrolled to do.
   for (const show of shows) {
     for (const perf of show.perfs) {
-      if (!notCancelled(perf)) continue;
+      if (perf.status !== 'active') continue;
       counts[perf.day] = (counts[perf.day] ?? 0) + 1;
     }
   }

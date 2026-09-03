@@ -99,7 +99,7 @@ export type Day = {
   dow: string; // "THU"
   dateNum: number; // 3
   label: string; // "Thu 3 Sep"
-  count: number; // performances that day, across all shows, played ones included
+  count: number; // active performances that day, across all shows; drives the landing day
 };
 
 // See RawTime.status. 'active' and 'ended' both render; only 'cancelled' is

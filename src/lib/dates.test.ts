@@ -150,6 +150,16 @@ describe('initial grid day', () => {
     expect(s.daysOn[s.gridDay]).toBe(true);
   });
 
+  // Regression: `Day.count` briefly included played performances, which made a
+  // day whose whole programme was over still look non-empty - so late on Sep 2
+  // the app opened on Sep 2 rather than moving on to Sep 3. A day with nothing
+  // left to see is not somewhere to land, however recently it was on.
+  it('skips a today whose performances have all been played', () => {
+    const days = [day('2026-09-02', 0), day('2026-09-03', 12)];
+    const s = createInitialState(days, allShows, { date: '2026-09-02', minutes: 23 * 60 });
+    expect(s.gridDay).toBe('2026-09-03');
+  });
+
   it('skips today when today has no shows', () => {
     const days = [day('2026-09-03', 12), day('2026-09-04', 0), day('2026-09-05', 9)];
     const s = createInitialState(days, allShows, { date: '2026-09-04', minutes: 720 });

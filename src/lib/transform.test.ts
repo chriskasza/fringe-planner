@@ -127,10 +127,14 @@ describe('transform - shows retired upstream', () => {
     expect(transform(withShowStatus('cancelled', 'cancelled'), meta, venues).shows).toHaveLength(0);
   });
 
-  // A finished day keeps its count, so it stays on the day strip with the
-  // user's history on it rather than emptying to zero.
-  it('counts played performances towards their day', () => {
+  // Day.count feeds only the landing-day rule, which asks "is there anything
+  // left to see here". A played performance is not, so it must not count -
+  // otherwise a day whose whole programme is over still looks non-empty and
+  // the app opens on it. The day itself stays on the strip regardless
+  // (buildFestivalDays keeps every festival day), so nothing is hidden by
+  // this; see 'landing day' in dates.test.ts.
+  it('leaves played performances out of the per-day counts', () => {
     const { days } = transform(withShowStatus('ended', 'ended'), meta, venues);
-    expect(days.find((d) => d.key === '2026-09-03')?.count).toBe(1);
+    expect(days.find((d) => d.key === '2026-09-03')?.count).toBe(0);
   });
 });
