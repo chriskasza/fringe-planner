@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useApp } from '../../state/AppContext';
 import { TIME_BUCKETS, timeBucket } from '../../lib/dates';
-import { matchesQuery } from '../../lib/derived';
+import { matchesQuery, notCancelled } from '../../lib/derived';
 import type { TimeBucket } from '../../lib/types';
 import { sortRatings } from './filterSummary';
 
@@ -24,7 +24,7 @@ export function useFilterOptions() {
     const counts = new Map<TimeBucket, number>();
     for (const s of shows) {
       for (const p of s.perfs) {
-        if (p.status !== 'active') continue;
+        if (!notCancelled(p)) continue;
         const b = timeBucket(p.start);
         counts.set(b, (counts.get(b) ?? 0) + 1);
       }

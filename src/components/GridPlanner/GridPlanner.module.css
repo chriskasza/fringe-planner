@@ -269,6 +269,31 @@
   color: var(--ink);
 }
 
+/* Played performances keep their block; this is what says so. An orthogonal
+   modifier, layered over whichever of the four state rules above applies, so
+   the cue is geometrically identical on a picked block and a free one - which
+   is the requirement. Must stay *after* those four rules: they're all
+   single-class selectors of equal specificity, so source order alone decides
+   (CLAUDE.md - this class of bug shipped once here).
+
+   A ::after inside the surface button, not a background on it, for two
+   reasons: it composites over the state rule's own `background` instead of
+   replacing it, and the surface paints before its .grid-block__sticky sibling,
+   so the hatch lands *under* the title and icon rather than across them.
+   `pointer-events: none` keeps it out of the way of the pick target it sits
+   in, which is still fully clickable - a played performance can be picked and
+   un-picked like any other. Deliberately not `opacity` on the block: that
+   would blend the label toward the row behind it and drop the effective
+   contrast well below what the text token passes at (CLAUDE.md). */
+.grid-block__surface--played::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r-block);
+  background: var(--hatch-played);
+  pointer-events: none;
+}
+
 /* The one sticky group: icon, title and meta line travel together so a block
    scrolled partly off the left keeps showing all three at the scrollport's
    left edge, not just whichever happened to still be in view. 150px is a

@@ -192,3 +192,61 @@ describe('Card Browser cancelled shows', () => {
     expect(panel.getByRole('link', { name: 'Tickets' })).toBeInTheDocument();
   });
 });
+
+// The Halifax Fringe Sampler played its one performance on Sep 2 and the
+// scraper retired it to status 'ended'. The grid hatches its block; the Cards
+// view has to say the same thing, or a show whose whole run is over reads as
+// ordinary and bookable here - which is exactly how it shipped before this.
+describe('Card Browser played performances', () => {
+  const playedShow = shows.find((s) => s.perfs.some((p) => p.status === 'ended'));
+
+  const cardFor = (title: string) =>
+    Array.from(document.querySelectorAll('[data-testid="show-card"]')).find((c) =>
+      c.querySelector('h3')?.textContent === title,
+    ) as HTMLElement;
+
+  it('is present in the data this test depends on', () => {
+    expect(playedShow).toBeDefined();
+  });
+
+  it("says ENDED in the card's summary line when the whole run is over", () => {
+    render(<App />);
+    switchToCards();
+    const card = cardFor(playedShow!.title);
+    expect(card.querySelector('[class*="__summary"]')?.textContent).toContain('ENDED');
+  });
+
+  it('hatches the day-rail cell for a day whose performances have all been played', () => {
+    render(<App />);
+    switchToCards();
+    const card = cardFor(playedShow!.title);
+    const cells = Array.from(card.querySelectorAll('[class*="day-rail__cell"]'));
+    const played = cells.filter((c) => c.className.includes('day-rail__cell--played'));
+    expect(played.length).toBeGreaterThan(0);
+    // Orthogonal, not a seventh cell state: the cell keeps whichever state it
+    // had underneath.
+    expect(played[0].className).toMatch(/day-rail__cell--(available|picked|clash|outside-filter)/);
+    expect(played[0].getAttribute('aria-label')).toContain('ended');
+    // An empty day is not a played day - it has no performances to have played.
+    for (const c of cells.filter((c) => c.className.includes('day-rail__cell--none'))) {
+      expect(c.className).not.toContain('day-rail__cell--played');
+    }
+  });
+
+  it('hatches the time pill, and it stays pickable', () => {
+    render(<App />);
+    switchToCards();
+    const card = cardFor(playedShow!.title);
+    fireEvent.click(within(card).getByRole('button', { name: /SHOW TIMES/ }));
+
+    const pill = card.querySelector('[class*="time-pills"] button') as HTMLElement;
+    expect(pill.className).toMatch(/pill--played/);
+    expect(pill.getAttribute('aria-label')).toContain('ended');
+
+    expect(pill.className).not.toMatch(/pill--picked/);
+    fireEvent.click(pill);
+    const after = card.querySelector('[class*="time-pills"] button') as HTMLElement;
+    expect(after.className).toMatch(/pill--picked/);
+    expect(after.className).toMatch(/pill--played/); // both, not one or the other
+  });
+});

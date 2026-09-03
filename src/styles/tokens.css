@@ -44,6 +44,20 @@
   --live-border: rgba(53, 214, 180, 0.5);
   --scrim: rgba(0, 0, 0, 0.6);
 
+  /* Marks a performance that has already been played, over whatever fill the
+     block already has. A translucent *light* tint, not two opaque tones, is
+     what lets one declaration serve both the gold picked surface and the
+     raised-ink free one: it lightens each slightly, so the cue reads
+     identically on both and neither label loses contrast (a dark tint would
+     take --ink-raised #10322d down onto --ink and sink the block into its own
+     row). 6px/12px pitch, not 2px - a fine high-contrast hatch is a
+     pattern-sensitivity hazard. */
+  --hatch-played: repeating-linear-gradient(
+    135deg,
+    rgba(245, 241, 228, 0.07) 0 6px,
+    transparent 6px 12px
+  );
+
   /* Image placeholder */
   --img-placeholder: repeating-linear-gradient(
     135deg,

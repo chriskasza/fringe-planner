@@ -266,3 +266,47 @@ describe('App (Grid Planner)', () => {
     }
   });
 });
+
+// The Halifax Fringe Sampler played its one performance on Sep 2 and the
+// scraper retired it to status 'ended'. That used to remove the show from the
+// board entirely - and, quietly, any pick on it from My Fringe and from the
+// saved schedule. It stays now, hatched and still pickable.
+describe('a performance that has already been played', () => {
+  const playedShow = shows.find((s) => s.perfs.some((p) => p.status === 'ended'));
+
+  it('is present in the data this test depends on', () => {
+    expect(playedShow).toBeDefined();
+  });
+
+  it('keeps its block on the grid, marked ENDED', () => {
+    render(<App />);
+    selectDay('WED', 2);
+
+    const title = screen.getAllByTitle(playedShow!.title)[0];
+    expect(title).toBeDefined();
+
+    const block = title.closest('[data-testid="grid-block"]')!;
+    expect(block.textContent).toContain('ENDED');
+    // The hatch is an orthogonal modifier on the surface, layered over
+    // whichever pick state applies - identical geometry picked or not.
+    const surface = block.querySelector('[data-testid="grid-block-pick"]')!;
+    expect(surface.className).toMatch(/grid-block__surface--played/);
+    // The background can't reach assistive tech, so the label has to say it.
+    expect(surface.getAttribute('aria-label')).toContain('ended');
+  });
+
+  it('can still be picked and un-picked', () => {
+    render(<App />);
+    selectDay('WED', 2);
+
+    const block = screen.getAllByTitle(playedShow!.title)[0].closest('[data-testid="grid-block"]')!;
+    const surface = block.querySelector('[data-testid="grid-block-pick"]') as HTMLElement;
+
+    expect(surface.className).not.toMatch(/grid-block__surface--picked/);
+    fireEvent.click(surface);
+    expect(surface.className).toMatch(/grid-block__surface--picked/);
+    expect(surface.className).toMatch(/grid-block__surface--played/); // both, not one or the other
+    fireEvent.click(surface);
+    expect(surface.className).not.toMatch(/grid-block__surface--picked/);
+  });
+});

@@ -5,6 +5,7 @@ import { shows } from '../../lib/loadData';
 import { nextActivePerf } from '../../lib/derived';
 import { nowInHalifax } from '../../lib/dates';
 import { switchToCards } from '../../test/appTestUtils';
+import type { Show } from '../../lib/types';
 
 const cardBrowserEl = () => document.querySelector('[data-testid="card-browser"]') as HTMLElement;
 const cardTitles = () =>
@@ -18,6 +19,11 @@ function chooseSort(label: 'Random' | 'A–Z' | 'Soonest') {
   fireEvent.click(browser.getByRole('button', { name: /^Sort/ }));
   fireEvent.click(within(browser.getByRole('dialog', { name: 'Sort' })).getByRole('menuitemradio', { name: label }));
 }
+
+// Mirrors CardGrid's own partition: a show is spent when it was cancelled or
+// has no performance left to come. Derived from the data rather than pinned,
+// since which shows are spent changes every day the festival runs.
+const spent = (s: Show) => s.cancelled || !nextActivePerf(s, nowInHalifax());
 
 describe('Card Browser sort', () => {
   it('defaults to a random order containing every visible show exactly once', () => {
@@ -54,27 +60,32 @@ describe('Card Browser sort', () => {
     // plan around them - so A-Z means A-Z within each of the two groups.
     const expected = [...shows]
       .sort((a, b) => a.title.localeCompare(b.title))
-      .sort((a, b) => Number(a.cancelled) - Number(b.cancelled))
+      .sort((a, b) => Number(spent(a)) - Number(spent(b)))
       .map((s) => s.title);
     expect(cardTitles()).toEqual(expected);
   });
 
-  it('sinks cancelled shows to the bottom of an A–Z sort', () => {
+  // "Spent" is cancelled *or* fully played: both are kept listed but neither
+  // can be planned around, so both belong below anything still bookable. This
+  // used to assert cancelled shows alone occupied the tail, which stopped
+  // being true once a played show could sit down there with them.
+  it('sinks every show with nothing left to come to the bottom of an A–Z sort', () => {
     render(<App />);
     switchToCards();
 
     chooseSort('A–Z');
 
-    const titles = cardTitles();
-    const cancelled = shows.filter((s) => s.cancelled).map((s) => s.title);
-    expect(cancelled.length).toBeGreaterThan(0);
-    expect(titles.slice(-cancelled.length).every((t) => cancelled.includes(t as string))).toBe(true);
-    // ...and on title alone they'd land well above the bottom, so the
+    const titles = cardTitles() as string[];
+    const spentTitles = shows.filter(spent).map((s) => s.title);
+    expect(spentTitles.length).toBeGreaterThan(0);
+    // Every spent show sits after every show that still has something to come.
+    const lastLive = Math.max(...titles.map((t, i) => (spentTitles.includes(t) ? -1 : i)));
+    const firstSpent = Math.min(...titles.map((t, i) => (spentTitles.includes(t) ? i : Infinity)));
+    expect(firstSpent).toBeGreaterThan(lastLive);
+    // ...and on title alone at least one would land above the bottom, so the
     // partition is doing real work rather than agreeing with A–Z by accident.
-    const byTitle = [...titles].sort((a, b) => (a as string).localeCompare(b as string));
-    for (const t of cancelled) {
-      expect(byTitle.indexOf(t)).toBeLessThan(titles.indexOf(t));
-    }
+    const byTitle = [...titles].sort((a, b) => a.localeCompare(b));
+    expect(spentTitles.some((t) => byTitle.indexOf(t) < titles.indexOf(t))).toBe(true);
   });
 
   it('Soonest orders every card by its earliest upcoming performance', () => {

@@ -1,6 +1,7 @@
 import { useApp } from '../../state/AppContext';
-import { perfState } from '../../lib/derived';
+import { isPlayed, perfState } from '../../lib/derived';
 import { formatTime } from '../../lib/dates';
+import { useNow } from '../../lib/useNow';
 import { blockLeft, blockWidth, BLOCK_INSET_Y_PX, SLOT_WIDTH } from './gridLayout';
 import { IconButton } from '../ui/IconButton';
 import type { Show } from '../../lib/types';
@@ -15,8 +16,21 @@ type GridBlockProps = {
 
 export function GridBlock({ show, perf, gridStartMin, slotWidthPx = SLOT_WIDTH }: GridBlockProps) {
   const { state, dispatch, shows } = useApp();
+  const now = useNow();
   const timeId = perf.timeId;
   const pState = perfState(show, perf, state.picked, shows);
+  // Orthogonal to pState, deliberately: the hatch reads the same over a gold
+  // picked block and a raised-ink free one, which is the whole point of it.
+  // Folding it into PerfState instead would have meant four new arms in
+  // Pill.module.css and dayRailState.ts for a state neither of them has.
+  // Read from useNow() so it flips when the performance ends, not once at
+  // page-open time (CLAUDE.md).
+  const played = isPlayed(perf, now);
+  const surfaceClasses = [
+    styles['grid-block__surface'],
+    styles[`grid-block__surface--${pState}`],
+    played ? styles['grid-block__surface--played'] : '',
+  ].filter(Boolean).join(' ');
 
   const style: React.CSSProperties = {
     position: 'absolute',
@@ -26,8 +40,11 @@ export function GridBlock({ show, perf, gridStartMin, slotWidthPx = SLOT_WIDTH }
     bottom: BLOCK_INSET_Y_PX,
   };
 
-  const stateLabel =
+  const pickLabel =
     pState === 'picked' || pState === 'picked-clash' ? 'Picked' : pState === 'clash' ? 'Overlaps' : 'Available';
+  // The hatch is the sighted cue; this is the same information for anyone
+  // reading the block through assistive tech, which a background can't reach.
+  const stateLabel = played ? `${pickLabel}, ended` : pickLabel;
 
   return (
     <div data-testid="grid-block" className={styles['grid-block']} style={style}>
@@ -42,7 +59,7 @@ export function GridBlock({ show, perf, gridStartMin, slotWidthPx = SLOT_WIDTH }
       <button
         type="button"
         data-testid="grid-block-pick"
-        className={`${styles['grid-block__surface']} ${styles[`grid-block__surface--${pState}`]}`}
+        className={surfaceClasses}
         onClick={() => dispatch({ type: 'TOGGLE_PICK', timeId })}
         aria-label={`${show.title}, ${formatTime(perf.start)}, ${perf.mins} min, ${stateLabel}`}
       />
@@ -63,7 +80,7 @@ export function GridBlock({ show, perf, gridStartMin, slotWidthPx = SLOT_WIDTH }
             {show.title}
           </span>
           <div className={styles['grid-block__meta']}>
-            {formatTime(perf.start)} · {perf.mins} min
+            {formatTime(perf.start)} · {played ? 'ENDED' : `${perf.mins} min`}
           </div>
         </div>
       </div>

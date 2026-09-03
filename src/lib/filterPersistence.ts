@@ -72,10 +72,10 @@ function asStringArray(x: unknown): string[] {
 // current festival data) are ever produced - a saved key no longer present
 // (a stale venue/rating/warning/day) is dropped simply by not being
 // iterated. A current key with no saved off-entry keeps `map`'s own default
-// rather than being forced to `true` - this is what lets daysOn's
-// date-dependent default (past days start off) apply to a day that wasn't
-// in the saved blob at all, and what lets a brand-new venue/rating/warning
-// from a re-scrape default to visible instead of hidden.
+// rather than being forced to `true`, which is what lets a brand-new
+// venue/rating/warning/day from a re-scrape default to visible instead of
+// hidden. (It used to carry daysOn's date-dependent default too - past days
+// started off - but every day loads on now; see createInitialState.)
 function mergeMap(map: Record<string, boolean>, offList: unknown): Record<string, boolean> {
   const off = new Set(asStringArray(offList));
   const result: Record<string, boolean> = {};

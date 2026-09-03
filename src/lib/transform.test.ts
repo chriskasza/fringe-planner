@@ -96,3 +96,45 @@ describe('transform - cancelled shows', () => {
     expect(transform(showTimes, meta, venues).days.find((d) => d.key === '2026-09-03')?.count).toBe(1);
   });
 });
+
+// A show whose whole run has been played is retired to status 'ended'
+// upstream. Filtering it out here - as this used to, alongside 'cancelled' -
+// kept it out of `perfIndex`, so `pickedList` could no longer resolve a pick
+// on it and the entry vanished from My Fringe, the ICS export and shared
+// links with no trace. A cancelled *show* has no history to keep, so it
+// still goes.
+describe('transform - shows retired upstream', () => {
+  const meta: ShowsMetaFile = { '1': { credits: [], rating: 'PG', warnings: [], warningTags: [] } };
+  const withShowStatus = (status: 'ended' | 'cancelled', timeStatus: 'ended' | 'cancelled'): ShowTimesFile => ({
+    ...showTimes,
+    shows: [
+      {
+        ...showTimes.shows[0],
+        status,
+        times: showTimes.shows[0].times.map((t) => ({ ...t, status: timeStatus })),
+      },
+    ],
+  });
+
+  it('keeps an ended show, with its played performances intact', () => {
+    const { shows } = transform(withShowStatus('ended', 'ended'), meta, venues);
+    expect(shows).toHaveLength(1);
+    expect(shows[0].perfs.map((p) => p.status)).toEqual(['ended']);
+    expect(shows[0].mins).toBe(60); // read off the played perf, not zeroed
+  });
+
+  it('drops a show that vanished upstream with performances still to come', () => {
+    expect(transform(withShowStatus('cancelled', 'cancelled'), meta, venues).shows).toHaveLength(0);
+  });
+
+  // Day.count feeds only the landing-day rule, which asks "is there anything
+  // left to see here". A played performance is not, so it must not count -
+  // otherwise a day whose whole programme is over still looks non-empty and
+  // the app opens on it. The day itself stays on the strip regardless
+  // (buildFestivalDays keeps every festival day), so nothing is hidden by
+  // this; see 'landing day' in dates.test.ts.
+  it('leaves played performances out of the per-day counts', () => {
+    const { days } = transform(withShowStatus('ended', 'ended'), meta, venues);
+    expect(days.find((d) => d.key === '2026-09-03')?.count).toBe(0);
+  });
+});

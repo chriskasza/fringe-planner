@@ -7,6 +7,7 @@ import type {
   VenuesFile,
 } from './types';
 import { buildFestivalDays, minutesFromMidnight, splitNaiveTimestamp } from './dates';
+import { notCancelled } from './derived';
 
 function transformPerf(showId: string, raw: ShowTimesFile['shows'][number]['times'][number]): Perf {
   const startStamp = splitNaiveTimestamp(raw.start);
@@ -39,7 +40,10 @@ function transformShow(
     .map((t) => transformPerf(id, t))
     .sort((a, b) => a.day.localeCompare(b.day) || a.start - b.start);
 
-  const firstActive = perfs.find((p) => p.status === 'active') ?? perfs[0];
+  // Drives `show.mins`, the duration shown before you open anything. Prefer a
+  // performance still on sale; a fully-played show falls back to its own
+  // history rather than reporting 0.
+  const firstActive = perfs.find((p) => p.status === 'active') ?? perfs.find(notCancelled) ?? perfs[0];
 
   // The API leaves `venue` empty for the roving outdoor shows; the scraper
   // recovers the name from the show page's JSON-LD. Falling back here keeps
@@ -76,11 +80,24 @@ export function transform(
   meta: ShowsMetaFile,
   venues: VenuesFile,
 ): { shows: Show[]; days: ReturnType<typeof buildFestivalDays> } {
+  // Keeps `ended` shows, drops `cancelled` ones. A show whose whole run has
+  // been played is history, not a mistake: filtering it out here removed it
+  // from `perfIndex` too, so `pickedList` could no longer resolve a pick on
+  // it and the entry disappeared from My Fringe, the ICS export and shared
+  // links without a trace. A cancelled show never happened and has no
+  // history to keep.
   const shows = showTimes.shows
-    .filter((s) => s.status === 'active')
+    .filter((s) => s.status !== 'cancelled')
     .map((s) => transformShow(s, meta, venues));
 
   const counts: Record<DayKey, number> = {};
+  // Active performances only - the one place on the board that still counts
+  // that way, and deliberately. `Day.count` feeds exactly one thing: the
+  // landing-day rule in `createInitialState`, which asks "is there anything
+  // left to see on this day". Counting played performances here makes a day
+  // whose whole programme is over still look non-empty, so the app opens on a
+  // spent day instead of skipping to the next one with something to come -
+  // the opposite of what the grid is scrolled to do.
   for (const show of shows) {
     for (const perf of show.perfs) {
       if (perf.status !== 'active') continue;

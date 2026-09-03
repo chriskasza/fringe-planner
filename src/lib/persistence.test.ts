@@ -82,6 +82,21 @@ describe('encodePicked / decodePicked', () => {
     expect(keysOf(decodePicked(encoded, [after]))).toEqual(['102']);
   });
 
+  // The regression this whole change exists for. A performance the user saw
+  // is retired to `ended` on the next scrape; stripping it here (as filtering
+  // to `status === 'active'` did) deleted the pick from the saved schedule on
+  // the first reload afterwards, so the loss was permanent and silent. An
+  // ended performance still has its own hatched block on the board, so
+  // restoring the pick puts nothing invisible in the schedule.
+  it('keeps a pick whose performance has been played', () => {
+    const before = showWith([perf(101, '2026-09-03', 840), perf(102, '2026-09-03', 1020)]);
+    const after = showWith([perf(101, '2026-09-03', 840, 'ended'), perf(102, '2026-09-03', 1020)]);
+
+    const encoded = encodePicked(new Set(['101', '102']), [before]);
+    expect(encodePicked(new Set(['101', '102']), [after])).toBe(encoded);
+    expect(keysOf(decodePicked(encoded, [after]))).toEqual(['101', '102']);
+  });
+
   it('drops a pick whose performance has been cancelled outright', () => {
     const before = showWith([perf(101, '2026-09-03', 840), perf(102, '2026-09-03', 1020)]);
     const encoded = encodePicked(new Set(['101', '102']), [before]);

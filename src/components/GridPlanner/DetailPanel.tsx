@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useApp } from '../../state/AppContext';
-import { perfIndex, perfState } from '../../lib/derived';
+import { isPlayed, notCancelled, perfIndex, perfState } from '../../lib/derived';
 import { formatTime } from '../../lib/dates';
+import { useNow } from '../../lib/useNow';
 import styles from './DetailPanel.module.css';
 
 const STATUS_LABEL: Record<string, string> = {
@@ -13,6 +14,7 @@ const STATUS_LABEL: Record<string, string> = {
 
 export function DetailPanel() {
   const { state, dispatch, shows, days } = useApp();
+  const now = useNow();
   // Which show's description is expanded, rather than a plain boolean: the
   // panel stays mounted between openings, so a boolean would leave the next
   // show opening pre-expanded (and would need a reset effect to avoid it).
@@ -27,15 +29,24 @@ export function DetailPanel() {
   const pState = perfState(show, primaryPerf, state.picked, shows);
   const isPicked = pState === 'picked' || pState === 'picked-clash';
 
-  const otherPerfs = show.perfs.filter((p) => p.status === 'active' && p.timeId !== primaryPerf.timeId);
+  const otherPerfs = show.perfs.filter((p) => notCancelled(p) && p.timeId !== primaryPerf.timeId);
 
   // Every perf of a cancelled show is cancelled, so the panel can only have
   // opened on a retired one. `otherPerfs` is already empty in that case;
   // what's left is to stop the panel offering the defunct slot as a pick.
-  const retired = show.cancelled || primaryPerf.status !== 'active';
-  // Don't mislabel it on the way out: a performance that was played reads
-  // ENDED, one that vanished while it was still ahead of us reads CANCELLED.
-  const retiredLabel = primaryPerf.status === 'ended' ? 'ENDED' : 'CANCELLED';
+  // Cancelled only, not "not active": a performance that was *played* is
+  // still pickable here, matching its grid block, so the panel can't refuse
+  // to remove a pick the board is happy to toggle.
+  const retired = show.cancelled || primaryPerf.status === 'cancelled';
+  // A played performance keeps its time and gains an ENDED suffix - it still
+  // happened, and the user may well be looking at it to remember when. Only a
+  // cancelled one loses its time entirely: it never took place, so there's
+  // nothing to report. Same runtime signal the grid block hatches on, so the
+  // two can't disagree about a performance that ended minutes ago.
+  const played = isPlayed(primaryPerf, now);
+  const timeValue = retired
+    ? 'CANCELLED'
+    : `${dayLabel} · ${formatTime(primaryPerf.start)}–${formatTime(primaryPerf.end)}${played ? ' · ENDED' : ''}`;
 
   // The blurb is the pin board's 256-character teaser; the description is the
   // untruncated version off the show's own page. Only offer the toggle when
@@ -80,7 +91,7 @@ export function DetailPanel() {
         <div className={styles['detail-panel__spec']}>
           <span className={styles['detail-panel__spec-key']}>TIME</span>
           <span className={styles['detail-panel__spec-value']}>
-            {retired ? retiredLabel : `${dayLabel} · ${formatTime(primaryPerf.start)}–${formatTime(primaryPerf.end)}`}
+            {timeValue}
           </span>
           <span className={styles['detail-panel__spec-key']}>VENUE</span>
           <span className={styles['detail-panel__spec-value']}>

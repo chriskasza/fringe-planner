@@ -45,3 +45,23 @@
   font-size: 17px;
   color: var(--cream);
 }
+
+/* A day switched off in the Day filter. Dims by `color` alone, never by
+   whole-element `opacity`: the muted text tokens are tuned to clear AA
+   against the dark background tokens *directly*, and fading the element
+   blends both the text and its background toward whatever is behind the
+   strip, dropping the effective contrast well below the value the token
+   passes at on paper. This tab was the last place still doing that (axe
+   reported it: serious color-contrast, 3 nodes). Must stay after the rule it
+   overrides - equal specificity, so source order decides (CLAUDE.md).
+
+   The date number alone carries the dimming. It's the tab's dominant element
+   (17px display against a 10px mono label), so stepping it from --cream down
+   to --text-mute is unmistakable, and it lands at 5.5:1 - still AA. The DOW
+   label is left at --text-mute: it's already the dimmest thing here that
+   passes, and the next token down (--text-ghost, 3.2:1) is for *disabled*
+   content like an empty day-rail cell, which is exempt from the contrast
+   minimum. This tab stays clickable when it's dimmed, so it isn't. */
+.day-strip__tab--dimmed .day-strip__num {
+  color: var(--text-mute);
+}

@@ -1,4 +1,4 @@
-import { perfInFilter, perfState } from '../../lib/derived';
+import { isPlayed, notCancelled, perfInFilter, perfState } from '../../lib/derived';
 import type { AppState } from '../../lib/state';
 import type { DayKey, Show } from '../../lib/types';
 
@@ -11,9 +11,12 @@ export function dayRailCellState(
   day: DayKey,
   state: Pick<AppState, 'picked' | 'daysOn' | 'timeBucketsOn'>,
   shows: Show[],
-): { cellState: DayRailCellState; count: number } {
-  const perfs = show.perfs.filter((p) => p.status === 'active' && p.day === day);
-  if (perfs.length === 0) return { cellState: 'none', count: 0 };
+  now: { date: DayKey; minutes: number },
+): { cellState: DayRailCellState; count: number; played: boolean } {
+  // Played performances still count: the rail is the show's whole run, and a
+  // day that has gone by keeps whatever was picked on it.
+  const perfs = show.perfs.filter((p) => notCancelled(p) && p.day === day);
+  if (perfs.length === 0) return { cellState: 'none', count: 0, played: false };
 
   let anyPickedClash = false;
   let anyPicked = false;
@@ -35,5 +38,10 @@ export function dayRailCellState(
   else if (anyOutsideFilter) cellState = 'outside-filter';
   else if (anyClash) cellState = 'clash';
 
-  return { cellState, count: perfs.length };
+  // Reported separately from cellState, not as a seventh value of it: the
+  // hatch layers over whichever state applies, so a picked day that has been
+  // played is still `picked` - it just also reads as done. Only *every*
+  // performance on the day being played makes the cell played; a day with one
+  // show left to come is still a day with something on it.
+  return { cellState, count: perfs.length, played: perfs.every((p) => isPlayed(p, now)) };
 }

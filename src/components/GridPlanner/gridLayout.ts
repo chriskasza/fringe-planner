@@ -1,4 +1,5 @@
-import type { DayKey, Show } from '../../lib/types';
+import { isPlayed, notCancelled } from '../../lib/derived';
+import type { DayKey, Perf, Show } from '../../lib/types';
 
 // Fixed per-slot width rather than `1fr` - the real data can span a full day
 // (10:30am-10:30pm) on some dates, which is many half-hour columns, and
@@ -21,43 +22,29 @@ export function slotWidth(isNarrow: boolean): number {
   return isNarrow ? SLOT_WIDTH_NARROW : SLOT_WIDTH;
 }
 
-// On the current day a performance that has already finished isn't useful
-// browsing real estate, so it drops off the grid. "Finished", not "started":
-// a show that's running right now keeps its block until it ends.
-//
-// This is the single rule the axis and the blocks both go through. Clipping
-// only the axis (as this used to) left the blocks in place: a 14:00
-// performance viewed at 20:00 was positioned 1676px to the left of the track
-// - invisible, but still focusable, so keyboard users tabbed through picks
-// they couldn't see - and late enough in the evening the axis start ran past
-// the axis end and the day rendered as venue rows with no time slots and
-// nothing in them, with no empty-state message either.
-export function isPastPerf(perf: { day: DayKey; end: number }, now: { date: DayKey; minutes: number }): boolean {
-  return perf.day === now.date && perf.end <= now.minutes;
-}
-
-// Bounds are computed per day, not once across the whole festival. Days
-// entirely in the past still show their full range - the user can look back.
+// Bounds are computed per day, not once across the whole festival, and always
+// span that day's full range. The axis used to be clipped to "from now on" on
+// the current day, which kept finished performances off the board; they stay
+// on it now, hatched, so the axis has to reach back far enough to hold them.
+// Orientation is `scrollAnchorLeft`'s job instead - the grid scrolls to the
+// next upcoming performance rather than having the past cut away beneath it.
 export function gridTimeBounds(
   shows: Show[],
   day: DayKey,
-  now: { date: DayKey; minutes: number },
 ): { startMin: number; endMin: number; slots: number[] } {
   let min = Infinity;
   let max = -Infinity;
 
   for (const show of shows) {
     for (const p of show.perfs) {
-      if (p.status !== 'active' || p.day !== day) continue;
-      if (isPastPerf(p, now)) continue;
+      if (!notCancelled(p) || p.day !== day) continue;
       if (p.start < min) min = p.start;
       if (p.end > max) max = p.end;
     }
   }
 
-  // Nothing left to show today, or a day with no performances at all. The
-  // caller filters by the same rule and renders its empty state; these bounds
-  // just have to be harmless.
+  // A day with no performances at all. The caller filters by the same rule
+  // and renders its empty state; these bounds just have to be harmless.
   if (!Number.isFinite(min) || !Number.isFinite(max)) {
     return { startMin: 1080, endMin: 1230, slots: [1080] };
   }
@@ -103,4 +90,33 @@ export const BLOCK_INSET_Y_PX = BLOCK_INSET_Y;
 // width was available in the (unscrolled) viewport.
 export function trackWidth(slotCount: number, slotWidthPx: number = SLOT_WIDTH): number {
   return slotCount * slotWidthPx;
+}
+
+// Where to scroll .grid-body__scroll so the day opens on what's next rather
+// than on a morning already played. Now that finished performances keep their
+// blocks, scrollLeft 0 on the current day is hours of history - the user would
+// land on it and have to scroll forward to find anything bookable.
+//
+// A future day returns 0: nothing on it has been played, so its own start
+// already *is* what's next. A day entirely behind us anchors on its last
+// performance, which is the most recent thing that happened. Pure so the
+// arithmetic is testable - jsdom does no layout, so asserting scrollLeft in
+// vitest would prove nothing (see CLAUDE.md).
+export function scrollAnchorLeft(
+  perfs: Perf[],
+  day: DayKey,
+  now: { date: DayKey; minutes: number },
+  gridStartMin: number,
+  slotWidthPx: number = SLOT_WIDTH,
+): number {
+  const onDay = perfs
+    .filter((p) => notCancelled(p) && p.day === day)
+    .sort((a, b) => a.start - b.start);
+  if (onDay.length === 0) return 0;
+
+  const anchor = onDay.find((p) => !isPlayed(p, now)) ?? onDay[onDay.length - 1];
+
+  // Never negative: blockLeft adds a 4px gutter, and scrolling to a value
+  // below 0 is a silent no-op that would leave the grid wherever it was.
+  return Math.max(0, blockLeft(anchor.start, gridStartMin, slotWidthPx) - BLOCK_GAP_X);
 }

@@ -38,10 +38,14 @@ export function createInitialState(
 ): AppState {
   const daysOn: Record<DayKey, boolean> = {};
   for (const d of days) {
-    // Days before today (Halifax wall clock) are deselected on load so the
-    // user starts browsing the festival from today forward. They can
-    // re-enable past days in the Day filter to look back at what was on.
-    daysOn[d.key] = d.key >= now.date;
+    // Every day loads switched on, past ones included, so the festival to
+    // date stays browsable and a pick made on a day that has since gone by
+    // is still on screen where the user left it. Deselecting past days here
+    // - as this used to - hid the user's own history behind a filter they
+    // had to know to reopen. Orientation is `gridDay`'s job instead (below):
+    // it lands on the next day with something still to come, so the board
+    // opens forward while the past stays reachable.
+    daysOn[d.key] = true;
   }
 
   const timeBucketsOn = allTimeBucketsOn();
@@ -55,12 +59,13 @@ export function createInitialState(
   const warningsOn: Record<string, boolean> = {};
   for (const w of new Set(shows.flatMap((s) => s.warningTags))) warningsOn[w] = true;
 
-  // The landing day has to agree with `daysOn` above: opening on the first
-  // day of the festival while that day is filtered out puts the user on a
-  // grid whose own day is switched off. Prefer the first day from today
-  // forward that has shows; once the festival is over there's no such day, so
-  // fall back to the last day that had any (and switch it back on, since
-  // every day is in the past by then).
+  // This is what orients the app forward now that every day loads switched
+  // on: the first day from today that has shows, so opening the planner puts
+  // you on what's next rather than on a day already played. Once the festival
+  // is over there's no such day, so fall back to the last day that had any.
+  // (GridBody scrolls the axis to the next upcoming performance *within* the
+  // day - see `scrollAnchorLeft`. Day granularity alone isn't enough once a
+  // spent morning stays on the board.)
   const gridDay =
     days.find((d) => d.count > 0 && d.key >= now.date) ??
     [...days].reverse().find((d) => d.count > 0) ??
