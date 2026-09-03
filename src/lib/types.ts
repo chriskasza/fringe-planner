@@ -8,7 +8,9 @@ export type RawTime = {
   venue: string;
   // 'ended' is a performance that has been played and then dropped off
   // upstream - distinct from 'cancelled', which is one that vanished while it
-  // was still ahead of us. Both are retired: only 'active' renders.
+  // was still ahead of us. Both are retired, but only 'cancelled' is hidden:
+  // an ended performance stays on the board as history, hatched (see
+  // `isPlayed`/`notCancelled` in derived.ts).
   status: 'active' | 'cancelled' | 'ended';
   firstSeen: string;
   cancelledAt?: string;
@@ -97,10 +99,11 @@ export type Day = {
   dow: string; // "THU"
   dateNum: number; // 3
   label: string; // "Thu 3 Sep"
-  count: number; // active performances that day, across all shows
+  count: number; // performances that day, across all shows, played ones included
 };
 
-// See RawTime.status. Only 'active' is ever rendered.
+// See RawTime.status. 'active' and 'ended' both render; only 'cancelled' is
+// filtered out.
 export type PerfStatus = 'active' | 'cancelled' | 'ended';
 
 // The upstream-stable id (see CLAUDE.md) - stringified once at the raw->Perf

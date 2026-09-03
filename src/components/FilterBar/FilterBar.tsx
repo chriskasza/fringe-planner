@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { TIME_BUCKETS } from '../../lib/dates';
+import { notCancelled } from '../../lib/derived';
 import type { MenuKey, SortMode } from '../../lib/types';
 import { FilterButton } from '../ui/FilterButton';
 import { Dropdown } from '../ui/Dropdown';
@@ -134,7 +135,7 @@ export function FilterBar({ view }: FilterBarProps) {
                   <span className={styles['filter-bar__show-info']}>
                     <span className={styles['filter-bar__show-title']}>{s.title}</span>
                     <span className={styles['filter-bar__show-meta']}>
-                      {s.perfs.filter((p) => p.status === 'active').length} PERFS · {s.venueShort}
+                      {s.perfs.filter(notCancelled).length} PERFS · {s.venueShort}
                     </span>
                   </span>
                 </label>

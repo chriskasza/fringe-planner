@@ -1,6 +1,7 @@
 import ical, { ICalCalendarMethod } from 'ical-generator';
 import { addDays } from './dates';
 import type { DayKey, Show } from './types';
+import { notCancelled } from './derived';
 
 const FESTIVAL_TZID = 'America/Halifax';
 
@@ -22,7 +23,10 @@ export function generateIcs(picks: { show: Show; perf: Show['perfs'][number] }[]
   const cal = ical({ prodId: '-//Halifax Fringe Planner//EN', method: ICalCalendarMethod.PUBLISH });
 
   for (const { show, perf } of picks) {
-    if (perf.status !== 'active') continue;
+    // Played performances are exported too - calendars handle past events
+    // fine, and a schedule you can't look back on isn't a schedule. Only a
+    // cancelled slot, which never happened, is skipped.
+    if (!notCancelled(perf)) continue;
 
     // transform.ts encodes an end past midnight as `end += 1440`, so the end
     // minutes have to carry their day with them: subtracting 1440 while

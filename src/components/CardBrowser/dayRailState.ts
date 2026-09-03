@@ -1,4 +1,4 @@
-import { perfInFilter, perfState } from '../../lib/derived';
+import { notCancelled, perfInFilter, perfState } from '../../lib/derived';
 import type { AppState } from '../../lib/state';
 import type { DayKey, Show } from '../../lib/types';
 
@@ -12,7 +12,9 @@ export function dayRailCellState(
   state: Pick<AppState, 'picked' | 'daysOn' | 'timeBucketsOn'>,
   shows: Show[],
 ): { cellState: DayRailCellState; count: number } {
-  const perfs = show.perfs.filter((p) => p.status === 'active' && p.day === day);
+  // Played performances still count: the rail is the show's whole run, and a
+  // day that has gone by keeps whatever was picked on it.
+  const perfs = show.perfs.filter((p) => notCancelled(p) && p.day === day);
   if (perfs.length === 0) return { cellState: 'none', count: 0 };
 
   let anyPickedClash = false;

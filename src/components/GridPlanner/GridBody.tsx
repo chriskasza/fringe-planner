@@ -1,9 +1,9 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useApp } from '../../state/AppContext';
-import { visible } from '../../lib/derived';
+import { notCancelled, visible } from '../../lib/derived';
 import { useNow } from '../../lib/useNow';
 import { useIsNarrow } from '../../lib/useIsNarrow';
-import { gridTimeBounds, isPastPerf, slotWidth } from './gridLayout';
+import { gridTimeBounds, scrollAnchorLeft, slotWidth } from './gridLayout';
 import { TimeHeader } from './TimeHeader';
 import { VenueRow } from './VenueRow';
 import type { Show } from '../../lib/types';
@@ -15,8 +15,8 @@ export function GridBody() {
   const isNarrow = useIsNarrow();
   const slotWidthPx = slotWidth(isNarrow);
   const { startMin, slots } = useMemo(
-    () => gridTimeBounds(shows, state.gridDay, now),
-    [shows, state.gridDay, now],
+    () => gridTimeBounds(shows, state.gridDay),
+    [shows, state.gridDay],
   );
 
   const byVenue = useMemo(() => {
@@ -24,23 +24,35 @@ export function GridBody() {
     for (const show of shows) {
       if (!visible(show, state, shows)) continue;
       for (const perf of show.perfs) {
-        if (perf.status !== 'active' || perf.day !== state.gridDay) continue;
-        // Same rule the axis uses, so a block can never sit off the left edge
-        // of its own track.
-        if (isPastPerf(perf, now)) continue;
+        // Played performances keep their block - GridBlock hatches them. Only
+        // a cancelled slot, which never happened, has nothing to render.
+        if (!notCancelled(perf) || perf.day !== state.gridDay) continue;
         const list = map.get(show.venue) ?? [];
         list.push({ show, perf });
         map.set(show.venue, list);
       }
     }
     return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0]));
-  }, [shows, state, now]);
+  }, [shows, state]);
 
-  // "Nothing matched" and "today is over" are different situations and the
-  // filter advice is wrong for the second one.
-  const dayIsSpent =
-    state.gridDay === now.date &&
-    shows.some((s) => s.perfs.some((p) => p.status === 'active' && p.day === state.gridDay));
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
+  // Orient the day on what's still to come. Keyed on gridDay alone,
+  // deliberately *not* on `now`: re-running each minute would yank the grid
+  // sideways under a user who had scrolled somewhere else. The ref is null
+  // while the empty state is rendered, so the guard is load-bearing.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollLeft = scrollAnchorLeft(
+      shows.flatMap((s) => s.perfs),
+      state.gridDay,
+      now,
+      startMin,
+      slotWidthPx,
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `now` is read fresh each render but must not *retrigger* this; see the comment above
+  }, [state.gridDay, startMin, slotWidthPx, shows]);
 
   const venueAddress = (venue: string) => shows.find((s) => s.venue === venue)?.venueAddress ?? null;
 
@@ -48,12 +60,10 @@ export function GridBody() {
     <div className={styles['grid-body']}>
       {byVenue.length === 0 ? (
         <div className={styles['grid-body__empty']}>
-          {dayIsSpent
-            ? "Every performance today has finished. Pick another day to keep browsing."
-            : 'No shows on this day match the current filters.'}
+          No shows on this day match the current filters.
         </div>
       ) : (
-        <div className={styles['grid-body__scroll']}>
+        <div className={styles['grid-body__scroll']} ref={scrollRef}>
           <TimeHeader slots={slots} slotWidthPx={slotWidthPx} />
           {byVenue.map(([venue, entries]) => (
             <VenueRow

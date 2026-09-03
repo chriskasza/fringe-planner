@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { notCancelled } from './derived';
 import type { Show, TimeId } from './types';
 
 const STORAGE_KEY = 'fringe-picked';
@@ -15,30 +16,33 @@ const DEBOUNCE_MS = 250;
 // timeIds are unique across the whole festival, so a token needs no show
 // prefix; they're `.`-separated, which no timeId contains, and every
 // character used is legal in a URL fragment.
-function activePerfs(show: Show) {
-  return show.perfs.filter((p) => p.status === 'active');
+function keepablePerfs(show: Show) {
+  return show.perfs.filter(notCancelled);
 }
 
-// Active timeIds only, matching what the rest of the app will actually
-// render: a pick whose performance has since been cancelled has nowhere to
-// show up, so restoring it would put an invisible entry in the schedule.
-function activeTimeIds(shows: Show[]): Set<TimeId> {
+// The timeIds the rest of the app will actually render, so restoring one can
+// never put an invisible entry in the schedule. That means dropping a
+// *cancelled* performance, which has nowhere to show up - but keeping a
+// played one, which still has its own hatched block on the board. Filtering
+// to `status === 'active'` here, as this used to, stripped the pick on the
+// first reload after the show finished its run and made the loss permanent.
+function keepableTimeIds(shows: Show[]): Set<TimeId> {
   const ids = new Set<TimeId>();
   for (const show of shows) {
-    for (const perf of activePerfs(show)) ids.add(perf.timeId);
+    for (const perf of keepablePerfs(show)) ids.add(perf.timeId);
   }
   return ids;
 }
 
 export function encodePicked(picked: Set<TimeId>, shows: Show[]): string {
-  const valid = activeTimeIds(shows);
+  const valid = keepableTimeIds(shows);
   return [...picked].filter((id) => valid.has(id)).sort().join('.');
 }
 
 // Malformed or stale tokens are skipped individually rather than wiping the
 // whole schedule - a single bad token shouldn't cost the user everything else.
 export function decodePicked(encoded: string, shows: Show[]): Set<TimeId> {
-  const valid = activeTimeIds(shows);
+  const valid = keepableTimeIds(shows);
   const result = new Set<TimeId>();
   if (!encoded) return result;
 
@@ -91,7 +95,7 @@ function decodeJsonBackup(text: string, shows: Show[]): Set<TimeId> {
   }
   if (!Array.isArray(parsed)) return result;
 
-  const valid = activeTimeIds(shows);
+  const valid = keepableTimeIds(shows);
 
   for (const raw of parsed) {
     if (!raw || typeof raw !== 'object') continue;
@@ -112,7 +116,7 @@ function decodeJsonBackup(text: string, shows: Show[]): Set<TimeId> {
 function findByTitle(shows: Show[], title?: string, day?: string, start?: number) {
   if (!title || !day || typeof start !== 'number') return undefined;
   const show = shows.find((s) => s.title === title);
-  const perf = show && activePerfs(show).find((p) => p.day === day && p.start === start);
+  const perf = show && keepablePerfs(show).find((p) => p.day === day && p.start === start);
   return show && perf ? { show, perf } : undefined;
 }
 

@@ -92,7 +92,12 @@ describe('festival day keys', () => {
   });
 });
 
-describe('past-day deselection', () => {
+// Past days used to load *deselected*, which hid the user's own history
+// behind a filter they had to know to reopen. They load on now; orientation
+// is gridDay's job instead (see 'initial grid day' below - the two together
+// are the regression guard for "open on what's next, but keep the past
+// reachable").
+describe('day filter defaults', () => {
   // Build a fake set of festival days so the test doesn't depend on the
   // real show data, which might change.
   const days = [
@@ -108,13 +113,15 @@ describe('past-day deselection', () => {
     for (const d of days) expect(s.daysOn[d.key]).toBe(true);
   });
 
-  it('deselects days before today when the festival is underway', () => {
+  it('leaves days before today switched on when the festival is underway', () => {
     const now = { date: '2026-09-05', minutes: 720 }; // midday Sat 5 Sep
     const s = createInitialState(days, allShows, now);
-    expect(s.daysOn['2026-09-03']).toBe(false);
-    expect(s.daysOn['2026-09-04']).toBe(false);
-    expect(s.daysOn['2026-09-05']).toBe(true); // today
-    expect(s.daysOn['2026-09-06']).toBe(true); // future
+    for (const d of days) expect(s.daysOn[d.key]).toBe(true);
+  });
+
+  it('leaves every day switched on once the festival is over', () => {
+    const s = createInitialState(days, allShows, { date: '2026-12-01', minutes: 720 });
+    for (const d of days) expect(s.daysOn[d.key]).toBe(true);
   });
 });
 
@@ -133,11 +140,9 @@ describe('initial grid day', () => {
     expect(s.gridDay).toBe('2026-09-04');
   });
 
-  // The landing day has to agree with daysOn, which deselects past days: an
-  // initial gridDay of Sep 3 on Sep 10 renders a week-old day that the app's
-  // own day filter has switched off, so the grid shows an arbitrary subset
-  // (only shows that also run later) with the Sep 3 tab both selected and
-  // dimmed - or the empty-state message.
+  // Now that every day loads switched on, this is the *only* thing orienting
+  // the app forward: landing on Sep 3 on Sep 10 would open the planner on a
+  // week-old day with nothing bookable on it.
   it('skips past days once the festival is underway', () => {
     const days = [day('2026-09-03', 12), day('2026-09-04', 12), day('2026-09-05', 9)];
     const s = createInitialState(days, allShows, { date: '2026-09-04', minutes: 720 });
@@ -155,8 +160,6 @@ describe('initial grid day', () => {
     const days = [day('2026-09-03', 12), day('2026-09-04', 12), day('2026-09-05', 0)];
     const s = createInitialState(days, allShows, { date: '2026-12-01', minutes: 720 });
     expect(s.gridDay).toBe('2026-09-04');
-    // Past days are all deselected, so the landing day has to switch its own
-    // day back on or the grid renders empty.
     expect(s.daysOn[s.gridDay]).toBe(true);
   });
 });

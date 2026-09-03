@@ -59,8 +59,45 @@ Read `README.md` first - it documents the upstream API quirks that explain why
   night's scrape wrote it out as a `cancelled` show still wrapping an *active* showtime,
   because the stale-show loop spread `...stale` and never descended into `times`. Left
   unfixed it would have falsely cancelled every show in the file, one day at a time.
-  Front-end side there is nothing to do - `transform.ts`'s `status === 'active'` filter
-  already drops anything retired, which is why an ended show leaves the board on its own.
+  Front-end side, `ended` and `cancelled` part ways: see the rule below.
+- **A played performance stays on the board; only a cancelled one is hidden.** The
+  front-end filters on `notCancelled` (`src/lib/derived.ts`), never on
+  `status === 'active'` - that older test threw away the user's own history. A show
+  whose whole run has been played is retired to `status: 'ended'` upstream, and
+  dropping it in `transform.ts` also kept it out of `perfIndex`, so `pickedList` could
+  no longer resolve a pick on it: the entry vanished from My Fringe, the ICS export and
+  shared links, and `persistence.ts` then stripped the saved timeId on the next reload,
+  making the loss permanent and silent. A *cancelled* show never happened and has no
+  history to keep, so it still goes.
+  "Played" has two signals for the same event at different lags, and `isPlayed`
+  (`derived.ts`) composes both: `status === 'ended'`, which the scraper only writes on
+  its next run, and `isPastPerf` - the clock, which knows the moment the performance
+  ends. Components read the clock half through `useNow()`, never `nowInHalifax()`, or
+  the block never stops looking bookable.
+  Visually it's an orthogonal modifier, not a fifth `PerfState`:
+  `.grid-block__surface--played` layers a `--hatch-played` `::after` over whichever of
+  the four state rules applies, so the cue is geometrically identical on a gold picked
+  block and a raised-ink free one. It must stay *after* those four rules in the file
+  (equal specificity - source order decides). The hatch is a translucent *light* tint
+  so one declaration serves both fills without either label losing contrast; a dark
+  tint would take `--ink-raised` down onto `--ink` and sink the block into its own row.
+  Worst text contrast over either stripe tone is 6.6:1. Don't reach for `opacity` here -
+  see the token rule below. A background can't reach assistive tech, so the meta line
+  reads `2:00 PM · ENDED` and the `aria-label` gains `ended`; that text, not the hatch,
+  is what carries the state to a screen reader. Played blocks stay fully interactive -
+  a pick can be added or removed after the fact, and `DetailPanel`'s `retired` gate is
+  therefore cancelled-only.
+- **Every festival day loads switched on, and `gridDay` is what orients the app.**
+  `createInitialState` used to deselect days before today, which hid the user's own
+  history behind a filter they had to know to reopen. It doesn't any more, so the *only*
+  thing pointing the app forward is the landing-day rule - the first day from today
+  that has shows - plus `scrollAnchorLeft` (`gridLayout.ts`), which scrolls
+  `.grid-body__scroll` to the first performance on that day still to come. Day
+  granularity alone stopped being enough once a spent morning stayed on the board.
+  That effect is keyed on `gridDay`/`slotWidthPx`, deliberately **not** on `now`:
+  re-running it every minute yanks the grid sideways under a user who had scrolled
+  somewhere else. `gridTimeBounds` no longer takes `now` at all - the axis always spans
+  the day's full range, because the blocks it has to hold now reach back into it.
 - **Neither scrape guard may assume a full pin board.** The board legitimately shrinks as
   shows finish their run, so `MIN_EXPECTED_SHOWS` is deliberately low (10) and only exists
   to catch the markup changing under us; it was 50 against a board of 58 and would have
@@ -133,14 +170,21 @@ Read `README.md` first - it documents the upstream API quirks that explain why
   `src/styles/tokens.css` (`--text-faint`, `--text-mute`, ...) are tuned to just clear
   WCAG AA (4.5:1) against the four dark background tokens directly. Wrapping one of
   them in a whole-element `opacity` - as `DayRail`, `CheckboxRow`, `FilterBar`,
-  `SyncSheet`, and `MyFringePanel` each separately did, to signal a dimmed/disabled/
-  outside-filter row - blends both the text and its background toward whatever's
+  `SyncSheet`, `MyFringePanel` and `DayStrip` each separately did, to signal a
+  dimmed/disabled/outside-filter row - blends both the text and its background toward whatever's
   behind the element, which silently drops the *effective* contrast well below the
   token's own passing value (as low as 2.5:1 in one case, on a token that's 5:1+ on
   paper). An accessibility scanner catches this; `npm test`/`tsc`/lint don't, since
   the raw color values never change. If a row needs to look de-emphasized, change its
   `color` (there's usually already a token for it, e.g. `--text-mute`) instead of
-  reducing the whole element's opacity.
+  reducing the whole element's opacity. `DayStrip` was the last holdout and the only
+  one axe actually caught in the act (serious color-contrast, 3 nodes, on every day tab
+  switched off in the Day filter) - it dimmed with an inline `style={{ opacity: 0.5 }}`
+  rather than a class, so it read as geometry rather than as a colour decision.
+  `.day-strip__tab--dimmed` steps the date number from `--cream` to `--text-mute`
+  instead. Note which token: `--text-ghost` is dimmer and would look better, but at
+  3.2:1 it only clears the bar for *disabled* content (an empty day-rail cell), and a
+  dimmed day tab is still clickable.
 - **Never nest a real interactive element inside another interactive element**,
   including a `role="button"`/`tabIndex` div standing in for one. `GridBlock` used to
   be a `role="button"` div (the pick-toggle) wrapping a real `<button>` (the "ⓘ"

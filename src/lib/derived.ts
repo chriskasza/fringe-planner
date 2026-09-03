@@ -1,11 +1,46 @@
 import { timeBucket } from './dates';
-import type { ClashMode, DayKey, Perf, Show, TimeBucket, TimeId } from './types';
+import type { ClashMode, DayKey, Perf, PerfStatus, Show, TimeBucket, TimeId } from './types';
 
 type PerfLike = { day: DayKey; start: number; mins: number };
 
 // Two performances overlap if they're the same day and their time ranges intersect.
 export function hits(a: PerfLike, b: PerfLike): boolean {
   return a.day === b.day && a.start < b.start + b.mins && b.start < a.start + a.mins;
+}
+
+// On the current day a performance that has already finished is *past*, by
+// the clock rather than by anything upstream said. "Finished", not "started":
+// a show running right now is not past until it ends. Lives here rather than
+// in gridLayout.ts because `isPlayed` below composes it and `lib` must not
+// import from `components`.
+//
+// Handles a performance running past midnight: transform.ts encodes that end
+// as `start + mins` beyond 1440 rather than wrapping, so the comparison stays
+// on one axis.
+export function isPastPerf(
+  perf: { day: DayKey; end: number },
+  now: { date: DayKey; minutes: number },
+): boolean {
+  return perf.day === now.date && perf.end <= now.minutes;
+}
+
+// A performance that has been played, by either of the two signals we get -
+// they're the same event at different lags. The scraper retires a slot to
+// `ended` only on its next run, so between the performance finishing and that
+// run, the clock is the only thing that knows.
+export function isPlayed(
+  perf: { day: DayKey; end: number; status: PerfStatus },
+  now: { date: DayKey; minutes: number },
+): boolean {
+  return perf.status === 'ended' || isPastPerf(perf, now);
+}
+
+// The board's notion of "still worth showing". A cancelled performance never
+// happened and has nothing to record; an ended one is history the user picked
+// and paid for, so it stays. Most of the app used to test `status === 'active'`
+// here, which silently threw that history away.
+export function notCancelled(perf: { status: PerfStatus }): boolean {
+  return perf.status !== 'cancelled';
 }
 
 export type PickedEntry = {
@@ -127,8 +162,12 @@ export function visible(show: Show, state: VisibilityState, shows: Show[]): bool
   // (and deselecting every day shows nothing, rather than everything). This
   // never touches `picked` - picks outside the filter stay in the schedule,
   // dimmed in the My Fringe rail.
+  // Played performances count here: a show whose whole run is behind us has
+  // no *active* perf left, so testing for one would drop it under every
+  // filter setting - the same trap the cancelled early-return above exists
+  // for, and the reason a finished show used to vanish along with its picks.
   const hasPerfInFilter = show.perfs.some(
-    (p) => p.status === 'active' && perfInFilter(p, state.daysOn, state.timeBucketsOn),
+    (p) => notCancelled(p) && perfInFilter(p, state.daysOn, state.timeBucketsOn),
   );
   if (!hasPerfInFilter) return false;
 

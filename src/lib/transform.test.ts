@@ -96,3 +96,41 @@ describe('transform - cancelled shows', () => {
     expect(transform(showTimes, meta, venues).days.find((d) => d.key === '2026-09-03')?.count).toBe(1);
   });
 });
+
+// A show whose whole run has been played is retired to status 'ended'
+// upstream. Filtering it out here - as this used to, alongside 'cancelled' -
+// kept it out of `perfIndex`, so `pickedList` could no longer resolve a pick
+// on it and the entry vanished from My Fringe, the ICS export and shared
+// links with no trace. A cancelled *show* has no history to keep, so it
+// still goes.
+describe('transform - shows retired upstream', () => {
+  const meta: ShowsMetaFile = { '1': { credits: [], rating: 'PG', warnings: [], warningTags: [] } };
+  const withShowStatus = (status: 'ended' | 'cancelled', timeStatus: 'ended' | 'cancelled'): ShowTimesFile => ({
+    ...showTimes,
+    shows: [
+      {
+        ...showTimes.shows[0],
+        status,
+        times: showTimes.shows[0].times.map((t) => ({ ...t, status: timeStatus })),
+      },
+    ],
+  });
+
+  it('keeps an ended show, with its played performances intact', () => {
+    const { shows } = transform(withShowStatus('ended', 'ended'), meta, venues);
+    expect(shows).toHaveLength(1);
+    expect(shows[0].perfs.map((p) => p.status)).toEqual(['ended']);
+    expect(shows[0].mins).toBe(60); // read off the played perf, not zeroed
+  });
+
+  it('drops a show that vanished upstream with performances still to come', () => {
+    expect(transform(withShowStatus('cancelled', 'cancelled'), meta, venues).shows).toHaveLength(0);
+  });
+
+  // A finished day keeps its count, so it stays on the day strip with the
+  // user's history on it rather than emptying to zero.
+  it('counts played performances towards their day', () => {
+    const { days } = transform(withShowStatus('ended', 'ended'), meta, venues);
+    expect(days.find((d) => d.key === '2026-09-03')?.count).toBe(1);
+  });
+});

@@ -139,19 +139,21 @@ describe('encodeFilters / decodeFilters', () => {
     expect(result.warningsOn['new-tag']).toBe(true);
   });
 
-  it('merges daysOn using the fresh date-dependent default, not a hardcoded true', () => {
+  // daysOn has no date-dependent default any more - every day loads on, past
+  // ones included (see createInitialState). What still has to hold is that a
+  // day the *user* switched off comes back off, while a day that appeared
+  // since the save comes back on rather than being inferred off from its
+  // absence.
+  it('restores a day the user switched off, and defaults a newly-added day to on', () => {
     const shows = baseShows();
-    const pastNow = { date: '2026-09-05', minutes: 600 };
-    const savedState = createInitialState(DAYS, shows, pastNow); // Sep 3/4 are "past" here
-    const encoded = encodeFilters(savedState); // no saved entry for any day
+    const now = { date: '2026-09-05', minutes: 600 };
+    const savedState = createInitialState(DAYS, shows, now);
+    const encoded = encodeFilters({ ...savedState, daysOn: { ...savedState.daysOn, '2026-09-03': false } });
 
-    // A day is only ever off by default because it's in the past - and once
-    // past, always past - so a day off by default at save time must still
-    // come back off later even though it's absent from the saved off-list,
-    // while a day that was on by default must still come back on.
-    const laterFresh = createInitialState([...DAYS, day('2026-09-07')], shows, pastNow);
+    const laterFresh = createInitialState([...DAYS, day('2026-09-07')], shows, now);
     const result = decodeFilters(encoded, laterFresh, shows);
     expect(result.daysOn['2026-09-03']).toBe(false);
+    expect(result.daysOn['2026-09-04']).toBe(true);
     expect(result.daysOn['2026-09-07']).toBe(true);
   });
 

@@ -1,4 +1,5 @@
 import { useApp } from '../../state/AppContext';
+import { notCancelled } from '../../lib/derived';
 import { dayRailCellState } from './dayRailState';
 import type { Show } from '../../lib/types';
 import styles from './DayRail.module.css';
@@ -19,7 +20,7 @@ export function DayRail({ show, onExpand }: DayRailProps) {
         function handleClick() {
           if (count === 0) return;
           if (count === 1) {
-            const perf = show.perfs.find((p) => p.status === 'active' && p.day === d.key);
+            const perf = show.perfs.find((p) => notCancelled(p) && p.day === d.key);
             if (perf) dispatch({ type: 'TOGGLE_PICK', timeId: perf.timeId });
           } else {
             onExpand();

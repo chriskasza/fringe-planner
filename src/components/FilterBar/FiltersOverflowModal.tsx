@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TIME_BUCKETS } from '../../lib/dates';
+import { notCancelled } from '../../lib/derived';
 import { CheckboxRow } from '../ui/CheckboxRow';
 import { SegmentedControl } from '../ui/SegmentedControl';
 import { activeFilterCount, ratingOptionLabel, summarizeCount, summarizeLabelled, summarizeSelected } from './filterSummary';
@@ -220,7 +221,7 @@ export function FiltersOverflowModal({ view }: FiltersOverflowModalProps) {
                       <span className={filterBarStyles['filter-bar__show-info']}>
                         <span className={filterBarStyles['filter-bar__show-title']}>{s.title}</span>
                         <span className={filterBarStyles['filter-bar__show-meta']}>
-                          {s.perfs.filter((p) => p.status === 'active').length} PERFS · {s.venueShort}
+                          {s.perfs.filter(notCancelled).length} PERFS · {s.venueShort}
                         </span>
                       </span>
                     </label>

@@ -1,5 +1,5 @@
 import { useApp } from '../../state/AppContext';
-import { perfInFilter } from '../../lib/derived';
+import { notCancelled, perfInFilter } from '../../lib/derived';
 import { IconButton } from '../ui/IconButton';
 import { DayRail } from './DayRail';
 import { TimePills } from './TimePills';
@@ -9,7 +9,10 @@ import styles from './ShowCard.module.css';
 export function ShowCard({ show }: { show: Show }) {
   const { state, dispatch } = useApp();
 
-  const activePerfs = show.perfs.filter((p) => p.status === 'active');
+  // Counts the show's whole run, played performances included - the summary
+  // line and the pick count are a record of what you did as much as a menu of
+  // what's left.
+  const activePerfs = show.perfs.filter(notCancelled);
   const pickedPerfs = activePerfs.filter((p) => state.picked.has(p.timeId));
   const outsideFilterCount = activePerfs.filter((p) => !perfInFilter(p, state.daysOn, state.timeBucketsOn)).length;
   const anyPicked = pickedPerfs.length > 0;

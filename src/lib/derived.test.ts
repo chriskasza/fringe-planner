@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { compareShowsBySoonest, matchesQuery, nextActivePerf, visible } from './derived';
+import { compareShowsBySoonest, isPastPerf, isPlayed, matchesQuery, nextActivePerf, notCancelled, visible } from './derived';
 import type { Perf, Show } from './types';
 
 function show(warningTags: string[], overrides: Partial<Show> = {}): Show {
@@ -193,5 +193,80 @@ describe('matchesQuery', () => {
     expect(matchesQuery(show([]), 'apples')).toBe(true);
     expect(matchesQuery(show([]), 'bus stop')).toBe(true);
     expect(matchesQuery(show([]), 'nothing here')).toBe(false);
+  });
+});
+
+// Moved here with isPastPerf itself: `lib` can't import from `components`,
+// and isPlayed composes it.
+describe('isPastPerf', () => {
+  const DAY = '2026-09-05';
+  const at = (h: number, m = 0) => h * 60 + m;
+  const now = { date: DAY, minutes: at(20) };
+
+  it('is true only for a performance that has already ended today', () => {
+    expect(isPastPerf({ day: DAY, end: at(19, 59) }, now)).toBe(true);
+    expect(isPastPerf({ day: DAY, end: at(20) }, now)).toBe(true); // ends exactly now
+    expect(isPastPerf({ day: DAY, end: at(20, 1) }, now)).toBe(false); // still running
+    expect(isPastPerf({ day: '2026-09-04', end: at(19) }, now)).toBe(false); // another day
+    expect(isPastPerf({ day: '2026-09-06', end: at(19) }, now)).toBe(false);
+  });
+
+  it('handles a performance running past midnight, encoded as end > 1440', () => {
+    expect(isPastPerf({ day: DAY, end: 1470 }, { date: DAY, minutes: at(23, 45) })).toBe(false);
+  });
+});
+
+describe('isPlayed', () => {
+  const DAY = '2026-09-05';
+  const at = (h: number, m = 0) => h * 60 + m;
+
+  // Two signals for the same event at different lags: the clock knows as soon
+  // as the performance ends, the scraper only on its next run.
+  it('is true from the clock alone, before the scraper has caught up', () => {
+    const p = perf({ day: DAY, start: at(14), end: at(15), status: 'active' });
+    expect(isPlayed(p, { date: DAY, minutes: at(16) })).toBe(true);
+    expect(isPlayed(p, { date: DAY, minutes: at(14, 30) })).toBe(false); // still running
+  });
+
+  it('is true from the scraper alone, whatever the clock says', () => {
+    const p = perf({ day: DAY, start: at(14), end: at(15), status: 'ended' });
+    expect(isPlayed(p, { date: '2026-09-01', minutes: at(9) })).toBe(true);
+  });
+
+  it('is false for a cancelled performance - it never happened, it was not played', () => {
+    const p = perf({ day: DAY, start: at(14), end: at(15), status: 'cancelled' });
+    expect(isPlayed(p, { date: '2026-09-01', minutes: at(9) })).toBe(false);
+  });
+
+  it('handles a performance running past midnight, encoded as end > 1440', () => {
+    const p = perf({ day: DAY, start: at(23), end: 1470, status: 'active' });
+    expect(isPlayed(p, { date: DAY, minutes: at(23, 45) })).toBe(false);
+  });
+});
+
+describe('notCancelled', () => {
+  // The whole point of the split: an ended performance is history worth
+  // keeping on the board, a cancelled one is not.
+  it('keeps active and ended, drops cancelled', () => {
+    expect(notCancelled(perf({ status: 'active' }))).toBe(true);
+    expect(notCancelled(perf({ status: 'ended' }))).toBe(true);
+    expect(notCancelled(perf({ status: 'cancelled' }))).toBe(false);
+  });
+});
+
+describe('visible() and a show whose whole run has been played', () => {
+  // The show has no *active* perf left, so a day/time gate testing for one
+  // would reject it under every filter setting and it would drop off the
+  // board along with the user's picks on it.
+  const played = show([], {
+    perfs: [{ timeId: '1', showId: '1', day: '2026-09-03', start: 930, end: 990, mins: 60, status: 'ended' }],
+  });
+
+  it('stays visible with its day switched on', () => {
+    expect(visible(played, { ...BASE_STATE, warningsOn: {} }, [played])).toBe(true);
+  });
+
+  it('still drops out when its day is switched off', () => {
+    expect(visible(played, { ...BASE_STATE, warningsOn: {}, daysOn: { '2026-09-03': false } }, [played])).toBe(false);
   });
 });

@@ -1,5 +1,5 @@
 import { useApp } from '../../state/AppContext';
-import { perfInFilter, perfState } from '../../lib/derived';
+import { notCancelled, perfInFilter, perfState } from '../../lib/derived';
 import { formatTime } from '../../lib/dates';
 import { Pill } from '../ui/Pill';
 import type { Show } from '../../lib/types';
@@ -11,7 +11,7 @@ export function TimePills({ show }: { show: Show }) {
   const { state, dispatch, shows, days } = useApp();
 
   const perfs = show.perfs
-    .filter((p) => p.status === 'active' && perfInFilter(p, state.daysOn, state.timeBucketsOn))
+    .filter((p) => notCancelled(p) && perfInFilter(p, state.daysOn, state.timeBucketsOn))
     .sort((a, b) => a.day.localeCompare(b.day) || a.start - b.start);
 
   return (
