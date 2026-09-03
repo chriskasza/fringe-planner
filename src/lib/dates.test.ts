@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { dayKeysBetween, FESTIVAL_FIRST_DAY, FESTIVAL_LAST_DAY, festivalDayKeys, TIME_BUCKETS, timeBucket } from './dates';
+import { buildFestivalDays, dayKeysBetween, FESTIVAL_FIRST_DAY, FESTIVAL_LAST_DAY, festivalDayKeys, TIME_BUCKETS, timeBucket } from './dates';
 import { shows, shows as allShows } from './loadData';
 import { createInitialState } from './state';
 
@@ -92,6 +92,17 @@ describe('festival day keys', () => {
   });
 });
 
+describe('buildFestivalDays', () => {
+  it('drops a day with no active performances instead of showing it at zero', () => {
+    const keys = buildFestivalDays({ '2026-09-03': 2, '2026-09-05': 1 }).map((d) => d.key);
+    expect(keys).toEqual(['2026-09-03', '2026-09-05']);
+  });
+
+  it('returns an empty list when nothing is on at all', () => {
+    expect(buildFestivalDays({})).toEqual([]);
+  });
+});
+
 describe('past-day deselection', () => {
   // Build a fake set of festival days so the test doesn't depend on the
   // real show data, which might change.
@@ -158,5 +169,13 @@ describe('initial grid day', () => {
     // Past days are all deselected, so the landing day has to switch its own
     // day back on or the grid renders empty.
     expect(s.daysOn[s.gridDay]).toBe(true);
+  });
+
+  // buildFestivalDays drops a day with nothing on it, so once the last
+  // performance has been played there are no days left at all. Reading
+  // days[0] there used to throw before first paint.
+  it('survives an empty day list once every performance has been played', () => {
+    const s = createInitialState([], allShows, { date: '2026-12-01', minutes: 720 });
+    expect(s.gridDay).toBe(FESTIVAL_LAST_DAY);
   });
 });

@@ -92,7 +92,14 @@ describe('transform - cancelled shows', () => {
   });
 
   it('leaves its cancelled performances out of the per-day counts', () => {
-    expect(transform(cancelledFile, meta, venues).days.find((d) => d.key === '2026-09-03')?.count).toBe(0);
+    // Sep 3 is the cancelled show's only day, so counting no performances on
+    // it drops the day from the board entirely rather than showing a zero.
+    expect(transform(cancelledFile, meta, venues).days.find((d) => d.key === '2026-09-03')).toBeUndefined();
     expect(transform(showTimes, meta, venues).days.find((d) => d.key === '2026-09-03')?.count).toBe(1);
+  });
+
+  it('keeps only the days that still have an active performance', () => {
+    expect(transform(cancelledFile, meta, venues).days).toEqual([]);
+    expect(transform(showTimes, meta, venues).days.map((d) => d.key)).toEqual(['2026-09-03']);
   });
 });

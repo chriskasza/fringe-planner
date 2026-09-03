@@ -188,6 +188,15 @@ Read `README.md` first - it documents the upstream API quirks that explain why
   it and the show vanishes from the app entirely - it was invisible until this was
   widened. The knock-on is that the grid lands on Sep 2, a one-show day, so any test
   that needs a fuller day has to select one (see `selectDay` in `GridPlanner.test.tsx`).
+- **A day with nothing on it isn't on the board at all.** `buildFestivalDays`
+  (`src/lib/dates.ts`) keeps only the days that still have an active performance, so a
+  day drops out of the day strip, the day rail and the Day filter as soon as its last
+  performance is retired to `ended` - a finished day has nothing left to display. Sep 7
+  (Labour Day, no performances at all) is out for the same reason, and the list is
+  legitimately *empty* once the whole festival has been played, so `createInitialState`
+  must never index `days[0]` unguarded - it falls back to `FESTIVAL_LAST_DAY`. Don't
+  assert a fixed tab count in a test; derive it from the data (see
+  `GridPlanner.test.tsx`).
 - **The show page's JSON-LD can be wrong for reasons that aren't timezones.** For the
   Sampler (291461) it says `2026-09-02T23:00:00+00:00` (= 20:00 Halifax) while the API
   *and the page's own rendered header* ("September 2, 2026 7:00 p.m.") both say 19:00.
