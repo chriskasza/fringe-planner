@@ -39,9 +39,36 @@ Read `README.md` first - it documents the upstream API quirks that explain why
   fine; one built from a string is not.
 - **Read "now" from `useNow()`, not `nowInHalifax()`, inside a component.** A value read
   during render can't be a dependency and can't update, so it freezes at page-open time.
-- **The scraper merges; it must never delete.** Showtimes that vanish upstream get
-  `status: "cancelled"`, not removal - a starred pick disappearing without a trace is the
-  specific failure this design exists to prevent.
+- **The scraper merges; it must never delete.** Showtimes that vanish upstream are
+  *retired*, not removed - a starred pick disappearing without a trace is the specific
+  failure this design exists to prevent. But "vanished upstream" is ambiguous: the
+  festival delists a slot both when it's cancelled and when it's simply been played.
+  `retireTime` (`scraper/lib/merge.mjs`) is the one place that's decided - anything
+  already started is `status: "ended"` with an `endedAt`, anything still ahead of us is
+  `status: "cancelled"` with a `cancelledAt`. It compares `start` against `nowLocal`
+  (`halifaxStamp(now)` in `scrape.mjs`); both are naive Halifax stamps, so it's a plain
+  string comparison and no stored timestamp ever reaches `new Date()`. Compare `start`,
+  **never `end`** - end times are sometimes plainly wrong and several are curated in
+  `DURATION_OVERRIDES`. An already-retired slot is returned untouched, which is what keeps
+  a same-day re-scrape byte-identical.
+  A *show* becomes `ended` in the pass after the merge in `scrape.mjs`, once it has no
+  active showtimes left and at least one performance that already started; it's
+  `cancelled` only if it left the pin board with performances still to come (a show
+  flagged `cancelled: true` upstream is skipped - that flag owns its own UI). This shipped
+  wrong once: the Halifax Fringe Sampler played its one performance on Sep 2 and that
+  night's scrape wrote it out as a `cancelled` show still wrapping an *active* showtime,
+  because the stale-show loop spread `...stale` and never descended into `times`. Left
+  unfixed it would have falsely cancelled every show in the file, one day at a time.
+  Front-end side there is nothing to do - `transform.ts`'s `status === 'active'` filter
+  already drops anything retired, which is why an ended show leaves the board on its own.
+- **Neither scrape guard may assume a full pin board.** The board legitimately shrinks as
+  shows finish their run, so `MIN_EXPECTED_SHOWS` is deliberately low (10) and only exists
+  to catch the markup changing under us; it was 50 against a board of 58 and would have
+  aborted every scrape from mid-festival on. The protection it used to provide now comes
+  from `MAX_UNEXPECTED_CANCELLED_SHOWS` - shows that vanished *with performances still
+  ahead of them*, which a normal festival day never produces. Same reasoning for the
+  `returned no showtimes` guard: a show can sit on the board with an empty `eventTimes`
+  after its last performance, so it's exempt when every slot already known is past.
 - **A show the artist cancelled emits zero showtimes - never synthetic ones.** Upstream
   marks a cancellation only by prefixing the pin board title (`CANCELLED: All Below`);
   the card, the ticket page and the embed API all carry on as before.
@@ -175,9 +202,11 @@ Read `README.md` first - it documents the upstream API quirks that explain why
 
 Verify with a real run, not by reasoning about the diff:
 
-1. `npm run scrape` - expect 59 shows / 299 showtimes (268 active), exit 0. The active
-   count is the stable one; the total grows whenever upstream cancels and re-issues a
-   performance, since cancelled entries are kept forever.
+1. `npm run scrape` - expect 59 shows / 299 showtimes, exit 0. Neither count is stable
+   any more now that the festival is running: the total grows whenever upstream cancels
+   and re-issues a performance (retired entries are kept forever) and the active count
+   falls every day as performances are played and retired to `ended`. Compare against the
+   previous run, not against a number written down here.
 2. Run it twice. The second run must print "No changes since the last run" and leave
    `src/data/show_times.json` byte-identical apart from `scrapedAt`. Churn on a clean re-run means
    the merge keying is broken.

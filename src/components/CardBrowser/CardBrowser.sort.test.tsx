@@ -2,6 +2,8 @@ import { render, fireEvent, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import App from '../../App';
 import { shows } from '../../lib/loadData';
+import { nextActivePerf } from '../../lib/derived';
+import { nowInHalifax } from '../../lib/dates';
 import { switchToCards } from '../../test/appTestUtils';
 
 const cardBrowserEl = () => document.querySelector('[data-testid="card-browser"]') as HTMLElement;
@@ -75,18 +77,30 @@ describe('Card Browser sort', () => {
     }
   });
 
-  it('Soonest puts the show with the earliest upcoming performance first', () => {
+  it('Soonest orders every card by its earliest upcoming performance', () => {
     render(<App />);
     switchToCards();
 
     chooseSort('Soonest');
 
-    // The Halifax Fringe Sampler (the free Sep 2 preview, 7:00 PM) is the
-    // earliest in the whole dataset; The Defenestration of Prague (Sep 3,
-    // 2:00 PM) is the earliest of the ticketed shows and next-soonest.
-    const displayed = cardTitles();
-    expect(displayed[0]).toBe('Halifax Fringe Sampler');
-    expect(displayed[1]).toBe('The Defenestration of Prague');
+    // Deliberately a property, not a pinned pair of titles. This test used to
+    // name the Halifax Fringe Sampler and The Defenestration of Prague, which
+    // went red the evening the Sampler played its one performance and was
+    // retired out of the board - the dataset moves under this file every day
+    // the festival runs, so assert the ordering rule instead of today's answer.
+    const now = nowInHalifax();
+    const byTitle = new Map(shows.map((s) => [s.title, s]));
+    // Shows with nothing left to come sort last; \uffff puts them there.
+    const sortKey = (title: string) => {
+      const p = nextActivePerf(byTitle.get(title)!, now);
+      return p ? `${p.day}T${String(p.start).padStart(4, '0')}` : '\uffff';
+    };
+
+    const displayed = cardTitles() as string[];
+    expect(displayed.length).toBeGreaterThan(1);
+    for (let i = 1; i < displayed.length; i++) {
+      expect(sortKey(displayed[i - 1]) <= sortKey(displayed[i])).toBe(true);
+    }
   });
 
   it('RESET ALL leaves the sort selection untouched', () => {
@@ -95,8 +109,14 @@ describe('Card Browser sort', () => {
     const browser = within(cardBrowserEl());
 
     chooseSort('Soonest');
+    const before = cardTitles();
     fireEvent.click(browser.getByRole('button', { name: 'RESET ALL' }));
 
-    expect(cardTitles()[0]).toBe('Halifax Fringe Sampler');
+    // No filters were set, so RESET ALL can't change *which* cards show - only
+    // reverting the sort could reorder them. Comparing the whole list rather
+    // than a named first card keeps this honest as the dataset changes.
+    expect(cardTitles()).toEqual(before);
+    // ...and the order has teeth only if Soonest actually differs from A-Z.
+    expect(before).not.toEqual([...before].sort((a, b) => (a as string).localeCompare(b as string)));
   });
 });

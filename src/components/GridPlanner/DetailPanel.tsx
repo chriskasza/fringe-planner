@@ -30,9 +30,12 @@ export function DetailPanel() {
   const otherPerfs = show.perfs.filter((p) => p.status === 'active' && p.timeId !== primaryPerf.timeId);
 
   // Every perf of a cancelled show is cancelled, so the panel can only have
-  // opened on a cancelled one. `otherPerfs` is already empty in that case;
+  // opened on a retired one. `otherPerfs` is already empty in that case;
   // what's left is to stop the panel offering the defunct slot as a pick.
-  const cancelled = show.cancelled || primaryPerf.status !== 'active';
+  const retired = show.cancelled || primaryPerf.status !== 'active';
+  // Don't mislabel it on the way out: a performance that was played reads
+  // ENDED, one that vanished while it was still ahead of us reads CANCELLED.
+  const retiredLabel = primaryPerf.status === 'ended' ? 'ENDED' : 'CANCELLED';
 
   // The blurb is the pin board's 256-character teaser; the description is the
   // untruncated version off the show's own page. Only offer the toggle when
@@ -77,7 +80,7 @@ export function DetailPanel() {
         <div className={styles['detail-panel__spec']}>
           <span className={styles['detail-panel__spec-key']}>TIME</span>
           <span className={styles['detail-panel__spec-value']}>
-            {cancelled ? 'CANCELLED' : `${dayLabel} · ${formatTime(primaryPerf.start)}–${formatTime(primaryPerf.end)}`}
+            {retired ? retiredLabel : `${dayLabel} · ${formatTime(primaryPerf.start)}–${formatTime(primaryPerf.end)}`}
           </span>
           <span className={styles['detail-panel__spec-key']}>VENUE</span>
           <span className={styles['detail-panel__spec-value']}>
@@ -152,7 +155,7 @@ export function DetailPanel() {
         )}
 
         <div className={styles['detail-panel__footer']}>
-          {!cancelled && (
+          {!retired && (
             <button
               type="button"
               className={`${styles['detail-panel__primary']} ${isPicked ? styles['detail-panel__primary--remove'] : ''}`}

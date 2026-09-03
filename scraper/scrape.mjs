@@ -4,8 +4,9 @@
 // shows_meta.json and venues.json.
 //
 // Re-runnable: merges into the existing show_times.json rather than overwriting it.
-// Nothing is ever deleted -- showtimes that disappear upstream are marked
-// cancelled so the app can render them struck through. shows_meta.json and
+// Nothing is ever deleted -- a showtime that disappears upstream is marked
+// `cancelled` if it was still ahead of us and `ended` if it had already been
+// played, so a pick can never vanish without a trace. shows_meta.json and
 // venues.json follow the same rule: a show that drops off the pin board keeps
 // its previously-scraped meta entry untouched rather than losing it.
 //
@@ -24,19 +25,33 @@ import {
   cleanShowTitle,
   addMinutes,
   durationMinutes,
+  halifaxStamp,
 } from './lib/util.mjs';
 import { scrapeCards, fetchShowData, resolveTimes, syntheticId } from './lib/simpletix.mjs';
 import { fetchMeta } from './lib/meta.mjs';
-import { createSummary, mergeShow } from './lib/merge.mjs';
+import { createSummary, mergeShow, retireTime } from './lib/merge.mjs';
 
 const TICKETS_URL = 'https://halifaxfringe.ca/home-copy-copy-3/';
 const OUT = fileURLToPath(new URL('../src/data/show_times.json', import.meta.url));
 const META_OUT = fileURLToPath(new URL('../src/data/shows_meta.json', import.meta.url));
 const VENUES_OUT = fileURLToPath(new URL('../src/data/venues.json', import.meta.url));
 
-const MIN_EXPECTED_SHOWS = 50;
+// Low on purpose. This guard is here to catch the pin board's markup changing
+// under us, which yields zero or a handful of cards -- it is not a census. The
+// board legitimately shrinks as shows finish their run and the festival takes
+// them down, and it was set to 50 against a board of 58, so it would have
+// aborted every scrape from roughly mid-festival onward. The real protection
+// against a parse change quietly mass-cancelling the file is
+// MAX_UNEXPECTED_CANCELLED_SHOWS below, which counts shows that vanished while
+// they still had performances ahead of them -- something a normal festival day
+// never produces.
+const MIN_EXPECTED_SHOWS = 10;
+const MAX_UNEXPECTED_CANCELLED_SHOWS = 5;
 
 const now = new Date().toISOString();
+// "Now" as a naive Halifax stamp ("2026-09-02T22:56"), the same shape every
+// `start`/`end` in the file already has, so the two compare as plain strings.
+const nowLocal = halifaxStamp(now);
 
 // Cosmetic abbreviations of the venues' own names, for tight grid rows. Not
 // upstream data - purely a display shorthand, kept here so it's easy to spot
@@ -176,7 +191,17 @@ for (const [i, card] of cards.entries()) {
     fail(`showtimes for "${card.title}" (${card.showId}): ${err.message}`);
   }
 
-  if (!cancelled && !times.length) fail(`"${card.title}" (${card.showId}) returned no showtimes`);
+  // A show that has played its last performance can sit on the pin board a
+  // while longer with an empty `eventTimes`. That is not a scrape failure, so
+  // exempt it -- but only when every slot we already knew about has started, so
+  // a genuinely empty response still aborts before it can wipe the file.
+  // prevShows is not drained until the merge below, so it is still populated.
+  if (!cancelled && !times.length) {
+    const known = prevShows.get(card.showId)?.times ?? [];
+    const finished = known.length > 0
+      && known.every((t) => t.status !== 'active' || t.start <= nowLocal);
+    if (!finished) fail(`"${card.title}" (${card.showId}) returned no showtimes`);
+  }
 
   // No `eventTimes` means resolveTimes took the date-wise fallback, which is
   // the only path that can under-report. That's when the page's JSON-LD is
@@ -272,12 +297,46 @@ process.stdout.write('\n');
 
 const shows = [];
 for (const s of scraped) {
-  shows.push(mergeShow(prevShows.get(s.showId), s, now, summary));
+  shows.push(mergeShow(prevShows.get(s.showId), s, now, nowLocal, summary));
   prevShows.delete(s.showId);
 }
+
+// Whatever is left dropped off the pin board entirely. Retire its showtimes the
+// same way mergeShow retires individual ones -- this loop used to spread
+// `...stale` untouched, which is how the Halifax Fringe Sampler ended up a
+// "cancelled" show still wrapping an *active* showtime.
 for (const stale of prevShows.values()) {
-  if (stale.status !== 'cancelled') summary.cancelledShows.push(stale.title);
-  shows.push({ ...stale, status: 'cancelled', cancelledAt: stale.cancelledAt ?? now });
+  if (stale.status !== 'active') {
+    shows.push(stale);
+    continue;
+  }
+  shows.push({ ...stale, times: (stale.times ?? []).map((t) => retireTime(t, nowLocal, now)) });
+}
+
+// One pass, so it covers both the shows delisted above and a show still on the
+// board whose last performance has been played. A show is done when nothing
+// active is left and at least one of its performances has actually started;
+// anything else that lost its performances was cancelled. A show flagged
+// `cancelled: true` upstream keeps its own status and UI -- it isn't ours to
+// reclassify.
+for (const show of shows) {
+  if (show.status !== 'active' || show.cancelled) continue;
+  const times = show.times ?? [];
+  if (!times.length || times.some((t) => t.status === 'active')) continue;
+  const played = times.some((t) => t.start <= nowLocal);
+  show.status = played ? 'ended' : 'cancelled';
+  show[played ? 'endedAt' : 'cancelledAt'] = now;
+  (played ? summary.endedShows : summary.cancelledShows).push(show.title);
+}
+
+// A pin board that changed shape would delist shows that still have unplayed
+// performances; a normal festival day only ever delists finished ones. Bail
+// before writing rather than committing a mass cancellation.
+if (summary.cancelledShows.length > MAX_UNEXPECTED_CANCELLED_SHOWS) {
+  fail(
+    `${summary.cancelledShows.length} shows vanished upstream with performances still ahead of them `
+    + `(max ${MAX_UNEXPECTED_CANCELLED_SHOWS}) -- the page markup probably changed. Nothing written.`,
+  );
 }
 
 shows.sort((a, b) => a.title.localeCompare(b.title) || a.showId - b.showId);
@@ -319,8 +378,10 @@ console.log(`Wrote venues.json: ${Object.keys(venues).length} venues.`);
 const report = [
   ['new shows', summary.newShows],
   ['cancelled shows', summary.cancelledShows],
+  ['ended shows', summary.endedShows],
   ['new showtimes', summary.newTimes],
   ['cancelled showtimes', summary.cancelledTimes],
+  ['ended showtimes', summary.endedTimes],
   ['revived showtimes', summary.revived],
   ['rescheduled', summary.changed],
 ].filter(([, items]) => items.length);

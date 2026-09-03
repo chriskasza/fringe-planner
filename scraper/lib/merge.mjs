@@ -6,7 +6,31 @@
 import { byStart } from './util.mjs';
 
 export function createSummary() {
-  return { newShows: [], cancelledShows: [], newTimes: [], cancelledTimes: [], revived: [], changed: [] };
+  return {
+    newShows: [], cancelledShows: [], endedShows: [],
+    newTimes: [], cancelledTimes: [], endedTimes: [],
+    revived: [], changed: [],
+  };
+}
+
+// A performance that vanishes upstream is ambiguous: the festival delists a slot
+// both when it is cancelled and when it has simply been played. Everything before
+// `nowLocal` has already happened, so it ended; everything after it is a genuine
+// cancellation. Compare `start`, never `end` -- upstream end times are sometimes
+// plainly wrong and several are curated in scrape.mjs's DURATION_OVERRIDES, while
+// `start` is the value the whole file is keyed on.
+//
+// Both stamps are naive Halifax wall time ("2026-09-03T14:00"), so a plain string
+// comparison is the right one and no stored timestamp is ever handed to
+// `new Date()` -- see CLAUDE.md. `nowLocal` comes from halifaxStamp(now).
+//
+// Already-retired slots are returned as-is, which is what keeps a same-day
+// re-scrape byte-identical instead of restamping them with a fresh `now`.
+export function retireTime(time, nowLocal, now) {
+  if (time.status !== 'active') return time;
+  return time.start <= nowLocal
+    ? { ...time, status: 'ended', endedAt: now }
+    : { ...time, status: 'cancelled', cancelledAt: now };
 }
 
 function mergeTime(prev, next, showTitle, now, summary) {
@@ -17,8 +41,12 @@ function mergeTime(prev, next, showTitle, now, summary) {
 
   const merged = { ...prev, ...next, status: 'active', firstSeen: prev.firstSeen ?? now };
 
-  if (prev.status === 'cancelled') {
+  // Line above forces status back to 'active', so a leftover retirement stamp
+  // would contradict it -- clear whichever one is there.
+  if (prev.status !== 'active') {
     delete merged.cancelledAt;
+  delete merged.endedAt;
+    delete merged.endedAt;
     summary.revived.push(`${showTitle} @ ${next.start}`);
   }
 
@@ -34,7 +62,7 @@ function mergeTime(prev, next, showTitle, now, summary) {
   return merged;
 }
 
-export function mergeShow(prev, next, now, summary) {
+export function mergeShow(prev, next, now, nowLocal, summary) {
   if (!prev) {
     summary.newShows.push(next.title);
     return {
@@ -53,14 +81,15 @@ export function mergeShow(prev, next, now, summary) {
     prevTimes.delete(t.timeId);
   }
 
-  // Anything left over vanished upstream. Keep it, mark it cancelled.
+  // Anything left over vanished upstream. Keep it -- retireTime decides whether
+  // that means it was cancelled or simply played.
   for (const stale of prevTimes.values()) {
-    if (stale.status === 'cancelled') {
-      times.push(stale);
-    } else {
-      summary.cancelledTimes.push(`${prev.title} @ ${stale.start}`);
-      times.push({ ...stale, status: 'cancelled', cancelledAt: now });
+    const retired = retireTime(stale, nowLocal, now);
+    if (retired !== stale) {
+      const bucket = retired.status === 'ended' ? summary.endedTimes : summary.cancelledTimes;
+      bucket.push(`${prev.title} @ ${stale.start}`);
     }
+    times.push(retired);
   }
 
   const merged = {

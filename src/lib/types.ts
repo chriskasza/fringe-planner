@@ -6,9 +6,13 @@ export type RawTime = {
   start: string; // naive Halifax local time, "2026-09-06T19:30"
   end: string;
   venue: string;
-  status: 'active' | 'cancelled';
+  // 'ended' is a performance that has been played and then dropped off
+  // upstream - distinct from 'cancelled', which is one that vanished while it
+  // was still ahead of us. Both are retired: only 'active' renders.
+  status: 'active' | 'cancelled' | 'ended';
   firstSeen: string;
   cancelledAt?: string;
+  endedAt?: string;
   changes?: { at: string; field: string; from: string; to: string }[];
 };
 
@@ -20,8 +24,11 @@ export type RawShow = {
   venue: string;
   ticketUrl: string;
   times: RawTime[];
-  status: 'active' | 'cancelled';
+  // 'ended' once the show has played its whole run; 'cancelled' if it left the
+  // pin board with performances still to come. See RawTime.status.
+  status: 'active' | 'cancelled' | 'ended';
   firstSeen: string;
+  endedAt?: string;
   // Cancelled by the artist upstream (the pin board prefixes such a title with
   // "CANCELLED:"). Distinct from `status`, which only says whether the show is
   // still listed at all: a cancelled show stays on the pin board, keeps its
@@ -93,7 +100,8 @@ export type Day = {
   count: number; // active performances that day, across all shows
 };
 
-export type PerfStatus = 'active' | 'cancelled';
+// See RawTime.status. Only 'active' is ever rendered.
+export type PerfStatus = 'active' | 'cancelled' | 'ended';
 
 // The upstream-stable id (see CLAUDE.md) - stringified once at the raw->Perf
 // boundary in transform.ts, so nothing downstream ever sees `number | string`.
@@ -136,7 +144,7 @@ export type Show = {
   freeAdmission: boolean;
   salesEnded: boolean;
   timesIncomplete: boolean;
-  perfs: Perf[]; // active and cancelled, sorted by day then start
+  perfs: Perf[]; // active and retired alike, sorted by day then start
 };
 
 export type ClashMode = 'show' | 'hide';

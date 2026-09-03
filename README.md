@@ -112,21 +112,34 @@ break a link.
 
 Accumulated, never destructive. Re-running merges into the existing file:
 
-- A showtime that disappears upstream is **not deleted** - it gets
-  `status: "cancelled"` and a `cancelledAt`, so the UI can show it struck through
-  instead of silently losing a starred pick.
+- A showtime that disappears upstream is **not deleted** - it is retired, so the UI
+  never silently loses a starred pick. Which retirement depends on whether it had
+  already happened: one that has been played gets `status: "ended"` and an `endedAt`,
+  one that vanished while it was still ahead of us gets `status: "cancelled"` and a
+  `cancelledAt`. `retireTime` in `scraper/lib/merge.mjs` makes that call, comparing
+  `start` against the current Halifax wall time as naive stamps.
+- A show follows the same split: `ended` once its whole run has been played (the
+  festival takes finished events off the pin board, which is not a cancellation),
+  `cancelled` if it went away with performances still to come. Only `status: "active"`
+  survives `transform.ts`, so either way a retired show leaves the app.
 - A showtime whose `start`, `end`, or `venue` moves is updated in place, with the old
   value appended to a `changes` array.
-- A cancelled showtime that reappears upstream flips back to `active`.
+- A retired showtime that reappears upstream flips back to `active`, and its
+  `cancelledAt`/`endedAt` is cleared.
 
 `timeId` is the stable identity for a showtime and survives re-scrapes, so UI state keyed
 on it stays valid. Saved and shared schedules are keyed on it too (see *Picks live in the
 URL* below), which is what makes them survive a cancellation upstream.
 
 The scraper writes via a temp file and rename, and aborts without writing if the pin
-board yields fewer than 50 shows or any show returns no showtimes - a partial scrape
-would otherwise mass-cancel real showtimes. A show marked `CANCELLED:` upstream is exempt
-from the second guard: zero showtimes is the correct answer for it, not a failure.
+board yields fewer than `MIN_EXPECTED_SHOWS` (10) shows, if any show returns no
+showtimes, or if more than `MAX_UNEXPECTED_CANCELLED_SHOWS` (5) shows vanish *with
+performances still ahead of them* - a partial scrape would otherwise mass-cancel real
+showtimes. The card-count floor is deliberately low: the board shrinks legitimately as
+shows finish their run, so the cancellation count is what actually catches a markup
+change. Two exemptions from the no-showtimes guard: a show marked `CANCELLED:` upstream
+(zero showtimes is the correct answer for it) and a show whose every known performance
+has already been played (it has finished its run but is still listed).
 
 Don't hand-edit `src/data/show_times.json`; change `scraper/scrape.mjs` and re-run it. See
 `CLAUDE.md` for the full set of working rules.
