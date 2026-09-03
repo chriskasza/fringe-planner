@@ -1,5 +1,6 @@
 import { useApp } from '../../state/AppContext';
-import { notCancelled, perfInFilter } from '../../lib/derived';
+import { isPlayed, notCancelled, perfInFilter } from '../../lib/derived';
+import { useNow } from '../../lib/useNow';
 import { IconButton } from '../ui/IconButton';
 import { DayRail } from './DayRail';
 import { TimePills } from './TimePills';
@@ -8,11 +9,17 @@ import styles from './ShowCard.module.css';
 
 export function ShowCard({ show }: { show: Show }) {
   const { state, dispatch } = useApp();
+  const now = useNow();
 
   // Counts the show's whole run, played performances included - the summary
   // line and the pick count are a record of what you did as much as a menu of
   // what's left.
   const activePerfs = show.perfs.filter(notCancelled);
+  const playedCount = activePerfs.filter((p) => isPlayed(p, now)).length;
+  // A show with nothing left to come. Distinct from `show.cancelled`: it did
+  // happen, and the user may well have been there, so it keeps its rail and
+  // its times rather than being stripped back the way a cancelled show is.
+  const allPlayed = activePerfs.length > 0 && playedCount === activePerfs.length;
   const pickedPerfs = activePerfs.filter((p) => state.picked.has(p.timeId));
   const outsideFilterCount = activePerfs.filter((p) => !perfInFilter(p, state.daysOn, state.timeBucketsOn)).length;
   const anyPicked = pickedPerfs.length > 0;
@@ -64,6 +71,11 @@ export function ShowCard({ show }: { show: Show }) {
           ) : (
             <>
               {activePerfs.length} PERFORMANCE{activePerfs.length === 1 ? '' : 'S'}
+              {/* The card's one plain-text statement of what's already
+                  happened. Without it a show whose whole run is over reads as
+                  ordinary and bookable, since the hatch on the rail and pills
+                  is the only other cue and neither reaches a screen reader. */}
+              {allPlayed ? ' · ENDED' : playedCount > 0 && ` · ${playedCount} ENDED`}
               {pickedPerfs.length > 0 && ` · ${pickedPerfs.length} PICKED`}
               {outsideFilterCount > 0 && ` · ${outsideFilterCount} OUTSIDE FILTER`}
             </>

@@ -87,6 +87,17 @@ Read `README.md` first - it documents the upstream API quirks that explain why
   is what carries the state to a screen reader. Played blocks stay fully interactive -
   a pick can be added or removed after the fact, and `DetailPanel`'s `retired` gate is
   therefore cancelled-only.
+  The Cards view says the same thing in its own vocabulary, and has to: letting played
+  performances through its filters without marking them shipped a show whose whole run
+  was over looking ordinary and bookable. `Pill` and `DayRail` take a `played` flag
+  beside their existing state (never folded into `PerfState`, which both mirror) and
+  paint the same `--hatch-played` at the same angle and pitch; `ShowCard`'s summary
+  reads `6 PERFORMANCES · 1 ENDED`, or `· ENDED` when nothing is left. A day-rail cell
+  is played only when *every* performance on it is - one show still to come means the
+  day still has something on it - and `--none` is excluded, having no performances to
+  have played. `CardGrid` sinks a show with nothing left to come to the bottom next to
+  the cancelled ones: the default sort is Random, so without it a finished show sits
+  interleaved with bookable ones and only Soonest ever handled that.
 - **Every festival day loads switched on, and `gridDay` is what orients the app.**
   `createInitialState` used to deselect days before today, which hid the user's own
   history behind a filter they had to know to reopen. It doesn't any more, so the *only*

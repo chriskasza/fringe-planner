@@ -8,6 +8,8 @@
 }
 
 .day-rail__cell {
+  /* So .day-rail__cell--played's ::after can be inset to this box. */
+  position: relative;
   height: 30px;
   border-radius: var(--r-cell);
   box-sizing: border-box;
@@ -78,4 +80,20 @@
   .day-rail__cell {
     height: 44px;
   }
+}
+
+/* Every performance on this day has been played. Same token and geometry as
+   the grid block and the time pill - one fact, one vocabulary. Layered over
+   whichever cell-state rule applies rather than replacing it, so a played day
+   that holds a pick still reads as picked. Must stay after every
+   .day-rail__cell--* rule above: equal specificity, so source order decides
+   (CLAUDE.md). Deliberately excludes --none, which has no performances to
+   have played and keeps its dashed empty treatment. */
+.day-rail__cell--played:not(.day-rail__cell--none)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--hatch-played);
+  pointer-events: none;
 }

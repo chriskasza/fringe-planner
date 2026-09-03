@@ -1,8 +1,9 @@
 import { useApp } from '../../state/AppContext';
-import { compareShowsBySoonest, visible } from '../../lib/derived';
+import { compareShowsBySoonest, nextActivePerf, visible } from '../../lib/derived';
 import { useNow } from '../../lib/useNow';
 import { shows as allShows } from '../../lib/loadData';
 import { ShowCard } from './ShowCard';
+import type { Show } from '../../lib/types';
 import styles from './CardGrid.module.css';
 
 // One shuffle per page load, not per render: Math.random() can't run inside a
@@ -27,11 +28,16 @@ export function CardGrid() {
       visibleShows.sort((a, b) => randomWeight.get(a.id)! - randomWeight.get(b.id)!);
   }
 
-  // Cancelled shows are kept listed for posterity, but they have nothing to
-  // plan around, so they belong at the bottom under every sort. Array#sort is
-  // stable, so this partitions them off without disturbing the order the
-  // switch above chose within each group.
-  visibleShows.sort((a, b) => Number(a.cancelled) - Number(b.cancelled));
+  // Shows with nothing left to plan around sink to the bottom under every
+  // sort - cancelled ones, and now shows whose whole run has been played.
+  // Both are kept listed (a played show is the user's own history), but a
+  // browser that leads with them is showing you what you can no longer do:
+  // the default sort is Random, so without this a finished show sits
+  // interleaved with bookable ones. Only the Soonest sort handled it before,
+  // via nextActivePerf. Array#sort is stable, so this partitions without
+  // disturbing the order the switch above chose within each group.
+  const spent = (s: Show) => s.cancelled || !nextActivePerf(s, now);
+  visibleShows.sort((a, b) => Number(spent(a)) - Number(spent(b)));
 
   return (
     <div className={styles['card-grid']}>

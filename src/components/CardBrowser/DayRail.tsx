@@ -1,5 +1,6 @@
 import { useApp } from '../../state/AppContext';
 import { notCancelled } from '../../lib/derived';
+import { useNow } from '../../lib/useNow';
 import { dayRailCellState } from './dayRailState';
 import type { Show } from '../../lib/types';
 import styles from './DayRail.module.css';
@@ -11,11 +12,12 @@ type DayRailProps = {
 
 export function DayRail({ show, onExpand }: DayRailProps) {
   const { state, dispatch, shows, days } = useApp();
+  const now = useNow();
 
   return (
     <div className={styles['day-rail']} style={{ '--day-count': days.length } as React.CSSProperties}>
       {days.map((d) => {
-        const { cellState, count } = dayRailCellState(show, d.key, state, shows);
+        const { cellState, count, played } = dayRailCellState(show, d.key, state, shows, now);
 
         function handleClick() {
           if (count === 0) return;
@@ -31,13 +33,17 @@ export function DayRail({ show, onExpand }: DayRailProps) {
           <button
             key={d.key}
             type="button"
-            className={`${styles['day-rail__cell']} ${styles[`day-rail__cell--${cellState}`]}`}
+            className={[
+              styles['day-rail__cell'],
+              styles[`day-rail__cell--${cellState}`],
+              played ? styles['day-rail__cell--played'] : '',
+            ].filter(Boolean).join(' ')}
             onClick={handleClick}
             disabled={count === 0}
             aria-label={
               count === 0
                 ? `${d.label}: no performance`
-                : `${d.label}: ${count} performance${count > 1 ? 's' : ''}, ${cellState.replace('-', ' ')}`
+                : `${d.label}: ${count} performance${count > 1 ? 's' : ''}, ${cellState.replace('-', ' ')}${played ? ', ended' : ''}`
             }
           >
             <span className={styles['day-rail__num']}>{d.dateNum}</span>

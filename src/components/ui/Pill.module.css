@@ -8,6 +8,8 @@
   cursor: pointer;
   white-space: nowrap;
   box-sizing: border-box;
+  /* So .pill--played's ::after can be inset to this box. */
+  position: relative;
 }
 
 /* One pill toggles one specific performance - the same class of primary
@@ -47,4 +49,20 @@
   border: 1px solid var(--coral);
   border-left-width: 5px;
   color: var(--ink);
+}
+
+/* A performance that has already been played. Same token, same 135deg, same
+   pitch as the grid block's hatch (see GridPlanner.module.css) - the two
+   views are showing the same fact and must not invent separate vocabulary
+   for it. Must stay after the four state rules above: equal specificity, so
+   source order decides (CLAUDE.md). `pointer-events: none` keeps it clear of
+   the button it sits in, which stays fully clickable - a played pill can be
+   picked and un-picked like any other. */
+.pill--played::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--hatch-played);
+  pointer-events: none;
 }
