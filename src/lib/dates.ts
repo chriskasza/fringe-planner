@@ -3,8 +3,7 @@ import type { Day, DayKey, TimeBucket } from './types';
 // Ticketed shows run Sep 3-13, 2026, but the festival's own free Sampler is on
 // Sep 2, and a day outside this window has no column in the day strip, so
 // `visible()` can never pass for it -- the show would vanish from the app
-// entirely. No performances on Sep 7 (Labour Day), but it stays in the day
-// strip at count 0 rather than being silently omitted.
+// entirely.
 export const FESTIVAL_FIRST_DAY = '2026-09-02';
 export const FESTIVAL_LAST_DAY = '2026-09-13';
 
@@ -75,17 +74,28 @@ export function festivalDayKeys(): DayKey[] {
   return dayKeysBetween(FESTIVAL_FIRST_DAY, FESTIVAL_LAST_DAY);
 }
 
+// The days the board actually shows: a festival day with no active
+// performances left is dropped, not rendered at count 0. Days empty their
+// counts as the festival runs (every performance played is retired to
+// `ended` by the scraper, and `transform` counts only active ones), so a day
+// that has finished disappears from the day strip, the day rail and the Day
+// filter on the next scrape - there is nothing left on it to show. Sep 7
+// (Labour Day, no performances at all) drops for the same reason.
+// May return an empty list once the whole festival is over; every caller has
+// to cope with that (see `createInitialState`).
 export function buildFestivalDays(counts: Record<DayKey, number>): Day[] {
-  return festivalDayKeys().map((key) => {
-    const [, , dStr] = key.split('-');
-    return {
-      key,
-      dow: weekdayAbbrev(key),
-      dateNum: Number(dStr),
-      label: dayLabel(key),
-      count: counts[key] ?? 0,
-    };
-  });
+  return festivalDayKeys()
+    .filter((key) => (counts[key] ?? 0) > 0)
+    .map((key) => {
+      const [, , dStr] = key.split('-');
+      return {
+        key,
+        dow: weekdayAbbrev(key),
+        dateNum: Number(dStr),
+        label: dayLabel(key),
+        count: counts[key] ?? 0,
+      };
+    });
 }
 
 // `label` spells out the boundary so the filter panel needs no legend;

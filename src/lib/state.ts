@@ -1,4 +1,4 @@
-import { nowInHalifax, TIME_BUCKETS } from './dates';
+import { FESTIVAL_LAST_DAY, nowInHalifax, TIME_BUCKETS } from './dates';
 import type { ClashMode, Day, DayKey, DetailTarget, MenuKey, Show, SortMode, TimeBucket, TimeId, ViewMode } from './types';
 
 // Derived from TIME_BUCKETS rather than spelled out, so adding or renaming a
@@ -61,11 +61,15 @@ export function createInitialState(
   // forward that has shows; once the festival is over there's no such day, so
   // fall back to the last day that had any (and switch it back on, since
   // every day is in the past by then).
+  // `days` is empty once every performance in the festival has been played
+  // (buildFestivalDays drops a day with no active performances), so there may
+  // be no landing day at all - fall back to the festival's last day rather
+  // than reading off the end of the list and crashing before first paint.
   const gridDay =
     days.find((d) => d.count > 0 && d.key >= now.date) ??
     [...days].reverse().find((d) => d.count > 0) ??
     days[0];
-  daysOn[gridDay.key] = true;
+  if (gridDay) daysOn[gridDay.key] = true;
 
   return {
     picked: new Set(),
@@ -82,7 +86,7 @@ export function createInitialState(
     // the only complete view.
     viewMode: 'grid',
     sort: 'random',
-    gridDay: gridDay.key,
+    gridDay: gridDay?.key ?? FESTIVAL_LAST_DAY,
     openMenu: { grid: null, cards: null },
     expanded: {},
     detail: null,

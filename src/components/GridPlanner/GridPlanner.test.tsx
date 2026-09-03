@@ -40,9 +40,15 @@ describe('App (Grid Planner)', () => {
     }
   });
 
-  it('renders a day strip with 12 festival days', () => {
+  // A day with no active performances left is dropped from the strip, so the
+  // tab count tracks the data rather than the festival's 12-day span.
+  it('renders one day-strip tab per day that still has an active performance', () => {
+    const liveDays = new Set(
+      shows.flatMap((s) => s.perfs.filter((p) => p.status === 'active').map((p) => p.day)),
+    );
+    expect(liveDays.size).toBeGreaterThan(0);
     render(<App />);
-    expect(document.querySelectorAll('[data-testid="day-strip-tab"]').length).toBe(12);
+    expect(document.querySelectorAll('[data-testid="day-strip-tab"]').length).toBe(liveDays.size);
   });
 
   it('renders grid blocks for the selected day and toggling a pick updates the My Fringe counter', () => {
